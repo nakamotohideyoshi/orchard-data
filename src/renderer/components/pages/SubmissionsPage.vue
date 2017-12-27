@@ -1,0 +1,134 @@
+<template lang="pug">
+#barba-wrapper
+	.page(class=outClass)
+		block header
+			AppHeader
+		.page__content
+			block content
+				.p-container
+					.container
+						.p-container__wrapper
+							.container.container--narrow
+								// page-title
+								.page-title
+									i.icon.icon-list
+									h1 All Submissions (20)
+									.page-title__num 1-10 of 202
+						
+				
+								table.p-table.p-table--subm(js-stacktable)
+									thead
+										tr
+											td Batch ID
+											td Batch Status 
+											td
+												.p-table__icon-td
+													i.icon.icon-calendar-grid
+													span Date Created
+									tbody
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--sucess
+													i.icon.icon-status-sucess
+													span Success
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+											
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--failed
+													i.icon.icon-status-failed
+													span Failed
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--failed
+													i.icon.icon-status-failed
+													span Failed
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--sucess
+													i.icon.icon-status-sucess
+													span Success
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--sucess
+													i.icon.icon-status-sucess
+													span Success
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--waiting
+													i.icon.icon-status-waiting
+													span Waiting
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--waiting
+													i.icon.icon-status-waiting
+													span Waiting
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--progress
+													i.icon.icon-status-progress
+													span In Progress
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--progress
+													i.icon.icon-status-progress
+													span In Progress
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--sucess
+													i.icon.icon-status-sucess
+													span Success
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										tr
+											td 2010
+											td
+												.p-table__status.p-table__status--sucess
+													i.icon.icon-status-sucess
+													span Success
+											td Monday Sept. 4, 2017 at 11:00 AM PST
+										
+								
+								.p-container__more
+									a(href="#" js-load-more).btn.btn-more
+										span Load more
+		block footer
+			AppFooter
+</template>
+
+<script>
+import AppHeader from './Header.vue'
+import AppFooter from './Footer.vue'
+
+export default {
+  name: 'submissions-page',
+  components: {
+    AppHeader,
+    AppFooter
+  },
+  methods: {
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+@import "../../assets/styles/app.sass";
+</style>

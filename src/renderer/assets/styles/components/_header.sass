@@ -1,0 +1,242 @@
+/* HEADER
+.header
+  position: absolute
+  left: 0
+  right: 0
+  z-index: 10
+  padding-top: 40px
+  padding-bottom: 182px
+  background: white
+  // &--csv
+  //   padding-bottom: 20px
+  &--fixed
+    position: fixed
+    padding-top: 13px
+    padding-bottom: 12px
+    z-index: 30
+    box-shadow: 0 10px 14px 0 rgba(69,73,91,0.08)
+    .header__menu li a:not(.btn)::after
+      bottom: -10px
+      height: 4px
+  &.is-sticky
+    z-index: 30
+    box-shadow: 0 10px 14px 0 rgba(69,73,91,0.08)
+
+  &__wrapper
+    display: flex
+    align-items: center
+
+  &__logo
+    align-self: flex-start
+    margin-top: -5px
+    padding-right: 25px
+
+  &__menu
+    flex: 0 0 auto
+    display: flex
+    align-items: center
+    list-style: none
+    margin: 0 auto
+    padding: 0
+    li
+      display: inline-block
+      color: #464855
+      font-family: 'Nunito', sans-serif
+      a:not(.btn)
+        margin-right: 75px
+        min-width: 225px
+        display: inline-block
+        position: relative
+        +tr(color)
+        .ico
+          font-size: 16px
+        span
+          vertical-align: top
+          font-weight: 600
+          margin-left: 10px
+        &::after
+          display: block
+          content: ' '
+          position: absolute
+          left: 0
+          right: 100%
+          bottom: -14px
+          background: $colorPrimary
+          height: 5px
+          transition: right $transitionSpeed $ease
+        &:hover
+          color: $colorPrimary
+          &::after
+            right: 0
+        &.is-active
+          &::after
+            right: 0
+          &:hover::after
+            right: 100%
+
+  &__user
+    position: relative
+    margin-left: auto
+    display: flex
+    align-items: center
+    padding-right: 20px
+    +nunito
+    &-title
+      color: #898EA2
+      margin-right: 10px
+
+    &-drop
+      position: relative
+      display: flex
+      align-items: center
+      cursor: pointer
+      .ico-drop-selector
+        font-size: 7px
+        color: $colorPrimary
+        margin-left: 8px
+        +tr
+
+      &:hover
+        .header__user-name,
+        .ico-drop-selector
+          color: $fontColor
+
+      &__options
+        min-width: 180px
+        position: fixed
+        // top, right to be sit with js
+        top: 0
+        right: 0
+        z-index: 35
+        background: white
+        margin: 0
+        padding: 20px 30px
+        box-shadow: 0 4px 10px 0 rgba(69,73,91,0.15)
+        border-radius: 4px
+        opacity: 0
+        transform: translate3d(0,25px,0)
+        pointer-events: none
+        transition: transform $transitionSpeed $ease, opacity $transitionSpeed $ease
+        &.is-active
+          opacity: 1
+          transform: translate3d(0,0,0)
+          pointer-events: all
+        li
+          display: block
+          padding: 8px 0
+          a
+            +tr
+            &:hover
+              color: $colorPrimary
+
+        hr
+          display: block
+          margin: 10px 0
+          border: 0
+          border-top: 1px solid rgba($borderColor, .5)
+
+    &-name
+      color: $colorPrimary
+      +tr
+
+  &__hamburger
+    display: none
+    margin-left: auto
+
+/* header resposnive styles
++r($desktop)
+  .header
+    &__menu
+      li
+        a:not(.btn)
+          margin-right: 35px
+          min-width: 170px
+
+    &__user
+      padding-right: 0
+      &-title
+        display: none
+
++r($tablet)
+  .header
+    &__menu
+      li
+        a:not(.btn)
+          display: none
+
++r($mobile)
+  .header
+    padding-top: 20px
+    padding-bottom: 20px
+    &--fixed
+      padding-top: 5px
+      padding-bottom: 5px
+    &__logo
+      align-self: center
+      margin-top: 0px
+      padding-right: 0px
+
+    &__menu
+      display: none
+    &__user
+      display: none
+    &__hamburger
+      display: block
+
+
+/* MOBILE MENU
+.mobile-navi
+  display: none
+  position: fixed
+  left: 0
+  top: 0
+  right: 0
+  bottom: 0
+  z-index: 25
+  background: white
+  display: flex
+  flex-direction: column
+  // opacity: 0
+  transform: translate3d(0,100%,0)
+  pointer-events: none
+  +tr
+  &.is-active
+    opacity: 1
+    transform: translate3d(0,0,0)
+    pointer-events: all
+
+  &__menu
+    flex: 1 1 auto
+    display: flex
+    flex-direction: column
+    align-items: center
+    list-style: none
+    padding: 120px 0 50px 0
+    overflow-y: auto
+    margin: auto 0
+    li
+      flex: 1 0 auto
+      margin: 20px 0
+    a
+      position: relative
+      font-size: 16px
+      +nunito
+      color: $colorPrimary
+      &::after
+        display: block
+        content: ' '
+        position: absolute
+        left: 0
+        right: 100%
+        bottom: -7px
+        background: $colorPrimary
+        height: 3px
+        transition: right $transitionSpeed $ease
+        +tr
+      &:hover
+        &::after
+          right: 0
+
++r($mobile)
+  .mobile-navi
+    display: flex

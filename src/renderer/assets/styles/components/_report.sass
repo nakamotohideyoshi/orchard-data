@@ -1,0 +1,406 @@
+
+/* REPORT
+.report
+  padding: 50px 62px 60px 62px
+  &__tabs
+    position: relative
+    display: flex
+    margin-top: 25px
+    margin-left: -62px
+    margin-right: -62px
+    padding-left: 62px
+    padding-right: 62px
+    // overflow-x: auto
+    &--disabled
+      // pointer-events: none
+      margin-top: 0
+      .report__tab
+        pointer-events: none
+        color: #DFE1EE
+        &.is-active
+          color: #DFE1EE
+
+    &--left
+      justify-content: left
+      &::before
+        display: block
+        content: ' '
+        position: absolute
+        bottom: 17px
+        left: 0
+        right: 0
+        background: rgba(#E8E9EC, .5)
+        height: 1px
+
+      .report__tab
+        &:first-child
+          margin-left: 0
+    &::after
+      display: block
+      content: ' '
+      position: absolute
+      bottom: -12px
+      left: 0
+      right: 0
+      height: 1px
+      background: rgba(#E8E9EC, .5)
+  &__tab
+    flex: 0 0 auto
+    position: relative
+    display: inline-block
+    font-size: 20px
+    margin: 0 3.7%
+    color: #656AEB
+    &:first-child
+      margin-left: auto
+    &:last-of-type
+      margin-right: auto
+    &::after
+      display: block
+      content: ' '
+      position: absolute
+      left: 0
+      right: 100%
+      bottom: -12px
+      background: currentColor
+      height: 5px
+      transition: right $transitionSpeed $ease
+      +tr
+    &:hover, &.is-active
+      color: #535B9E
+      &::after
+        right: 0
+
+  &__top
+    margin-top: 43px
+    display: flex
+    border-bottom: 1px solid rgba(#E8E9EC, .5)
+    padding-bottom: 30px
+    &-col
+      flex: 0 1 auto
+      display: flex
+      flex-direction: column
+      padding-right: 40px
+      &:last-child
+        padding-right: 0
+    &-percent
+      color: #535B9E
+      line-height: 1
+      font-size: 34px
+    &-description
+      color: #6B6F83
+      font-size: 20px
+      margin-top: auto
+      padding-top: 5px
+      letter-spacing: 0px
+    &-stars
+      padding-top: 4px
+      color: #535B9E
+      font-size: 25px
+  &__view
+    margin-top: 30px
+    margin-left: 10px
+    padding-bottom: 10px
+    &-title
+      font-size: 20px
+      color: #6B6F83
+    &-link
+      margin-top: 25px
+      display: flex
+      align-items: center
+      color: #535B9E
+      margin-left: 15px
+      .ico
+        font-size: 28px
+        fill: rgba(#404994, .5)
+        +tr
+      span
+        display: inline-block
+        margin-left: 8px
+        font-size: 20px
+        +tr
+      &:hover
+        color: $colorPrimary
+        .ico
+          fill: rgba($colorPrimary, .5)
+
+/* REPORT SUMMARY
+.report-summary
+  display: flex
+  justify-content: space-between
+  margin-bottom: 10px
+  &__col
+    flex: 0 0 auto
+    padding: 0 10px
+    margin-bottom: 20px
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+    &:first-child
+      padding-left: 0
+    &:last-child
+      padding-right: 0
+  &__head
+    display: block
+    font-size: 12px
+    text-transform: uppercase
+    font-weight: 700
+    color: #C0C4D3
+    letter-spacing: 1px
+  &__text
+    display: inline-block
+    margin-top: auto
+    padding-top: 3px
+    +nunito
+    font-size: 22px
+    color: #6B6F83
+    a
+      margin-left: 10px
+    &--red
+      font-size: 26px
+      color: $colorRed
+    .ico
+      color: #C0C4D3
+      font-size: 27px
+      margin-bottom: -8px
+  a.report-summary__text, a
+    +tr
+    .ico
+      +tr
+    &:hover
+      color: $colorPrimary
+      .ico
+        color: $colorPrimary
+
+  &__label
+    padding: 6px 13px
+    margin-left: 25px
+    align-self: flex-end
+    margin-bottom: 24px
+    +nunito
+    text-transform: uppercase
+    font-size: 13px
+    font-weight: 700
+    letter-spacing: 0.93px
+    border-radius: 4px
+    &--red
+      color: white
+      background: $colorRed
+    &--green
+      color: white
+      font-size: 14px
+      letter-spacing: 1px
+      border-radius: 0px
+      padding-left: 25px
+      padding-right: 25px
+      background: $colorGreen
+
+  .page-back
+    margin-right: auto
+  &--csv
+    .report-summary__label
+      margin-left: auto
+      margin-right: 0
+    .report-summary__text
+      .ico
+        transform: translateY(-8px)
+
++r(1250)
+  .report
+    &-summary
+      &__text
+        font-size: 18px
+        &--red
+          font-size: 20px
+
++r($desktop)
+  .report
+    padding: 40px 40px 60px 40px
+    &__tabs
+      margin-left: -40px
+      margin-right: -40px
+      padding-left: 40px
+      padding-right: 40px
+
+    &__tab
+      font-size: 18px
+
+    &-summary
+      flex-wrap: wrap
+      justify-content: flex-start
+      margin-bottom: -10px
+      &--csv
+        justify-content: space-between
+
+      &__col
+        flex: 0 1 auto
+        padding-left: 0
+        padding-right: 15px
+        margin-bottom: 20px
+      &__label
+        margin-left: 15px
+        margin-right: 15px
+        margin-bottom: 23px
+      &:not(.report-summary--csv)
+        .report-summary
+          &__col
+            &:nth-child(1)
+              order: 1
+            &:nth-child(3)
+              order: 3
+            &:nth-child(4)
+              order: 2
+              margin-right: auto
+            &:nth-child(5)
+              order: 5
+
+          &__label
+            order: 2
+
+      &-head
+
+      // &-text
+      //   font-size: 20px
+      //   &--red
+      //     font-size: 23px
+
+    &__top
+      margin-top: 30px
+      &-percent
+        font-size: 28px
+      &-description
+        font-size: 18px
+      &-stars
+        font-size: 21px
+
+    &__view
+      margin-top: 25px
+      &-title
+        font-size: 18px
+      &-link
+        margin-top: 20px
+        .ico
+          font-size: 24px
+        span
+          font-size: 18px
+
++r($tablet)
+  .report
+    padding: 40px 20px
+    &__tabs
+      margin-left: -20px
+      margin-right: -20px
+      padding-left: 20px
+      padding-right: 20px
+
+    &-summary
+      .page-back
+        flex: 0 0 100%
+        margin-bottom: 30px
+      &--csv
+        .report-summary__label
+          margin-left: 0
+        .report-summary__text
+          .ico
+            transform: translateY(0px)
+
+
+    &__top
+      flex-direction: column
+      margin-top: 40px
+      padding-bottom: 10px
+      &-col
+        flex: 0 0 auto
+        padding-right: 0
+        margin-bottom: 25px
+
++r($mobile)
+  .report
+    &__tab
+      font-size: 16px
+
+    &-summary
+      &__text
+        font-size: 16px
+        &--red
+          font-size: 18px
+        .ico
+          font-size: 24px
+          margin-bottom: -5px
+
+      &__label
+        font-size: 12px
+        padding: 6px 12px
+
+    &__top
+      &-percent
+        font-size: 24px
+      &-description
+        font-size: 16px
+      &-stars
+        font-size: 18px
+
+    &__view
+      margin-left: 0
+      &-title
+        font-size: 16px
+      &-link
+        margin-top: 20px
+        margin-left: 10px
+        .ico
+          font-size: 20px
+        span
+          font-size: 15px
+
+
+/* REPORT BLANK
+.report-blank
+  max-width: 600px
+  margin-left: auto
+  margin-right: auto
+  margin-top: 45px
+  text-align: center
+  &__title
+    font-size: 26px
+    color: #6B6F83
+  &__description
+    +nunito
+    font-size: 24px
+    line-height: 1.25
+    margin-top: 20px
+    a
+      +tr
+      &:hover
+        color: $colorPrimary
+  &__image
+    max-width: 480px
+    margin-left: auto
+    margin-right: auto
+    margin-top: 35px
+    img
+      max-width: 100%
+
++r($tablet)
+  .report-blank
+    &__title
+      font-size: 22px
+    &__description
+      font-size: 20px
+
++r($mobile)
+  .report-blank
+    &__title
+      font-size: 20px
+    &__description
+      font-size: 18px
+
++r($mobile-s)
+  .report-blank
+    &__title
+      font-size: 18px
+    &__description
+      font-size: 16px
+
+/* Container with max width
+.report-container
+  max-width: 620px

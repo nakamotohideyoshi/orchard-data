@@ -1,0 +1,97 @@
+<template lang="pug">
+include _mixins
+#barba-wrapper
+	.page(class=outClass)
+		block header
+			AppHeader
+		.page__content
+			block content
+				.p-container
+					.container
+						.p-container__wrapper
+							.container.container--smaller
+								
+								// page back
+								router-link(:to="'/submissions'").page-back
+									.icon.icon-arrow-back
+									span Report Summary
+									
+								// report box
+								.p-box.report
+									// summary
+									.report-summary
+										.report-summary__col
+											.report-summary__head risk analysis
+											.report-summary__text.report-summary__text--red Errors Per Row 
+										.report-summary__label.report-summary__label--red failed
+										.report-summary__col
+											.report-summary__head batch id
+											.report-summary__text 1020
+										.report-summary__col
+											.report-summary__head batch
+											.report-summary__text Monday June 12th 2017 11:00AM PST
+										.report-summary__col
+											.report-summary__head download
+											a(href="#").report-summary__text
+												+icon('ico-download')
+									
+									// tabs
+									.report__tabs.report__tabs--left(js-scrollbar)
+										a(href="#").report__tab Overall Risk Assessment
+										a(href="#").report__tab.is-active Apple & Itunes Guidelines
+										a(href="#").report__tab Custom Parameters
+									
+
+									// summary
+									.report-container
+										.report__top
+											.report__top-col
+												.report__top-percent 37%
+												.report__top-description Total percent of rows with errors
+											.report__top-col
+												.report__top-stars
+													+icon('ico-star-filled')
+													+icon('ico-star-filled')
+													+icon('ico-star-filled')
+													+icon('ico-star-empty')
+													+icon('ico-star-empty')
+												.report__top-description Overall data quality
+										
+										// report view
+										.report__view
+											.report__view-title What are the biggest problems with the dataset?
+											a(href="#").report__view-link
+												+icon('ico-document')
+												span View the test criteria scores
+										.report__view
+											.report__view-title What is the sum of problems in each row?
+											a(href="#").report__view-link
+												+icon('ico-document')
+												span View the input row scores
+										.report__view
+											.report__view-title Which fields in the dataset failed?
+											a(href="#").report__view-link
+												+icon('ico-document')
+												span View the field level issues		
+		block footer
+			AppFooter
+</template>
+
+<script>
+import AppHeader from './Header.vue'
+import AppFooter from './Footer.vue'
+
+export default {
+  name: 'report-page',
+  components: {
+    AppHeader,
+    AppFooter
+  },
+  methods: {
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+@import "../../assets/styles/app.sass";
+</style>

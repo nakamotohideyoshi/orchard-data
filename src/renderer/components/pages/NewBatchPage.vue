@@ -1,0 +1,101 @@
+<template lang="pug">
+include _mixins
+#barba-wrapper
+	.page(class=outClass)
+		block header
+			AppHeader
+		.page__content
+			block content
+				.p-container
+					.container
+						.p-container__wrapper
+							.container.container--smaller
+								
+								// page back
+								router-link(:to="'/submissions'").page-back
+									.icon.icon-arrow-back
+									span Submissions
+								
+								// upload form
+								form.p-box.upload(action="#")
+									.upload__title
+										+icon('ico-upload')
+										h1 Upload new dataset
+										
+									// group
+									.upload__group
+										.upload__group-name
+											+icon('ico-market-music')
+											span Choose a dataset (csv only)
+										
+										.ui-group
+											label Dataset
+											.uploader(js-uploader data-validate="csv")
+												.uploader__btn
+													label Choose file
+														input(type="file" id="file" name="file")
+														
+												.uploader__current
+													.uploader__current-filename
+													+icon('ico-close')
+													
+									// group
+									.upload__group
+										.upload__group-name
+											+icon('ico-market-music')
+											span Parameters
+										
+										.ui-group
+											label Artist blacklist
+											textarea(placeholder="Artist 1")
+										.ui-group
+											label Keyword blacklist
+											textarea(placeholder="keywrods" value="Garbage, gangster, gangstar, gang")
+										.ui-group
+											label Duplicates threshold
+											input(placeholder="25%")
+										.ui-group
+											label Various Artists threshold
+											input(placeholder="Count or percentage")
+										.ui-group
+											label Language
+											.ui-checkbox-row
+												.ui-checkbox
+													input(type="checkbox" name="cb" id="cb_1")
+													label(for="cb_1") 
+														span Brazilian Portugese
+												.ui-checkbox
+													input(type="checkbox" name="cb" id="cb_2")
+													label(for="cb_2")
+														span English
+												.ui-checkbox
+													input(type="checkbox" name="cb" id="cb_3")
+													label(for="cb_3")
+														span Spanish
+									
+										// CTA
+										.upload__cta
+											button(type="submit").btn.btn-primary.btn--filled
+												span Start Testing
+		block footer
+			AppFooter
+</template>
+
+<script>
+import AppHeader from './Header.vue'
+import AppFooter from './Footer.vue'
+
+export default {
+  name: 'new-batch-page',
+  components: {
+    AppHeader,
+    AppFooter
+  },
+  methods: {
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+@import "../../assets/styles/app.sass";
+</style>

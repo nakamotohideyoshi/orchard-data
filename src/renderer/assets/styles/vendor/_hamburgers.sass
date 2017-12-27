@@ -1,0 +1,73 @@
+.hamburger
+  padding: 10px 5px 5px 5px
+  margin-right: -5px
+  display: inline-block
+  cursor: pointer
+  transition-property: opacity, filter
+  transition-duration: 0.15s
+  transition-timing-function: linear
+  font: inherit
+  color: inherit
+  text-transform: none
+  background-color: transparent
+  border: 0
+  overflow: visible
+  &:hover
+    opacity: 0.7
+
+.hamburger-box
+  width: 40px
+  height: 24px
+  display: inline-block
+  position: relative
+
+.hamburger-inner
+  display: block
+  top: 50%
+  margin-top: -2px
+  width: 35px
+  height: 3px
+  border-radius: 3px
+  background-color: $colorPrimary
+  position: absolute
+  transition-property: transform
+  transition-duration: 0.15s
+  transition-timing-function: ease
+  &::before, &::after
+    width: 35px
+    height: 3px
+    background-color: $colorPrimary
+    border-radius: 3px
+    position: absolute
+    transition-property: transform
+    transition-duration: 0.15s
+    transition-timing-function: ease
+  &::before, &::after
+    content: ""
+    display: block
+  &::before
+    top: -10px
+  &::after
+    bottom: -10px
+
+
+.hamburger--squeeze
+  .hamburger-inner
+    transition-duration: 0.1s
+    transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19)
+    &::before
+      transition: top 0.1s 0.14s ease, opacity 0.1s ease
+    &::after
+      transition: bottom 0.1s 0.14s ease, transform 0.1s cubic-bezier(0.55, 0.055, 0.675, 0.19)
+  &.is-active .hamburger-inner
+    transform: rotate(45deg)
+    transition-delay: 0.14s
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
+    &::before
+      top: 0
+      opacity: 0
+      transition: top 0.1s ease, opacity 0.1s 0.14s ease
+    &::after
+      bottom: 0
+      transform: rotate(-90deg)
+      transition: bottom 0.1s ease, transform 0.1s 0.14s cubic-bezier(0.215, 0.61, 0.355, 1)

@@ -1,0 +1,141 @@
+$sprite: (
+	arrow-back: (
+		offset-x: -84px,
+		offset-y: 0px,
+		width: 17px,
+		height: 16px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+	calendar-grid: (
+		offset-x: -84px,
+		offset-y: -26px,
+		width: 14px,
+		height: 16px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+	list: (
+		offset-x: -84px,
+		offset-y: -52px,
+		width: 16px,
+		height: 14px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+	status-failed: (
+		offset-x: 0px,
+		offset-y: 0px,
+		width: 32px,
+		height: 32px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+	status-progress: (
+		offset-x: -42px,
+		offset-y: 0px,
+		width: 32px,
+		height: 32px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+	status-sucess: (
+		offset-x: 0px,
+		offset-y: -42px,
+		width: 32px,
+		height: 32px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+	status-waiting: (
+		offset-x: -42px,
+		offset-y: -42px,
+		width: 32px,
+		height: 32px,
+		total-width: 101px,
+		total-height: 74px,
+		image: '~@/assets/img/sprite.png'
+	),
+);
+
+
+@mixin sprite-size($image) {
+	background-size: map-get(map-get($sprite, $image), 'total-width') map-get(map-get($sprite, $image), 'total-height');
+}
+
+@mixin sprite-width($image) {
+	width: map-get(map-get($sprite, $image), 'width');
+}
+
+@mixin sprite-height($image) {
+	height: map-get(map-get($sprite, $image), 'height');
+}
+
+@mixin sprite-position($image) {
+	background-position: map-get(map-get($sprite, $image), 'offset-x') map-get(map-get($sprite, $image), 'offset-y');
+}
+
+@mixin sprite-image($image) {
+	background-image: url(map-get(map-get($sprite, $image), 'image'));
+}
+
+@mixin sprite-image-retina($image) {
+	$image-path: map-get(map-get($sprite, $image), 'image');
+	$image-path-retina: str-slice($image-path, 1, str-index($image-path, '.png') - 1) + '@2x.png';
+
+	background-image: url($image-path-retina);
+}
+
+@mixin sprite($image, $size: true) {
+	@include sprite-image($image);
+	@include sprite-position($image);
+	background-repeat: no-repeat;
+
+	@if $size {
+		@include sprite-width($image);
+		@include sprite-height($image);
+	}
+
+	@media
+		only screen and (-webkit-min-device-pixel-ratio: 2),
+		only screen and (   min--moz-device-pixel-ratio: 2),
+		only screen and (     -o-min-device-pixel-ratio: 2/1),
+		only screen and (        min-device-pixel-ratio: 2),
+		only screen and (                min-resolution: 192dpi),
+		only screen and (                min-resolution: 2dppx) {
+
+		@include sprite-size($image);
+		@include sprite-image-retina($image);
+
+	}
+}
+
+
+
+	.icon-arrow-back {
+		@include sprite(arrow-back)
+	}
+	.icon-calendar-grid {
+		@include sprite(calendar-grid)
+	}
+	.icon-list {
+		@include sprite(list)
+	}
+	.icon-status-failed {
+		@include sprite(status-failed)
+	}
+	.icon-status-progress {
+		@include sprite(status-progress)
+	}
+	.icon-status-sucess {
+		@include sprite(status-sucess)
+	}
+	.icon-status-waiting {
+		@include sprite(status-waiting)
+	}

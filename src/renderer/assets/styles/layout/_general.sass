@@ -1,0 +1,77 @@
+/* Some resets
+*
+  box-sizing: border-box
+  outline: none
+
+a
+  color: inherit
+  text-decoration: none
+  &:hover, &:focus
+    text-decoration: none
+
+ul
+  list-style: none
+  li
+    display: inline-block
+
+/* General body class
+body, html
+  position: relative
+  background: #F4F5FA
+  color: $fontColor
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif
+  font-size: 16px
+  min-width: 320px
+  max-width: 100%
+  margin: 0
+  overflow-x: hidden
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+body.is-fixed .page
+  height: 100vh
+  overflow: hidden
+
+*::selection
+  color: white
+  background: $colorPrimary
+
+.page
+  display: flex
+  flex-direction: column
+  min-height: 100vh
+  background: #F4F5FA
+  position: relative
+  overflow-x: hidden
+  &__content
+    flex: 1 1 auto
+    padding-top: 140px
+
+
++r($mobile)
+  .page
+    &__content
+      padding-top: 100px
+
+/* Container and modifiers
+/* mind the padding's for max-width - (padding left + padding right)
+.container
+  max-width: 1250px
+  margin-left: auto
+  margin-right: auto
+  padding-left: 40px
+  padding-right: 40px
+  &--narrow
+    max-width: 1050px
+  &--smaller
+    max-width: 1160px
+
++r($desktop)
+  .container
+    padding-left: 30px
+    padding-right: 30px
+
++r($mobile-s)
+  .container
+    padding-left: 20px
+    padding-right: 20px

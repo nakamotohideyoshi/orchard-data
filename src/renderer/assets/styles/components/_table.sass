@@ -1,0 +1,163 @@
+// TABLE
+.p-table
+  margin-top: 33px
+  width: 100%
+  border-collapse: collapse
+  border: 1px solid #EDEEF4
+  thead
+    background: #FBFCFE
+    td
+      font-size: 15px
+      padding: 30px 22px 15px 22px
+      border-bottom: 1px solid $borderColor
+  tbody
+    td
+      font-size: 16px
+      letter-spacing: 0.44px
+      background: white
+      padding: 20px 22px
+      border-bottom: 1px solid rgba(#E8E9EC, .2)
+      +tr
+    tr
+      &:last-child td
+        border-color: #EDEEF4
+      &:hover
+        td
+          background: #FAFBFB
+      &[js-modal]
+        cursor: pointer
+
+      &.p-table__status-warn
+        &:hover
+          td
+            color: $colorRed
+
+  &__icon-td
+    display: flex
+    align-items: center
+    span
+      vertical-align: top
+      margin-left: 8px
+  &__status
+    display: flex
+    align-items: center
+    padding: 5px 0 4px 0
+    span
+      margin-left: 18px
+    &--sucess
+      color: $colorGreen
+    &--failed
+      color: $colorRed
+    &--waiting
+      color: #618FE7
+    &--progress
+      color: #E79461
+  tr
+
+  td
+    font-size: 15px
+
+  &--full
+    margin-top: 1px
+    margin-left: -63px
+    margin-right: -63px
+    margin-bottom: -61px
+    width: calc(100% + 126px)
+    border-top: 0
+
+
++rmin($tablet)
+  .p-table
+    &--subm
+      tr
+        td
+          &:first-child
+            width: 125px
+          &:nth-child(2)
+            width: 210px
+    &--full
+      tr
+        td
+          &:first-child
+            width: 7%
+
++r($desktop)
+  .p-table
+    margin-top: 20px
+    thead
+      td
+        font-size: 13px
+        padding: 20px 15px 15px 15px
+    tbody
+      td
+        font-size: 14px
+        padding: 15px
+    tr
+      td:first-child
+        padding-left: 20px
+
+    &__status
+      .icon
+        transform: scale(0.8)
+      span
+        margin-left: 8px
+
+    &--full
+      margin-left: -41px
+      margin-right: -41px
+      margin-bottom: -61px
+      width: calc(100% + 82px)
+
++r($tablet)
+  .p-table
+    &--full
+      margin-left: -21px
+      margin-right: -21px
+      margin-bottom: -41px
+      width: calc(100% + 42px)
+
+
++r($mobile-s)
+  .p-table
+    thead
+      td
+        font-size: 12px
+        padding: 15px 10px 10px 10px
+    tbody
+      td
+        font-size: 13px
+        padding: 15px 10px
+    tr
+      td:first-child
+        padding-left: 15px
+
+// stacktable styles
+
+
+.st-head-row
+  padding: 20px 0
+  &.st-head-row-main
+    display: none
+    font-size: 1.5em
+    padding-top: 0
+
+.st-key
+  width: 49%
+  padding-right: 1%
+
+.st-val
+  width: 49%
+  padding-left: 1%
+
+.stacktable
+  &.large-only
+    display: table
+  &.small-only
+    display: none
+
++r($tablet)
+  .stacktable
+    &.large-only
+      display: none
+    &.small-only
+      display: table

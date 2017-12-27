@@ -1,0 +1,77 @@
+/* UPLOAD
+.upload
+  display: block
+  padding: 55px 92px 60px 92px
+  &__title
+    display: flex
+    align-items: center
+    color: #404994
+    padding-bottom: 20px
+    .ico
+      fill: #404994
+      font-size: 22px
+      margin-left: 5px
+
+    span, h1
+      font-size: 26px
+      font-weight: 400
+      display: inline-block
+      margin: 0
+      margin-left: 13px
+
+  &__group
+    margin-top: 55px
+    max-width: 450px
+    &-name
+      display: flex
+      align-items: center
+      font-size: 20px
+      color: #6B6F83
+      .ico
+        font-size: 18px
+        fill: #9FA4C9
+      span
+        display: inline-block
+        margin-left: 8px
+
+  &__cta
+    position: relative
+    margin-top: 25px
+    margin-left: 27px
+    padding-top: 27px
+    &::before
+      display: block
+      content: ' '
+      position: absolute
+      top: 0
+      left: 0px
+      right: 0
+      background: #E8E9EC
+      height: 1px
+
+
++r($tablet)
+  .upload
+    padding: 60px 40px
+    &__title
+      .ico
+        font-size: 18px
+      span, h1
+        font-size: 22px
+    &__group
+      margin-top: 40px
+      &-name
+        font-size: 17px
+        .ico
+          color: #9FA4C9
+          font-size: 16px
+
++r($mobile)
+  .upload
+    padding: 40px 25px
+    &__cta
+      margin-left: 0px
+    &__group
+      margin-top: 30px
+      &-name
+        font-size: 15px
