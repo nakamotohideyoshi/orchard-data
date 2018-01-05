@@ -26,7 +26,7 @@
         <span>1400px</span>
       </button>
     </nav>
-  </header>  
+  </header>
 </template>
 
 <script>

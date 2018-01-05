@@ -10,9 +10,10 @@ footer.footer(js-reveal-footer)
         a(href="#") Customer Support
       li
         a(href="mailto:info@musicalturk.co") info@musicalturk.co
-  
+
     .footer__logo
       i.icon.icon-logo
+
 // FOOTER :: END
 </template>
 
