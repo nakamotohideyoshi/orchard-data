@@ -26,7 +26,7 @@ include _mixins
 									.upload__group
 										.upload__group-name
 											+icon('ico-market-music')
-											span Choose a dataset (csv only)
+											span Choose a dataset (required)
 										
 										.ui-group
 											label Dataset
@@ -61,21 +61,20 @@ include _mixins
 											label Language
 											.ui-checkbox-row
 												.ui-checkbox
-													input(type="checkbox" name="cb" id="cb_1" v-model="brazilian")
-													label(for="cb_1") 
-														span Brazilian Portugese
-												.ui-checkbox
-													input(type="checkbox" name="cb" id="cb_2" v-model="english")
+													input(type="radio" name="cb" id="cb_2" value="en-US" v-model="lang")
 													label(for="cb_2")
 														span English
 												.ui-checkbox
-													input(type="checkbox" name="cb" id="cb_3" v-model="spanish")
+													input(type="radio" name="cb" id="cb_3" value="en-ES" v-model="lang")
 													label(for="cb_3")
 														span Spanish
-									
+												.ui-checkbox
+													input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
+													label(for="cb_1") 
+														span Brazilian Portugese
 										// CTA
 										.upload__cta
-											button(type="submit" v-on:click="submitForm").btn.btn-primary.btn--filled
+											button(type="submit" v-on:click="submitForm" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
 												span Start Testing
 		block footer
 			AppFooter
@@ -98,16 +97,16 @@ export default {
       keywordList: '',
       threshold1: '',
       threshold2: '',
-      brazilian: '',
-      english: '',
+      btnClass: 'btn-disabled',
       textareaMax: 1000,
       thresValue1: 0,
       thresValue2: 0,
+      buttonDisabled: true,
       dbData: {}
     }
   },
   computed: {
-    spanish: function () {
+    lang: function () {
       var sqlite3 = require('sqlite3').verbose()
       var db = new sqlite3.Database('db.sqlite')
       var that = this
@@ -119,7 +118,7 @@ export default {
           that.dbData = rows[rows.length - 1]
         }
       })
-      return ''
+      return 'en-US'
     }
   },
   methods: {
@@ -141,16 +140,8 @@ export default {
         alert('Please select Dataset file')
         return
       }
-      if (this.artistList.length === 0) {
-        alert('Please input Artist Blacklist')
-        return
-      }
-      if (this.keywordList.length === 0) {
-        alert('Please input Keyword Blacklist')
-        return
-      }
-      this.thresValue1 = parseInt(this.threshold1.replace('%', '')) ? parseInt(this.threshold1.replace('%', '')) : 0
-      this.thresValue2 = parseInt(this.threshold2) ? parseInt(this.threshold2) : 0
+      this.thresValue1 = parseInt(this.threshold1.replace('%', ''))
+      this.thresValue2 = parseInt(this.threshold2)
       if (this.thresValue1 > 100 || this.thresValue1 < 0) {
         alert('Wrong Duplicates threshold')
         return
@@ -159,19 +150,11 @@ export default {
         alert('Wrong Duplicates threshold')
         return
       }
-      var lang = 0
-      if (this.brazilian) { lang += 100 }
-      if (this.english) { lang += 10 }
-      if (this.spanish) { lang += 1 }
-      if (lang === 0) {
-        alert('Please select at least one language')
-        return
-      }
       var that = this
       db.serialize(function () {
-        db.run('CREATE TABLE IF NOT EXISTS data (file TEXT, artistlist TEXT, keywordlist TEXT, threshold1 INTEGER, threshold2 INTEGER, lang INTEGER, status INTEGER, time INTEGER)')
+        db.run('CREATE TABLE IF NOT EXISTS data (file TEXT, artistlist TEXT, keywordlist TEXT, threshold1 INTEGER, threshold2 INTEGER, lang TEXT, status INTEGER, time INTEGER)')
         var stmt = db.prepare('INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-        stmt.run(that.filePath, that.artistList, that.keywordList, that.thresValue1, that.thresValue2, lang, 1, Date.now())
+        stmt.run(that.filePath, that.artistList, that.keywordList, that.thresValue1, that.thresValue2, that.lang, 1, Date.now())
         stmt.finalize()
         // db.each('SELECT rowid as id, * FROM data', function (err, row) {
         //   if (err) {
@@ -181,11 +164,13 @@ export default {
         // })
       })
       db.close()
-      console.log('clicked', this.artistList, this.keywordList, this.thresValue1, this.thresValue2, this.brazilian, this.english, this.spanish)
+      console.log('clicked', this.artistList, this.keywordList, this.thresValue1, this.thresValue2, this.lang)
     },
     processFile: function (e) {
       var file = event.target.files[0]
       this.filePath = file.path
+      this.buttonDisabled = false
+      this.btnClass = 'btn-primary'
     }
   }
 }
