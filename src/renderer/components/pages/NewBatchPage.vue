@@ -102,24 +102,23 @@ export default {
       thresValue1: 0,
       thresValue2: 0,
       buttonDisabled: true,
+      lang: 'en-US',
       dbData: {}
     }
   },
-  computed: {
-    lang: function () {
-      var sqlite3 = require('sqlite3').verbose()
-      var db = new sqlite3.Database('db.sqlite')
-      var that = this
-      db.all('SELECT rowid as id, * FROM data', function (err, rows) {
-        if (err) {
-          console.log('error')
-        }
-        if (rows) {
-          that.dbData = rows[rows.length - 1]
-        }
-      })
-      return 'en-US'
-    }
+  created: function () {
+    var sqlite3 = require('sqlite3').verbose()
+    var db = new sqlite3.Database('db.sqlite')
+    var that = this
+    db.all('SELECT rowid as id, * FROM data', function (err, rows) {
+      if (err) {
+        console.log('error')
+      }
+      if (rows) {
+        that.dbData = rows[rows.length - 1]
+        that.lang = rows[rows.length - 1].lang
+      }
+    })
   },
   methods: {
     countdownArtistList: function (evt) {
@@ -142,12 +141,18 @@ export default {
       }
       this.thresValue1 = parseInt(this.threshold1.replace('%', ''))
       this.thresValue2 = parseInt(this.threshold2)
-      if (this.thresValue1 > 100 || this.thresValue1 < 0) {
-        alert('Wrong Duplicates threshold')
+      if (this.threshold1 === '') {
+        this.thresValue1 = null
+      }
+      if (this.threshold2 === '') {
+        this.thresValue2 = null
+      }
+      if (this.thresValue1 > 100 || this.thresValue1 < 0 || isNaN(this.thresValue1)) {
+        alert('Duplicates threshold must be between 0 and 100.')
         return
       }
-      if (this.thresValue2 < 0) {
-        alert('Wrong Duplicates threshold')
+      if (this.thresValue2 < 0 || isNaN(this.thresValue2)) {
+        alert('Various Artists threshold must be greater than -1.')
         return
       }
       var that = this
