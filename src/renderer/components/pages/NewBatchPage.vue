@@ -160,7 +160,9 @@ export default {
         db.run('CREATE TABLE IF NOT EXISTS data (file TEXT, artistlist TEXT, keywordlist TEXT, threshold1 INTEGER, threshold2 INTEGER, lang TEXT, status INTEGER, time INTEGER)')
         var stmt = db.prepare('INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
         stmt.run(that.filePath, that.artistList, that.keywordList, that.thresValue1, that.thresValue2, that.lang, 1, Date.now())
-        stmt.finalize()
+        stmt.finalize(function () {
+          that.$router.push('/')
+        })
         // db.each('SELECT rowid as id, * FROM data', function (err, row) {
         //   if (err) {
         //     console.log('error')
