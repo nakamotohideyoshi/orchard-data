@@ -12,7 +12,7 @@
 								// page-title
 								.page-title
 									i.icon.icon-list
-									h1 All Submissions (20)
+									h1 All Submissions ({{dbData.length}})
 									.page-title__num 1-10 of 202
 						
 				
@@ -24,87 +24,15 @@
 											td
 												.p-table__icon-td
 													i.icon.icon-calendar-grid
-													span Date Created
+													span Date Created {{list1}}
 									tbody
-										tr
-											td 2010
+										tr(v-for="data in dbData")
+											td {{data.id}}
 											td
-												.p-table__status.p-table__status--sucess
-													i.icon.icon-status-sucess
-													span Success
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-											
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--failed
-													i.icon.icon-status-failed
-													span Failed
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--failed
-													i.icon.icon-status-failed
-													span Failed
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--sucess
-													i.icon.icon-status-sucess
-													span Success
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--sucess
-													i.icon.icon-status-sucess
-													span Success
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--waiting
-													i.icon.icon-status-waiting
-													span Waiting
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--waiting
-													i.icon.icon-status-waiting
-													span Waiting
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--progress
-													i.icon.icon-status-progress
-													span In Progress
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--progress
-													i.icon.icon-status-progress
-													span In Progress
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--sucess
-													i.icon.icon-status-sucess
-													span Success
-											td Monday Sept. 4, 2017 at 11:00 AM PST
-										tr
-											td 2010
-											td
-												.p-table__status.p-table__status--sucess
-													i.icon.icon-status-sucess
-													span Success
-											td Monday Sept. 4, 2017 at 11:00 AM PST
+												div.p-table__status(v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'")
+													i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-Success'")
+													span {{data.status === 1 ? 'Waiting' : 'Success'}}
+											td {{(new Date(data.time)).toString()}}
 										
 								
 								.p-container__more
@@ -120,6 +48,28 @@ import AppFooter from './Footer.vue'
 
 export default {
   name: 'submissions-page',
+  data () {
+    return {
+      dbData: []
+    }
+  },
+  computed: {
+    list1: function () {
+      var sqlite3 = require('sqlite3').verbose()
+      var db = new sqlite3.Database('db.sqlite')
+      var that = this
+      db.all('SELECT rowid as id, * FROM data', function (err, rows) {
+        if (err) {
+          console.log('error')
+        }
+        if (rows) {
+          that.dbData = rows
+          console.log(rows)
+        }
+      })
+      return ''
+    }
+  },
   components: {
     AppHeader,
     AppFooter
