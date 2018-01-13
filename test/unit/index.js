@@ -10,4 +10,9 @@ testsContext.keys().forEach(testsContext)
 // you can also change this to match only the subset of files that
 // you want coverage for.
 // const srcContext = require.context('../../src/renderer', true, /^\.\/(?!main(\.js)?$)/)
-// srcContext.keys().forEach(srcContext)
+const srcContext0 = require.context('../../src/renderer/assets', true, /^app.sass$/)
+srcContext0.keys().forEach(srcContext0)
+
+const srcContext1 = require.context('../../src/renderer/store', true)
+srcContext1.keys().forEach(srcContext1)
+
