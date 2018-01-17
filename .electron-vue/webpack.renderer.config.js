@@ -30,17 +30,17 @@ let rendererConfig = {
   ],
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        use: {
-          loader: 'eslint-loader',
-          options: {
-            formatter: require('eslint-friendly-formatter')
-          }
-        }
-      },
+      // {
+      //   test: /\.(js|vue)$/,
+      //   enforce: 'pre',
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: 'eslint-loader',
+      //     options: {
+      //       formatter: require('eslint-friendly-formatter')
+      //     }
+      //   }
+      // },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
@@ -101,6 +101,16 @@ let rendererConfig = {
             name: 'fonts/[name]--[folder].[ext]'
           }
         }
+      },
+      {
+        test: /\.(scss|sass)$/,
+        use: [{
+            loader: "style-loader" // creates style nodes from JS strings
+        }, {
+            loader: "css-loader" // translates CSS into CommonJS
+        }, {
+            loader: "sass-loader" // compiles Sass to CSS
+        }]
       }
     ]
   },
