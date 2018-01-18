@@ -5,14 +5,16 @@ footer.footer(js-reveal-footer)
   .container
     ul.footer__menu
       li
-        a(href="#") Docs
+        button(v-on:click="back" v-bind:class="btnClass").btn.btn--filled
+          span Back
       li
-        a(href="#") Customer Support
-      li
-        a(href="mailto:info@musicalturk.co") info@musicalturk.co
+        button(v-on:click="forward" v-bind:class="btnClass").btn.btn--filled
+          span Forward
+    //-   li
+    //-     a(href="mailto:info@musicalturk.co") info@musicalturk.co
 
-    .footer__logo
-      i.icon.icon-logo
+    //- .footer__logo
+    //-   i.icon.icon-logo
 
 // FOOTER :: END
 </template>
@@ -24,6 +26,12 @@ footer.footer(js-reveal-footer)
 
 	  },
 	  methods: {
+      back: function (evt) {
+        window.history.back();
+      },
+      forward: function (evt) {
+        window.history.forward();
+      },
 	  }
 	}
 </script>
