@@ -5,10 +5,10 @@ footer.footer(js-reveal-footer)
   .container
     ul.footer__menu
       li
-        button(v-on:click="back" v-bind:class="btnClass").btn.btn--filled
+        button(v-on:click="back").btn.btn--filled
           span Back
       li
-        button(v-on:click="forward" v-bind:class="btnClass").btn.btn--filled
+        button(v-on:click="forward").btn.btn--filled
           span Forward
     //-   li
     //-     a(href="mailto:info@musicalturk.co") info@musicalturk.co
