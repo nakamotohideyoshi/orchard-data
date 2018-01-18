@@ -5,11 +5,9 @@ footer.footer(js-reveal-footer)
   .container
     ul.footer__menu
       li
-        button(v-on:click="back").btn.btn--filled
-          span Back
+        span(v-on:click="back") &lt;
       li
-        button(v-on:click="forward").btn.btn--filled
-          span Forward
+        span(v-on:click="forward") &gt;
     //-   li
     //-     a(href="mailto:info@musicalturk.co") info@musicalturk.co
 
