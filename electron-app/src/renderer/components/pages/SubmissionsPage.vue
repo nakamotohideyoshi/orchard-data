@@ -30,7 +30,7 @@
 											td {{data.id}}
 											td
 												div.p-table__status(v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'")
-													i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-Success'")
+													i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-success'")
 													span {{data.status === 1 ? 'Waiting' : 'Success'}}
 											td {{(new Date(data.time)).toString()}}
 										
