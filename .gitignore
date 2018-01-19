@@ -10,6 +10,6 @@ npm-debug.log
 npm-debug.log.*
 electron-app/thumbs.db
 !.gitkeep
-
+electron-app/test/unit/*
 
 
