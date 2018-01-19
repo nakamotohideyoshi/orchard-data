@@ -10,3 +10,7 @@ npm-debug.log
 npm-debug.log.*
 thumbs.db
 !.gitkeep
+
+electron-app/dist/electron/*
+electron-app/dist/web/*
+
