@@ -24,12 +24,12 @@ footer.footer(js-reveal-footer)
 
 	  },
 	  methods: {
-      back: function (evt) {
-        window.history.back();
-      },
-      forward: function (evt) {
-        window.history.forward();
-      },
+    back: function (evt) {
+      window.history.back()
+    },
+    forward: function (evt) {
+      window.history.forward()
+    }
 	  }
 	}
 </script>
