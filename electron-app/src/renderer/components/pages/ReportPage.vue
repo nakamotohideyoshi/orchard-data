@@ -112,6 +112,7 @@ export default {
     showAppleTab: function () {
       this.appleTabFlag = true
       this.overallRiskFlag = false
+      this.customFlag = false
     },
     showCustom: function () {
       this.customFlag = true
