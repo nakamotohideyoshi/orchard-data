@@ -1,4 +1,4 @@
-const csv = require('csv-streamify')
+//const csv = require('csv-streamify')
 const fs = require('fs')
 
 export const createItem = (lastIndex, file) => {
@@ -115,4 +115,20 @@ export const getFileInfo = () => {
     })
 
     db.close()
+}
+
+export const getAllItems = () => {
+    var sqlite3 = require('sqlite3').verbose()
+    var db = new sqlite3.Database('db.sqlite')
+    var that = this
+    db.all('SELECT  * FROM data ORDER BY time DESC', function (err, rows) {
+        if (err) {
+            return []
+            console.log('error')
+        }
+        if (rows) {
+            return rows
+            console.log(rows)
+        }
+    })
 }

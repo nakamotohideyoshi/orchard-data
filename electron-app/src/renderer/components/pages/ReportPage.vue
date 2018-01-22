@@ -114,14 +114,13 @@ export default {
     AppHeader,
     AppFooter
   },
-  data: function() {
+  data: function () {
     return {
       overallRiskFlag: false,
       appleTabFlag: true,
       customFlag: false,
       dbData: []
     }
-    
   },
   computed: {
     list1: function () {
