@@ -1,5 +1,5 @@
 // Run single filter
-var load_and_apply_filters = require('./load_and_apply_filters');
+var load_tsv = require('./load_tsv');
 var filters = require('../filters/filters-module');
 var argv = require('minimist')(process.argv.slice(2));
 
@@ -23,7 +23,28 @@ input_file = input_dir.concat(input_file).join("/");
 var filter = `filter${filter_idx}`;
 
 try {
-  load_and_apply_filters(input_file, [filter]);
+  // Gets stream object
+  var stream = load_tsv(input_file);
+  var headers = [];
+  var tsvData = [];
+
+  // Run chosen filter
+  stream
+    .on('headers', function(headers_list) {
+
+      headers = headers_list;
+
+    })
+    .on('data', function(row) {
+
+      filters[filter](row);
+
+    })
+    .on('end', function() {
+
+      console.log('Exiting...');
+
+    });
 }
 
 catch(error) {
