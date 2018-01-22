@@ -2,11 +2,13 @@
   "name": "analysis-lib",
   "version": "0.0.0",
   "description": "Command line interface to run the TSV tests",
-  "main": "main.js",
-  "scripts": {
-    "single_filter": "node ./scripts/run_single_filter",
-    "all_filters": "node ./scripts/main"
-  },
   "author": "",
-  "license": null
+  "scripts": {
+    "all_filters": "node ./src/scripts/main.js",
+    "single_filter": "node ./src/scripts/run_single_filter.js"
+  },
+  "license": null,
+  "dependencies": {
+    "minimist": "^1.2.0"
+  }
 }
