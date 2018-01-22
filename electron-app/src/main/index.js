@@ -1,7 +1,9 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-import {initialize} from '../db.js'
+
+// stubbing out - causes unit test error
+// import {initialize} from '../db.js'
 
 /**
  * Set `__static` path to static files in production
