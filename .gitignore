@@ -1,4 +1,6 @@
 electron-app/db.sqlite
+electron-app/DB.sqlite
+
 .DS_Store
 electron-app/dist/electron/*
 electron-app/dist/web/*
@@ -11,5 +13,4 @@ npm-debug.log.*
 electron-app/thumbs.db
 !.gitkeep
 
-
-
+analysis-lib/node_modules/
