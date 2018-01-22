@@ -47,7 +47,7 @@ import moment from 'moment'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-
+import { getAllItems } from '../../../services/work'
 export default {
   name: 'submissions-page',
   data () {
@@ -57,17 +57,9 @@ export default {
   },
   computed: {
     list1: function () {
-      var sqlite3 = require('sqlite3').verbose()
-      var db = new sqlite3.Database('db.sqlite')
-      var that = this
-      db.all('SELECT  * FROM data ORDER BY time DESC', function (err, rows) {
-        if (err) {
-          console.log('error')
-        }
-        if (rows) {
-          that.dbData = rows
-          console.log(rows)
-        }
+      const that = this
+      getAllItems((res) => {
+        that.dbData = res
       })
       return ''
     }
