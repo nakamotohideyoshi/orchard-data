@@ -1,6 +1,6 @@
+var filter1 = require("./filter1");
+
 module.exports = {
   // Check Various Artists on Track Levels
-  filter1: function() {
-    console.log('Hello');
-  },
+  'filter1': filter1,
 }
