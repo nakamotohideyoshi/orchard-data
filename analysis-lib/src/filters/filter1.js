@@ -15,9 +15,13 @@ module.exports = function(row, idx, report) {
       value = removeDiacritics(value);
       value = value.toLowerCase().trim();
 
-      // if filter applies
+      // if filter applies, stores row and field in which error occurred
       if(value === 'various artists') {
-        report['filters'][filterName]['occurs_on'].push(idx);
+        report['filters'][filterName]['occurs_on'].push({
+          "row": idx,
+          "field": field,
+          "value": row[field]
+        });
       }
     }
   });
