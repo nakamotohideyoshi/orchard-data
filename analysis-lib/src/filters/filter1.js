@@ -10,7 +10,7 @@ module.exports = function(row, idx, report) {
 
   // if filter applies
   if(trackArtist === 'variousartists') {
-    report['filters'][filterName]['occurences'].push(idx);
+    report['filters'][filterName]['occurs_on'].push(idx);
   }
 
   return true;
