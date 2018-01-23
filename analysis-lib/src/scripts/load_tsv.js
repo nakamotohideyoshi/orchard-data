@@ -4,6 +4,6 @@ module.exports = function(inputFile) {
   var csv = require('csv-parser');
 
   // Creates stream of data
-  return fs.createReadStream(inputFile)
+  return fs.createReadStream(inputFile, { encoding: "utf-8" })
     .pipe(csv({separator: '\t'}));
 }
