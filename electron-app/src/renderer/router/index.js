@@ -60,9 +60,10 @@ export default new Router({
       component: CriteriaScoresPage
     },
     {
-      path: '/csv',
+      path: '/csv/:id',
       name: 'csv',
-      component: CsvPage
+      component: CsvPage,
+      props: true 
     },
     {
       path: '*',

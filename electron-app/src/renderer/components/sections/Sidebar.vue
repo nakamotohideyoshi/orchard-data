@@ -66,7 +66,7 @@
       </li>
       <li>
         <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'csv'}" @click="sidebarToggle('csv')"><span>8.</span><em>csv</em></a>
-        <router-link :to="'/csv'" class="pagelist__url">
+        <router-link :to="'/csv/123'" class="pagelist__url">
           <svg class="icon icon-link"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-link"></use></svg>
         </router-link>
         <div class="pagelist__progress">

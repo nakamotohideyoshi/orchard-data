@@ -76,7 +76,7 @@ include _mixins
 
                                     .report-container(v-if="customFlag")                                        
                                         // group
-                                        router-link(:to="'/csv'").report__view-link
+                                        router-link(:to="`/csv/${dbData[0].id}`").report__view-link
                                             +icon('ico-document')
                                             span {{dbData[0].file_name}}
                                         .upload__group
@@ -151,11 +151,11 @@ export default {
           let successData = 0
           that.dbData = rows
           rows.map(row => {
-            if(row.success_flag == 'true') {
+            if (row.success_flag === 'true') {
               successData = successData + 1
             }
           })
-          that.successPercent = successData/(rows.length)
+          that.successPercent = successData / (rows.length)
         }
       })
       return ''

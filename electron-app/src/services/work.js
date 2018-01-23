@@ -131,3 +131,29 @@ export const getAllItems = (callback) => {
         }
     })
 }
+
+export const getTsvInfo = (id, callback) => {
+    const sqlite3 = require('sqlite3').verbose()
+    const db = new sqlite3.Database('db.sqlite')
+
+    const sql = `SELECT * FROM orchard_dataset_contents WHERE dataset_id = ?`
+    const statusId = id
+    db.all(sql, [statusId], (err, rows) => {
+        callback(rows)
+    })
+
+    db.close()
+}
+
+export const getDataSetMetaInfo = (id, callback) => {
+    const sqlite3 = require('sqlite3').verbose()
+    const db = new sqlite3.Database('db.sqlite')
+
+    const sql = `SELECT * FROM dataset_meta WHERE id = ?`
+    const statusId = id
+    db.all(sql, [statusId], (err, rows) => {
+        callback(rows)
+    })
+
+    db.close()
+}
