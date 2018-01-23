@@ -7,6 +7,23 @@ var argv = require('minimist')(process.argv.slice(2));
 var inputDir = ['data-tests', 'input-files'];
 var inputFile = argv["input"];
 
+// Retrieves filter name
+var filterName = `filter${argv["filter"]}`;
+
+// Run all filters if no filter was specified or does not exist
+var runAll = !argv['filter'];
+
+// checks if chosen filter exists
+var found = false;
+
+Object.keys(filters).forEach(filter => {
+  if(filter === filterName) { found = true; }
+});
+
+if(!found && !runAll) {
+  throw(`\n***** ${filterName} does not exists. Try a different <filter_id> *****\n`);
+}
+
 // Initializes report for given tsv file
 var report = new reportToolModule();
 report.init(inputFile);
@@ -36,10 +53,19 @@ stream
 
     noOfRows += 1;
 
-    Object.keys(filters).forEach(filter => {
-      report.addFilter(filter);
-      filters[filter](row, noOfRows, report);
-    });
+    // Runs all filters
+    if(runAll) {
+      Object.keys(filters).forEach(filter => {
+        report.addFilter(filter);
+        filters[filter](row, noOfRows, report);
+      });
+    }
+
+    // Run single filter
+    else {
+      report.addFilter(filterName);
+      filters[filterName](row, noOfRows, report);
+    }
 
   })
   .on('end', function() {

@@ -5,6 +5,9 @@ module.exports = function(row, idx, report) {
   var description = require('./filters_desc')[filterName];
 
   // Converts to lowercase and removes whitespaces
+  var filterRegex = /(track artist)[a-z A-Z]*/i;
+
+  console.log(row);
   var trackArtist = row['Track Artist'];
   trackArtist = trackArtist.toLowerCase().trim().replace(' ', '')
 
