@@ -4,8 +4,7 @@
   "description": "Command line interface to run the TSV tests",
   "author": "",
   "scripts": {
-    "all_filters": "node ./src/scripts/main.js",
-    "single_filter": "node ./src/scripts/run_single_filter.js"
+    "filters": "node ./src/scripts/main.js"
   },
   "license": null,
   "dependencies": {

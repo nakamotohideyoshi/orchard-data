@@ -14,14 +14,14 @@ In this CLI, do not spend time making it pretty. It is only for our debugging co
 To run all filters:
 
 ```
-npm run all_filters
+npm run filters -- --input=<input_file_path>
 ```
 
 To run a single filter:
 
 ```
-npm run single_filter [-- <filter_idx>]
+npm run filters -- --input=<input_file_path> --filter=<filter_id>
 ```
 
-This command throws an error in case <filter_idx> is not specified,¬
-or if it's out of bounds (filter does not exist).
+Where <filter_id> is a numeric identifier for a given filter.
+Throws an error if <filter_id> points to a non-existent filter.
