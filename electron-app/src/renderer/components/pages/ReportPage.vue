@@ -26,10 +26,10 @@ include _mixins
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch id
-                                            .report-summary__text 1020
+                                            .report-summary__text {{dbData[0].id}}
                                         .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text Monday June 12th 2017 11:00AM PST
+                                            .report-summary__text(v-if="dbData.length>0") {{moment(dbData[0].time).format('MM-DD-YYYY. HH:mm')}}
                                         .report-summary__col
                                             .report-summary__head download
                                             a(href="#").report-summary__text
@@ -161,6 +161,9 @@ export default {
       return ''
     }
   },
+  created: function () {
+    console.log(this.id)
+  },
   methods: {
     showOverallRistk: function () {
       this.overallRiskFlag = true
@@ -179,7 +182,8 @@ export default {
     },
     moment: function () {
       return moment()
-    }
+    },
+    props: ['id']
   }
 }
 </script>

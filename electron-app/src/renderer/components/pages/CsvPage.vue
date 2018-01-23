@@ -69,11 +69,9 @@ export default {
     getTsvInfo(this.id, (res) => {
       this.batches = res
       this.headers = Object.keys(this.batches[0])
-      console.log(this.batches)
     })
     getDataSetMetaInfo(this.id, (res) => {
       this.datasetMeta = res
-      console.log(this.datasetMeta)
     })
   },
   methods: {

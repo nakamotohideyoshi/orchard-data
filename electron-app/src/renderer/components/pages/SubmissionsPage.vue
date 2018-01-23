@@ -27,9 +27,10 @@
                                                     span Date Created {{list1}}
                                     tbody
                                         tr(v-for="data in dbData")
-                                            td {{data.id}}
+                                            td 
+                                                router-link(:to="`/report/${data.id}`").page-back {{data.id}}
                                             td
-                                                div.p-table__status(v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'")
+                                                router-link(:to="`/report/${data.id}`").p-table__status(v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'")
                                                     i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-success'")
                                                     span {{data.status === 1 ? 'Waiting' : 'Success'}}
                                             td {{moment(data.time).format('MM-DD-YYYY. HH:mm')}}
