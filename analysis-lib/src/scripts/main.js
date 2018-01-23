@@ -1,10 +1,15 @@
 // Run all filters
 var loadTsv = require('./load_tsv');
 var filters = require('../filters/filters-module');
+var reportToolModule = require('./report_tool');
 var argv = require('minimist')(process.argv.slice(2));
 
 var inputDir = ['data-tests', 'input-files'];
 var inputFile = argv["input"];
+
+// Initializes report for given tsv file
+var report = new reportToolModule();
+report.init(inputFile);
 
 // No filter specified
 if(!inputFile) {
@@ -17,7 +22,8 @@ inputFile = inputDir.concat(inputFile).join("/");
 // Gets stream object
 var stream = loadTsv(inputFile);
 var headers = [];
-var tsvData = [];
+var noOfRows = 0;
+// var tsvData = [];
 
 // Run filters
 stream
@@ -26,14 +32,20 @@ stream
     headers = headersList;
 
   })
-  .on('data', function(row) {
+  .on('data', function(row, idx) {
 
     Object.keys(filters).forEach(filter => {
-      filters[filter](row);
+      report.addFilter(filter);
+      filters[filter](row, idx, report);
     });
+
+    // Stores number of rows
+    noOfRows = idx;
 
   })
   .on('end', function() {
+
+    report.saveNoOfRows(noOfRows);
 
     console.log('Exiting...');
 

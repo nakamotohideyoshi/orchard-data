@@ -1,14 +1,8 @@
 // Check Various Artists on Track Levels
-module.exports = function(row) {
-  var argv = require('minimist')(process.argv.slice(2));
-  var reportToolModule = require('../scripts/report_tool');
-  var reportTool = new reportToolModule();
-
+module.exports = function(row, idx, report) {
   // retrieves filter description
-  var description = require('./filters_desc')['filter1'];
-
-  // Retrieves filename
-  var inputFile = argv['input'];
+  var filterName = 'filter1';
+  var description = require('./filters_desc')[filterName];
 
   // Converts to lowercase and removes whitespaces
   var trackArtist = row['Track Artist'];
@@ -16,13 +10,8 @@ module.exports = function(row) {
 
   // if filter applies
   if(trackArtist === 'variousartists') {
-    reportTool.filename = inputFile;
-
-    Object.keys(description).forEach(key => reportTool[key] = description[key]);
-
-    console.log(reportTool);
+    report['filters'][filterName]['occurences'].push(idx);
   }
 
-  console.log("olar fora");
   return true;
 }
