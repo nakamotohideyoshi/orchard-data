@@ -117,5 +117,32 @@ module.exports = function() {
 
   };
 
+  this.calcFieldByFieldReport = function(filterId) {
+    var filter = `filter${filterId}`;
+
+    this.filters[filter]['occurs_on'].forEach(occurrence => {
+
+      console.log("\n");
+      console.log("---------- Error Occurrences Summary ----------");
+
+      console.log("\n");
+      console.log(`Criteria_ID: ${filters[filter]['userExplanation']}`);
+
+      console.log("\n");
+      console.log(`Test Data Row ID: ${filters[filter]['userExplanation']}`);
+
+      console.log("\n");
+      console.log(`Criteria_ID: ${filters[filter]['userExplanation']}`);
+
+      console.log("\n");
+      console.log(`Criteria_ID: ${filters[filter]['userExplanation']}`);
+
+    });
+  };
+
+  this.calcFieldByFieldReportAll = function() {
+
+  };
+
   return this;
 }
