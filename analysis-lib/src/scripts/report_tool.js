@@ -7,6 +7,7 @@ module.exports = function() {
     this['filters'] = {};
   };
 
+  // Saves total number of rows for further analysis
   this.saveNoOfRows = function(noOfRows) {
     this.noOfRows = noOfRows;
   };
@@ -22,15 +23,16 @@ module.exports = function() {
     }
 
     // Initializes objects
-    this['filters'][filterName] = {};
-    this['filters'][filterName]['occurences'] = [];
+    this.filters[filterName] = {};
+    this.filters[filterName]['occurs_on'] = [];
 
-    Object.keys(filterDesc).forEach(key => this['filters'][filterName][key] = filterDesc[key]);
+    Object.keys(filterDesc).forEach(key => this.filters[filterName][key] = filterDesc[key]);
 
     return 1;
 
   };
 
+  // Prints reports and summaries of all filters
   this.printReport = function () {
 
     console.log("---------- Report Summary ----------");
@@ -44,13 +46,13 @@ module.exports = function() {
     console.log("\n");
 
     // Print all filters summary
-    Object.keys(this['filters']).forEach((filter, idx) => {
+    Object.keys(this.filters).forEach((filter, idx) => {
 
       console.log(`----- Filter ${idx + 1} -----`);
       console.log("\n");
 
-      Object.keys(this['filters'][filter]).forEach(key => {
-        console.log(`${key}: ${this['filters'][filter][key]}`);
+      Object.keys(this.filters[filter]).forEach(key => {
+        console.log(`${key}: ${this.filters[filter][key]}`);
         console.log("\n");
       });
 
@@ -58,7 +60,8 @@ module.exports = function() {
 
   };
 
-  this.printFilterReport = function(filter) {
+  // Prints reports and summaries of single filter
+  this.printFilterReport = function(filterId) {
 
     console.log("---------- Report Summary ----------");
     console.log("\n");
@@ -67,15 +70,15 @@ module.exports = function() {
     console.log(`Number of rows: ${this.noOfRows}`);
 
     console.log("\n");
-    console.log(`----- Filter ${filter} -----`);
+    console.log(`----- Filter ${filterId} -----`);
     console.log("\n");
 
     // Filter string
-    filter = `filter${filter}`;
+    var filter = `filter${filterId}`;
 
     try {
-      Object.keys(this['filters'][filter]).forEach(key => {
-        console.log(`${key}: ${this['filters'][filter][key]}`);
+      Object.keys(this.filters[filter]).forEach(key => {
+        console.log(`${key}: ${this.filters[filter][key]}`);
         console.log("\n");
       });
     }
@@ -86,6 +89,33 @@ module.exports = function() {
     }
 
   }
+
+  // ---------- Analysis methods ----------
+
+  this.calcStatistics = function(filter) {
+
+    var noOfOccurrences = this.filters[filter]['occurs_on'].length;
+
+    // Percentage of rows with this error
+    this.filters[filter].error_percent = noOfOccurrences / this.noOfRows;
+
+    // TODO: Weighted score for data quality
+    this.filters[filter].error_score = Math.random() * 6;
+
+  };
+
+  this.calcDatasetMetadata = function(filterId) {
+
+    var filter = `filter${filterId}`;
+    this.calcStatistics(filter);
+
+  };
+
+  this.calcDatasetMetadataAll = function() {
+
+    Object.keys(this['filters']).forEach(filter => this.calcStatistics(filter));
+
+  };
 
   return this;
 }

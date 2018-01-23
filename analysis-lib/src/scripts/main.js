@@ -34,18 +34,26 @@ stream
   })
   .on('data', function(row, idx) {
 
+    noOfRows += 1;
+
     Object.keys(filters).forEach(filter => {
       report.addFilter(filter);
-      filters[filter](row, idx, report);
+      filters[filter](row, noOfRows, report);
     });
-
-    // Stores number of rows
-    noOfRows = idx;
 
   })
   .on('end', function() {
 
     report.saveNoOfRows(noOfRows);
+
+    // report.calcDatasetMetadata(1);
+    // report.printFilterReport(1);
+
+    report.calcDatasetMetadataAll(1);
+    report.printReport(1);
+
+    // report.printReport();
+    // report.printFilterReport(1);
 
     console.log('Exiting...');
 
