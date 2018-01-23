@@ -43,61 +43,71 @@ include _mixins
                                     
 
                                     // summary
-                                    .report-container(v-if="appleTabFlag")
+                                    .report-container(v-if="appleTabFlag") {{list1}}
                                         .report__top
                                             .report__top-col
-                                                .report__top-percent 37%
+                                                .report__top-percent {{(1-successPercent) * 100}} %
                                                 .report__top-description Total percent of rows with errors
                                             .report__top-col
                                                 .report__top-stars
+                                                  .success(v-for="data in Math.round(successPercent * 5)")
                                                     +icon('ico-star-filled')
-                                                    +icon('ico-star-filled')
-                                                    +icon('ico-star-filled')
-                                                    +icon('ico-star-empty')
+                                                  .failed(v-for="data in (5 - Math.round(successPercent * 5))")
                                                     +icon('ico-star-empty')
                                                 .report__top-description Overall data quality
                                         
                                         // report view
                                         .report__view
                                             .report__view-title What are the biggest problems with the dataset?
-                                            a(href="#").report__view-link
+                                            router-link(:to="'/criteria-scores'").report__view-link
                                                 +icon('ico-document')
                                                 span View the test criteria scores
                                         .report__view
                                             .report__view-title What is the sum of problems in each row?
-                                            a(href="#").report__view-link
+                                            router-link(:to="'/row-scores'").report__view-link
                                                 +icon('ico-document')
                                                 span View the input row scores
                                         .report__view
                                             .report__view-title Which fields in the dataset failed?
-                                            a(href="#").report__view-link
+                                            router-link(:to="'/field-level'").report__view-link
                                                 +icon('ico-document')
                                                 span View the field level issues
-                                        table.p-table.p-table--subm(js-stacktable)
-                                            thead
-                                                tr
-                                                    td Batch ID
-                                                    td Batch Status 
-                                                    td
-                                                        .p-table__icon-td
-                                                            i.icon.icon-calendar-grid
-                                                            span Date Created {{list1}}
-                                            tbody
-                                                tr(v-for="data in dbData")
-                                                    td {{data.id}}
-                                                    td
-                                                        div.p-table__status(v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'")
-                                                            i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-success'")
-                                                            span {{data.status === 1 ? 'Waiting' : 'Success'}}
-                                                    td {{moment(data.time).format('MM-DD-YYYY. HH:mm')}}
-
                                     .report-container(v-if="overallRiskFlag")
-                                        .report__top
-                                            h1 This page not yet implemented
 
-                                    .report-container(v-if="customFlag")
-                                        .report__top
-                                            h1 This is Custom page
+                                    .report-container(v-if="customFlag")                                        
+                                        // group
+                                        .upload__group
+                                            .upload__group-name
+                                                +icon('ico-market-music')
+                                                span Parameters
+                                            
+                                            .ui-group
+                                                label Artist blacklist
+                                                textarea(placeholder="Artist 1" v-model="artistList")
+                                            .ui-group
+                                                label Keyword blacklist
+                                                textarea(placeholder="keywords" value="Garbage, gangster, gangstar, gang" v-model="keywordList")
+                                            .ui-group
+                                                label Duplicates threshold
+                                                input(v-bind:placeholder="dbData.threshold1" v-model="threshold1")
+                                            .ui-group
+                                                label Various Artists threshold
+                                                input(v-bind:placeholder="dbData.threshold2" v-model="threshold2")
+                                            .ui-group
+                                                label Language
+                                                .ui-checkbox-row
+                                                    .ui-checkbox
+                                                        input(type="radio" name="cb" id="cb_2" value="en-US" v-model="lang")
+                                                        label(for="cb_2")
+                                                            span English
+                                                    .ui-checkbox
+                                                        input(type="radio" name="cb" id="cb_3" value="en-ES" v-model="lang")
+                                                        label(for="cb_3")
+                                                            span Spanish
+                                                    .ui-checkbox
+                                                        input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
+                                                        label(for="cb_1") 
+                                                            span Brazilian Portugese
         block footer
             AppFooter
 </template>
@@ -119,7 +129,13 @@ export default {
       overallRiskFlag: false,
       appleTabFlag: true,
       customFlag: false,
-      dbData: []
+      dbData: [],
+      successPercent: 0,
+      artistList: '',
+      keywordList: '',
+      threshold1: '',
+      threshold2: '',
+      lang: ''
     }
   },
   computed: {
@@ -127,13 +143,20 @@ export default {
       var sqlite3 = require('sqlite3').verbose()
       var db = new sqlite3.Database('db.sqlite')
       var that = this
-      db.all('SELECT  * FROM data ORDER BY time DESC', function (err, rows) {
+      db.all('SELECT  * FROM dataset_meta ORDER BY time DESC', function (err, rows) {
         if (err) {
-          console.log('error')
+          console.log('error', err)
         }
         if (rows) {
+          let successData = 0
           that.dbData = rows
-          console.log(rows)
+          rows.map(row => {
+            if(row.success_flag == 'true') {
+              successData = successData + 1
+            }
+          })
+          that.successPercent = successData/(rows.length)
+
         }
       })
       return ''
