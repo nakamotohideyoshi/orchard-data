@@ -1,38 +1,38 @@
 // Run single filter
-var load_tsv = require('./load_tsv');
+var loadTsv = require('./load_tsv');
 var filters = require('../filters/filters-module');
 var argv = require('minimist')(process.argv.slice(2));
 
-var input_dir = ['data-tests', 'input-files'];
-var input_file = argv["input"];
-var filter_idx = argv["filter"];
+var inputDir = ['data-tests', 'input-files'];
+var inputFile = argv["input"];
+var filterIdx = argv["filter"];
 
 // No filter specified
-if(!input_file) {
+if(!inputFile) {
   throw("No input file specified");
 }
 
-if(!filter_idx) {
+if(!filterIdx) {
   throw("No filter specified");
 }
 
 // Joins full path
-input_file = input_dir.concat(input_file).join("/");
+inputFile = inputDir.concat(inputFile).join("/");
 
 // Retrieves filter name
-var filter = `filter${filter_idx}`;
+var filter = `filter${filterIdx}`;
 
 try {
   // Gets stream object
-  var stream = load_tsv(input_file);
+  var stream = loadTsv(inputFile);
   var headers = [];
   var tsvData = [];
 
   // Run chosen filter
   stream
-    .on('headers', function(headers_list) {
+    .on('headers', function(headersList) {
 
-      headers = headers_list;
+      headers = headersList;
 
     })
     .on('data', function(row) {
