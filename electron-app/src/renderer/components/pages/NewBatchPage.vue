@@ -112,7 +112,7 @@ export default {
     const sqlite3 = require('sqlite3').verbose()
     const db = new sqlite3.Database('db.sqlite')
     const that = this
-    db.all('SELECT rowid as id, * FROM data', function (err, rows) {
+    db.all('SELECT id, * FROM dataset_meta', function (err, rows) {
       if (err) {
         console.log('error')
       }

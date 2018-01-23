@@ -76,6 +76,9 @@ include _mixins
 
                                     .report-container(v-if="customFlag")                                        
                                         // group
+                                        router-link(:to="'/csv'").report__view-link
+                                            +icon('ico-document')
+                                            span {{dbData[0].file_name}}
                                         .upload__group
                                             .upload__group-name
                                                 +icon('ico-market-music')
@@ -83,31 +86,27 @@ include _mixins
                                             
                                             .ui-group
                                                 label Artist blacklist
-                                                textarea(placeholder="Artist 1" v-model="artistList")
+                                                ul
+                                                  li(v-for="data in dbData")
+                                                    .item {{data.artistlist}}
                                             .ui-group
                                                 label Keyword blacklist
-                                                textarea(placeholder="keywords" value="Garbage, gangster, gangstar, gang" v-model="keywordList")
+                                                ul
+                                                  li(v-for="data in dbData")
+                                                    .item {{data.keywordlist}}
                                             .ui-group
                                                 label Duplicates threshold
-                                                input(v-bind:placeholder="dbData.threshold1" v-model="threshold1")
+                                                input(v-bind:placeholder="dbData[0].threshold1" v-model="threshold1" readonly)
                                             .ui-group
                                                 label Various Artists threshold
-                                                input(v-bind:placeholder="dbData.threshold2" v-model="threshold2")
+                                                input(v-bind:placeholder="dbData[0].threshold2" v-model="threshold2" readonly)
                                             .ui-group
                                                 label Language
-                                                .ui-checkbox-row
-                                                    .ui-checkbox
-                                                        input(type="radio" name="cb" id="cb_2" value="en-US" v-model="lang")
-                                                        label(for="cb_2")
-                                                            span English
-                                                    .ui-checkbox
-                                                        input(type="radio" name="cb" id="cb_3" value="en-ES" v-model="lang")
-                                                        label(for="cb_3")
-                                                            span Spanish
-                                                    .ui-checkbox
-                                                        input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
-                                                        label(for="cb_1") 
-                                                            span Brazilian Portugese
+                                                ul
+                                                  li(v-for="data in dbData")
+                                                    span(v-if="data.lang == 'en-US'") English
+                                                    span(v-if="data.lang == 'en-ES'") Brazilian
+                                                    span(v-if="data.lang == 'pt-BR'") Portuguese
         block footer
             AppFooter
 </template>
@@ -143,11 +142,12 @@ export default {
       var sqlite3 = require('sqlite3').verbose()
       var db = new sqlite3.Database('db.sqlite')
       var that = this
-      db.all('SELECT  * FROM dataset_meta ORDER BY time DESC', function (err, rows) {
+      db.all('SELECT  * FROM dataset_meta ORDER BY time DESC ', function (err, rows) {
         if (err) {
           console.log('error', err)
         }
         if (rows) {
+          console.log(rows)
           let successData = 0
           that.dbData = rows
           rows.map(row => {
@@ -156,7 +156,6 @@ export default {
             }
           })
           that.successPercent = successData/(rows.length)
-
         }
       })
       return ''

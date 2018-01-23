@@ -86,7 +86,7 @@ export const getFileInfo = () => {
     const sqlite3 = require('sqlite3').verbose()
     const db = new sqlite3.Database('db.sqlite')
 
-    const sql = `SELECT ROWID, file FROM data WHERE status = ?`
+    const sql = `SELECT ROWID, file FROM dataset_meta WHERE status = ?`
     const statusId = 1
     db.all(sql, [statusId], (err, rows) => {
         rows.map(row => {
@@ -121,7 +121,7 @@ export const getFileInfo = () => {
 
 export const getAllItems = (callback) => {
     var that = this
-    db.all('SELECT  * FROM data ORDER BY time DESC', function (err, rows) {
+    db.all('SELECT  * FROM dataset_meta ORDER BY time DESC', function (err, rows) {
         if (err) {
             console.log(err)
             callback(err)
