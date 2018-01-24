@@ -26,7 +26,7 @@ include _mixins
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch id
-                                            .report-summary__text {{dbData[0].id}}
+                                            .report-summary__text(v-if="dbData.length>0") {{dbData[0].id}}
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text(v-if="dbData.length>0") {{moment(dbData[0].time).format('MM-DD-YYYY. HH:mm')}}
@@ -87,19 +87,23 @@ include _mixins
                                             .ui-group
                                                 label Artist blacklist
                                                 ul
-                                                  li(v-for="data in dbData")
-                                                    .item {{data.artistlist}}
+                                                    li(v-for="data in dbData")
+                                                        .item {{data.artistlist}}
                                             .ui-group
                                                 label Keyword blacklist
                                                 ul
-                                                  li(v-for="data in dbData")
-                                                    .item {{data.keywordlist}}
+                                                    li(v-for="data in dbData")
+                                                        .item {{data.keywordlist}}
                                             .ui-group
                                                 label Duplicates threshold
-                                                input(v-bind:placeholder="dbData[0].threshold1" v-model="threshold1" readonly)
+                                                ul
+                                                    li(v-for="data in dbData")
+                                                        .item {{data.threshold1}}
                                             .ui-group
                                                 label Various Artists threshold
-                                                input(v-bind:placeholder="dbData[0].threshold2" v-model="threshold2" readonly)
+                                                ul
+                                                    li(v-for="data in dbData")
+                                                        .item {{data.threshold2}}
                                             .ui-group
                                                 label Language
                                                 ul
