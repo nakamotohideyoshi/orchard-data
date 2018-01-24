@@ -12,25 +12,54 @@ module.exports = function() {
     this.noOfRows = noOfRows;
   };
 
-  // Adds a filter to the report
+  // Adds a filter to the report. Skips if it already exists
   this.addFilter = function(filterName) {
 
     var filterDesc = descriptions[filterName];
 
-    if(this.filterName) {
-      console.log("Trying to create a report for a filter which already exists. Ignoring...")
-      return 0;
+    // Filter already exists
+    if(this.filters[filterName]) {
+      return;
     }
 
     // Initializes objects
     this.filters[filterName] = {};
-    this.filters[filterName]['occurs_on'] = [];
+    this.filters[filterName]['occurs_on'] = {};
 
     Object.keys(filterDesc).forEach(key => this.filters[filterName][key] = filterDesc[key]);
 
     return 1;
 
   };
+
+  // Adds an occurrence object to a given filterId
+  // An occurrence consists of the rowId, the field and the value
+  // where the error occurred
+  this.addOccurrence = function(filterId, occurrence) {
+
+    // Filter string
+    var filterRegex = /(filter)[0-9]+/i;
+    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+
+    var filterOccurrences = this.filters[filter]['occurs_on'];
+
+    var rowId = occurrence['rowId'];
+
+    // Creates object to hold occurrences for given rowId
+    if(!filterOccurrences[rowId]) {
+
+      filterOccurrences[rowId] = {
+        'rowId': rowId,
+        'fields': [],
+        'values': []
+      };
+
+    }
+
+    filterOccurrences[rowId]['fields'].push(occurrence['field']);
+    filterOccurrences[rowId]['values'].push(occurrence['value']);
+
+  }
 
   // Prints reports and summaries of all filters
   this.printReport = function () {
@@ -52,8 +81,19 @@ module.exports = function() {
       console.log("\n");
 
       Object.keys(this.filters[filter]).forEach(key => {
-        console.log(`${key}: ${this.filters[filter][key]}`);
-        console.log("\n");
+
+        var value = this.filters[filter][key];
+
+        if(typeof(value) === 'object') {
+          console.log(`${key}: ${Object.keys(value)}`);
+          console.log("\n");
+        }
+
+        else {
+          console.log(`${key}: ${value}`);
+          console.log("\n");
+        }
+
       });
 
     });
@@ -74,27 +114,44 @@ module.exports = function() {
     console.log("\n");
 
     // Filter string
-    var filter = `filter${filterId}`;
+    var filterRegex = /(filter)[0-9]+/i;
+    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     try {
+
       Object.keys(this.filters[filter]).forEach(key => {
-        console.log(`${key}: ${this.filters[filter][key]}`);
-        console.log("\n");
+
+        var value = this.filters[filter][key];
+
+        if(typeof(value) === 'object') {
+          console.log(`${key}: ${Object.keys(value)}`);
+          console.log("\n");
+        }
+
+        else {
+          console.log(`${key}: ${value}`);
+          console.log("\n");
+        }
+
       });
+
     }
 
     catch(error) {
+
       console.log("\n ***** Check filter ID and try again ***** \n");
       throw(error);
+
     }
 
   }
 
-  // ---------- Analysis methods ----------
+  // ---------- Analysis methods ---------- //
 
+  // Calculates percentage of rows with a given error (filter)
   this.calcStatistics = function(filter) {
 
-    var noOfOccurrences = this.filters[filter]['occurs_on'].length;
+    var noOfOccurrences = Object.keys(this.filters[filter]['occurs_on']).length;
 
     // Percentage of rows with this error
     this.filters[filter].error_percent = noOfOccurrences / this.noOfRows;
@@ -104,43 +161,57 @@ module.exports = function() {
 
   };
 
+  // Calculates dataset metadata for a given filter
   this.calcDatasetMetadata = function(filterId) {
 
-    var filter = `filter${filterId}`;
+    var filterRegex = /(filter)[0-9]+/i;
+    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+
     this.calcStatistics(filter);
 
   };
 
+  // Calculates dataset metadata for a al filters
   this.calcDatasetMetadataAll = function() {
 
     Object.keys(this['filters']).forEach(filter => this.calcStatistics(filter));
 
   };
 
+  // Calculates a field by field report for given filter
   this.calcFieldByFieldReport = function(filterId) {
-    var filter = `filter${filterId}`;
 
-    this.filters[filter]['occurs_on'].forEach(occurrence => {
+    var filterRegex = /(filter)[0-9]+/i;
+    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
-      console.log("\n");
-      console.log("---------- Error Occurrences Summary ----------");
+    console.log("\n");
+    console.log(`---------- Error Occurrences Summary - ${filter} ----------`);
 
-      console.log("\n");
-      console.log(`Criteria_ID: ${filters[filter]['userExplanation']}`);
+    Object.keys(this.filters[filter]['occurs_on']).forEach(rowId => {
 
-      console.log("\n");
-      console.log(`Test Data Row ID: ${filters[filter]['userExplanation']}`);
+      var occurrence = this.filters[filter]['occurs_on'][rowId];
 
       console.log("\n");
-      console.log(`Criteria_ID: ${filters[filter]['userExplanation']}`);
+      console.log(`Criteria_ID: ${this.filters[filter]['userExplanation']}`);
 
       console.log("\n");
-      console.log(`Criteria_ID: ${filters[filter]['userExplanation']}`);
+      console.log(`Test Data Row ID: ${occurrence['rowId']}`);
+
+      console.log("\n");
+      console.log(`Test Data Fields ID: ${occurrence['fields']}`);
+
+      console.log("\n");
+      console.log(`Test Data Fields Values : ${occurrence['values']}`);
+      console.log("\n");
 
     });
+
   };
 
+  // Calculates a field by field report for all filters
   this.calcFieldByFieldReportAll = function() {
+
+    Object.keys(this['filters']).forEach(filter => this.calcFieldByFieldReport(filter));
 
   };
 

@@ -1,30 +1,44 @@
 // Check Various Artists on Track Levels
+
 module.exports = function(row, idx, report) {
+
   // retrieves filter description
   var filterName = 'filter1';
   var description = require('./filters_desc')[filterName];
   var removeDiacritics = require('../scripts/remove-diacritics');
 
-  // Converts to lowercase and removes whitespaces
+  // Captures all strings related to 'Track Artists'
   var filterRegex = /(track artist)[a-z A-Z]*/i;
 
+  // Iterates over each TSV field
   Object.keys(row).forEach(field => {
 
     if(filterRegex.test(field)) {
+
+      // Removes diacritics, converts to lowercase and removes trimming
+      // whitespaces
       var value = row[field];
       value = removeDiacritics(value);
       value = value.toLowerCase().trim();
 
-      // if filter applies, stores row and field in which error occurred
+      // error condition is met
       if(value === 'various artists') {
-        report['filters'][filterName]['occurs_on'].push({
-          "row": idx,
-          "field": field,
-          "value": row[field]
-        });
+
+        var occurrence = {
+          'rowId': idx,
+          'field': field,
+          'value': row[field]
+        };
+
+        // stores error occurrence in filter report
+        report.addOccurrence(filterName, occurrence);
+
       }
+
     }
+
   });
 
   return true;
+
 }

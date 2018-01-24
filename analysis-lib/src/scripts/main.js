@@ -55,16 +55,22 @@ stream
 
     // Runs all filters
     if(runAll) {
+
       Object.keys(filters).forEach(filter => {
+
         report.addFilter(filter);
         filters[filter](row, noOfRows, report);
+
       });
+
     }
 
     // Run single filter
     else {
+
       report.addFilter(filterName);
       filters[filterName](row, noOfRows, report);
+
     }
 
   })
@@ -72,15 +78,18 @@ stream
 
     report.saveNoOfRows(noOfRows);
 
-    // report.calcDatasetMetadata(1);
-    // report.printFilterReport(1);
+    report.calcDatasetMetadata(1);
+    report.printFilterReport('filter1');
+    report.calcFieldByFieldReport(1);
 
-    report.calcDatasetMetadataAll(1);
-    report.printReport(1);
+    // report.calcDatasetMetadataAll(1);
+    // report.printReport(1);
 
     // report.printReport();
     // report.printFilterReport(1);
 
+    console.log('\n');
     console.log('Exiting...');
+    console.log('\n');
 
   });
