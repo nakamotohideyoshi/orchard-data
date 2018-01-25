@@ -207,7 +207,7 @@ module.exports = function() {
 
       values.push(filter);
       values.push(this.filename);
-      values.push(this.filters[filter]['userExplanation']);
+      values.push('userExplanation');
       values.push(occurrence['rowId']);
       values.push(JSON.stringify(occurrence['fields']));
       values.push(JSON.stringify(occurrence['values']));

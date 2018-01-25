@@ -95,5 +95,7 @@ try {
 }
 
 catch (err) {
+
   next(err);
+
 }
