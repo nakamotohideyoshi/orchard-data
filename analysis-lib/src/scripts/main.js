@@ -16,6 +16,11 @@ let filterName = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
 // Run all filters if no filter was specified or does not exist
 let runAll = !argv['filter'];
+runAll = false;
+
+if(!argv['filter']) {
+  throw(`\n***** No Filter Specified *****\n`);
+}
 
 // checks if chosen filter exists
 let found = false;
@@ -33,41 +38,33 @@ let datasetId = argv['input'];
 
 // No filter specified
 if(!datasetId) {
-  throw("No datasetID specified");
+  throw("\n****** No datasetID specified *****\n");
 }
 
 // Initialize DB Interface
 let dbName = 'analysis-lib';
 let dbPath = dbInfo[dbName]['path'].concat(dbInfo[dbName]['name']).join('/');
-let tsvFilesTable = dbInfo[dbName]['tables']['tsv_files'].name;
-// let dbInterface = new dbInterfaceModule().loadDB(dbPath);
+let orchardTable = dbInfo[dbName]['tables']['orchard_dataset_contents'];
 
 // Initializes report for given tsv file
 let report = new reportToolModule();
+report.init(datasetId);
 
 try {
 
-  let db;
-  let tsvTableName;
-  let noOfRows = 0;
-
   let dbPromise = Promise.resolve()
     .then(() => sqlite.open(dbPath, { Promise }))
-    .then(database => {
-      // stashes this promise for further use
-      db = database;
-      return db;
-    })
-    .then(() => db.get(`SELECT table_name FROM ${tsvFilesTable} WHERE rowID = ${datasetId}`))
-    .then(result => tsvTableName = result['table_name'])
-    .then(() => report.init(tsvTableName))
-    .then(() => {
+    .then(db => {
+
+      let noOfRows;
 
       // Loads file
-      db.all(`SELECT * FROM ${tsvTableName}`)
+      //db.all(`SELECT * FROM ${orchardTable.name} WHERE dataset_id = ${datasetId}`)
+      db.all(`SELECT * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`)
         .then((rows) => {
 
-          noOfRows += 1;
+          // Retrieves total number of rows for this dataset
+          noOfRows = rows.length;
 
           rows.forEach((row, idx) => {
 
@@ -95,17 +92,23 @@ try {
 
         })
         .then(() => {
-          report.saveNoOfRows(noOfRows);
 
-          // report.calcDatasetMetadata(1);
-          // report.printFilterReport('filter1');
-          report.calcFieldByFieldReport(filterId);
+          if(noOfRows === 0) {
 
-          // report.calcDatasetMetadataAll(1);
-          // report.printReport(1);
+            console.log(`*** dataset_id ${datasetId} does not
+                        exist on table ${orchardTable.name} ***`);
 
-          // report.printReport();
-          // report.printFilterReport(1);
+          }
+
+          else {
+
+            // Stashes total number of rows for analysis
+            report.saveNoOfRows(noOfRows);
+
+            // Calcs field by field report
+            report.calcFieldByFieldReport(filterId);
+
+          }
 
         });
 
@@ -118,63 +121,3 @@ catch (err) {
   next(err);
 
 }
-// Joins full path
-// inputFile = inputDir.concat(inputFile).join("/");
-
-// Gets stream object
-// let stream = loadTsv(inputFile);
-// let noOfRows = 0;
-//var headers = [];
-// var tsvData = [];
-
-// Run filters
-// stream
-//   // .on('headers', function(headersList) {
-//
-//   //   headers = headersList;
-//
-//   // })
-//   .on('data', function(row) {
-//
-//     noOfRows += 1;
-//
-//     // Runs all filters
-//     if(runAll) {
-//
-//       Object.keys(filters).forEach(filter => {
-//
-//         report.addFilter(filter);
-//         filters[filter](row, noOfRows, report);
-//
-//       });
-//
-//     }
-//
-//     // Run single filter
-//     else {
-//
-//       report.addFilter(filterName);
-//       filters[filterName](row, noOfRows, report);
-//
-//     }
-//
-//   })
-//   .on('end', function() {
-//
-//     report.saveNoOfRows(noOfRows);
-//
-//     // report.calcDatasetMetadata(1);
-//     // report.printFilterReport('filter1');
-//     report.calcFieldByFieldReport(1);
-//
-//     // report.calcDatasetMetadataAll(1);
-//     // report.printReport(1);
-//
-//     // report.printReport();
-//     // report.printFilterReport(1);
-//
-//     console.log('\n');
-//     console.log('Exiting...');
-//     console.log('\n');
-//
-//   });
