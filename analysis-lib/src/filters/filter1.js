@@ -4,7 +4,6 @@ module.exports = function(row, idx, report) {
 
   // retrieves filter description
   var filterName = 'filter1';
-  var description = require('./filters_desc')[filterName];
   var removeDiacritics = require('../scripts/remove-diacritics');
 
   // Captures all strings related to 'Track Artists'
@@ -41,4 +40,4 @@ module.exports = function(row, idx, report) {
 
   return true;
 
-}
+};
