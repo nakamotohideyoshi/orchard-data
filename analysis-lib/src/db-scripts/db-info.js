@@ -13,8 +13,8 @@ module.exports = {
         'name': 'field_by_field_reports'
       },
 
-      'tsv_files': {
-        'name': 'tsv_files'
+      'orchard_dataset_contents': {
+        'name': 'orchard_dataset_contents'
       }
 
     }

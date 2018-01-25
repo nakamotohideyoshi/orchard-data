@@ -9,10 +9,6 @@ module.exports = function(row, idx, report) {
   // Captures all strings related to 'Track Artists'
   var filterRegex = /(track\_artist)(_+[a-z A-Z]+)*/i;
 
-  console.log("\n\n");
-  console.log(row);
-  console.log("\n\n");
-
   // Iterates over each TSV field
   Object.keys(row).forEach(field => {
 
