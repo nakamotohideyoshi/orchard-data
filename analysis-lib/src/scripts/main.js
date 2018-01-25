@@ -1,20 +1,20 @@
 // Run all filters
-var loadTsv = require('./load_tsv');
-var filters = require('../filters/filters-module');
-var reportToolModule = require('./report_tool');
-var argv = require('minimist')(process.argv.slice(2));
+let loadTsv = require('./load-tsv');
+let filters = require('../filters/filters-module');
+let reportToolModule = require('./report-tool');
+let argv = require('minimist')(process.argv.slice(2));
 
-var inputDir = ['data-tests', 'input-files'];
-var inputFile = argv["input"];
+let inputDir = ['data-tests', 'input-files'];
+let inputFile = argv.input;
 
 // Retrieves filter name
-var filterName = `filter${argv["filter"]}`;
+let filterName = `filter${argv.filter}`;
 
 // Run all filters if no filter was specified or does not exist
-var runAll = !argv['filter'];
+let runAll = !argv.filter;
 
 // checks if chosen filter exists
-var found = false;
+let found = false;
 
 Object.keys(filters).forEach(filter => {
   if(filter === filterName) { found = true; }
@@ -25,7 +25,7 @@ if(!found && !runAll) {
 }
 
 // Initializes report for given tsv file
-var report = new reportToolModule();
+let report = new reportToolModule();
 report.init(inputFile);
 
 // No filter specified
@@ -37,59 +37,59 @@ if(!inputFile) {
 inputFile = inputDir.concat(inputFile).join("/");
 
 // Gets stream object
-var stream = loadTsv(inputFile);
-var headers = [];
-var noOfRows = 0;
+// let stream = loadTsv(inputFile);
+// let noOfRows = 0;
+//var headers = [];
 // var tsvData = [];
 
 // Run filters
-stream
-  .on('headers', function(headersList) {
-
-    headers = headersList;
-
-  })
-  .on('data', function(row, idx) {
-
-    noOfRows += 1;
-
-    // Runs all filters
-    if(runAll) {
-
-      Object.keys(filters).forEach(filter => {
-
-        report.addFilter(filter);
-        filters[filter](row, noOfRows, report);
-
-      });
-
-    }
-
-    // Run single filter
-    else {
-
-      report.addFilter(filterName);
-      filters[filterName](row, noOfRows, report);
-
-    }
-
-  })
-  .on('end', function() {
-
-    report.saveNoOfRows(noOfRows);
-
-    report.calcDatasetMetadata(1);
-    report.printFilterReport('filter1');
-    report.calcFieldByFieldReport(1);
-
-    // report.calcDatasetMetadataAll(1);
-    // report.printReport(1);
-
-    // report.printReport();
-    // report.printFilterReport(1);
-
-    console.log('\n');
-    console.log('Exiting...');
-    console.log('\n');
-
-  });
+// stream
+//   // .on('headers', function(headersList) {
+//
+//   //   headers = headersList;
+//
+//   // })
+//   .on('data', function(row) {
+//
+//     noOfRows += 1;
+//
+//     // Runs all filters
+//     if(runAll) {
+//
+//       Object.keys(filters).forEach(filter => {
+//
+//         report.addFilter(filter);
+//         filters[filter](row, noOfRows, report);
+//
+//       });
+//
+//     }
+//
+//     // Run single filter
+//     else {
+//
+//       report.addFilter(filterName);
+//       filters[filterName](row, noOfRows, report);
+//
+//     }
+//
+//   })
+//   .on('end', function() {
+//
+//     report.saveNoOfRows(noOfRows);
+//
+//     // report.calcDatasetMetadata(1);
+//     // report.printFilterReport('filter1');
+//     report.calcFieldByFieldReport(1);
+//
+//     // report.calcDatasetMetadataAll(1);
+//     // report.printReport(1);
+//
+//     // report.printReport();
+//     // report.printFilterReport(1);
+//
+//     console.log('\n');
+//     console.log('Exiting...');
+//     console.log('\n');
+//
+//   });

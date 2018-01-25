@@ -1,10 +1,20 @@
 module.exports = function() {
-  var descriptions = require('../filters/filters_desc');
+
+  let descriptions = require('../filters/filters-desc');
+  let dbInfo = require('../db-scripts/db-info');
+
+  // Initializes database interface
+  let dbInterfaceModule = require('../db-scripts/db-interface-module');
+  let dbInterface = new dbInterfaceModule();
 
   // Initializes report for a tsv file
   this.init = function(filename) {
     this.filename = filename;
     this['filters'] = {};
+
+    // Loads database
+    this.db = dbInfo['analysis-lib'];
+    dbInterface.loadDB(this.db.path.concat(this.db.name).join("/"));
   };
 
   // Saves total number of rows for further analysis
@@ -15,7 +25,7 @@ module.exports = function() {
   // Adds a filter to the report. Skips if it already exists
   this.addFilter = function(filterName) {
 
-    var filterDesc = descriptions[filterName];
+    let filterDesc = descriptions[filterName];
 
     // Filter already exists
     if(this.filters[filterName]) {
@@ -38,12 +48,12 @@ module.exports = function() {
   this.addOccurrence = function(filterId, occurrence) {
 
     // Filter string
-    var filterRegex = /(filter)[0-9]+/i;
-    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    let filterRegex = /(filter)[0-9]+/i;
+    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
-    var filterOccurrences = this.filters[filter]['occurs_on'];
+    let filterOccurrences = this.filters[filter]['occurs_on'];
 
-    var rowId = occurrence['rowId'];
+    let rowId = occurrence['rowId'];
 
     // Creates object to hold occurrences for given rowId
     if(!filterOccurrences[rowId]) {
@@ -59,7 +69,7 @@ module.exports = function() {
     filterOccurrences[rowId]['fields'].push(occurrence['field']);
     filterOccurrences[rowId]['values'].push(occurrence['value']);
 
-  }
+  };
 
   // Prints reports and summaries of all filters
   this.printReport = function () {
@@ -82,7 +92,7 @@ module.exports = function() {
 
       Object.keys(this.filters[filter]).forEach(key => {
 
-        var value = this.filters[filter][key];
+        let value = this.filters[filter][key];
 
         if(typeof(value) === 'object') {
           console.log(`${key}: ${Object.keys(value)}`);
@@ -114,14 +124,14 @@ module.exports = function() {
     console.log("\n");
 
     // Filter string
-    var filterRegex = /(filter)[0-9]+/i;
-    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    let filterRegex = /(filter)[0-9]+/i;
+    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     try {
 
       Object.keys(this.filters[filter]).forEach(key => {
 
-        var value = this.filters[filter][key];
+        let value = this.filters[filter][key];
 
         if(typeof(value) === 'object') {
           console.log(`${key}: ${Object.keys(value)}`);
@@ -144,14 +154,14 @@ module.exports = function() {
 
     }
 
-  }
+  };
 
   // ---------- Analysis methods ---------- //
 
   // Calculates percentage of rows with a given error (filter)
   this.calcStatistics = function(filter) {
 
-    var noOfOccurrences = Object.keys(this.filters[filter]['occurs_on']).length;
+    let noOfOccurrences = Object.keys(this.filters[filter]['occurs_on']).length;
 
     // Percentage of rows with this error
     this.filters[filter].error_percent = noOfOccurrences / this.noOfRows;
@@ -164,8 +174,8 @@ module.exports = function() {
   // Calculates dataset metadata for a given filter
   this.calcDatasetMetadata = function(filterId) {
 
-    var filterRegex = /(filter)[0-9]+/i;
-    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    let filterRegex = /(filter)[0-9]+/i;
+    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     this.calcStatistics(filter);
 
@@ -181,15 +191,28 @@ module.exports = function() {
   // Calculates a field by field report for given filter
   this.calcFieldByFieldReport = function(filterId) {
 
-    var filterRegex = /(filter)[0-9]+/i;
-    var filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    let filterRegex = /(filter)[0-9]+/i;
+    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+
+    var table = this.db['tables']['field_by_field_reports'];
 
     console.log("\n");
     console.log(`---------- Error Occurrences Summary - ${filter} ----------`);
 
     Object.keys(this.filters[filter]['occurs_on']).forEach(rowId => {
 
-      var occurrence = this.filters[filter]['occurs_on'][rowId];
+      let occurrence = this.filters[filter]['occurs_on'][rowId];
+
+      let values = [];
+
+      values.push(filter);
+      values.push(this.filename);
+      values.push(this.filters[filter]['userExplanation']);
+      values.push(occurrence['rowId']);
+      values.push(JSON.stringify(occurrence['fields']));
+      values.push(JSON.stringify(occurrence['values']));
+
+      dbInterface.insertRowOnTable(values, table.name);
 
       console.log("\n");
       console.log(`Criteria_ID: ${this.filters[filter]['userExplanation']}`);
@@ -216,4 +239,5 @@ module.exports = function() {
   };
 
   return this;
-}
+
+};

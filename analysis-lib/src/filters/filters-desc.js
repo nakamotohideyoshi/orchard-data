@@ -5,4 +5,4 @@ module.exports = {
     'programmerDescription': `The artist for a track can't be "Various Artists." VA can only be for an album.`,
     'userExplanation': `"Various Artists" can't be used at the track level.`
   },
-}
+};
