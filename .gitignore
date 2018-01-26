@@ -14,8 +14,6 @@ electron-app/thumbs.db
 !.gitkeep
 analysis-lib/node_modules/
 analysis-lib/db/*
-analysis-lib/node_modules/
-analysis-lib/db/*
 analysis-lib/package-lock.json
 electron-app/package-lock.json
 analysis-lib/yarn.lock
