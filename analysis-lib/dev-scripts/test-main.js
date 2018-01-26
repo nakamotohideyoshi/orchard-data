@@ -1,4 +1,4 @@
-let analysisLibModule = require('./analysis-lib-module');
+let analysisLibModule = require('../analysis-lib-module');
 let argv = require('minimist')(process.argv.slice(2));
 
 // Filter string
@@ -14,4 +14,4 @@ if(!argv['datasetId']) { console.log('\n ***** No datasetId specified. Using "11
 let dbName = argv['dbName'] || 'analysis-lib';
 if(!argv['dbName']) { console.log('\n ***** No dbName specified. Using "analysis-lib" *****\n'); }
 
-analysisLibModule.main(filter, dbName, datasetId);
+analysisLibModule.main(filter, datasetId);

@@ -1,20 +1,18 @@
 module.exports = function() {
 
   let descriptions = require('../filters/filters-desc');
-  let dbInfo = require('../db-scripts/db-info');
+  let DATABASE = require('./constants').DATABASE;
 
   // Initializes database interface
-  let dbInterfaceModule = require('../db-scripts/db-interface-module');
+  let dbInfo = require('../db-scripts/db-info');
+  let dbInterfaceModule = require('../db-scripts/db-interface');
   let dbInterface = new dbInterfaceModule();
+  dbInterface.init();
 
   // Initializes report for a tsv file
   this.init = function(filename) {
     this.filename = filename;
     this['filters'] = {};
-
-    // Loads database
-    this.db = dbInfo['analysis-lib'];
-    dbInterface.loadDB(this.db.path.concat(this.db.name).join("/"));
   };
 
   // Saves total number of rows for further analysis
@@ -189,15 +187,19 @@ module.exports = function() {
   };
 
   // Calculates a field by field report for given filter
-  this.calcFieldByFieldReport = function(filterId) {
+  this.calcFieldByFieldReport = function(filterId, verbose) {
+
+    // If report was already calculated, just returns
+    this.FBFReport = this.FBFreport || [];
+
+    if(this.FBFReport.length > 0) { return; }
 
     let filterRegex = /(filter)[0-9]+/i;
     let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
-    var table = this.db['tables']['field_by_field_reports'];
-
     console.log("\n");
-    console.log(`---------- Error Occurrences Summary - ${filter} ----------`);
+    console.log(`---------- Calculating Field by Field Report - ${filter} ----------`);
+    console.log("\n");
 
     Object.keys(this.filters[filter]['occurs_on']).forEach(rowId => {
 
@@ -212,22 +214,30 @@ module.exports = function() {
       values.push(JSON.stringify(occurrence['fields']));
       values.push(JSON.stringify(occurrence['values']));
 
-      dbInterface.insertRowOnTable(values, table.name);
+      this.FBFReport.push(values);
 
-      console.log("\n");
-      console.log(`Criteria_ID: ${this.filters[filter]['userExplanation']}`);
+      if(verbose) {
 
-      console.log("\n");
-      console.log(`Test Data Row ID: ${occurrence['rowId']}`);
+        console.log("\n");
+        console.log(`Criteria_ID: ${this.filters[filter]['userExplanation']}`);
 
-      console.log("\n");
-      console.log(`Test Data Fields ID: ${occurrence['fields']}`);
+        console.log("\n");
+        console.log(`Test Data Row ID: ${occurrence['rowId']}`);
 
-      console.log("\n");
-      console.log(`Test Data Fields Values : ${occurrence['values']}`);
-      console.log("\n");
+        console.log("\n");
+        console.log(`Test Data Fields ID: ${occurrence['fields']}`);
+
+        console.log("\n");
+        console.log(`Test Data Fields Values : ${occurrence['values']}`);
+        console.log("\n");
+
+      }
 
     });
+
+    dbInterface.saveFieldByFieldReport(this.FBFReport, filterId);
+
+    return this.FBFReport;
 
   };
 

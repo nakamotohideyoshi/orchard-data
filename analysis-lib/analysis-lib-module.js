@@ -1,7 +1,6 @@
 // DB Modules
 let dbInfo = require('./src/db-scripts/db-info');
-let dbInterfaceModule   = require('./src/db-scripts/db-interface-module');
-let loadTsv = require('./src/db-scripts/add-tsv-to-db');
+let dbInterface   = require('./src/db-scripts/db-interface');
 
 // Filters
 let filtersDesc = require('./src/filters/filters-desc');
@@ -15,8 +14,7 @@ let main = require('./src/scripts/main');
 module.exports = {
 
   'dbInfo': dbInfo,
-  'dbInterfaceModule': dbInterfaceModule,
-  'loadTsv': loadTsv,
+  'dbInterface': dbInterface,
 
   'filtersDesc': filtersDesc,
   'filtersModule': filtersModule,
