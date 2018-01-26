@@ -11,5 +11,5 @@ npm-debug.log.*
 electron-app/thumbs.db
 !.gitkeep
 
-
-
+analysis-lib/node_modules/
+analysis-lib/db/*
