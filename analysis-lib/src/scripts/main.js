@@ -1,13 +1,14 @@
-module.exports = function(filterId, dbName, datasetId) {
+module.exports = function(filterId, datasetId) {
 
   let filters = require('../filters/filters-module');
   let reportToolModule = require('./report-tool');
   let Promise = require('bluebird')
+  let DATABASE = require('./constants').DATABASE;
 
   // DB modules
-  let dbInfo = require('../db-scripts/db-info');
-  let dbInterface = require('../db-scripts/db-interface-module');
   let sqlite = require('sqlite');
+  let dbInfo = require('../db-scripts/db-info');
+  let dbInterfaceModule = require('../db-scripts/db-interface');
 
   // Filter string
   let filterRegex = /(filter)[0-9]+/i;
@@ -24,40 +25,32 @@ module.exports = function(filterId, dbName, datasetId) {
     throw(`\n***** ${filterName} does not exists. Try a different <filter_id> *****\n`);
   }
 
-  // Initialize DB Interface
-  let dbPath = dbInfo[dbName]['path'].concat(dbInfo[dbName]['name']).join('/');
-  let orchardTable = dbInfo[dbName]['tables']['orchard_dataset_contents'];
-
   // Initializes report for given tsv file
   let report = new reportToolModule();
   report.init(datasetId);
 
-  try {
+  // Initializes DB interface
+  let dbInterface = new dbInterfaceModule();
+  dbInterface.init();
 
-    let dbPromise = Promise.resolve()
-    .then(() => sqlite.open(dbPath, { Promise }))
-    .then(db => {
+  // total no of rows the filter is going to be applied
+  let noOfRows = 0;
 
-      let noOfRows;
+  let dbPromise = dbInterface.fetchTsvDataset(datasetId)
+    .then(rows => {
 
-      // Loads file
-      //db.all(`SELECT * FROM ${orchardTable.name} WHERE dataset_id = ${datasetId}`)
-      db.all(`SELECT * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`)
-      .then((rows) => {
+      noOfRows = rows.length;
 
-        // Retrieves total number of rows for this dataset
-        noOfRows = rows.length;
+      // For each row run filter
+      rows.forEach((row, idx) => {
 
-        // For each row run filter
-        rows.forEach((row, idx) => {
+        report.addFilter(filterName);
+        filters[filterName](row, idx, report);
 
-          report.addFilter(filterName);
-          filters[filterName](row, idx, report);
+      });
 
-        });
-
-      })
-      .then(() => {
+    })
+    .then(() => {
 
         if(noOfRows === 0) {
 
@@ -77,15 +70,5 @@ module.exports = function(filterId, dbName, datasetId) {
         }
 
       });
-
-    });
-
-  }
-
-  catch (err) {
-
-    next(err);
-
-  }
 
 }
