@@ -11,7 +11,4 @@ if(!argv['filter']) { console.log('\n ***** No filterId specified. Using "filter
 let datasetId = argv['datasetId'] || '11-rows.tsv';
 if(!argv['datasetId']) { console.log('\n ***** No datasetId specified. Using "11-rows.tsv" *****\n'); }
 
-let dbName = argv['dbName'] || 'analysis-lib';
-if(!argv['dbName']) { console.log('\n ***** No dbName specified. Using "analysis-lib" *****\n'); }
-
 analysisLibModule.main(filter, datasetId);

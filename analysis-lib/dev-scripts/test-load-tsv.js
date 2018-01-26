@@ -6,9 +6,6 @@ let inputFile = argv['input'] || '11-rows.tsv';
 let inputPath = inputDir.concat(inputFile).join('/');
 if(!argv['input']) { console.log('\n ***** No input specified. Using "11-rows.tsv *****\n"'); }
 
-let dbName = argv['dbName'] || 'analysis-lib';
-if(!argv['dbName']) { console.log('\n ***** No dbName specified. Using "analysis-lib" *****\n'); }
-
 let dbInterface = new analysisLibModule.dbInterface();
 dbInterface.init();
 dbInterface.loadTsv(inputPath);
