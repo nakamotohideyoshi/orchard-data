@@ -1,6 +1,5 @@
 module.exports = function(filterId, dbName, datasetId) {
 
-  // Run all filters
   let filters = require('../filters/filters-module');
   let reportToolModule = require('./report-tool');
   let Promise = require('bluebird')
@@ -49,27 +48,11 @@ module.exports = function(filterId, dbName, datasetId) {
         // Retrieves total number of rows for this dataset
         noOfRows = rows.length;
 
+        // For each row run filter
         rows.forEach((row, idx) => {
 
-          // Runs all filters
-          if(runAll) {
-
-            Object.keys(filters).forEach(filter => {
-
-              report.addFilter(filter);
-              filters[filter](row, idx, report);
-
-            });
-
-          }
-
-          // Run single filter
-          else {
-
-            report.addFilter(filterName);
-            filters[filterName](row, idx, report);
-
-          }
+          report.addFilter(filterName);
+          filters[filterName](row, idx, report);
 
         });
 
