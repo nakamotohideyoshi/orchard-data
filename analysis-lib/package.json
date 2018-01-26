@@ -4,8 +4,8 @@
   "description": "Command line interface to run the TSV tests",
   "author": "",
   "scripts": {
-    "filters": "node ./src/scripts/main.js",
-    "add-tsv-to-db": "node ./src/db-scripts/add-tsv-to-db.js",
+    "filters": "node ./test-main",
+    "add-tsv-to-db": "node ./test-load-tsv",
     "eslint": "./node_modules/.bin/eslint src/"
   },
   "license": null,
