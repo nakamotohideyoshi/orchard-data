@@ -4,11 +4,19 @@
   "description": "Command line interface to run the TSV tests",
   "author": "",
   "scripts": {
+<<<<<<< HEAD
     "filters": "node ./dev-scripts/test-main",
     "add-tsv-to-db": "node ./dev-scripts/test-load-tsv",
     "clear-table": "node ./dev-scripts/clear-table",
     "clear-dev-tables": "node ./dev-scripts/clear-dev-tables",
     "get-fbf-report": "node ./dev-scripts/get-fbf-report",
+=======
+    "filters":              "node ./dev-scripts/test-main",
+    "add-tsv-to-db":        "node ./dev-scripts/test-load-tsv",
+    "clear-table":          "node ./dev-scripts/clear-table",
+    "clear-dev-tables":     "node ./dev-scripts/clear-dev-tables",
+    "get-fbf-report":      "node ./dev-scripts/get-fbf-report",
+>>>>>>> tsv_upload
     "eslint": "./node_modules/.bin/eslint src/"
   },
   "license": null,

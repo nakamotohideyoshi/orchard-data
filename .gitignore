@@ -12,7 +12,11 @@ npm-debug.log
 npm-debug.log.*
 electron-app/thumbs.db
 !.gitkeep
-electron-app/test/unit/*
-
 analysis-lib/node_modules/
 analysis-lib/db/*
+analysis-lib/node_modules/
+analysis-lib/db/*
+analysis-lib/package-lock.json
+electron-app/package-lock.json
+analysis-lib/yarn.lock
+electron-app/yarn.lock
