@@ -1,52 +1,46 @@
-let dbInfo = require('./db-info');
-let dbInterfaceModule = require('./db-interface-module');
-let argv = require('minimist')(process.argv.slice(2));
-let loadTsv = require('../scripts/load-tsv');
-let Promise = require('bluebird').Promise;
-let sqlite = require('sqlite');
+module.exports = function(inputPath, dbName) {
 
-// Throws exception if input was not specified
-if(!argv['input']) { throw('Input file not specified'); }
+  let dbInfo = require('./db-info');
+  let dbInterfaceModule = require('./db-interface-module');
+  let loadTsv = require('../scripts/load-tsv');
+  let Promise = require('bluebird').Promise;
+  let sqlite = require('sqlite');
 
-// Parses input location
-let inputDir = ['data-tests', 'input-files'];
-let inputFile = argv['input'];
-let inputPath = inputDir.concat(inputFile).join('/');
+  // DB Variables
+  let dbPath = dbInfo[dbName].path.concat(dbInfo[dbName].name).join("/");
 
-// DB Variables
-let dbName = 'analysis-lib';
-let dbPath = dbInfo[dbName].path.concat(dbInfo[dbName].name).join("/");
+  // The table to add the TSV Files
+  let orchardTable = dbInfo[dbName]['tables']['orchard_dataset_contents'];
 
-// The table to add the TSV Files
-let orchardTable = dbInfo[dbName]['tables']['orchard_dataset_contents'];
+  // Instantiate interface
+  let dbInterface = new dbInterfaceModule();
+  dbInterface.loadDB(dbPath);
 
-// Instantiate interface
-let dbInterface = new dbInterfaceModule();
-dbInterface.loadDB(dbPath);
+  try {
 
-try {
-
-  let dbPromise = Promise.resolve()
+    let dbPromise = Promise.resolve()
     .then(() => sqlite.open(dbPath, { Promise }))
     .then(db => {
 
       // Saves row by row on the newly created table
       loadTsv(inputPath)
-        .on('data', function(row) {
+      .on('data', function(row) {
 
-          let values = [inputFile];
+        let values = [inputPath.split('/').reverse()[0]];
 
-          Object.keys(row).forEach(key => values.push(row[key]));
-          dbInterface.insertRowOnTable(values, orchardTable['name']);
+        Object.keys(row).forEach(key => values.push(row[key]));
+        dbInterface.insertRowOnTable(values, orchardTable['name']);
 
-        });
+      });
 
     });
 
-}
+  }
 
-catch (err) {
+  catch (err) {
 
-  next(err);
+    next(err);
+
+  }
 
 }
