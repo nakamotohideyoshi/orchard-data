@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow } from 'electron'
 
+const analysisLibModule = require('../../../analysis-lib/analysis-lib-module');
 // stubbing out - causes unit test error
 // import {initialize} from '../db.js'
 
