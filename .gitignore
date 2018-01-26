@@ -1,4 +1,6 @@
 electron-app/db.sqlite
+electron-app/DB.sqlite
+
 .DS_Store
 electron-app/dist/electron/*
 electron-app/dist/web/*
@@ -10,6 +12,12 @@ npm-debug.log
 npm-debug.log.*
 electron-app/thumbs.db
 !.gitkeep
+<<<<<<< HEAD
 electron-app/test/unit/*
 
 
+=======
+
+analysis-lib/node_modules/
+analysis-lib/db/*
+>>>>>>> dev-first-filter
