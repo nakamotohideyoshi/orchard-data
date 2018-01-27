@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for components/sections/SystemInformation.vue</title>
+    <title>Code coverage report for components/pages/Header.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">components/sections/</a> SystemInformation.vue
+      <a href="../../index.html">all files</a> / <a href="index.html">components/pages/</a> Header.vue
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/0</span>
       </div>
     </div>
   </div>
@@ -113,10 +113,7 @@
 68
 69
 70
-71
-72
-73
-74</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+71</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,7 +148,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,82 +183,77 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;div&gt;
-    &lt;div class="title"&gt;Information&lt;/div&gt;
-    &lt;div class="items"&gt;
-      &lt;div class="item"&gt;
-        &lt;div class="name"&gt;Path:&lt;/div&gt;
-        &lt;div class="value"&gt;{{ path }}&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="item"&gt;
-        &lt;div class="name"&gt;Route Name:&lt;/div&gt;
-        &lt;div class="value"&gt;{{ name }}&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="item"&gt;
-        &lt;div class="name"&gt;Vue.js:&lt;/div&gt;
-        &lt;div class="value"&gt;{{ vue }}&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="item"&gt;
-        &lt;div class="name"&gt;Electron:&lt;/div&gt;
-        &lt;div class="value"&gt;{{ electron }}&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="item"&gt;
-        &lt;div class="name"&gt;Node:&lt;/div&gt;
-        &lt;div class="value"&gt;{{ node }}&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="item"&gt;
-        &lt;div class="name"&gt;Platform:&lt;/div&gt;
-        &lt;div class="value"&gt;{{ platform }}&lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template lang="pug"&gt;
+include _mixins
+.header-wrapper
+    // HEADER
+    header.header
+        .container
+            .header__wrapper
+                .header__logo
+                    router-link(:to="'/'")
+                        i.icon.icon-logo
+                ul.header__menu
+                    li
+                        router-link(:to="'/submissions'").is-active
+                            +icon('ico-home')
+                            span Submissions (20)
+                    li
+                        router-link(:to="'/new-batch'").btn.btn-primary
+                            span Add new dataset
+&nbsp;
+                .header__user
+                    .header__user-title Welcome back,
+                    .header__user-drop(js-header-dropdown)
+                        .header__user-name Johnathan
+                        +icon('ico-drop-selector')
+&nbsp;
+                .header__hamburger(js-hamburger)
+                    .hamburger.hamburger--squeeze
+                        .hamburger-box
+                        .hamburger-inner
+&nbsp;
+    // header user dropdown
+    // should be positioned outside header to prevent z-index conflicts
+    ul.header__user-drop__options(js-header-dropdown-list)
+        li
+            a(href="#") Profile
+        li
+            a(href="#") Settings
+        hr
+        li
+            a(href="#") Log Out  
+&nbsp;
+    // MOBILE MENU
+    .mobile-navi
+        ul.mobile-navi__menu
+            li
+                a(href="submissions.html").is-active Submissions (20)
+            li
+                a(href="new-batch.html") Add new dataset
+            li
+                a(href="#") Profile
+            li
+                a(href="#") Settings
+            li
+                a(href="#") Log Out
+&nbsp;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-  export default {
-    data () {
-      return {
-        electron: process.versions['atom-shell'],
-        name: this.$route.name,
-        node: process.versions.node,
-        path: this.$route.path,
-        platform: require('os').platform(),
-        vue: require('vue/package.json').version
+    export default {
+      name: 'app-header',
+      components: {
+&nbsp;
+      },
+      methods: {
       }
     }
-  }
 &lt;/script&gt;
 &nbsp;
-&lt;style scoped&gt;
-  .title {
-    color: #888;
-    font-size: 18px;
-    font-weight: initial;
-    letter-spacing: .25px;
-    margin-top: 10px;
-  }
-&nbsp;
-  .items { margin-top: 8px; }
-&nbsp;
-  .item {
-    display: flex;
-    margin-bottom: 6px;
-  }
-&nbsp;
-  .item .name {
-    color: #6a6a6a;
-    margin-right: 6px;
-  }
-&nbsp;
-  .item .value {
-    color: #35495e;
-    font-weight: bold;
-  }
-&lt;/style&gt;
-&nbsp;</pre></td></tr>
+&lt;style lang="sass" scoped&gt;
+@import "../../assets/styles/app.sass";
+&lt;/style&gt;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->

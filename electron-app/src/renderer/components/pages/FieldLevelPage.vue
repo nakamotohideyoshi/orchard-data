@@ -23,14 +23,11 @@ include _mixins
                                             .report-summary__text.report-summary__text--red Errors Per Row 
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
-                                            .report-summary__head batch id
-                                            .report-summary__text {{batchId}}
-                                        .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text {{moment(batchDate).format('MM-DD-YYYY. HH:mm')}}
+                                            .report-summary__text {{moment(batchData.batchDate).format('MM-DD-YYYY. HH:mm')}}
                                         .report-summary__col
                                             .report-summary__head download
-                                            a(href="#").report-summary__text
+                                            a(href="../../../../tests/data/test.tsv" download).report-summary__text
                                                 +icon('ico-download')
                                 
                                 // more btn
@@ -59,8 +56,9 @@ export default {
   },
   data() {
     return {
-      batchId: 1020,
-      batchDate: new Date()
+      batchData: {
+        batchDate: new Date()
+      }
     }
   },
   methods: {
