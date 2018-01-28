@@ -52,8 +52,6 @@ export default {
     AppHeader,
     AppFooter
   },
-  methods: {
-  },
   data() {
     return {
       batchData: {
