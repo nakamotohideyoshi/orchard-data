@@ -3,7 +3,8 @@
  * they are all referenced in this file. Further information (e.g., columns
  * names) can be added here if needed. */
 module.exports = {
-  'analysis-lib': {
+
+  'analysis-lib-dev': {
     'path': ['.', 'db'], // path is relative to the root of the project
     'name': 'analysis-lib.db',
 
@@ -22,5 +23,27 @@ module.exports = {
       }
 
     }
+  },
+
+  'analysis-lib': {
+    'path': ['..', 'analysis-lib', 'db'], // path is relative to the root of the project
+    'name': 'analysis-lib.db',
+
+    'tables': {
+
+      'field_by_field_reports': {
+        'name': 'field_by_field_reports'
+      },
+
+      'orchard_dataset_contents': {
+        'name': 'orchard_dataset_contents'
+      },
+
+      'dataset_meta': {
+        'name': 'dataset_meta'
+      }
+
+    }
   }
+
 };
