@@ -2,7 +2,7 @@
 
 npm install -g vue-cli
 npm install 
-npm install postinstall:deps
+npm run postinstall:deps
 
 ## How to run
 

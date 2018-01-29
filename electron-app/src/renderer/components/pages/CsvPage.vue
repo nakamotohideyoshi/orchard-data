@@ -24,7 +24,7 @@ include _mixins
                             .report-summary__col
                                 .report-summary__head batch
                                 .report-summary__text(v-if="datasetMeta.length>0") {{moment(datasetMeta[0].time).format('MM-DD-YYYY. HH:mm')}}
-                                    a(href="#")
+                                    a(href="../../../../tests/data/test.tsv" download).report-summary__text
                                         +icon('ico-download')
                             .report-summary__label.report-summary__label--green success
                 .table-responsive 

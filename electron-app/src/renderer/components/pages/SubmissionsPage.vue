@@ -24,13 +24,13 @@
                                             td
                                                 .p-table__icon-td
                                                     i.icon.icon-calendar-grid
-                                                    span Date Created {{list1}}
+                                                    span Date Created
                                     tbody
                                         tr(v-for="data in dbData")
                                             td 
-                                                router-link(:to="`/report/${data.id}`").page-back {{data.id}}
+                                                router-link(:to="`/report/${data.rowid}`").page-back {{data.rowid}}
                                             td
-                                                router-link(:to="`/report/${data.id}`").p-table__status(v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'")
+                                                router-link(:to="`/report/${data.rowid}`" v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'").p-table__status
                                                     i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-success'")
                                                     span {{data.status === 1 ? 'Waiting' : 'Success'}}
                                             td {{moment(data.time).format('MM-DD-YYYY. HH:mm')}}
@@ -48,7 +48,10 @@ import moment from 'moment'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-import { getAllItems } from '../../../services/work'
+
+const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+const dbInterface = new analysisLibModule.dbInterface();
+
 export default {
   name: 'submissions-page',
   data () {
@@ -56,14 +59,13 @@ export default {
       dbData: []
     }
   },
-  computed: {
-    list1: function () {
-      const that = this
-      getAllItems((res) => {
-        that.dbData = res
-      })
-      return ''
-    }
+  created() {
+    dbInterface.init();
+    dbInterface.fetchDatasetMeta()
+    .then((res) => {
+      console.log(res)
+      this.dbData = res
+    })
   },
   components: {
     AppHeader,
