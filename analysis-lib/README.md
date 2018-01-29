@@ -28,8 +28,12 @@ interaction is [Promise](https://bluebirdjs.com/docs/api-reference.html) based.
 
 The main interaction functions are:
 
-* dbInterface.loadTsv(inputPath) => Loads TSV file from \<input\_path\> and
+* dbInterface.saveTsvIntoDB(inputPath) => Loads TSV file from \<input\_path\> and
   stores it on orchard\_dataset\_contents table.
+
+* dbInterface.saveDatasetMeta(metadata) => Load metadata into the dataset\_meta
+  table. Arg metadata should be a JSON with keys matching dataset\_meta table
+  keys.
 
 * dbInterface.fetchTsvDataset(datasetId) => Returns a promise with the rows (if
   resolved) with dataset\_id = \<datasetId\> from the orchard\_dataset\_contents
