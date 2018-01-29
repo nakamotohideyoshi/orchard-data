@@ -100,7 +100,7 @@ module.exports = function() {
 
     let dbPromise = Promise.resolve()
       .then(() => sqlite.open(this.dbPath, { Promise }))
-      .then(db => db.all(`SELECT * FROM ${datasetMetaTable.name}`));
+      .then(db => db.all(`SELECT rowId, * FROM ${datasetMetaTable.name}`));
 
     return dbPromise;
 
