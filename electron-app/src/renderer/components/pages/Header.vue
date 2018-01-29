@@ -17,16 +17,10 @@ include _mixins
                         router-link(:to="'/new-batch'").btn.btn-primary
                             span Add new dataset
 
-                .header__user
-                    .header__user-title Welcome back,
-                    .header__user-drop(js-header-dropdown)
-                        .header__user-name Johnathan
-                        +icon('ico-drop-selector')
-
-                .header__hamburger(js-hamburger)
-                    .hamburger.hamburger--squeeze
-                        .hamburger-box
-                        .hamburger-inner
+                //- .header__hamburger(js-hamburger)
+                //-     .hamburger.hamburger--squeeze
+                //-         .hamburger-box
+                //-         .hamburger-inner
 
     // header user dropdown
     // should be positioned outside header to prevent z-index conflicts
