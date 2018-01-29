@@ -15,6 +15,10 @@ module.exports = {
 
       'orchard_dataset_contents': {
         'name': 'orchard_dataset_contents'
+      },
+
+      'dataset_meta': {
+        'name': 'dataset_meta'
       }
 
     }
