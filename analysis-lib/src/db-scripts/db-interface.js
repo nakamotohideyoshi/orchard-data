@@ -14,7 +14,7 @@ module.exports = function() {
   };
 
   // Loads TSV File into DATABASE
-  this.loadTsv = function(inputPath) {
+  this.saveTsvIntoDB = function(inputPath) {
 
     // The table to add the TSV Files
     let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
@@ -45,6 +45,44 @@ module.exports = function() {
             });
 
         });
+
+    }
+
+    catch (err) {
+
+      next(err);
+
+    }
+
+  };
+
+  this.saveDatasetMeta = function(metadata) {
+
+    let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta'];
+
+    try {
+
+      let dbPromise = Promise.resolve()
+        .then(() => sqlite.open(this.dbPath, { Promise }))
+        .then(db => {
+
+          let values = [];
+
+          Object.keys(metadata).forEach(key => values.push(metadata[key]));
+
+          let placeholders = values.map((val) => '(?)').join(',');
+          let fields = Object.keys(metadata);
+
+          let stmt = `INSERT INTO ${datasetMetaTable.name} (${fields}) VALUES (${placeholders})`;
+
+          db.run(stmt, values)
+            .then((result) => {
+                console.log(`Rows inserted: ${result.changes}`);
+              },
+              (err) => { console.log(err); }
+            );
+
+      });
 
     }
 
