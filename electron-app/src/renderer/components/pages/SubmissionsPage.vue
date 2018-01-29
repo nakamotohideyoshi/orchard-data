@@ -48,7 +48,10 @@ import moment from 'moment'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-import { getAllItems } from '../../../services/work'
+
+const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+const dbInterface = new analysisLibModule.dbInterface();
+
 export default {
   name: 'submissions-page',
   data () {
@@ -58,9 +61,10 @@ export default {
   },
   computed: {
     list1: function () {
-      const that = this
-      getAllItems((res) => {
-        that.dbData = res
+      dbInterface.init();
+      dbInterface.fetchDatasetMeta()
+      .then((res) => {
+        this.dbData = res
       })
       return ''
     }

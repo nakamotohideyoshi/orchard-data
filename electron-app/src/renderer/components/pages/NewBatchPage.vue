@@ -86,6 +86,7 @@ import AppFooter from './Footer.vue'
 
 const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
 const dbInterface = new analysisLibModule.dbInterface();
+
 export default {
   name: 'new-batch-page',
   components: {
@@ -109,25 +110,6 @@ export default {
       lastInsertedID: 0,
       file: {}
     }
-  },
-  created: function () {
-    dbInterface.fetchDatasetMeta()
-    .then((res) => {
-      console.log(res)
-    })
-    // const sqlite3 = require('sqlite3').verbose()
-    // const db = new sqlite3.Database('db.sqlite')
-    // const that = this
-    // db.all('SELECT id, * FROM dataset_meta', function (err, rows) {
-    //   if (err) {
-    //     console.log('error')
-    //   }
-    //   if (rows) {
-    //     that.dbData = rows[rows.length - 1]
-    //     that.lang = rows[rows.length - 1].lang
-    //   }
-    // })
-    // db.close()
   },
   methods: {
     countdownArtistList: function (evt) {
