@@ -157,6 +157,7 @@ export default {
         time: Date.now()
       })
       dbInterface.saveTsvIntoDB(this.filePath)
+      this.$http.get('http://localhost:3000/api/test');
       this.$router.push('/submissions')
     },
     processFile: function (e) {

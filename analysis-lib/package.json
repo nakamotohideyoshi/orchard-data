@@ -4,6 +4,7 @@
   "description": "Command line interface to run the TSV tests",
   "author": "",
   "scripts": {
+    "dev": "nodemon api/main.js",
     "filters": "node ./dev-scripts/test-main",
     "add-tsv-to-db": "node ./dev-scripts/test-load-tsv",
     "add-meta": "node ./dev-scripts/test-metadata",
@@ -16,12 +17,16 @@
   "license": null,
   "dependencies": {
     "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "csv-parser": "^1.12.0",
+    "express": "^4.16.2",
     "minimist": "^1.2.0",
     "sqlite": "^2.9.1",
     "sqlite3": "^3.1.13"
   },
   "devDependencies": {
-    "eslint": "^4.16.0"
+    "eslint": "^4.16.0",
+    "nodemon": "^1.14.11"
   }
 }
