@@ -135,6 +135,7 @@ export default {
     },
     submitForm: function (e) {
       e.preventDefault()
+      const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
       const sqlite3 = require('sqlite3').verbose()
       const db = new sqlite3.Database('db.sqlite')
       if (this.filePath === '') {
@@ -159,32 +160,46 @@ export default {
       }
 
       const that = this
-      db.serialize(function () {
-        db.run(`CREATE TABLE IF NOT EXISTS data (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          file TEXT, 
-          artistlist TEXT, 
-          keywordlist TEXT, 
-          threshold1 INTEGER, 
-          threshold2 INTEGER, 
-          lang TEXT, 
-          status INTEGER, 
-          time INTEGER)`
-        )
-        const stmt = db.prepare('INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
-        stmt.run(null, that.filePath, that.artistList, that.keywordList, that.thresValue1, that.thresValue2, that.lang, 1, Date.now(), function (err) {
-          if (err) {
-            console.log(err)
-          } else {
-            that.lastInsertedID = this.lastID
-          }
-        })
-        stmt.finalize(function () {
-          that.writeCSVInfo(this.lastID, that.file)
-          that.$router.push('/')
-        })
-      })
-      db.close()
+
+      let dbInterface = new analysisLibModule.dbInterface();
+      dbInterface.init();
+      dbInterface.saveDatasetMeta({
+        artistList: that.artistList,
+        keywordList: that.keywordList,
+        thresValue1: that.thresValue1,
+        thresValue2: that.thresValue2,
+        lang: that.lang,
+        status: 1,
+        time: Date.now()
+      });
+      console.log(1231231)
+
+      // db.serialize(function () {
+      //   db.run(`CREATE TABLE IF NOT EXISTS data (
+      //     id INTEGER PRIMARY KEY AUTOINCREMENT,
+      //     file TEXT, 
+      //     artistlist TEXT, 
+      //     keywordlist TEXT, 
+      //     threshold1 INTEGER, 
+      //     threshold2 INTEGER, 
+      //     lang TEXT, 
+      //     status INTEGER, 
+      //     time INTEGER)`
+      //   )
+      //   const stmt = db.prepare('INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
+      //   stmt.run(null, that.filePath, that.artistList, that.keywordList, that.thresValue1, that.thresValue2, that.lang, 1, Date.now(), function (err) {
+      //     if (err) {
+      //       console.log(err)
+      //     } else {
+      //       that.lastInsertedID = this.lastID
+      //     }
+      //   })
+      //   stmt.finalize(function () {
+      //     that.writeCSVInfo(this.lastID, that.file)
+      //     that.$router.push('/')
+      //   })
+      // })
+      // db.close()
     },
     processFile: function (e) {
       this.file = event.target.files[0]
