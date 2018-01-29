@@ -127,7 +127,7 @@ export default {
     AppHeader,
     AppFooter
   },
-  data: function () {
+  data () {
     return {
       overallRiskFlag: false,
       appleTabFlag: true,
@@ -166,7 +166,7 @@ export default {
     }
   },
   created: function () {
-    console.log(this.id)
+    console.log('rowId', this.id)
   },
   methods: {
     showOverallRistk: function () {
@@ -186,9 +186,9 @@ export default {
     },
     moment: function () {
       return moment()
-    },
-    props: ['id']
-  }
+    }
+  },
+  props: ['id']
 }
 </script>
 

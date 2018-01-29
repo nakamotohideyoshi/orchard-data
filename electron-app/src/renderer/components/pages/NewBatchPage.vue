@@ -156,7 +156,7 @@ export default {
         status: 1,
         time: Date.now()
       });
-      dbInterface.saveTsvIntoDB(this.filePath);
+    //  dbInterface.saveTsvIntoDB(this.filePath);
       this.$router.push('/submissions')
     },
     processFile: function (e) {
