@@ -37,9 +37,9 @@ include _mixins
     .mobile-navi
         ul.mobile-navi__menu
             li
-                a(href="submissions.html").is-active Submissions (20)
+                router-link(:to="'/submissions'").is-active Submissions (20)
             li
-                a(href="new-batch.html") Add new dataset
+                router-link(:to="'/new-batch'") Add new dataset
             li
                 a(href="#") Profile
             li
