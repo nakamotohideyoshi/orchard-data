@@ -1,14 +1,18 @@
 electron-app/db.sqlite
 .DS_Store
+
 electron-app/dist/electron/*
 electron-app/dist/web/*
 electron-app/build/*
 !electron-app/build/icons
 electron-app/coverage
 electron-app/node_modules/
+electron-app/test/unit/coverage/
+electron-app/thumbs.db
+
 npm-debug.log
 npm-debug.log.*
-electron-app/thumbs.db
+
 !.gitkeep
 
 analysis-lib/node_modules/
