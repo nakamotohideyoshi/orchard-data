@@ -10,6 +10,7 @@
     "clear-table": "node ./dev-scripts/clear-table",
     "clear-dev-tables": "node ./dev-scripts/clear-dev-tables",
     "get-fbf-report": "node ./dev-scripts/get-fbf-report",
+    "get-meta": "node ./dev-scripts/get-metadata",
     "eslint": "./node_modules/.bin/eslint src/"
   },
   "license": null,
