@@ -14,7 +14,7 @@ module.exports = function() {
   };
 
   // Loads TSV File into DATABASE
-  this.saveTsvIntoDB = function(inputPath) {
+  this.saveTsvIntoDB = function(inputPath, datasetId) {
 
     // The table to add the TSV Files
     let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
@@ -29,7 +29,7 @@ module.exports = function() {
           readTsv(inputPath)
             .on('data', function(row) {
 
-              let values = [inputPath.split('/').reverse()[0]];
+              let values = [datasetId];
               Object.keys(row).forEach(key => values.push(row[key]));
 
               let placeholders = values.map((val) => '(?)').join(',');
@@ -37,7 +37,7 @@ module.exports = function() {
 
               db.run(stmt, values)
                 .then((result) => {
-                  console.log(`Rows inserted: ${result.changes}`);
+                  console.log(`Rows inserted: ${result.changes} with rowId: ${result.lastID}`);
                 },
                 (err) => { console.log(err); }
               );
@@ -63,6 +63,7 @@ module.exports = function() {
     try {
 
       let dbPromise = Promise.resolve()
+
         .then(() => sqlite.open(this.dbPath, { Promise }))
         .then(db => {
 
@@ -75,14 +76,18 @@ module.exports = function() {
 
           let stmt = `INSERT INTO ${datasetMetaTable.name} (${fields}) VALUES (${placeholders})`;
 
-          db.run(stmt, values)
+          return db.run(stmt, values)
             .then((result) => {
-                console.log(`Rows inserted: ${result.changes}`);
+                console.log(`Rows inserted: ${result.changes} with ID: ${result.lastID}`);
+
+                return result;
               },
               (err) => { console.log(err); }
             );
 
-      });
+        });
+
+      return dbPromise;
 
     }
 
