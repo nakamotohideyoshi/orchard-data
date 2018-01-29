@@ -8,4 +8,4 @@ if(!argv['input']) { console.log('\n ***** No input specified. Using "11-rows.ts
 
 let dbInterface = new analysisLibModule.dbInterface();
 dbInterface.init();
-dbInterface.loadTsv(inputPath);
+dbInterface.saveTsvIntoDB(inputPath);
