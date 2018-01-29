@@ -26,7 +26,7 @@ include _mixins
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch id
-                                            .report-summary__text(v-if="dbData.length>0") {{dbData[0].id}}
+                                            .report-summary__text(v-if="dbData.length>0") {{dbData[0].rowid}}
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text(v-if="dbData.length>0") {{moment(dbData[0].time).format('MM-DD-YYYY. HH:mm')}}
@@ -43,10 +43,10 @@ include _mixins
                                     
 
                                     // summary
-                                    .report-container(v-if="appleTabFlag") {{list1}}
+                                    .report-container(v-if="appleTabFlag")
                                         .report__top
                                             .report__top-col
-                                                .report__top-percent {{(1-successPercent) * 100}} %
+                                                .report__top-percent {{((1-successPercent) * 100).toFixed(2)}} %
                                                 .report__top-description Total percent of rows with errors
                                             .report__top-col
                                                 .report__top-stars
@@ -76,9 +76,9 @@ include _mixins
 
                                     .report-container(v-if="customFlag")                                        
                                         // group
-                                        router-link(:to="`/csv/${dbData[0].id}`").report__view-link
+                                        router-link(:to="`/csv/${dbData[0].rowid}`").report__view-link
                                             +icon('ico-document')
-                                            span {{dbData[0].file_name}}
+                                            span {{fileName}}
                                         .upload__group
                                             .upload__group-name
                                                 +icon('ico-market-music')
@@ -121,6 +121,8 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+
 export default {
   name: 'report-page',
   components: {
@@ -133,40 +135,24 @@ export default {
       appleTabFlag: true,
       customFlag: false,
       dbData: [],
-      successPercent: 0,
+      successPercent: 0.7,
       artistList: '',
       keywordList: '',
       threshold1: '',
       threshold2: '',
-      lang: ''
-    }
-  },
-  computed: {
-    list1: function () {
-      var sqlite3 = require('sqlite3').verbose()
-      var db = new sqlite3.Database('db.sqlite')
-      var that = this
-      db.all('SELECT  * FROM dataset_meta ORDER BY time DESC ', function (err, rows) {
-        if (err) {
-          console.log('error', err)
-        }
-        if (rows) {
-          console.log(rows)
-          let successData = 0
-          that.dbData = rows
-          rows.map(row => {
-            if (row.success_flag === 'true') {
-              successData = successData + 1
-            }
-          })
-          that.successPercent = successData / (rows.length)
-        }
-      })
-      return ''
+      lang: '',
+      fileName: ''
     }
   },
   created: function () {
-    console.log('rowId', this.id)
+    const dbInterface = new AnalysisLibModule.dbInterface();
+    dbInterface.init();
+    dbInterface.fetchDatasetMetaRow(this.id)
+    .then((res) => {
+      const position = res[0].source.lastIndexOf('/')
+      this.fileName = res[0].source.substr(position + 1, res[0].source.length)
+      this.dbData = res
+    })
   },
   methods: {
     showOverallRistk: function () {

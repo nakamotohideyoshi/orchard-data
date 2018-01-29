@@ -49,7 +49,7 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-import { getTsvInfo, getDataSetMetaInfo } from '../../../services/work'
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
 
 export default {
   name: 'csv-page',
@@ -66,11 +66,17 @@ export default {
   },
   created: function () {
     console.log(this.id)
-    getTsvInfo(this.id, (res) => {
-      this.batches = res
-      this.headers = Object.keys(this.batches[0])
-    })
-    getDataSetMetaInfo(this.id, (res) => {
+    // getTsvInfo(this.id, (res) => {
+    //   console.log(res)
+    //   if(res.length > 0) {
+    //     this.batches = res
+    //     this.headers = Object.keys(this.batches[0])
+    //   }
+    // })
+    const dbInterface = new AnalysisLibModule.dbInterface();
+    dbInterface.init();
+    dbInterface.fetchDatasetMetaRow(this.id)
+    .then((res) => {
       this.datasetMeta = res
     })
   },

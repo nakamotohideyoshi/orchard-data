@@ -84,8 +84,8 @@ include _mixins
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
-const dbInterface = new analysisLibModule.dbInterface();
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+const dbInterface = new AnalysisLibModule.dbInterface();
 
 export default {
   name: 'new-batch-page',
@@ -151,7 +151,7 @@ export default {
         artist_blacklist: this.artistList,
         keyword_blacklist: this.keywordList,
         duplicates_threshold: this.thresValue1,
-        duplicates_threshold: this.thresValue2,
+        various_artists_threshold: this.thresValue2,
         lang: this.lang,
         status: 1,
         time: Date.now()

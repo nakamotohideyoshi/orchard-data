@@ -49,8 +49,8 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
-const dbInterface = new analysisLibModule.dbInterface();
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+const dbInterface = new AnalysisLibModule.dbInterface();
 
 export default {
   name: 'submissions-page',
