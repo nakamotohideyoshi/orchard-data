@@ -18,3 +18,4 @@ analysis-lib/package-lock.json
 electron-app/package-lock.json
 analysis-lib/yarn.lock
 electron-app/yarn.lock
+electron-app/test/unit/coverage/
