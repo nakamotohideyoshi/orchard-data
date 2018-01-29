@@ -10,18 +10,18 @@ include _mixins
           .container
             .p-container__wrapper
               .container.container--smaller
-                
+
                 // page back
                 router-link(:to="'/submissions'").page-back
                   .icon.icon-arrow-back
                   span Submissions
-                
+
                 // upload form
                 form.p-box.upload(action="#")
                   .upload__title
                     +icon('ico-upload')
                     h1 Upload new dataset
-                    
+
                   // group
                   .upload__group
                     .upload__group-name
@@ -38,7 +38,7 @@ include _mixins
                         .uploader__current
                           .uploader__current-filename
                           +icon('ico-close')
-  
+
                   // group
                   .upload__group
                     .upload__group-name
@@ -70,7 +70,7 @@ include _mixins
                             span Spanish
                         .ui-checkbox
                           input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
-                          label(for="cb_1") 
+                          label(for="cb_1")
                             span Brazilian Portugese
                     // CTA
                     .upload__cta
@@ -84,8 +84,8 @@ include _mixins
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
-const dbInterface = new analysisLibModule.dbInterface();
+const analysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
+const dbInterface = new analysisLibModule.DbInterface()
 
 export default {
   name: 'new-batch-page',
@@ -144,19 +144,19 @@ export default {
         alert('Various Artists threshold must be greater than -1.')
         return
       }
-      
-      dbInterface.init();
+
+      dbInterface.init()
       dbInterface.saveDatasetMeta({
         source: this.filePath,
         artist_blacklist: this.artistList,
         keyword_blacklist: this.keywordList,
         duplicates_threshold: this.thresValue1,
-        duplicates_threshold: this.thresValue2,
+        various_artists_threshold: this.thresValue2,
         lang: this.lang,
         status: 1,
         time: Date.now()
-      });
-      dbInterface.saveTsvIntoDB(this.filePath);
+      })
+      dbInterface.saveTsvIntoDB(this.filePath)
       this.$router.push('/submissions')
     },
     processFile: function (e) {
@@ -164,7 +164,7 @@ export default {
       this.filePath = this.file.path
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
-    },   
+    },
     updateStatus: function (lastId) {
       const sqlite3 = require('sqlite3').verbose()
       const db = new sqlite3.Database('db.sqlite')

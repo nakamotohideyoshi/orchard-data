@@ -14,7 +14,7 @@ let main = require('./src/scripts/main');
 module.exports = {
 
   'dbInfo': dbInfo,
-  'dbInterface': dbInterface,
+  'DbInterface': dbInterface,
 
   'filtersDesc': filtersDesc,
   'filtersModule': filtersModule,
