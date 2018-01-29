@@ -106,6 +106,18 @@ module.exports = function() {
 
   }
 
+  this.fetchDatasetMetaRow = function(rowId) {
+
+    let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta'];
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => db.all(`SELECT rowId, * FROM ${datasetMetaTable.name} WHERE rowId = ${rowId}`));
+
+    return dbPromise;
+
+  }
+
   // Clears a table - DEV only
   this.clearTable = function(tableName) {
 
