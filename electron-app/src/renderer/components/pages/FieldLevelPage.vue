@@ -52,7 +52,7 @@ export default {
     AppHeader,
     AppFooter
   },
-  data() {
+  data () {
     return {
       batchData: {
         batchDate: new Date()
