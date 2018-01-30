@@ -157,38 +157,40 @@ module.exports = function() {
 
   // ---------- Analysis methods ---------- //
 
-  // Calculates percentage of rows with a given error (filter)
-  this.calcStatistics = function(filter) {
-
-    let noOfOccurrences = Object.keys(this.filters[filter]['occurs_on']).length;
-
-    // Percentage of rows with this error
-    this.filters[filter].error_percent = noOfOccurrences / this.noOfRows;
-
-    // TODO: Weighted score for data quality
-    this.filters[filter].error_score = Math.random() * 6;
-
-  };
 
   // Calculates dataset metadata for a given filter
-  this.calcDatasetMetadata = function(filterId) {
+  this.calcBatchResultsReport = function(filterId, datasetId) {
 
-    let filterRegex = /(filter)[0-9]+/i;
-    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    this.BRReport = this.BRReport || [];
 
-    this.calcStatistics(filter);
+    let noOfOccurrences = Object.keys(this.filters[filterId]['occurs_on']).length;
+
+    // Percentage of rows with this error
+    let error_percent = noOfOccurrences / this.noOfRows;
+    // TODO: Weighted score for data quality
+    let error_score = Math.random() * 6;
+
+    this.filters[filterId].error_percent = error_percent;
+    this.filters[filterId].error_score = error_score;
+
+    this.BRReport.push([filterId, datasetId, 'userExplanation', this.noOfRows, noOfOccurrences, error_percent, error_score]);
 
   };
 
   // Calculates dataset metadata for a al filters
-  this.calcDatasetMetadataAll = function() {
+  this.calcBatchResultsReportAll = function(datasetId) {
 
-    Object.keys(this['filters']).forEach(filter => this.calcStatistics(filter));
+    return new Promise((resolve, reject) => {
+      Object.keys(this['filters']).forEach(filter =>
+                                           this.calcBatchResultsReport(filter,
+                                                                       datasetId));
+      resolve(this);
+    });
 
   };
 
   // Calculates a field by field report for given filter
-  this.calcFieldByFieldReport = function(filterId, verbose) {
+  this.calcFieldByFieldReport = function(filterId, datasetId, verbose) {
 
     // If report was already calculated, just returns
     this.FBFReport = this.FBFreport || [];
@@ -209,7 +211,7 @@ module.exports = function() {
       let values = [];
 
       values.push(filter);
-      values.push(this.filename);
+      values.push(datasetId);
       values.push('userExplanation');
       values.push(occurrence['rowId']);
       values.push(JSON.stringify(occurrence['fields']));
@@ -239,10 +241,11 @@ module.exports = function() {
   };
 
   // Calculates a field by field report for all filters
-  this.calcFieldByFieldReportAll = function() {
+  this.calcFieldByFieldReportAll = function(datasetId) {
 
     return new Promise((resolve, reject) => {
-      Object.keys(this['filters']).forEach(filter => this.calcFieldByFieldReport(filter));
+      Object.keys(this['filters']).forEach(filter =>
+                                           this.calcFieldByFieldReport(filter,datasetId));
       resolve(this);
     },
     (err) => reject(err));

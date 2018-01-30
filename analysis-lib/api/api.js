@@ -14,6 +14,9 @@ router.post('/api/save-and-run-filters', (req, res) => {
 
   let data = req.body;
   let datasetId;
+  let report;
+
+  console.log("Running filters");
 
   let dbPromise = dbInterface.saveDatasetMeta(data);
   dbPromise
@@ -23,9 +26,13 @@ router.post('/api/save-and-run-filters', (req, res) => {
       return tsvPromise;
     })
     .then(() => analysisLibModule.runAllFilters(datasetId))
-    .then(report => report.calcFieldByFieldReportAll())
-    .then(report => dbInterface.saveFieldByFieldReport(report.FBFReport))
-    .then(() => res.send("FINISHED"));
+    .then(rep => {
+      report = rep;
+      return report.calcFieldByFieldReportAll(datasetId)
+    })
+    .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
+    .then(() => report.calcBatchResultsReportAll(datasetId))
+    .then(rep => dbInterface.saveBatchResultsReport());
     // .then(FBFReport => console.log(FBFReport));
 
 });
@@ -33,6 +40,13 @@ router.post('/api/save-and-run-filters', (req, res) => {
 router.post('/api/fetch-field-by-field-report', (req, res) => {
 
   let promise = dbInterface.fetchFieldByFieldReport()
+    .then(report => res.send(report));
+
+});
+
+router.post('/api/fetch-batch-results-report', (req, res) => {
+
+  let promise = dbInterface.fetchBatchResultsReport()
     .then(report => res.send(report));
 
 });
