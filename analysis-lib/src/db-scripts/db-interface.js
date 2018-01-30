@@ -1,6 +1,5 @@
 module.exports = function() {
 
-  let sqlite3 = require('sqlite3').verbose();
   let sqlite = require('sqlite');
   let Promise = require('bluebird');
   let dbInfo = require('./db-info');
