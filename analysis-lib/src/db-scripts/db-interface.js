@@ -2,6 +2,7 @@ module.exports = function() {
 
   let sqlite3 = require('sqlite3').verbose();
   let sqlite = require('sqlite');
+  let Promise = require('bluebird');
   let dbInfo = require('./db-info');
   let readTsv = require('../scripts/read-tsv');
   let DATABASE = require('../scripts/constants').DATABASE;
@@ -18,41 +19,32 @@ module.exports = function() {
 
     // The table to add the TSV Files
     let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
+    let tsvFile;
 
-    try {
+    let dbPromise = readTsv(inputPath)
+      .then(file => tsvFile = file)
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => {
 
-      let dbPromise = Promise.resolve()
-        .then(() => sqlite.open(this.dbPath, { Promise }))
-        .then(db => {
+        return Promise.map(tsvFile, (row) => {
 
-          // Saves row by row on the newly created table
-          readTsv(inputPath)
-            .on('data', function(row) {
+          let values = [datasetId];
+          Object.keys(row).forEach(key => values.push(row[key]));
 
-              let values = [datasetId];
-              Object.keys(row).forEach(key => values.push(row[key]));
+          let placeholders = values.map((val) => '(?)').join(',');
+          let stmt = `INSERT INTO ${orchardTable.name} VALUES (${placeholders})`;
 
-              let placeholders = values.map((val) => '(?)').join(',');
-              let stmt = `INSERT INTO ${orchardTable.name} VALUES (${placeholders})`;
-
-              db.run(stmt, values)
-                .then((result) => {
-                  console.log(`Rows inserted: ${result.changes} with rowId: ${result.lastID}`);
-                },
-                (err) => { console.log(err); }
-              );
-
-            });
-
+          return db.run(stmt, values)
+            .then((result) => {
+              console.log(`Rows inserted: ${result.changes} with rowId: ${result.lastID}`);
+            },
+            (err) => { console.log(err); }
+                 );
         });
 
-    }
+      });
 
-    catch (err) {
-
-      next(err);
-
-    }
+    return dbPromise;
 
   };
 
@@ -146,7 +138,7 @@ module.exports = function() {
   };
 
   // Save field by field report
-  this.saveFieldByFieldReport = function(report, filterId) {
+  this.saveFieldByFieldReport = function(report) {
 
     var reportTable = dbInfo[DATABASE]['tables']['field_by_field_reports'];
 
@@ -154,12 +146,12 @@ module.exports = function() {
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
 
-        report.forEach(row => {
+        return Promise.map(report, (row) => {
 
           let placeholders = row.map((val) => '(?)').join(',');
           let stmt = `INSERT INTO ${reportTable.name} VALUES (${placeholders})`;
 
-          db.run(stmt, row)
+          return db.run(stmt, row)
             .then((result) => {
               console.log(`Rows inserted: ${result.changes}`);
             },
@@ -168,7 +160,9 @@ module.exports = function() {
 
         });
 
-    });
+      });
+
+    return dbPromise;
 
   };
 
@@ -178,7 +172,7 @@ module.exports = function() {
 
     let dbPromise = Promise.resolve()
       .then(() => sqlite.open(this.dbPath, { Promise }))
-      .then(db => db.all(`SELECT * FROM ${FBFReportTable.name}`));
+      .then(db => db.all(`SELECT rowId, * FROM ${FBFReportTable.name}`));
 
     return dbPromise;
 

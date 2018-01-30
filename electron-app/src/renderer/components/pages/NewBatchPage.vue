@@ -145,8 +145,8 @@ export default {
         return
       }
 
-      dbInterface.init()
-      dbInterface.saveDatasetMeta({
+      // Saves metadata
+      let datasetMeta = {
         source: this.filePath,
         artist_blacklist: this.artistList,
         keyword_blacklist: this.keywordList,
@@ -155,9 +155,27 @@ export default {
         lang: this.lang,
         status: 1,
         time: Date.now()
-      })
-      dbInterface.saveTsvIntoDB(this.filePath)
-      this.$http.get('http://localhost:3000/api/test');
+      }
+
+      this.$http
+        .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
+          'headers': {
+            'content-type': 'application/json'
+          }
+        })
+        .then(() => {
+
+          this.$http
+            .post('http://localhost:3000/api/fetch-field-by-field-report', {
+              'headers': {
+                'content-type': 'application/json'
+              }
+            })
+            .then(response => console.log(response.data));
+
+        });
+
+
       this.$router.push('/submissions')
     },
     processFile: function (e) {

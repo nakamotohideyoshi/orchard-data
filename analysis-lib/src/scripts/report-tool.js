@@ -2,6 +2,7 @@ module.exports = function() {
 
   let descriptions = require('../filters/filters-desc');
   let DATABASE = require('./constants').DATABASE;
+  let Promise = require('bluebird');
 
   // Initializes database interface
   let dbInfo = require('../db-scripts/db-info');
@@ -235,19 +236,17 @@ module.exports = function() {
 
     });
 
-    dbInterface.saveFieldByFieldReport(this.FBFReport, filterId);
-
-    return this.FBFReport;
-
   };
 
   // Calculates a field by field report for all filters
   this.calcFieldByFieldReportAll = function() {
 
-    Object.keys(this['filters']).forEach(filter => this.calcFieldByFieldReport(filter));
+    return new Promise((resolve, reject) => {
+      Object.keys(this['filters']).forEach(filter => this.calcFieldByFieldReport(filter));
+      resolve(this);
+    },
+    (err) => reject(err));
 
   };
-
-  return this;
 
 };

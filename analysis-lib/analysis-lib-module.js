@@ -7,7 +7,7 @@ let filtersDesc = require('./src/filters/filters-desc');
 let filtersModule = require('./src/filters/filters-module');
 
 // Main Script
-let main = require('./src/scripts/main');
+let runAllFilters = require('./src/scripts/run-all-filters');
 
 // Main scripts
 
@@ -19,6 +19,6 @@ module.exports = {
   'filtersDesc': filtersDesc,
   'filtersModule': filtersModule,
 
-  'main': main
+  'runAllFilters': runAllFilters
 
 }
