@@ -10,18 +10,18 @@ include _mixins
           .container
             .p-container__wrapper
               .container.container--smaller
-                
+
                 // page back
                 router-link(:to="'/submissions'").page-back
                   .icon.icon-arrow-back
                   span Submissions
-                
+
                 // upload form
                 form.p-box.upload(action="#")
                   .upload__title
                     +icon('ico-upload')
                     h1 Upload new dataset
-                    
+
                   // group
                   .upload__group
                     .upload__group-name
@@ -38,7 +38,7 @@ include _mixins
                         .uploader__current
                           .uploader__current-filename
                           +icon('ico-close')
-  
+
                   // group
                   .upload__group
                     .upload__group-name
@@ -70,7 +70,7 @@ include _mixins
                             span Spanish
                         .ui-checkbox
                           input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
-                          label(for="cb_1") 
+                          label(for="cb_1")
                             span Brazilian Portugese
                     // CTA
                     .upload__cta
@@ -145,8 +145,8 @@ export default {
         return
       }
 
-      dbInterface.init()
-      dbInterface.saveDatasetMeta({
+      // Saves metadata
+      let datasetMeta = {
         source: this.filePath,
         artist_blacklist: this.artistList,
         keyword_blacklist: this.keywordList,
@@ -155,8 +155,27 @@ export default {
         lang: this.lang,
         status: 1,
         time: Date.now()
-      })
-      //  dbInterface.saveTsvIntoDB(this.filePath);
+      }
+
+      this.$http
+        .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
+          'headers': {
+            'content-type': 'application/json'
+          }
+        })
+        .then(() => {
+
+          this.$http
+            .post('http://localhost:3000/api/fetch-field-by-field-report', {
+              'headers': {
+                'content-type': 'application/json'
+              }
+            })
+            .then(response => console.log(response.data));
+
+        });
+
+
       this.$router.push('/submissions')
     },
     processFile: function (e) {

@@ -6,6 +6,6 @@ let inputFile = argv['input'] || '11-rows.tsv';
 let inputPath = inputDir.concat(inputFile).join('/');
 if(!argv['input']) { console.log('\n ***** No input specified. Using "11-rows.tsv *****\n"'); }
 
-let dbInterface = new analysisLibModule.dbInterface();
+let dbInterface = new analysisLibModule.DbInterface();
 dbInterface.init();
 dbInterface.saveDatasetMeta({});
