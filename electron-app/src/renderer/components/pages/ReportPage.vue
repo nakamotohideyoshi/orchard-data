@@ -21,9 +21,9 @@ include _mixins
                                     // summary
                                     .report-summary
                                         .report-summary__col
-                                            .report-summary__head risk analysis
+                                            .report-summary__head risk analysis {{list1}}
                                             .report-summary__text.report-summary__text--red Errors Per Row 
-                                        .report-summary__label.report-summary__label--red failed
+                                        .report-summary__label.report-summary__label--red(v-if="dbData.status == 1") Waiting
                                         .report-summary__col
                                             .report-summary__head batch id
                                             .report-summary__text {{dbData.rowid}}
@@ -37,13 +37,13 @@ include _mixins
                                     
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
-                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true }").report__tab Overall Risk Assessment
-                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true }").report__tab Apple & Itunes Guidelines
+                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true }" :disabled="dbData.status == 1").report__tab Overall Risk Assessment
+                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true }" :disabled="dbData.status == 1").report__tab Apple & Itunes Guidelines
                                         button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag == true }").report__tab Custom Parameters
                                     
 
                                     // summary
-                                    .report-container(v-if="appleTabFlag") {{list1}} 
+                                    .report-container(v-if="appleTabFlag")
                                         .report__top
                                             .report__top-col
                                                 .report__top-percent {{((1-successPercent) * 100).toFixed(2)}} %
@@ -74,7 +74,7 @@ include _mixins
                                                 span View the field level issues
                                     .report-container(v-if="overallRiskFlag")
 
-                                    .report-container(v-if="customFlag")                                     
+                                    .report-container(v-if="customFlag")              
                                         // group
                                         router-link(:to="`/csv/${dbData.rowid}`").report__view-link
                                             +icon('ico-document')
@@ -130,8 +130,8 @@ export default {
   data () {
     return {
       overallRiskFlag: false,
-      appleTabFlag: true,
-      customFlag: false,
+      appleTabFlag: false,
+      customFlag: true,
       dbData: {},
       successPercent: 0.7,
       artistList: '',
@@ -168,6 +168,11 @@ export default {
         const position = res.data[0].source.lastIndexOf('/')
         this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
         this.dbData = res.data[0]
+        if(this.dbData.status == 1) {
+          this.customFlag = true
+          this.overallRiskFlag = false
+          this.appleTabFlag = false
+        }
       })
     }
   },
