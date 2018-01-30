@@ -165,6 +165,35 @@ module.exports = function() {
 
   };
 
+  // Save field by field report
+  this.saveBatchResultsReport = function(report) {
+
+    var reportTable = dbInfo[DATABASE]['tables']['batch_results_reports'];
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => {
+
+        return Promise.map(report, (row) => {
+
+          let placeholders = row.map((val) => '(?)').join(',');
+          let stmt = `INSERT INTO ${reportTable.name} VALUES (${placeholders})`;
+
+          return db.run(stmt, row)
+            .then((result) => {
+              console.log(`Rows inserted: ${result.changes}`);
+            },
+              (err) => { console.log(err); }
+            );
+
+        });
+
+      });
+
+    return dbPromise;
+
+  };
+
   this.fetchFieldByFieldReport = function() {
 
     let FBFReportTable = dbInfo[DATABASE]['tables']['field_by_field_reports'];
@@ -172,6 +201,18 @@ module.exports = function() {
     let dbPromise = Promise.resolve()
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT rowId, * FROM ${FBFReportTable.name}`));
+
+    return dbPromise;
+
+  };
+
+  this.fetchBatchResultsReport = function() {
+
+    let reportTable = dbInfo[DATABASE]['tables']['batch_results_reports'];
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => db.all(`SELECT rowId, * FROM ${reportTable.name}`));
 
     return dbPromise;
 

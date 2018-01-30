@@ -5,14 +5,7 @@
   "author": "",
   "scripts": {
     "dev": "nodemon api/main.js",
-    "filters": "node ./dev-scripts/test-main",
-    "add-tsv-to-db": "node ./dev-scripts/test-load-tsv",
-    "add-meta": "node ./dev-scripts/test-metadata",
-    "clear-table": "node ./dev-scripts/clear-table",
-    "clear-dev-tables": "node ./dev-scripts/clear-dev-tables",
-    "get-fbf-report": "node ./dev-scripts/get-fbf-report",
-    "get-meta": "node ./dev-scripts/get-metadata",
-    "eslint": "./node_modules/.bin/eslint src/"
+    "test-run": "node ./dev-scripts/load-and-run"
   },
   "license": null,
   "dependencies": {
@@ -26,6 +19,7 @@
   },
   "devDependencies": {
     "eslint": "^4.16.0",
+    "node-rest-client": "^3.1.0",
     "nodemon": "^1.14.11"
   }
 }

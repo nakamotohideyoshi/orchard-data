@@ -41,7 +41,11 @@ module.exports = {
 
       'dataset_meta': {
         'name': 'dataset_meta'
-      }
+      },
+
+      'batch_results_reports': {
+        'name': 'batch_results_reports'
+      },
 
     }
   }
