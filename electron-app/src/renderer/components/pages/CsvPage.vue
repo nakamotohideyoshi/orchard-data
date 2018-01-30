@@ -49,7 +49,7 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
 
 export default {
   name: 'csv-page',
@@ -73,12 +73,12 @@ export default {
     //     this.headers = Object.keys(this.batches[0])
     //   }
     // })
-    const dbInterface = new AnalysisLibModule.dbInterface();
-    dbInterface.init();
+    const dbInterface = new AnalysisLibModule.DbInterface()
+    dbInterface.init()
     dbInterface.fetchDatasetMetaRow(this.id)
-    .then((res) => {
-      this.datasetMeta = res
-    })
+      .then((res) => {
+        this.datasetMeta = res
+      })
   },
   methods: {
     moment: function () {

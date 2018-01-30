@@ -84,8 +84,8 @@ include _mixins
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
-const dbInterface = new AnalysisLibModule.dbInterface();
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
+const dbInterface = new AnalysisLibModule.DbInterface()
 
 export default {
   name: 'new-batch-page',
@@ -144,8 +144,8 @@ export default {
         alert('Various Artists threshold must be greater than -1.')
         return
       }
-      
-      dbInterface.init();
+
+      dbInterface.init()
       dbInterface.saveDatasetMeta({
         source: this.filePath,
         artist_blacklist: this.artistList,
@@ -155,8 +155,8 @@ export default {
         lang: this.lang,
         status: 1,
         time: Date.now()
-      });
-    //  dbInterface.saveTsvIntoDB(this.filePath);
+      })
+      //  dbInterface.saveTsvIntoDB(this.filePath);
       this.$router.push('/submissions')
     },
     processFile: function (e) {
@@ -164,20 +164,6 @@ export default {
       this.filePath = this.file.path
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
-    },   
-    updateStatus: function (lastId) {
-      const sqlite3 = require('sqlite3').verbose()
-      const db = new sqlite3.Database('db.sqlite')
-
-      const data = [2, lastId]
-      const sql = `UPDATE data SET status = ? WHERE ROWID = ?`
-      db.run(sql, data, (err) => {
-        if (err) {
-          console.log(err)
-        }
-      })
-
-      db.close()
     }
   }
 }

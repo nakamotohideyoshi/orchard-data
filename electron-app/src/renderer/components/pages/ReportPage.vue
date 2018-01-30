@@ -121,7 +121,7 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
 
 export default {
   name: 'report-page',
@@ -145,14 +145,14 @@ export default {
     }
   },
   created: function () {
-    const dbInterface = new AnalysisLibModule.dbInterface();
-    dbInterface.init();
+    const dbInterface = new AnalysisLibModule.DbInterface()
+    dbInterface.init()
     dbInterface.fetchDatasetMetaRow(this.id)
-    .then((res) => {
-      const position = res[0].source.lastIndexOf('/')
-      this.fileName = res[0].source.substr(position + 1, res[0].source.length)
-      this.dbData = res
-    })
+      .then((res) => {
+        const position = res[0].source.lastIndexOf('/')
+        this.fileName = res[0].source.substr(position + 1, res[0].source.length)
+        this.dbData = res
+      })
   },
   methods: {
     showOverallRistk: function () {

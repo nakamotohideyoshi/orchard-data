@@ -49,8 +49,8 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module');
-const dbInterface = new AnalysisLibModule.dbInterface();
+const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
+const dbInterface = new AnalysisLibModule.DbInterface()
 
 export default {
   name: 'submissions-page',
@@ -59,13 +59,13 @@ export default {
       dbData: []
     }
   },
-  created() {
-    dbInterface.init();
+  created () {
+    dbInterface.init()
     dbInterface.fetchDatasetMeta()
-    .then((res) => {
-      console.log(res)
-      this.dbData = res
-    })
+      .then((res) => {
+        console.log(res)
+        this.dbData = res
+      })
   },
   components: {
     AppHeader,
