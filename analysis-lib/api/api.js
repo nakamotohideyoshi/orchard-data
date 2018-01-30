@@ -37,5 +37,21 @@ router.post('/api/fetch-field-by-field-report', (req, res) => {
 
 });
 
+router.post('/api/fetch-dataset-meta', (req, res) => {
+
+  let promise = dbInterface.fetchDatasetMeta()
+    .then(rows => res.send(rows));
+
+});
+
+router.post('/api/fetch-dataset-meta-row', (req, res) => {
+
+  let rowId = req.body.rowId;
+
+  let promise = dbInterface.fetchDatasetMetaRow(rowId)
+    .then(row => res.send(row));
+
+});
+
 // Export modules
 module.exports = router;
