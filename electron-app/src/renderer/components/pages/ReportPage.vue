@@ -43,7 +43,7 @@ include _mixins
                                     
 
                                     // summary
-                                    .report-container(v-if="appleTabFlag")
+                                    .report-container(v-if="appleTabFlag") {{list1}} 
                                         .report__top
                                             .report__top-col
                                                 .report__top-percent {{((1-successPercent) * 100).toFixed(2)}} %
@@ -74,7 +74,7 @@ include _mixins
                                                 span View the field level issues
                                     .report-container(v-if="overallRiskFlag")
 
-                                    .report-container(v-if="customFlag") {{list1}}                                      
+                                    .report-container(v-if="customFlag")                                     
                                         // group
                                         router-link(:to="`/csv/${dbData.rowid}`").report__view-link
                                             +icon('ico-document')

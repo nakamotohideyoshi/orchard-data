@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import { mount } from 'avoriaz'
 import VueRouter from 'vue-router'
-import Header from '@/components/pages/Header'
+import App from '@/App'
 import router from '../../../src/renderer/router'
 
-describe('Header.vue', () => {
+describe('App.vue', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Header, {
+    wrapper = mount(App, {
       router: router
     })
   })
 
-  it('should render correct header', () => {
+  it('should render correct App', () => {
     Vue.use(VueRouter)
-    expect(wrapper.is('div')).to.equal(true)
+    expect(wrapper.is('#app')).to.equal(true)
   })
 })
