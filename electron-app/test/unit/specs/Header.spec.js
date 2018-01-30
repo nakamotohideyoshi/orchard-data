@@ -1,10 +1,10 @@
-// import Vue from 'vue'
-// import Header from '@/components/pages/Header'
+import Vue from 'vue'
+import { mount } from 'avoriaz'
+import Header from '@/components/pages/Header'
 
-// describe('Header.vue', () => {
-//   it('should render correct header', () => {
-//     const Constructor = Vue.extend(Header);
-//     const HeaderComponent = new Constructor().$mount();
-//     expect(HeaderComponent.$el.textContent).to.contain('Submissions')
-//   })
-// })
+describe('Header.vue', () => {
+  it('should render correct header', () => {
+    const wrapper = mount(Header)
+     expect(wrapper.is('div')).to.equal(true)
+  })
+})

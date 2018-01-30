@@ -58,6 +58,7 @@
     }
   },
   "dependencies": {
+    "avoriaz": "^6.3.0",
     "axios": "^0.16.1",
     "moment": "^2.20.1",
     "node-pre-gyp": "^0.6.39",
