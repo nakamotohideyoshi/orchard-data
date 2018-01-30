@@ -25,7 +25,6 @@ router.post('/api/save-and-run-filters', (req, res) => {
     .then(() => analysisLibModule.runAllFilters(datasetId))
     .then(report => report.calcFieldByFieldReportAll())
     .then(report => dbInterface.saveFieldByFieldReport(report.FBFReport))
-    .then(() => dbInterface.fetchFieldByFieldReport())
     .then(() => res.send("FINISHED"));
     // .then(FBFReport => console.log(FBFReport));
 
