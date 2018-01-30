@@ -84,8 +84,8 @@ include _mixins
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
-const dbInterface = new AnalysisLibModule.DbInterface()
+// const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
+// const dbInterface = new AnalysisLibModule.DbInterface()
 
 export default {
   name: 'new-batch-page',
@@ -146,7 +146,7 @@ export default {
       }
 
       // Saves metadata
-      let datasetMeta = {
+      const datasetMeta = {
         source: this.filePath,
         artist_blacklist: this.artistList,
         keyword_blacklist: this.keywordList,
@@ -163,8 +163,9 @@ export default {
             'content-type': 'application/json'
           }
         })
-        .then(() => {
-
+        .then((res) => {
+          console.log(res)
+          console.log(12312)
           this.$http
             .post('http://localhost:3000/api/fetch-field-by-field-report', {
               'headers': {
@@ -174,7 +175,6 @@ export default {
             .then(response => console.log(response.data));
 
         });
-
 
       this.$router.push('/submissions')
     },
