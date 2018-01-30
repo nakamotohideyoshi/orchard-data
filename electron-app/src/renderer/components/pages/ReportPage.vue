@@ -29,7 +29,7 @@ include _mixins
                                             .report-summary__text {{dbData.rowid}}
                                         .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text {{new Date(dbData.time).toString()}}
+                                            .report-summary__text {{new Date(dbData.time).toString().slice(0, -14)}}
                                         .report-summary__col
                                             .report-summary__head download
                                             a(href="#").report-summary__text
