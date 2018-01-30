@@ -49,9 +49,6 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
-const dbInterface = new AnalysisLibModule.DbInterface()
-
 export default {
   name: 'submissions-page',
   data () {
@@ -60,11 +57,15 @@ export default {
     }
   },
   created () {
-    dbInterface.init()
-    dbInterface.fetchDatasetMeta()
+    this.$http
+      .post('http://localhost:3000/api/fetch-dataset-meta', {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
       .then((res) => {
         console.log(res)
-        this.dbData = res
+        this.dbData = res.data
       })
   },
   components: {

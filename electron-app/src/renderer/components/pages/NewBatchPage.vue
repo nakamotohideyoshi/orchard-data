@@ -84,9 +84,6 @@ include _mixins
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-// const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
-// const dbInterface = new AnalysisLibModule.DbInterface()
-
 export default {
   name: 'new-batch-page',
   components: {
@@ -163,18 +160,18 @@ export default {
             'content-type': 'application/json'
           }
         })
-        .then((res) => {
-          console.log(res)
-          console.log(12312)
-          this.$http
-            .post('http://localhost:3000/api/fetch-field-by-field-report', {
-              'headers': {
-                'content-type': 'application/json'
-              }
-            })
-            .then(response => console.log(response.data));
+        // .then((res) => {
+        //   console.log(res)
+        //   console.log(12312)
+        //   this.$http
+        //     .post('http://localhost:3000/api/fetch-field-by-field-report', {
+        //       'headers': {
+        //         'content-type': 'application/json'
+        //       }
+        //     })
+        //     .then(response => console.log(response.data));
 
-        });
+        // });
 
       this.$router.push('/submissions')
     },

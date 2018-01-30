@@ -49,8 +49,6 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
-
 export default {
   name: 'csv-page',
   components: {
@@ -66,19 +64,18 @@ export default {
   },
   created: function () {
     console.log(this.id)
-    // getTsvInfo(this.id, (res) => {
-    //   console.log(res)
-    //   if(res.length > 0) {
-    //     this.batches = res
-    //     this.headers = Object.keys(this.batches[0])
-    //   }
-    // })
-    const dbInterface = new AnalysisLibModule.DbInterface()
-    dbInterface.init()
-    dbInterface.fetchDatasetMetaRow(this.id)
-      .then((res) => {
-        this.datasetMeta = res
-      })
+    // const data = {
+    //   rowId: this.id
+    // }
+    // this.$http
+    //   .post('http://localhost:3000/api/fetch-dataset-meta', data, {
+    //     'headers': {
+    //       'content-type': 'application/json'
+    //     }
+    //   })
+    //   .then((res) => {
+    //     this.datasetMeta = res
+    //   })
   },
   methods: {
     moment: function () {

@@ -26,10 +26,10 @@ include _mixins
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch id
-                                            .report-summary__text(v-if="dbData.length>0") {{dbData[0].rowid}}
+                                            .report-summary__text {{dbData.rowid}}
                                         .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text(v-if="dbData.length>0") {{moment(dbData[0].time).format('MM-DD-YYYY. HH:mm')}}
+                                            .report-summary__text {{new Date(dbData.time).toString()}}
                                         .report-summary__col
                                             .report-summary__head download
                                             a(href="#").report-summary__text
@@ -76,7 +76,7 @@ include _mixins
 
                                     .report-container(v-if="customFlag")                                        
                                         // group
-                                        router-link(:to="`/csv/${dbData[0].rowid}`").report__view-link
+                                        router-link(:to="`/csv/${dbData.rowid}`").report__view-link
                                             +icon('ico-document')
                                             span {{fileName}}
                                         .upload__group
@@ -87,30 +87,30 @@ include _mixins
                                             .ui-group
                                                 label Artist blacklist
                                                 ul
-                                                    li(v-for="data in dbData")
-                                                        .item {{data.artistlist}}
+                                                    li
+                                                        .item {{dbData.artist_blacklist}}
                                             .ui-group
                                                 label Keyword blacklist
                                                 ul
-                                                    li(v-for="data in dbData")
-                                                        .item {{data.keywordlist}}
+                                                    li
+                                                        .item {{dbData.keyword_blacklist}}
                                             .ui-group
                                                 label Duplicates threshold
                                                 ul
-                                                    li(v-for="data in dbData")
-                                                        .item {{data.threshold1}}
+                                                    li
+                                                        .item {{dbData.duplicates_threshold}}
                                             .ui-group
                                                 label Various Artists threshold
                                                 ul
-                                                    li(v-for="data in dbData")
-                                                        .item {{data.threshold2}}
+                                                    li
+                                                        .item {{dbData.various_artists_threshold}}
                                             .ui-group
                                                 label Language
                                                 ul
-                                                  li(v-for="data in dbData")
-                                                    span(v-if="data.lang == 'en-US'") English
-                                                    span(v-if="data.lang == 'en-ES'") Brazilian
-                                                    span(v-if="data.lang == 'pt-BR'") Portuguese
+                                                  li
+                                                    span(v-if="dbData.lang == 'en-US'") English
+                                                    span(v-if="dbData.lang == 'en-ES'") Brazilian
+                                                    span(v-if="dbData.lang == 'pt-BR'") Portuguese
         block footer
             AppFooter
 </template>
@@ -120,8 +120,6 @@ import moment from 'moment'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-
-const AnalysisLibModule = require('../../../../../analysis-lib/analysis-lib-module')
 
 export default {
   name: 'report-page',
@@ -134,7 +132,7 @@ export default {
       overallRiskFlag: false,
       appleTabFlag: true,
       customFlag: false,
-      dbData: [],
+      dbData: {},
       successPercent: 0.7,
       artistList: '',
       keywordList: '',
@@ -145,13 +143,19 @@ export default {
     }
   },
   created: function () {
-    const dbInterface = new AnalysisLibModule.DbInterface()
-    dbInterface.init()
-    dbInterface.fetchDatasetMetaRow(this.id)
+    const data = {
+      rowId: this.id
+    }
+    this.$http
+      .post('http://localhost:3000/api/fetch-dataset-meta', data, {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
       .then((res) => {
-        const position = res[0].source.lastIndexOf('/')
-        this.fileName = res[0].source.substr(position + 1, res[0].source.length)
-        this.dbData = res
+        const position = res.data[0].source.lastIndexOf('/')
+        this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
+        this.dbData = res.data[0]
       })
   },
   methods: {
