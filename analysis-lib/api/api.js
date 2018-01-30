@@ -32,7 +32,7 @@ router.post('/api/save-and-run-filters', (req, res) => {
     })
     .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
     .then(() => report.calcBatchResultsReportAll(datasetId))
-    .then(rep => dbInterface.saveBatchResultsReport());
+    .then(rep => dbInterface.saveBatchResultsReport(report.BRReport));
     // .then(FBFReport => console.log(FBFReport));
 
 });
