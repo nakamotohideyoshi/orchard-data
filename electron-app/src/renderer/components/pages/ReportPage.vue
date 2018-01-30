@@ -74,7 +74,7 @@ include _mixins
                                                 span View the field level issues
                                     .report-container(v-if="overallRiskFlag")
 
-                                    .report-container(v-if="customFlag")                                        
+                                    .report-container(v-if="customFlag") {{list1}}                                      
                                         // group
                                         router-link(:to="`/csv/${dbData.rowid}`").report__view-link
                                             +icon('ico-document')
@@ -142,21 +142,34 @@ export default {
       fileName: ''
     }
   },
-  created: function () {
-    const data = {
-      rowId: this.id
-    }
+  created: function () {    
     this.$http
+      .post('http://localhost:3000/api/fetch-batch-results-report', {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      }).then((res) => {
+        console.log(res)
+      })
+  },
+  computed: {
+    list1: function() {
+      const data = {
+        rowId: this.id
+      }
+      this.$http
       .post('http://localhost:3000/api/fetch-dataset-meta', data, {
         'headers': {
           'content-type': 'application/json'
         }
       })
       .then((res) => {
+        console.log(res)
         const position = res.data[0].source.lastIndexOf('/')
         this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
         this.dbData = res.data[0]
       })
+    }
   },
   methods: {
     showOverallRistk: function () {
