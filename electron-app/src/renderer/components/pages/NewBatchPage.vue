@@ -14,7 +14,7 @@ include _mixins
                 // page back
                 router-link(:to="'/submissions'").page-back
                   .icon.icon-arrow-back
-                  span Submissions
+                  span Submissions {{list1}}
 
                 // upload form
                 form.p-box.upload(action="#")
@@ -34,6 +34,7 @@ include _mixins
                         .uploader__btn
                           label Choose file
                             input(type="file" id="file" name="file" v-on:change="processFile")
+                          span {{fileName}}
 
                         .uploader__current
                           .uploader__current-filename
@@ -53,10 +54,10 @@ include _mixins
                       textarea(placeholder="keywords" v-on:keydown="countdownKeywords" value="Garbage, gangster, gangstar, gang" v-model="keywordList")
                     .ui-group
                       label Duplicates threshold
-                      input(v-bind:placeholder="dbData.threshold1" v-model="threshold1")
+                      input(placeholder="Please input integers between 0 and 100" v-model="threshold1")
                     .ui-group
                       label Various Artists threshold
-                      input(v-bind:placeholder="dbData.threshold2" v-model="threshold2")
+                      input(placeholder="Please input integers greater than -1" type="number" v-model="threshold2")
                     .ui-group
                       label Language
                       .ui-checkbox-row
@@ -92,6 +93,7 @@ export default {
   },
   data () {
     return {
+      fileName: '',
       filePath: '',
       artistList: '',
       keywordList: '',
@@ -106,6 +108,24 @@ export default {
       dbData: {},
       lastInsertedID: 0,
       file: {}
+    }
+  },
+  computed: {
+    list1: function() {
+      this.$http
+      .post('http://localhost:3000/api/fetch-dataset-meta', {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
+      .then((res) => {
+        this.dbData = res.data[res.data.length - 1]
+        this.artistList = this.dbData.artist_blacklist
+        this.keywordList = this.dbData.keyword_blacklist
+        this.lang = this.dbData.lang
+        this.threshold1 = this.dbData.duplicates_threshold
+        this.threshold2 = this.dbData.various_artists_threshold
+      })
     }
   },
   methods: {
@@ -125,10 +145,10 @@ export default {
         alert('Please select Dataset file')
         return
       }
-      this.thresValue1 = parseInt(this.threshold1.replace('%', ''))
-      this.thresValue2 = parseInt(this.threshold2)
+      this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
+      this.thresValue2 = parseFloat(this.threshold2)
       if (this.threshold1 === '') {
-        this.thresValue1 = null
+        this.thresValue1 = 0
       }
       if (this.threshold2 === '') {
         this.thresValue2 = null
@@ -154,29 +174,21 @@ export default {
         time: Date.now()
       }
 
+      console.log(datasetMeta)
+
       this.$http
         .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
           'headers': {
             'content-type': 'application/json'
           }
         })
-        // .then((res) => {
-        //   console.log(res)
-        //   console.log(12312)
-        //   this.$http
-        //     .post('http://localhost:3000/api/fetch-field-by-field-report', {
-        //       'headers': {
-        //         'content-type': 'application/json'
-        //       }
-        //     })
-        //     .then(response => console.log(response.data));
-
-        // });
 
       this.$router.push('/submissions')
     },
     processFile: function (e) {
       this.file = event.target.files[0]
+      this.fileName = this.file.name
+      console.log(this.file)
       this.filePath = this.file.path
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
