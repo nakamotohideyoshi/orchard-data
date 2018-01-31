@@ -109,8 +109,8 @@ include _mixins
                                                 ul
                                                   li
                                                     span(v-if="dbData.lang == 'en-US'") English
-                                                    span(v-if="dbData.lang == 'en-ES'") Brazilian
-                                                    span(v-if="dbData.lang == 'pt-BR'") Portuguese
+                                                    span(v-if="dbData.lang == 'en-ES'") Spanish
+                                                    span(v-if="dbData.lang == 'pt-BR'") Brazilian Portugese
         block footer
             AppFooter
 </template>
