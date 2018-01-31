@@ -70,7 +70,12 @@
     &:hover, &.is-active
       color: #535B9E
       &::after
-        right: 0
+        right: 0    
+    &.is-disabled
+      color: #C0C4D3
+      cursor: not-allowed
+      &::after
+        display: none
 
   &__top
     margin-top: 43px
