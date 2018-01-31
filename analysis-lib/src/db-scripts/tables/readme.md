@@ -2,6 +2,30 @@
 
 This file keeps track of decision design for each database
 
+## batch\_results\_reports
+
+This table will hold information regarding filter statistics on a row basis.
+
+The columns are:
+
+* filter\_id => the id of the filter (e.g., filter1) that generated this report.
+
+* dataset\_id => the id of the dataset that generated this report.
+
+* criteria\_id => a unique key that can be used to look up a test
+  (a "filter" in your code). This table will contain a user-visible string to
+  explain the filter. The ID is not user-visible.
+
+* no\_of\_rows => the number of rows this dataset has
+
+* no\_of\_errors => the number of rows that failed test case specified by
+  \<filter\_id\>
+
+* error\_percent => the percentage of rows that failed test case specified by
+  \<filter\_id\>
+
+* error\_score => A weighted score for overall data quality - a number between 0
+  and 5.
 
 ## field\_by\_field\_reports
 
@@ -15,22 +39,22 @@ The columns are:
 
 * filter\_id => the id of the filter (e.g., filter1) that generated this row;
 
-* filename => the tsv file in which this filter was run
+* dataset\_id => the id of the dataset that generated this report.
 
 * criteria\_id => a unique key that can be used to look up a test
   (a "filter" in your code). This table will contain a user-visible string to
   explain the filter. The ID is not user-visible.
 
-* test\_data\_row\_id: a foreign key that enables lookup of all the values in a
+* test\_data\_row\_id => a foreign key that enables lookup of all the values in a
   row of test data. This corresponds to the table that the TSV is saved to.
 
-* test\_data\_field\_id: the names of the fields for which the error was thrown.
+* test\_data\_field\_ids => the names of the fields for which the error was thrown.
   In case the error involves more than one field, the fields are saved as an
   array string (e.g., "[Track Artist, Track Artist(s) - Featuring(s)]") using
   [JSON.stringify()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
 
 
-* test\_data\_field\_value: the values of the fields for which the error was thrown.
+* test\_data\_field\_values => the values of the fields for which the error was thrown.
   In case the error involves more than one field, the fields are saved as an
   array string (e.g., "[Various Artists, VA]") using
   [JSON.stringify()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify).
@@ -39,4 +63,10 @@ The columns are:
 ## orchard\_dataset\_contents
 
 A table to hold tsv files. The fields can be seen in [the wiki
+page](https://gitlab.com/vivadata/orchard-data-tests/wikis/home).
+
+
+## dataset\_meta
+
+A table to hold a dataset metadata. Further information can be seen in [the wiki
 page](https://gitlab.com/vivadata/orchard-data-tests/wikis/home).

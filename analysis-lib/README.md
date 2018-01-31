@@ -12,72 +12,49 @@ In this CLI, do not spend time making it pretty. It is only for our debugging co
 
 ### Analysis Lib Module
 
-This module exports the following objects:
+Analysis Lib Module new exposes a REST api.
 
-## dbInfo (JSON)
+To start the server:
 
-This module serves as a global variable for database information.
-In order to avoid propagation on the code in case a database name changes,
-they are all referenced in this file. Further information (e.g., columns
-names) can be added here if needed.
+`
+npm run dev
+`
 
-## dbInterface (MODULE)
+## Methods
 
-This module exports functions to write/read from the database. All database
-interaction is [Promise](https://bluebirdjs.com/docs/api-reference.html) based.
+# Save Datasets Meta and Run Filters
 
-The main interaction functions are:
+URL: '/api/save-and-run-filters'
+Method: 'POST'
+Content-Type: 'application/json'
 
-* dbInterface.saveTsvIntoDB(inputPath) => Loads TSV file from \<input\_path\> and
-  stores it on orchard\_dataset\_contents table.
+@args JSON => the data to be saved into the dataset\_meta table
+@return: JSON => an object containing a key 'dataset-id', which
+represents the ID of the recently saved dataset-meta.
 
-* dbInterface.saveDatasetMeta(metadata) => Load metadata into the dataset\_meta
-  table. Arg metadata should be a JSON with keys matching dataset\_meta table
-  keys.
+# Fetch Field by Field Reports
 
-* dbInterface.fetchTsvDataset(datasetId) => Returns a promise with the rows (if
-  resolved) with dataset\_id = \<datasetId\> from the orchard\_dataset\_contents
-  table, which corresponds to a TSV file.
+URL: '/api/fetch-field-by-field-report'
+Method: 'POST'
+Content-Type: 'application/json'
 
-* dbInterface.fetchFieldByFieldReport() => Returns a promise with all the rows (if
-  resolved) of the field\_by\_field\_reports table.
+@return: Promise => a promise containing all the records in the
+field\_by\_field\_reports table.
 
-## filtersDesc (JSON)
+# Fetch Batch Results Report
 
-A JSON file with informations for each filter. Since each filter is referenced
-through the application as 'filter\_\<filter\_id\>', this module holds all
-information regarding the filters, such as Orchard descriptions and user
-explanations.
+URL: '/api/fetch-batch-results-report'
+Method: 'POST'
+Content-Type: 'application/json'
 
-## filtersModule (JSON)
+@return: Promise => a promise containing all the records in the
+batch\_results\_reports table.
 
-A module that contains the functions for all filters.
+# Fetch Dataset Meta
 
-## main (FUNCTION)
+URL: '/api/fetch-batch-results-report'
+Method: 'POST'
+Content-Type: 'application/json'
 
-main(filterId, datasetId) is the core of the application, which will run the
-filter corresponding to \<filterId\> on the rows retrieved by the
-dbInterface.fetchTsvDataset(datasetId) function.
-
-
-### Filters API for dev testing
-
-## To add a TSV file to the orchard\_dataset\_contents table:
-
-* inputDir = './data-tests/input-files'
-* inputFile = '11-rows.tsv'
-
-```
-npm run add-tsv-to-db -- --input=<inputFilename>
-```
-
-## To run a single filter
-
-Defaults:
-
-* filter = 'filter1'
-* datasetId = '11-rows.tsv'
-
-```
-npm run filters -- --datasetId=<dataset_id> --filter=<filter_id>
-```
+@args JSON(optional) => must have key 'rowId'
+@return: Promise => if 'rowId' was specified, fetch records from dataset\_meta table with rowId = 'rowId'.  Otherwise, returns all records.
