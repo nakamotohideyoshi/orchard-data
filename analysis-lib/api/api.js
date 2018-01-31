@@ -70,5 +70,21 @@ router.post('/api/fetch-dataset-meta', (req, res) => {
 
 });
 
+router.post('/api/fetch-tsv-dataset', (req, res) => {
+
+  let datasetId = req.body['dataset-id'];
+  let promise;
+
+  if(datasetId) {
+    promise = dbInterface.fetchTsvDataset(datasetId)
+      .then(rows => res.send(rows));
+  }
+
+  else {
+    res.send(new Promise.reject("No dataset ID specified"));
+  }
+
+});
+
 // Export modules
 module.exports = router;
