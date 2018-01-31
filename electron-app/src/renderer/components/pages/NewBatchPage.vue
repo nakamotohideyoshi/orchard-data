@@ -181,16 +181,8 @@ export default {
           }
         })
         .then((res) => {
-          this.$http
-            .post('http://localhost:3000/api/fetch-dataset-meta', {
-              'headers': {
-                'content-type': 'application/json'
-              }
-            })
-            .then((response) => {       
-              const submittedId = response.data[response.data.length - 1].rowid
-              this.$router.push(`/submissions/${submittedId}`)
-            });
+          const submittedId = res.data['dataset-id']
+          this.$router.push(`/report/${submittedId}`)
 
         });
 
