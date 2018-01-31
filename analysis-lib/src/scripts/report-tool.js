@@ -11,8 +11,8 @@ module.exports = function() {
   dbInterface.init();
 
   // Initializes report for a tsv file
-  this.init = function(filename) {
-    this.filename = filename;
+  this.init = function(datasetId) {
+    this.datasetId = datasetId;
     this['filters'] = {};
   };
 
@@ -157,40 +157,47 @@ module.exports = function() {
 
   // ---------- Analysis methods ---------- //
 
-
-  // Calculates dataset metadata for a given filter
-  this.calcBatchResultsReport = function(filterId, datasetId) {
-
-    this.BRReport = this.BRReport || [];
-
-    let noOfOccurrences = Object.keys(this.filters[filterId]['occurs_on']).length;
-
-    // Percentage of rows with this error
-    let error_percent = noOfOccurrences / this.noOfRows;
-    // TODO: Weighted score for data quality
-    let error_score = Math.random() * 6;
-
-    this.filters[filterId].error_percent = error_percent;
-    this.filters[filterId].error_score = error_score;
-
-    this.BRReport.push([filterId, datasetId, 'userExplanation', this.noOfRows, noOfOccurrences, error_percent, error_score]);
-
-  };
-
   // Calculates dataset metadata for a al filters
-  this.calcBatchResultsReportAll = function(datasetId) {
+  this.calcBatchResultsReport = function() {
 
     return new Promise((resolve, reject) => {
-      Object.keys(this['filters']).forEach(filter =>
-                                           this.calcBatchResultsReport(filter,
-                                                                       datasetId));
+
+      let occurrences = [];
+      let noOfRows = this.noOfRows;
+
+      // Gets all occurrences
+      Object.keys(this['filters']).forEach(filterId => {
+        let filterOccursOn = Object.keys(this['filters'][filterId]['occurs_on']);
+        occurrences = occurrences.concat(filterOccursOn)
+      });
+
+      // Gets all unique occurrences
+      occurrences = occurrences.filter((v, i, a) => a.indexOf(v) === i);
+
+      this.noOfErrors = occurrences.length;
+
+      // Percentage of rows with any error
+      let error_percent = this.noOfErrors / this.noOfRows;
+
+      // TODO: Weighted score for data quality
+      let error_score = Math.random() * 6;
+
+      this.BRReport = {
+        'dataset_id': this.datasetId,
+        'no_of_rows': this.noOfRows,
+        'no_of_errors': this.noOfErrors,
+        'error_percent': error_percent,
+        'error_score': error_score
+      };
+
       resolve(this);
+
     });
 
   };
 
   // Calculates a field by field report for given filter
-  this.calcFieldByFieldReport = function(filterId, datasetId, verbose) {
+  this.calcFieldByFieldReport = function(filterId, verbose) {
 
     // If report was already calculated, just returns
     this.FBFReport = this.FBFreport || [];
@@ -211,7 +218,7 @@ module.exports = function() {
       let values = [];
 
       values.push(filter);
-      values.push(datasetId);
+      values.push(this.datasetId);
       values.push('userExplanation');
       values.push(occurrence['rowId']);
       values.push(JSON.stringify(occurrence['fields']));
@@ -241,11 +248,11 @@ module.exports = function() {
   };
 
   // Calculates a field by field report for all filters
-  this.calcFieldByFieldReportAll = function(datasetId) {
+  this.calcFieldByFieldReportAll = function() {
 
     return new Promise((resolve, reject) => {
       Object.keys(this['filters']).forEach(filter =>
-                                           this.calcFieldByFieldReport(filter,datasetId));
+                                           this.calcFieldByFieldReport(filter, this.datasetId));
       resolve(this);
     },
     (err) => reject(err));
