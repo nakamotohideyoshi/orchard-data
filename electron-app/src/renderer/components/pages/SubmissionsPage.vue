@@ -30,12 +30,13 @@
                                             td
                                                 router-link(:to="`/report/${data.rowid}`").page-back {{data.rowid}}
                                             td
-                                                router-link(:to="`/report/${data.rowid}`" v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'").p-table__status
-                                                    i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-success'")
-                                                    span {{data.status === 1 ? 'Waiting' : 'Success'}}
+                                                router-link(:to="`/report/${data.rowid}`" v-bind:class="{ 'p-table__status--sucess': data.status === 1, 'p-table__status--waiting': data.status === 3, 'p-table__status--failed': data.status === 2}").p-table__status
+                                                    i.icon(v-bind:class="{ 'icon-status-success': data.status === 1, 'icon-status-waiting': data.status === 3, 'icon-status-failed': data.status === 2}")
+                                                    span(v-if="data.status === 1") Success
+                                                    span(v-if="data.status === 2") Fail
+                                                    span(v-if="data.status === 3") In Progress
                                             td {{new Date(data.time).toString().slice(0, -14)}}
-
-
+                                            
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
