@@ -18,12 +18,15 @@ include _mixins
                                     
                                 // report box
                                 .p-box.report
-                                    // summary
+                                    // Summary
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head risk analysis {{list1}}
                                             .report-summary__text.report-summary__text--red Errors Per Row 
-                                        .report-summary__label.report-summary__label--red(v-if="dbData.status == 1") IN PROGRESS
+                                        .report-summary__label.report-summary__label--red
+                                          span(v-if="dbData.status == 1") Success
+                                          span(v-if="dbData.status == 2") Fail
+                                          span(v-if="dbData.status == 3") IN PROGRESS
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{new Date(dbData.time).toString().slice(0, -14)}}
@@ -34,8 +37,8 @@ include _mixins
                                     
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
-                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true, 'is-disabled': dbData.status == 1 }" :disabled="dbData.status == 1").report__tab Overall Risk Assessment
-                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true, 'is-disabled': dbData.status == 1 }" :disabled="dbData.status == 1").report__tab Apple & Itunes Guidelines
+                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true, 'is-disabled': dbData.status == 3 }" :disabled="dbData.status == 3").report__tab Overall Risk Assessment
+                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true, 'is-disabled': dbData.status == 3 }" :disabled="dbData.status == 3").report__tab Apple & Itunes Guidelines
                                         button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag == true }").report__tab Custom Parameters
                                     
 
@@ -117,8 +120,8 @@ export default {
   data () {
     return {
       overallRiskFlag: false,
-      appleTabFlag: false,
-      customFlag: true,
+      appleTabFlag: true,
+      customFlag: false,
       dbData: {},
       successPercent: 0.7,
       artistList: '',
@@ -155,7 +158,7 @@ export default {
         const position = res.data[0].source.lastIndexOf('/')
         this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
         this.dbData = res.data[0]
-        if(this.dbData.status == 1) {
+        if(this.dbData.status == 3) {
           this.customFlag = true
           this.overallRiskFlag = false
           this.appleTabFlag = false
