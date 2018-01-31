@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon api/main.js",
     "load-and-run": "node ./dev-scripts/load-and-run",
-    "update-status": "node ./dev-scripts/update-status"
+    "update-status": "node ./dev-scripts/update-status",
+    "clear-tables": "node ./dev-scripts/clear-dev-tables"
   },
   "license": null,
   "dependencies": {

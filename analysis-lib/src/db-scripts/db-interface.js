@@ -149,6 +149,8 @@ module.exports = function() {
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.run(`DELETE FROM ${tableName}`));
 
+    return dbPromise;
+
   };
 
   // Returns rows with given datasetId from the orchard table
@@ -202,19 +204,17 @@ module.exports = function() {
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
 
-        return Promise.map(report, (row) => {
+          let columns = Object.keys(report);
+          let placeholders = columns.map((val) => '(?)').join(',');
+          let stmt = `INSERT INTO ${reportTable.name}(${columns}) VALUES(${placeholders})`;
+          let values = Object.keys(report).map(key => report[key]);
 
-          let placeholders = row.map((val) => '(?)').join(',');
-          let stmt = `INSERT INTO ${reportTable.name} VALUES (${placeholders})`;
-
-          return db.run(stmt, row)
+          return db.run(stmt, values)
             .then((result) => {
               console.log(`Rows inserted: ${result.changes}`);
             },
               (err) => { console.log(err); }
             );
-
-        });
 
       });
 
