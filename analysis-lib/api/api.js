@@ -22,17 +22,19 @@ router.post('/api/save-and-run-filters', (req, res) => {
   dbPromise
     .then(result => {
       datasetId = result.lastID;
+      res.send({ "dataset-id": datasetId });
       let tsvPromise = dbInterface.saveTsvIntoDB(data.source, datasetId);
       return tsvPromise;
     })
     .then(() => analysisLibModule.runAllFilters(datasetId))
     .then(rep => {
       report = rep;
-      return report.calcFieldByFieldReportAll(datasetId)
+      return report.calcFieldByFieldReportAll(datasetId);
     })
     .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
     .then(() => report.calcBatchResultsReportAll(datasetId))
-    .then(rep => dbInterface.saveBatchResultsReport(report.BRReport));
+    .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
+    .then(() => console.log("Finished"));
     // .then(FBFReport => console.log(FBFReport));
 
 });
