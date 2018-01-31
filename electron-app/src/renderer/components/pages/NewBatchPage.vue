@@ -183,15 +183,11 @@ export default {
         .then((res) => {
           const submittedId = res.data['dataset-id']
           this.$router.push(`/report/${submittedId}`)
-
         });
-
-    //  this.$router.push('/submissions')
     },
     processFile: function (e) {
       this.file = event.target.files[0]
       this.fileName = this.file.name
-      console.log(this.file)
       this.filePath = this.file.path
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
