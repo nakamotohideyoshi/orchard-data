@@ -63,19 +63,19 @@ export default {
     }
   },
   created: function () {
-    console.log(this.id)
-    // const data = {
-    //   rowId: this.id
-    // }
-    // this.$http
-    //   .post('http://localhost:3000/api/fetch-dataset-meta', data, {
-    //     'headers': {
-    //       'content-type': 'application/json'
-    //     }
-    //   })
-    //   .then((res) => {
-    //     this.datasetMeta = res
-    //   })
+    const data = {
+      'dataset-id': this.id
+    }
+    this.$http
+      .post('http://localhost:3000/api/fetch-tsv-dataset', data, {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
+      .then((res) => {
+        this.batches = res.data
+        this.headers = Object.keys(this.batches[0])
+      })
   },
   methods: {
     moment: function () {
