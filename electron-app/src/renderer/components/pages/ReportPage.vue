@@ -30,10 +30,6 @@ include _mixins
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{new Date(dbData.time).toString().slice(0, -14)}}
-                                        .report-summary__col
-                                            .report-summary__head download
-                                            a(href="#" download).report-summary__text
-                                                +icon('ico-download')
                                     
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
@@ -46,13 +42,13 @@ include _mixins
                                     .report-container(v-if="appleTabFlag")
                                         .report__top
                                             .report__top-col
-                                                .report__top-percent {{((1-successPercent) * 100).toFixed(2)}} %
+                                                .report__top-percent {{(errorPercent * 100).toFixed(2)}} %
                                                 .report__top-description Total percent of rows with errors
                                             .report__top-col
                                                 .report__top-stars
-                                                  .success(v-for="data in Math.round(successPercent * 5)")
+                                                  .success(v-for="data in Math.round((1 - errorPercent) * 5)")
                                                     +icon('ico-star-filled')
-                                                  .failed(v-for="data in (5 - Math.round(successPercent * 5))")
+                                                  .failed(v-for="data in (5 - Math.round((1 - errorPercent) * 5))")
                                                     +icon('ico-star-empty')
                                                 .report__top-description Overall data quality
                                         
@@ -123,7 +119,7 @@ export default {
       appleTabFlag: true,
       customFlag: false,
       dbData: {},
-      successPercent: 0.7,
+      errorPercent: 0,
       artistList: '',
       keywordList: '',
       threshold1: '',
@@ -133,14 +129,7 @@ export default {
     }
   },
   created: function () {    
-    this.$http
-      .post('http://localhost:3000/api/fetch-batch-results-report', {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      }).then((res) => {
-        console.log(res)
-      })
+    
   },
   computed: {
     list1: function() {
@@ -154,6 +143,20 @@ export default {
         }
       })
       .then((res) => {
+        this.$http
+        .post('http://localhost:3000/api/fetch-batch-results-report', {
+          'headers': {
+            'content-type': 'application/json'
+          }
+        }).then((res) => {
+          const results = res.data
+          results.map(result => {
+            if (result.dataset_id == this.dbData.rowid) {
+              this.errorPercent = result.error_percent
+              console.log(this.errorPercent)
+            }
+          })
+        })
         console.log(res)
         const position = res.data[0].source.lastIndexOf('/')
         this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
