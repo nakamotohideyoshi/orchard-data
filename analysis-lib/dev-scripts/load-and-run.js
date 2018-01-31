@@ -28,13 +28,13 @@ dbPromise
     let tsvPromise = dbInterface.saveTsvIntoDB(data.source, datasetId);
     return tsvPromise;
   })
-  .then(() => analysisLibModule.runAllFilters(datasetId))
-  .then(rep => {
-    report = rep;
-    return report.calcFieldByFieldReportAll(datasetId);
-  })
-  .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
-  .then(() => report.calcBatchResultsReportAll(datasetId))
-  .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
-  .then(() => dbInterface.fetchBatchResultsReport())
-  .then(report => console.log(report));
+  // .then(() => analysisLibModule.runAllFilters(datasetId))
+  // .then(rep => {
+  //   report = rep;
+  //   return report.calcFieldByFieldReportAll(datasetId);
+  // })
+  // .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
+  // .then(() => report.calcBatchResultsReportAll(datasetId))
+  // .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
+  // .then(() => dbInterface.fetchBatchResultsReport())
+  // .then(report => console.log(report));
