@@ -5,7 +5,8 @@
   "author": "",
   "scripts": {
     "dev": "nodemon api/main.js",
-    "test-run": "node ./dev-scripts/load-and-run"
+    "load-and-run": "node ./dev-scripts/load-and-run",
+    "update-status": "node ./dev-scripts/update-status"
   },
   "license": null,
   "dependencies": {

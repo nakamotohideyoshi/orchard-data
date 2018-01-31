@@ -11,6 +11,12 @@ module.exports = function() {
 
     this.dbPath = dbInfo[DATABASE].path.concat(dbInfo[DATABASE].name).join("/");
 
+    this.dbStatus = {
+      'OK': 1,
+      'FAIL': 2,
+      'INPROGRESS': 3
+    };
+
   };
 
   // Loads TSV File into DATABASE
@@ -23,6 +29,7 @@ module.exports = function() {
     let dbPromise = readTsv(inputPath)
       .then(file => tsvFile = file)
       .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => this.updateDatasetStatus(datasetId, this.dbStatus.INPROGRESS))
       .then(db => {
 
         return Promise.map(tsvFile, (row) => {
@@ -41,7 +48,29 @@ module.exports = function() {
                  );
         });
 
+      })
+      .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.OK))
+      .catch(err => {
+        this.updateDatasetStatus(datasetId, this.dbStatus.ERROR);
+        return err;
       });
+
+    return dbPromise;
+
+  };
+
+  this.updateDatasetStatus = function(datasetId, status, dbPromise) {
+
+    let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta'];
+
+    dbPromise = dbPromise || Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }));
+
+    dbPromise.then(db => db.run(`
+        UPDATE ${datasetMetaTable.name}
+        SET status = ${status}
+        WHERE rowId = ${datasetId}
+      `));
 
     return dbPromise;
 
@@ -54,7 +83,6 @@ module.exports = function() {
     try {
 
       let dbPromise = Promise.resolve()
-
         .then(() => sqlite.open(this.dbPath, { Promise }))
         .then(db => {
 
