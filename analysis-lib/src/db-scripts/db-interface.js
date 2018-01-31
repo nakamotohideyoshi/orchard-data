@@ -149,6 +149,8 @@ module.exports = function() {
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.run(`DELETE FROM ${tableName}`));
 
+    return dbPromise;
+
   };
 
   // Returns rows with given datasetId from the orchard table
