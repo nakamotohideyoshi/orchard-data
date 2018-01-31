@@ -23,22 +23,19 @@ include _mixins
                                         .report-summary__col
                                             .report-summary__head risk analysis {{list1}}
                                             .report-summary__text.report-summary__text--red Errors Per Row 
-                                        .report-summary__label.report-summary__label--red(v-if="dbData.status == 1") Waiting
-                                        .report-summary__col
-                                            .report-summary__head batch id
-                                            .report-summary__text {{dbData.rowid}}
+                                        .report-summary__label.report-summary__label--red(v-if="dbData.status == 1") IN PROGRESS
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{new Date(dbData.time).toString().slice(0, -14)}}
                                         .report-summary__col
                                             .report-summary__head download
-                                            a(href="#").report-summary__text
+                                            a(href="#" download).report-summary__text
                                                 +icon('ico-download')
                                     
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
-                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true }" :disabled="dbData.status == 1").report__tab Overall Risk Assessment
-                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true }" :disabled="dbData.status == 1").report__tab Apple & Itunes Guidelines
+                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true, 'is-disabled': dbData.status == 1 }" :disabled="dbData.status == 1").report__tab Overall Risk Assessment
+                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true, 'is-disabled': dbData.status == 1 }" :disabled="dbData.status == 1").report__tab Apple & Itunes Guidelines
                                         button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag == true }").report__tab Custom Parameters
                                     
 
