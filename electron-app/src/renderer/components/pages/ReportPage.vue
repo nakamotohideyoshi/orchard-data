@@ -86,31 +86,21 @@ include _mixins
                                             
                                             .ui-group
                                                 label Artist blacklist
-                                                ul
-                                                    li
-                                                        .item {{dbData.artist_blacklist}}
+                                                textarea.disabled(v-bind:placeholder="dbData.artist_blacklist" v-model="artistList" :disabled="true")
                                             .ui-group
                                                 label Keyword blacklist
-                                                ul
-                                                    li
-                                                        .item {{dbData.keyword_blacklist}}
+                                                textarea.disabled(v-bind:placeholder="dbData.keyword_blacklist" v-model="keywordList" :disabled="true")
                                             .ui-group
                                                 label Duplicates threshold
-                                                ul
-                                                    li
-                                                        .item {{dbData.duplicates_threshold}}
+                                                input(v-bind:placeholder="dbData.duplicates_threshold" type="number" v-model="threshold1" :disabled="true")
                                             .ui-group
                                                 label Various Artists threshold
-                                                ul
-                                                    li
-                                                        .item {{dbData.various_artists_threshold}}
+                                                input(v-bind:placeholder="dbData.various_artists_threshold" type="number" v-model="threshold2" :disabled="true")
                                             .ui-group
                                                 label Language
-                                                ul
-                                                  li
-                                                    span(v-if="dbData.lang == 'en-US'") English
-                                                    span(v-if="dbData.lang == 'en-ES'") Spanish
-                                                    span(v-if="dbData.lang == 'pt-BR'") Brazilian Portugese
+                                                    .language(v-if="dbData.lang == 'en-US'") English
+                                                    .language(v-if="dbData.lang == 'en-ES'") Spanish
+                                                    .language(v-if="dbData.lang == 'pt-BR'") Brazilian Portugese
         block footer
             AppFooter
 </template>
