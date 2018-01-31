@@ -174,16 +174,27 @@ export default {
         time: Date.now()
       }
 
-      console.log(datasetMeta)
-
       this.$http
         .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
           'headers': {
             'content-type': 'application/json'
           }
         })
+        .then((res) => {
+          this.$http
+            .post('http://localhost:3000/api/fetch-dataset-meta', {
+              'headers': {
+                'content-type': 'application/json'
+              }
+            })
+            .then((response) => {       
+              const submittedId = response.data[response.data.length - 1].rowid
+              this.$router.push(`/submissions/${submittedId}`)
+            });
 
-      this.$router.push('/submissions')
+        });
+
+    //  this.$router.push('/submissions')
     },
     processFile: function (e) {
       this.file = event.target.files[0]
