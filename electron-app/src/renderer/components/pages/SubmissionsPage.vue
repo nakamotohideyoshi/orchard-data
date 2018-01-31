@@ -33,7 +33,7 @@
                                                 router-link(:to="`/report/${data.rowid}`" v-bind:class="data.status === 1 ? 'p-table__status--waiting' : 'p-table__status--sucess'").p-table__status
                                                     i.icon(v-bind:class="data.status === 1 ? 'icon-status-waiting' : 'icon-status-success'")
                                                     span {{data.status === 1 ? 'Waiting' : 'Success'}}
-                                            td {{new Date(data.time).toISOString().slice(0, -5)}}
+                                            td {{new Date(data.time).toString().slice(0, -14)}}
 
 
                                 .p-container__more
