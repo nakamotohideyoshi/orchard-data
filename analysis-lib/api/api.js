@@ -29,10 +29,10 @@ router.post('/api/save-and-run-filters', (req, res) => {
     .then(() => analysisLibModule.runAllFilters(datasetId))
     .then(rep => {
       report = rep;
-      return report.calcFieldByFieldReportAll(datasetId);
+      return report.calcFieldByFieldReportAll();
     })
     .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
-    .then(() => report.calcBatchResultsReportAll(datasetId))
+    .then(() => report.calcBatchResultsReport())
     .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
     .then(() => console.log("Finished"));
     // .then(FBFReport => console.log(FBFReport));
