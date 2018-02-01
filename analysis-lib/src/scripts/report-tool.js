@@ -1,6 +1,6 @@
 module.exports = function() {
 
-  let descriptions = require('../filters/filters-desc');
+  let filtersMeta = require('../filters/filters-meta');
   let DATABASE = require('./constants').DATABASE;
   let Promise = require('bluebird');
 
@@ -24,7 +24,7 @@ module.exports = function() {
   // Adds a filter to the report. Skips if it already exists
   this.addFilter = function(filterName) {
 
-    let filterDesc = descriptions[filterName];
+    let filterDesc = filtersMeta[filterName];
 
     // Filter already exists
     if(this.filters[filterName]) {
@@ -252,7 +252,7 @@ module.exports = function() {
 
     return new Promise((resolve, reject) => {
       Object.keys(this['filters']).forEach(filter =>
-                                           this.calcFieldByFieldReport(filter, this.datasetId));
+                                           this.calcFieldByFieldReport(filter));
       resolve(this);
     },
     (err) => reject(err));
