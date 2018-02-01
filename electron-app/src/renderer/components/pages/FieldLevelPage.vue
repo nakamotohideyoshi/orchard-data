@@ -45,7 +45,7 @@ include _mixins
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
-                                modal(name="hello-world").modal
+                                modal(name="hello-world" height="auto").modal
                                     button.close-button(v-on:click="hide()")
                                         +icon('ico-close')
                                     label Description                                    

@@ -139,21 +139,7 @@ export default {
           'content-type': 'application/json'
         }
       })
-      .then((res) => {
-        this.$http
-        .post('http://localhost:3000/api/fetch-batch-results-report', {
-          'headers': {
-            'content-type': 'application/json'
-          }
-        }).then((res) => {
-          const results = res.data
-          results.map(result => {
-            if (result.dataset_id == this.dbData.rowid) {
-              this.errorPercent = result.error_percent
-              console.log(this.errorPercent)
-            }
-          })
-        })
+      .then((res) => {        
         console.log(res)
         const position = res.data[0].source.lastIndexOf('/')
         this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
@@ -163,6 +149,20 @@ export default {
           this.overallRiskFlag = false
           this.appleTabFlag = false
         }
+        this.$http
+        .post('http://localhost:3000/api/fetch-batch-results-report', {
+          'headers': {
+            'content-type': 'application/json'
+          }
+        }).then((response) => {
+          const results = response.data
+          results.map(result => {
+            console.log(result)
+            if (result.dataset_id == this.dbData.rowid) {
+              this.errorPercent = result.error_percent
+            }
+          })
+        })        
       })
     }
   },
