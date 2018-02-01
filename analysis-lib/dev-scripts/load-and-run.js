@@ -29,12 +29,12 @@ dbPromise
     return tsvPromise;
   })
   .then(() => analysisLibModule.runAllFilters(datasetId))
-  // .then(rep => {
-  //   report = rep;
-  //   return report.calcFieldByFieldReportAll(datasetId);
-  // })
-  // .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
-  .then(rep => rep.calcBatchResultsReport())
-  .then(rep => dbInterface.saveBatchResultsReport(rep.BRReport))
+  .then(rep => {
+    report = rep;
+    return report.calcFieldByFieldReportAll(datasetId);
+  })
+  .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
+  .then(rep => report.calcBatchResultsReport())
+  .then(rep => dbInterface.saveBatchResultsReport(report.BRReport));
   // .then(() => dbInterface.fetchBatchResultsReport())
   // .then(report => console.log(report));
