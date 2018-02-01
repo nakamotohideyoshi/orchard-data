@@ -59,6 +59,17 @@ export default {
       }
     }
   },
+  created: function () {
+    this.$http
+      .post('http://localhost:3000/api/fetch-field-by-field-report', {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
+      .then((res) => {
+        console.log(res)
+      })
+  },
   methods: {
     moment: function () {
       return moment()

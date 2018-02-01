@@ -128,9 +128,6 @@ export default {
       fileName: ''
     }
   },
-  created: function () {    
-    
-  },
   computed: {
     list1: function() {
       const data = {
