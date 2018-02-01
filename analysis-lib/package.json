@@ -1,0 +1,27 @@
+{
+  "name": "analysis-lib",
+  "version": "0.0.0",
+  "description": "Command line interface to run the TSV tests",
+  "author": "",
+  "scripts": {
+    "dev": "nodemon api/main.js",
+    "load-and-run": "node ./dev-scripts/load-and-run",
+    "update-status": "node ./dev-scripts/update-status",
+    "clear-tables": "node ./dev-scripts/clear-dev-tables"
+  },
+  "license": null,
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "csv-parser": "^1.12.0",
+    "express": "^4.16.2",
+    "minimist": "^1.2.0",
+    "sqlite": "^2.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "node-rest-client": "^3.1.0",
+    "nodemon": "^1.14.11"
+  }
+}

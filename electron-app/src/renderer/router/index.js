@@ -35,9 +35,10 @@ export default new Router({
       component: NewBatchPage
     },
     {
-      path: '/report',
+      path: '/report/:id',
       name: 'report',
-      component: ReportPage
+      component: ReportPage,
+      props: true
     },
     {
       path: '/report-progress',
@@ -60,9 +61,10 @@ export default new Router({
       component: CriteriaScoresPage
     },
     {
-      path: '/csv',
+      path: '/csv/:id',
       name: 'csv',
-      component: CsvPage
+      component: CsvPage,
+      props: true 
     },
     {
       path: '*',

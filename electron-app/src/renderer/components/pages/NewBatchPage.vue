@@ -1,83 +1,84 @@
 <template lang="pug">
 include _mixins
 #barba-wrapper
-	.page(class=outClass)
-		block header
-			AppHeader
-		.page__content
-			block content
-				.p-container
-					.container
-						.p-container__wrapper
-							.container.container--smaller
-								
-								// page back
-								router-link(:to="'/submissions'").page-back
-									.icon.icon-arrow-back
-									span Submissions
-								
-								// upload form
-								form.p-box.upload(action="#")
-									.upload__title
-										+icon('ico-upload')
-										h1 Upload new dataset
-										
-									// group
-									.upload__group
-										.upload__group-name
-											+icon('ico-market-music')
-											span Choose a dataset (required)
-										
-										.ui-group
-											label Dataset
-											.uploader(js-uploader data-validate="csv")
-												.uploader__btn
-													label Choose file
-														input(type="file" id="file" name="file" v-on:change="processFile")
-														
-												.uploader__current
-													.uploader__current-filename
-													+icon('ico-close')
-													
-									// group
-									.upload__group
-										.upload__group-name
-											+icon('ico-market-music')
-											span Parameters
-										
-										.ui-group
-											label Artist blacklist
-											textarea(placeholder="Artist 1" v-on:keydown="countdownArtistList" v-model="artistList")
-										.ui-group
-											label Keyword blacklist
-											textarea(placeholder="keywords" v-on:keydown="countdownKeywords" value="Garbage, gangster, gangstar, gang" v-model="keywordList")
-										.ui-group
-											label Duplicates threshold
-											input(v-bind:placeholder="dbData.threshold1" v-model="threshold1")
-										.ui-group
-											label Various Artists threshold
-											input(v-bind:placeholder="dbData.threshold2" v-model="threshold2")
-										.ui-group
-											label Language
-											.ui-checkbox-row
-												.ui-checkbox
-													input(type="radio" name="cb" id="cb_2" value="en-US" v-model="lang")
-													label(for="cb_2")
-														span English
-												.ui-checkbox
-													input(type="radio" name="cb" id="cb_3" value="en-ES" v-model="lang")
-													label(for="cb_3")
-														span Spanish
-												.ui-checkbox
-													input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
-													label(for="cb_1") 
-														span Brazilian Portugese
-										// CTA
-										.upload__cta
-											button(type="submit" v-on:click="submitForm" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
-												span Start Testing
-		block footer
-			AppFooter
+  .page(class=outClass)
+    block header
+      AppHeader
+    .page__content
+      block content
+        .p-container
+          .container
+            .p-container__wrapper
+              .container.container--smaller
+
+                // page back
+                router-link(:to="'/submissions'").page-back
+                  .icon.icon-arrow-back
+                  span Submissions {{list1}}
+
+                // upload form
+                form.p-box.upload(action="#")
+                  .upload__title
+                    +icon('ico-upload')
+                    h1 Upload new dataset
+
+                  // group
+                  .upload__group
+                    .upload__group-name
+                      +icon('ico-market-music')
+                      span Choose a dataset (required)
+
+                    .ui-group
+                      label Dataset
+                      .uploader(js-uploader data-validate="csv")
+                        .uploader__btn
+                          label Choose file
+                            input(type="file" id="file" name="file" v-on:change="processFile")
+                          span {{fileName}}
+
+                        .uploader__current
+                          .uploader__current-filename
+                          +icon('ico-close')
+
+                  // group
+                  .upload__group
+                    .upload__group-name
+                      +icon('ico-market-music')
+                      span Parameters
+
+                    .ui-group
+                      label Artist blacklist
+                      textarea(placeholder="Artist 1" v-on:keydown="countdownArtistList" v-model="artistList")
+                    .ui-group
+                      label Keyword blacklist
+                      textarea(placeholder="keywords" v-on:keydown="countdownKeywords" value="Garbage, gangster, gangstar, gang" v-model="keywordList")
+                    .ui-group
+                      label Duplicates threshold
+                      input(placeholder="Please input integers between 0 and 100" v-model="threshold1")
+                    .ui-group
+                      label Various Artists threshold
+                      input(placeholder="Please input integers greater than -1" type="number" v-model="threshold2")
+                    .ui-group
+                      label Language
+                      .ui-checkbox-row
+                        .ui-checkbox
+                          input(type="radio" name="cb" id="cb_2" value="en-US" v-model="lang")
+                          label(for="cb_2")
+                            span English
+                        .ui-checkbox
+                          input(type="radio" name="cb" id="cb_3" value="en-ES" v-model="lang")
+                          label(for="cb_3")
+                            span Spanish
+                        .ui-checkbox
+                          input(type="radio" name="cb" id="cb_1" value="pt-BR" v-model="lang")
+                          label(for="cb_1")
+                            span Brazilian Portugese
+                    // CTA
+                    .upload__cta
+                      button(type="submit" v-on:click="submitForm" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
+                        span Start Testing
+    block footer
+      AppFooter
 </template>
 
 <script>
@@ -92,6 +93,7 @@ export default {
   },
   data () {
     return {
+      fileName: '',
       filePath: '',
       artistList: '',
       keywordList: '',
@@ -103,22 +105,30 @@ export default {
       thresValue2: 0,
       buttonDisabled: true,
       lang: 'en-US',
-      dbData: {}
+      dbData: {},
+      lastInsertedID: 0,
+      file: {}
     }
   },
-  created: function () {
-    var sqlite3 = require('sqlite3').verbose()
-    var db = new sqlite3.Database('db.sqlite')
-    var that = this
-    db.all('SELECT rowid as id, * FROM data', function (err, rows) {
-      if (err) {
-        console.log('error')
-      }
-      if (rows) {
-        that.dbData = rows[rows.length - 1]
-        that.lang = rows[rows.length - 1].lang
-      }
-    })
+  computed: {
+    list1: function() {
+      this.$http
+      .post('http://localhost:3000/api/fetch-dataset-meta', {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
+      .then((res) => {
+        if(res.data.length > 0) {
+          this.dbData = res.data[res.data.length - 1]
+          this.artistList = this.dbData.artist_blacklist
+          this.keywordList = this.dbData.keyword_blacklist
+          this.lang = this.dbData.lang
+          this.threshold1 = this.dbData.duplicates_threshold
+          this.threshold2 = this.dbData.various_artists_threshold
+        }
+      })
+    }
   },
   methods: {
     countdownArtistList: function (evt) {
@@ -133,16 +143,14 @@ export default {
     },
     submitForm: function (e) {
       e.preventDefault()
-      var sqlite3 = require('sqlite3').verbose()
-      var db = new sqlite3.Database('db.sqlite')
       if (this.filePath === '') {
         alert('Please select Dataset file')
         return
       }
-      this.thresValue1 = parseInt(this.threshold1.replace('%', ''))
-      this.thresValue2 = parseInt(this.threshold2)
+      this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
+      this.thresValue2 = parseFloat(this.threshold2)
       if (this.threshold1 === '') {
-        this.thresValue1 = null
+        this.thresValue1 = 0
       }
       if (this.threshold2 === '') {
         this.thresValue2 = null
@@ -155,27 +163,34 @@ export default {
         alert('Various Artists threshold must be greater than -1.')
         return
       }
-      var that = this
-      db.serialize(function () {
-        db.run('CREATE TABLE IF NOT EXISTS data (file TEXT, artistlist TEXT, keywordlist TEXT, threshold1 INTEGER, threshold2 INTEGER, lang TEXT, status INTEGER, time INTEGER)')
-        var stmt = db.prepare('INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-        stmt.run(that.filePath, that.artistList, that.keywordList, that.thresValue1, that.thresValue2, that.lang, 1, Date.now())
-        stmt.finalize(function () {
-          that.$router.push('/')
+
+      // Saves metadata
+      const datasetMeta = {
+        source: this.filePath,
+        artist_blacklist: this.artistList,
+        keyword_blacklist: this.keywordList,
+        duplicates_threshold: this.thresValue1,
+        various_artists_threshold: this.thresValue2,
+        lang: this.lang,
+        status: 1,
+        time: Date.now()
+      }
+
+      this.$http
+        .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
+          'headers': {
+            'content-type': 'application/json'
+          }
         })
-        // db.each('SELECT rowid as id, * FROM data', function (err, row) {
-        //   if (err) {
-        //     console.log('error')
-        //   }
-        //   console.log(row)
-        // })
-      })
-      db.close()
-      console.log('clicked', this.artistList, this.keywordList, this.thresValue1, this.thresValue2, this.lang)
+        .then((res) => {
+          const submittedId = res.data['dataset-id']
+          this.$router.push(`/report/${submittedId}`)
+        });
     },
     processFile: function (e) {
-      var file = event.target.files[0]
-      this.filePath = file.path
+      this.file = event.target.files[0]
+      this.fileName = this.file.name
+      this.filePath = this.file.path
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
     }
@@ -185,4 +200,5 @@ export default {
 
 <style lang="sass" scoped>
 @import "../../assets/styles/app.sass";
+</style>"../../assets/styles/app.sass";
 </style>
