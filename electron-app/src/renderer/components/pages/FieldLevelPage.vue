@@ -45,15 +45,21 @@ include _mixins
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
-                                modal(name="hello-world")
-                                    span {{detailData.criteria_id}}
-                                    span {{detailData.dataset_id}}
-                                    span {{detailData.filter_id}}
-                                    span {{detailData.rowid}}
-                                    span {{detailData.test_data_field_id}}
-                                    span {{detailData.test_data_field_value}}
-                                    span {{detailData.test_data_row_id}}
-                                // v-dialog
+                                modal(name="hello-world").modal
+                                    button.close-button(v-on:click="hide()")
+                                        +icon('ico-close')
+                                    label Description                                    
+                                    .description this is test
+                                    label Row Id in field-by-field report
+                                    .description {{detailData.rowid}}
+                                    label Row id in Dataset
+                                    .description {{detailData.dataset_id}}
+                                    label Data fields
+                                    .description {{detailData.test_data_field_ids}}
+                                    .description {{detailData.test_data_field_values}}
+                                    .btn-group
+                                      button(v-on:click="goCSVPage()").btn.btn-view-detail View Row
+                                      button(v-on:click="showParams()").btn.btn-view-detail View Test Paramters
 
                 //- include components/_modal
         block footer
