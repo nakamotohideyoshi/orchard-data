@@ -58,7 +58,7 @@ include _mixins
                                     .description {{detailData.test_data_field_ids}}
                                     .description {{detailData.test_data_field_values}}
                                     .btn-group
-                                      button(v-on:click="goCSVPage()").btn.btn-view-detail View Row
+                                      router-link(:to="`/csv/${detailData.dataset_id}`").btn.btn-view-detail View Row
                                       button(v-on:click="showParams()").btn.btn-view-detail View Test Paramters
 
                 //- include components/_modal

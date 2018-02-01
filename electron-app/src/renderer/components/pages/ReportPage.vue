@@ -157,9 +157,9 @@ export default {
         }).then((response) => {
           const results = response.data
           results.map(result => {
-            console.log(result)
             if (result.dataset_id == this.dbData.rowid) {
-              this.errorPercent = result.error_percent
+              this.errorPercent = result.error_percent              
+              console.log(result)
             }
           })
         })        
