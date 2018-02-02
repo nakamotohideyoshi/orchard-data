@@ -118,24 +118,24 @@ $sprite: (
 
 
 
-	.icon-arrow-back {
-		@include sprite(arrow-back)
-	}
-	.icon-calendar-grid {
-		@include sprite(calendar-grid)
-	}
-	.icon-list {
-		@include sprite(list)
-	}
-	.icon-status-failed {
-		@include sprite(status-failed)
-	}
-	.icon-status-progress {
-		@include sprite(status-progress)
-	}
-	.icon-status-sucess {
-		@include sprite(status-sucess)
-	}
-	.icon-status-waiting {
-		@include sprite(status-waiting)
-	}
+.icon-arrow-back {
+	@include sprite(arrow-back)
+}
+.icon-calendar-grid {
+	@include sprite(calendar-grid)
+}
+.icon-list {
+	@include sprite(list)
+}
+.icon-status-failed {
+	@include sprite(status-failed)
+}
+.icon-status-progress {
+	@include sprite(status-progress)
+}
+.icon-status-success {
+	@include sprite(status-sucess)
+}
+.icon-status-waiting {
+	@include sprite(status-waiting)
+}

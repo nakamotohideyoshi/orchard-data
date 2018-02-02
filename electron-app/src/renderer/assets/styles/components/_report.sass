@@ -29,7 +29,7 @@
         bottom: 17px
         left: 0
         right: 0
-        background: rgba(#E8E9EC, .5)
+      //  background: rgba(#E8E9EC, .5)
         height: 1px
 
       .report__tab
@@ -51,6 +51,7 @@
     font-size: 20px
     margin: 0 3.7%
     color: #656AEB
+    background: transparent
     &:first-child
       margin-left: auto
     &:last-of-type
@@ -69,7 +70,12 @@
     &:hover, &.is-active
       color: #535B9E
       &::after
-        right: 0
+        right: 0    
+    &.is-disabled
+      color: #C0C4D3
+      cursor: not-allowed
+      &::after
+        display: none
 
   &__top
     margin-top: 43px
@@ -94,6 +100,7 @@
       padding-top: 5px
       letter-spacing: 0px
     &-stars
+      display: flex
       padding-top: 4px
       color: #535B9E
       font-size: 25px
