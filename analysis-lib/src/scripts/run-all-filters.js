@@ -34,7 +34,7 @@ module.exports = function(datasetId) {
         rows.forEach((row, idx) => {
 
           report.addFilter(filter);
-          filters[filter](row, idx, report);
+          filters[filter](row, idx + 1, report);
 
         });
 

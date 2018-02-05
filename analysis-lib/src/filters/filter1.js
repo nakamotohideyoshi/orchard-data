@@ -7,41 +7,77 @@ module.exports = function(row, idx, report) {
   let removeDiacritics = require('../scripts/remove-diacritics');
 
   // Captures all fields related to 'Track Artists'
-  let fieldRegex = /(track\_artist)(_+[a-z A-Z]+)*/i;
+  let fields = ['track_artist', 'track_artist_featuring'];
 
   // Captures invalid field values
-  let abbreviationsRegex = /v\/?\.?a.?/i;
-  let vaRegex = /(vario)u?(s)\,?\.?( (artist)s?)?/i;
+  let invalidStrings = {
+    'abbreviations':          /^v\/?\.?a\.?$/i,
+    'arabic':                 /^فنانون متنوعون$/i,
+    'english':                /^(vario)u?(s)(\,?\.? ?(artist)s?)?$/i,
+    'chinese-simplified':     /^群星$/i,
+    'chinese-traditional':    /^群星$/i,
+    'dutch':                  /^(verschillende)(\,?\.? ?(artiest)(en)?)?$/i,
+    'french':                 /^(multi)(\-?\,?\.? ?)((interprete)(s)?)?((artiste)(s)?)?$/i,
+    'german':                 /^(verschiedene)(\-?\,?\.? ?(Interprete)(n)?)?$/i,
+    'greek':                  /^(Διάφοροι καλλιτέχνες)$/i,
+    'hebrew':                 /^אמנים שונים$/,
+    'italian':                /^(artisti)(\-?\,?\.? ?(vari)?)?$/i,
+    'korean':                 /^여러 아티스트$/i,
+    'portuguese':             /^(varios)(\-?\,?\.? ?(interpretes)?)?$/i,
+    'russian':                /^(Разные исполнители)$/i,
+    'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i,
+    'swedish':                /^(blandade)(\-?\,?\.? ?(artist)(er)?)?$/i,
+    'thai':                   /^รวมศิลปิน$/i,
+    'turkish':                /^(cesitli)(\-?\,?\.? ?(sanatcilar)?)?$/i
+  };
+
+  var languages = Object.keys(invalidStrings);
+  console.log(row);
 
   // Iterates over each TSV field
   Object.keys(row).forEach(field => {
 
-    if(fieldRegex.test(field)) {
+    // If field is related to 'track artists'
+    if(fields.indexOf(field) !== -1) {
 
-      // Removes diacritics, converts to lowercase and removes trimming
-      // whitespaces
-      var value = row[field];
-      value = removeDiacritics(value);
-      value = value.toLowerCase().trim();
+      let value = row[field];
 
-      // Various Artists is illegal unless the value of the field
-      // "Track Artist(s) - Remixer(s)" is non-null,
-      // or the value of the field "Version" contains "mix".
-      if(row['track_artist_remixer'] || row['version'].toLowerCase() === 'mix') {}
+      // Only tests if value is non-null
+      if(value) {
 
-      else {
+        // forEach does not allow continue/break
+        for(i = 0; i < languages.length; i++) {
 
-        // error condition is met
-        if(abbreviationsRegex.test(value) || vaRegex.test(value)) {
+          let regex = invalidStrings[languages[i]];
 
-          var occurrence = {
-            'rowId': idx,
-            'field': field,
-            'value': row[field]
-          };
+          // Removes diacritics and removes trimming whitespaces
+          value = value.trim();
+          value = removeDiacritics(value);
 
-          // stores error occurrence in filter report
-          report.addOccurrence(filterName, occurrence);
+          console.log("\n");
+          console.log(field);
+          console.log(row[field]);
+          console.log(regex);
+          console.log(value);
+          console.log(regex.test(value));
+          console.log("\n");
+
+          // error condition is met
+          if(regex.test(value)) {
+
+            var occurrence = {
+              'rowId': idx,
+              'field': field,
+              'value': row[field]
+            };
+
+            // stores error occurrence in filter report
+            report.addOccurrence(filterName, occurrence);
+
+            // Doesn't need to test other languages
+            break;
+
+          }
 
         }
 
