@@ -215,14 +215,13 @@ module.exports = function() {
 
       let occurrence = this.filters[filter]['occurs_on'][rowId];
 
-      let values = [];
-
-      values.push(filter);
-      values.push(this.datasetId);
-      values.push('userExplanation');
-      values.push(occurrence['rowId']);
-      values.push(JSON.stringify(occurrence['fields']));
-      values.push(JSON.stringify(occurrence['values']));
+      let values = {
+        'dataset_id': this.datasetId,
+        'criteria_id': filter,
+        'test_data_row_id': occurrence['rowId'],
+        'test_data_field_ids': JSON.stringify(occurrence['fields']),
+        'test_data_field_values': JSON.stringify(occurrence['values']),
+      };
 
       this.FBFReport.push(values);
 
