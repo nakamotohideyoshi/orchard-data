@@ -15,7 +15,7 @@ describe('FieldLevelPage.vue', () => {
 
   it('should render correct function', () => {
     Vue.use(VueRouter)
-    //const wrapper = mount(FieldLevelPage)
+    // const wrapper = mount(FieldLevelPage)
     expect(typeof wrapper.methods().moment).to.equal('function')
   })
 })

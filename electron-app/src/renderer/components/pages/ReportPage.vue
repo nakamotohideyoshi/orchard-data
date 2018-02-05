@@ -10,19 +10,19 @@ include _mixins
                     .container
                         .p-container__wrapper
                             .container.container--smaller
-                                
+
                                 // page back
                                 router-link(:to="'/submissions'").page-back
                                     .icon.icon-arrow-back
                                     span Report Summary
-                                    
+
                                 // report box
                                 .p-box.report
                                     // Summary
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head risk analysis {{list1}}
-                                            .report-summary__text.report-summary__text--red Errors Per Row 
+                                            .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red
                                           span(v-if="dbData.status == 1") Success
                                           span(v-if="dbData.status == 2") Fail
@@ -30,13 +30,13 @@ include _mixins
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{new Date(dbData.time).toString().slice(0, -14)}}
-                                    
+
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
                                         button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true, 'is-disabled': dbData.status == 3 }" :disabled="dbData.status == 3").report__tab Overall Risk Assessment
                                         button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true, 'is-disabled': dbData.status == 3 }" :disabled="dbData.status == 3").report__tab Apple & Itunes Guidelines
                                         button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag == true }").report__tab Custom Parameters
-                                    
+
 
                                     // summary
                                     .report-container(v-if="appleTabFlag")
@@ -51,7 +51,7 @@ include _mixins
                                                   .failed(v-for="data in (5 - Math.round((1 - errorPercent) * 5))")
                                                     +icon('ico-star-empty')
                                                 .report__top-description Overall data quality
-                                        
+
                                         // report view
                                         .report__view
                                             .report__view-title What are the biggest problems with the dataset?
@@ -70,7 +70,7 @@ include _mixins
                                                 span View the field level issues
                                     .report-container(v-if="overallRiskFlag")
 
-                                    .report-container(v-if="customFlag")              
+                                    .report-container(v-if="customFlag")
                                         // group
                                         router-link(:to="`/csv/${dbData.rowid}`").report__view-link
                                             +icon('ico-document')
@@ -79,7 +79,7 @@ include _mixins
                                             .upload__group-name
                                                 +icon('ico-market-music')
                                                 span Parameters
-                                            
+
                                             .ui-group
                                                 label Artist blacklist
                                                 textarea.disabled(v-bind:placeholder="dbData.artist_blacklist" v-model="artistList" :disabled="true")
@@ -129,41 +129,41 @@ export default {
     }
   },
   computed: {
-    list1: function() {
+    list1: function () {
       const data = {
         rowId: this.id
       }
       this.$http
-      .post('http://localhost:3000/api/dataset-meta', data, {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      })
-      .then((res) => {        
-        console.log(res)
-        const position = res.data[0].source.lastIndexOf('/')
-        this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
-        this.dbData = res.data[0]
-        if(this.dbData.status == 3) {
-          this.customFlag = true
-          this.overallRiskFlag = false
-          this.appleTabFlag = false
-        }
-        this.$http
-        .post('http://localhost:3000/api/batch-results-report', {
+        .post('http://localhost:3000/api/dataset-meta', data, {
           'headers': {
             'content-type': 'application/json'
           }
-        }).then((response) => {
-          const results = response.data
-          results.map(result => {
-            if (result.dataset_id == this.dbData.rowid) {
-              this.errorPercent = result.error_percent              
-              console.log(result)
-            }
-          })
-        })        
-      })
+        })
+        .then((res) => {
+          console.log(res)
+          const position = res.data[0].source.lastIndexOf('/')
+          this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
+          this.dbData = res.data[0]
+          if (this.dbData.status === 3) {
+            this.customFlag = true
+            this.overallRiskFlag = false
+            this.appleTabFlag = false
+          }
+          this.$http
+            .post('http://localhost:3000/api/batch-results-report', {
+              'headers': {
+                'content-type': 'application/json'
+              }
+            }).then((response) => {
+              const results = response.data
+              results.map(result => {
+                if (result.dataset_id === this.dbData.rowid) {
+                  this.errorPercent = result.error_percent
+                  console.log(result)
+                }
+              })
+            })
+        })
     }
   },
   methods: {

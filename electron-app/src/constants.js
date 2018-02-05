@@ -1,8 +1,12 @@
-module.exports = {
-  const STATUS_OK = "Success" // user-visible
-  const STATUS_IN_PROGRESS = "In progress" // user-visible
-  const STATUS_FAIL = "Fail" // user-visible
+let constants = {
+  // user-visible strings for dataset status
+  STATUS_OK: 'Success',
+  STATUS_IN_PROGRESS: 'In progress',
+  STATUS_FAIL: 'Fail',
 
-  const MAX_FIELDS = 52 // in dataset tsv file
+  // in dataset tsv file
+  MAX_FIELDS: 52
+};
 
-}
+module.exports =
+  Object.freeze(constants); // freeze prevents changes by users

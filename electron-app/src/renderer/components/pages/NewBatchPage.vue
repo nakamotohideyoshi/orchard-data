@@ -111,23 +111,23 @@ export default {
     }
   },
   computed: {
-    list1: function() {
+    list1: function () {
       this.$http
-      .post('http://localhost:3000/api/dataset-meta', {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      })
-      .then((res) => {
-        if(res.data.length > 0) {
-          this.dbData = res.data[res.data.length - 1]
-          this.artistList = this.dbData.artist_blacklist
-          this.keywordList = this.dbData.keyword_blacklist
-          this.lang = this.dbData.lang
-          this.threshold1 = this.dbData.duplicates_threshold
-          this.threshold2 = this.dbData.various_artists_threshold
-        }
-      })
+        .post('http://localhost:3000/api/dataset-meta', {
+          'headers': {
+            'content-type': 'application/json'
+          }
+        })
+        .then((res) => {
+          if (res.data.length > 0) {
+            this.dbData = res.data[res.data.length - 1]
+            this.artistList = this.dbData.artist_blacklist
+            this.keywordList = this.dbData.keyword_blacklist
+            this.lang = this.dbData.lang
+            this.threshold1 = this.dbData.duplicates_threshold
+            this.threshold2 = this.dbData.various_artists_threshold
+          }
+        })
     }
   },
   methods: {
@@ -185,7 +185,7 @@ export default {
         .then((res) => {
           const submittedId = res.data['dataset-id']
           this.$router.push(`/report/${submittedId}`)
-        });
+        })
     },
     processFile: function (e) {
       this.file = event.target.files[0]

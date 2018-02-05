@@ -105,17 +105,17 @@ export default {
     },
     show (data) {
       console.log(data)
-      this.detailData = data;
-      this.$modal.show('hello-world');
+      this.detailData = data
+      this.$modal.show('hello-world')
     },
     hide () {
-      this.$modal.hide('hello-world');
+      this.$modal.hide('hello-world')
     },
     beforeOpen (event) {
       console.log(12312312)
       console.log(event)
       this.detailData = 'asdasdas'
-    },
+    }
   }
 }
 </script>

@@ -50,4 +50,3 @@ describe('ReportPage.vue', () => {
     wrapper.setMethods({created})
   })
 })
-

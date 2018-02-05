@@ -64,7 +64,7 @@ export default new Router({
       path: '/csv/:id',
       name: 'csv',
       component: CsvPage,
-      props: true 
+      props: true
     },
     {
       path: '*',
