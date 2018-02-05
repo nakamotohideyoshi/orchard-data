@@ -24,37 +24,54 @@ npm run dev
 
 # Save Datasets Meta and Run Filters
 
-URL: '/api/save-and-run-filters'
-Method: 'POST'
-Content-Type: 'application/json'
-
-@args JSON => the data to be saved into the dataset\_meta table
+URL: '/api/save-and-run-filters' <br />
+Method: 'POST' <br />
+Content-Type: 'application/json' <br />
+<br />
+@args JSON => the data to be saved into the dataset\_meta table <br />
 @return: JSON => an object containing a key 'dataset-id', which
 represents the ID of the recently saved dataset-meta.
 
-# Fetch Field by Field Reports
+# Fetch All Field by Field Reports
 
-URL: '/api/fetch-field-by-field-report'
-Method: 'POST'
-Content-Type: 'application/json'
-
-@return: Promise => a promise containing all the records in the
+URL: '/api/fetch-all-field-by-field-reports' <br />
+Method: 'GET' <br />
+Content-Type: 'application/json' <br />
+<br />
+@return: Array => An array containing all records (if any) in the
 field\_by\_field\_reports table.
 
-# Fetch Batch Results Report
+# Fetch Single Field by Field Reports
 
-URL: '/api/fetch-batch-results-report'
-Method: 'POST'
-Content-Type: 'application/json'
+URL: '/api/fetch-field-by-field-report/:datasetId'<br />
+Method: 'GET'<br />
+Content-Type: 'application/json'<br />
+<br />
+@return: Array => An array containing records from field\_by\_field\_reports table
+with dataset\_id = :datasetId.
 
-@return: Promise => a promise containing all the records in the
+# Fetch All Batch Results Reports
+
+URL: '/api/fetch-all-batch-results-report'<br />
+Method: 'GET'<br />
+Content-Type: 'application/json'<br />
+<br />
+@return: Array => An array containing all the records (if any) in the
 batch\_results\_reports table.
+
+# Fetch Single Batch Results Report
+
+URL: '/api/fetch-batch-results-report/:datasetId'<br />
+Method: 'GET'<br />
+Content-Type: 'application/json'<br />
+<br />
+@return: Array => An array containing records (if any) from batch\_results\_reports table with dataset\_id = :datasetId.
 
 # Fetch Dataset Meta
 
-URL: '/api/fetch-batch-results-report'
-Method: 'POST'
-Content-Type: 'application/json'
-
-@args JSON(optional) => must have key 'rowId'
+URL: '/api/fetch-batch-results-report'<br />
+Method: 'POST'<br />
+Content-Type: 'application/json'<br />
+<br />
+@args JSON(optional) => must have key 'rowId'<br />
 @return: Promise => if 'rowId' was specified, fetch records from dataset\_meta table with rowId = 'rowId'.  Otherwise, returns all records.

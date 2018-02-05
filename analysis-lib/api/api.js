@@ -39,16 +39,78 @@ router.post('/api/save-and-run-filters', (req, res) => {
 
 });
 
-router.post('/api/fetch-field-by-field-report', (req, res) => {
+router.get('/api/fetch-field-by-field-report/:datasetId', (req, res) => {
 
-  let promise = dbInterface.fetchFieldByFieldReport()
+  let datasetId = req.params.datasetId ;
+
+  dbInterface.fetchFieldByFieldReport(datasetId)
+    .then(report => {
+
+      let response = [];
+
+      report.forEach(row => {
+
+        let fields = JSON.parse(row['test_data_field_ids']);
+        let values = JSON.parse(row['test_data_field_values']);
+
+        let occurrence = {
+          'criteriaId': row['criteria_id'],
+          'dataRowId': row['test_data_row_id'],
+
+          'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
+        };
+
+        response.push(occurrence);
+
+      })
+
+      res.send(response)
+
+    });
+
+});
+
+router.get('/api/fetch-all-field-by-field-reports', (req, res) => {
+
+  dbInterface.fetchAllFieldByFieldReports()
+    .then(report => {
+
+      let response = [];
+
+      report.forEach(row => {
+
+        let fields = JSON.parse(row['test_data_field_ids']);
+        let values = JSON.parse(row['test_data_field_values']);
+
+        let occurrence = {
+          'criteriaId': row['criteria_id'],
+          'dataRowId': row['test_data_row_id'],
+
+          'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
+        };
+
+        response.push(occurrence);
+
+      })
+
+      res.send(response);
+
+    });
+
+});
+
+router.get('/api/fetch-batch-results-report/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+
+  dbInterface.fetchBatchResultsReport(datasetId)
     .then(report => res.send(report));
 
 });
 
-router.post('/api/fetch-batch-results-report', (req, res) => {
+router.get('/api/fetch-all-batch-results-reports', (req, res) => {
 
-  let promise = dbInterface.fetchBatchResultsReport()
+  dbInterface.fetchAllBatchResultsReports()
     .then(report => res.send(report));
 
 });

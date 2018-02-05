@@ -177,10 +177,12 @@ module.exports = function() {
 
         return Promise.map(report, (row) => {
 
-          let placeholders = row.map((val) => '(?)').join(',');
-          let stmt = `INSERT INTO ${reportTable.name} VALUES (${placeholders})`;
+          let columns = Object.keys(row);
+          let values = columns.map((val) => row[val]);
+          let placeholders = columns.map((val) => '(?)').join(',');
+          let stmt = `INSERT INTO ${reportTable.name}(${columns}) VALUES (${placeholders})`;
 
-          return db.run(stmt, row)
+          return db.run(stmt, values)
             .then((result) => {
               console.log(`Rows inserted: ${result.changes}`);
             },
@@ -222,7 +224,23 @@ module.exports = function() {
 
   };
 
-  this.fetchFieldByFieldReport = function() {
+  this.fetchFieldByFieldReport = function(datasetId) {
+
+    let FBFReportTable = dbInfo[DATABASE]['tables']['field_by_field_reports'];
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => db.all(`
+        SELECT rowId, *
+        FROM ${FBFReportTable.name}
+        WHERE dataset_id = ${datasetId}
+      `));
+
+    return dbPromise;
+
+  };
+
+  this.fetchAllFieldByFieldReports = function() {
 
     let FBFReportTable = dbInfo[DATABASE]['tables']['field_by_field_reports'];
 
@@ -234,7 +252,23 @@ module.exports = function() {
 
   };
 
-  this.fetchBatchResultsReport = function() {
+  this.fetchBatchResultsReport = function(datasetId) {
+
+    let reportTable = dbInfo[DATABASE]['tables']['batch_results_reports'];
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => db.all(`
+        SELECT rowId, *
+        FROM ${reportTable.name}
+        WHERE dataset_id = ${datasetId}
+      `));
+
+    return dbPromise;
+
+  };
+
+  this.fetchAllBatchResultsReports = function() {
 
     let reportTable = dbInfo[DATABASE]['tables']['batch_results_reports'];
 
