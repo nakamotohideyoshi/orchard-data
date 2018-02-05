@@ -134,7 +134,7 @@ export default {
         rowId: this.id
       }
       this.$http
-      .post('http://localhost:3000/api/fetch-dataset-meta', data, {
+      .post('http://localhost:3000/api/dataset-meta', data, {
         'headers': {
           'content-type': 'application/json'
         }
@@ -150,7 +150,7 @@ export default {
           this.appleTabFlag = false
         }
         this.$http
-        .post('http://localhost:3000/api/fetch-batch-results-report', {
+        .post('http://localhost:3000/api/batch-results-report', {
           'headers': {
             'content-type': 'application/json'
           }

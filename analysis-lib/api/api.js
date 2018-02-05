@@ -39,7 +39,7 @@ router.post('/api/save-and-run-filters', (req, res) => {
 
 });
 
-router.get('/api/fetch-field-by-field-report/:datasetId', (req, res) => {
+router.get('/api/field-by-field-report/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
@@ -70,7 +70,7 @@ router.get('/api/fetch-field-by-field-report/:datasetId', (req, res) => {
 
 });
 
-router.get('/api/fetch-all-field-by-field-reports', (req, res) => {
+router.get('/api/all-field-by-field-reports', (req, res) => {
 
   dbInterface.fetchAllFieldByFieldReports()
     .then(report => {
@@ -99,7 +99,7 @@ router.get('/api/fetch-all-field-by-field-reports', (req, res) => {
 
 });
 
-router.get('/api/fetch-batch-results-report/:datasetId', (req, res) => {
+router.get('/api/batch-results-report/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
@@ -108,14 +108,14 @@ router.get('/api/fetch-batch-results-report/:datasetId', (req, res) => {
 
 });
 
-router.get('/api/fetch-all-batch-results-reports', (req, res) => {
+router.get('/api/all-batch-results-reports', (req, res) => {
 
   dbInterface.fetchAllBatchResultsReports()
     .then(report => res.send(report));
 
 });
 
-router.post('/api/fetch-dataset-meta', (req, res) => {
+router.post('/api/dataset-meta', (req, res) => {
 
   let rowId = req.body.rowId;
   let promise;
@@ -132,7 +132,7 @@ router.post('/api/fetch-dataset-meta', (req, res) => {
 
 });
 
-router.post('/api/fetch-tsv-dataset', (req, res) => {
+router.post('/api/tsv-dataset', (req, res) => {
 
   let datasetId = req.body['dataset-id'];
   let promise;

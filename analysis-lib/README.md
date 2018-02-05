@@ -34,7 +34,7 @@ represents the ID of the recently saved dataset-meta.
 
 # Fetch All Field by Field Reports
 
-URL: '/api/fetch-all-field-by-field-reports' <br />
+URL: '/api/all-field-by-field-reports' <br />
 Method: 'GET' <br />
 Content-Type: 'application/json' <br />
 <br />
@@ -43,7 +43,7 @@ field\_by\_field\_reports table.
 
 # Fetch Single Field by Field Reports
 
-URL: '/api/fetch-field-by-field-report/:datasetId'<br />
+URL: '/api/field-by-field-report/:datasetId'<br />
 Method: 'GET'<br />
 Content-Type: 'application/json'<br />
 <br />
@@ -52,7 +52,7 @@ with dataset\_id = :datasetId.
 
 # Fetch All Batch Results Reports
 
-URL: '/api/fetch-all-batch-results-report'<br />
+URL: '/api/all-batch-results-report'<br />
 Method: 'GET'<br />
 Content-Type: 'application/json'<br />
 <br />
@@ -61,7 +61,7 @@ batch\_results\_reports table.
 
 # Fetch Single Batch Results Report
 
-URL: '/api/fetch-batch-results-report/:datasetId'<br />
+URL: '/api/batch-results-report/:datasetId'<br />
 Method: 'GET'<br />
 Content-Type: 'application/json'<br />
 <br />
@@ -69,7 +69,7 @@ Content-Type: 'application/json'<br />
 
 # Fetch Dataset Meta
 
-URL: '/api/fetch-batch-results-report'<br />
+URL: '/api/batch-results-report'<br />
 Method: 'POST'<br />
 Content-Type: 'application/json'<br />
 <br />

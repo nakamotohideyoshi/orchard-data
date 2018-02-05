@@ -59,7 +59,7 @@ export default {
   },
   created () {
     this.$http
-      .post('http://localhost:3000/api/fetch-dataset-meta', {
+      .post('http://localhost:3000/api/dataset-meta', {
         'headers': {
           'content-type': 'application/json'
         }

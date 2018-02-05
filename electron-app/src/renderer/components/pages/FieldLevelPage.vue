@@ -89,7 +89,7 @@ export default {
   },
   created: function () {
     this.$http
-      .post('http://localhost:3000/api/fetch-field-by-field-report', {
+      .post('http://localhost:3000/api/field-by-field-report', {
         'headers': {
           'content-type': 'application/json'
         }

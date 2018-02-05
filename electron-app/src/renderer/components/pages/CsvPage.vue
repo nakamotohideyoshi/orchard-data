@@ -67,7 +67,7 @@ export default {
       'dataset-id': this.id
     }
     this.$http
-      .post('http://localhost:3000/api/fetch-tsv-dataset', data, {
+      .post('http://localhost:3000/api/tsv-dataset', data, {
         'headers': {
           'content-type': 'application/json'
         }
