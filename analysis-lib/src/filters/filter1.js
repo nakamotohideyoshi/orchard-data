@@ -6,80 +6,43 @@ module.exports = function(row, idx, report) {
   let filterName = 'filter1';
   let removeDiacritics = require('../scripts/remove-diacritics');
 
-  // Captures all fields related to 'Track Artists'
   let fields = ['track_artist', 'track_artist_featuring'];
+  let language = row['release_meta_language'].trim().toLowerCase();
 
   // Captures invalid field values
   let invalidStrings = {
     'abbreviations':          /^v\/?\.?a\.?$/i,
-    'arabic':                 /^فنانون متنوعون$/i,
     'english':                /^(vario)u?(s)(\,?\.? ?(artist)s?)?$/i,
-    'chinese-simplified':     /^群星$/i,
-    'chinese-traditional':    /^群星$/i,
-    'dutch':                  /^(verschillende)(\,?\.? ?(artiest)(en)?)?$/i,
-    'french':                 /^(multi)(\-?\,?\.? ?)((interprete)(s)?)?((artiste)(s)?)?$/i,
-    'german':                 /^(verschiedene)(\-?\,?\.? ?(Interprete)(n)?)?$/i,
-    'greek':                  /^(Διάφοροι καλλιτέχνες)$/i,
-    'hebrew':                 /^אמנים שונים$/,
-    'italian':                /^(artisti)(\-?\,?\.? ?(vari)?)?$/i,
-    'korean':                 /^여러 아티스트$/i,
     'portuguese':             /^(varios)(\-?\,?\.? ?(interpretes)?)?$/i,
-    'russian':                /^(Разные исполнители)$/i,
-    'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i,
-    'swedish':                /^(blandade)(\-?\,?\.? ?(artist)(er)?)?$/i,
-    'thai':                   /^รวมศิลปิน$/i,
-    'turkish':                /^(cesitli)(\-?\,?\.? ?(sanatcilar)?)?$/i
+    'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i
   };
 
-  var languages = Object.keys(invalidStrings);
-  console.log(row);
+  // If field is related to 'track artists'
+  fields.forEach(field => {
 
-  // Iterates over each TSV field
-  Object.keys(row).forEach(field => {
+    let value = row[field];
 
-    // If field is related to 'track artists'
-    if(fields.indexOf(field) !== -1) {
+    // Only tests if value is non-null
+    if(value) {
 
-      let value = row[field];
+      let langRegExp = invalidStrings[language];
+      let abbrRegExp = invalidStrings["abbreviations"];
 
-      // Only tests if value is non-null
-      if(value) {
+      // Removes diacritics and removes trimming whitespaces
+      value = value.trim();
+      value = removeDiacritics(value);
 
-        // forEach does not allow continue/break
-        for(i = 0; i < languages.length; i++) {
+      // error condition is met
+      if(langRegExp.test(value) || abbrRegExp.test(value)) {
 
-          let regex = invalidStrings[languages[i]];
+        var occurrence = {
+          'rowId': idx,
+          'field': field,
+          'value': row[field]
+        };
 
-          // Removes diacritics and removes trimming whitespaces
-          value = value.trim();
-          value = removeDiacritics(value);
-
-          console.log("\n");
-          console.log(field);
-          console.log(row[field]);
-          console.log(regex);
-          console.log(value);
-          console.log(regex.test(value));
-          console.log("\n");
-
-          // error condition is met
-          if(regex.test(value)) {
-
-            var occurrence = {
-              'rowId': idx,
-              'field': field,
-              'value': row[field]
-            };
-
-            // stores error occurrence in filter report
-            report.addOccurrence(filterName, occurrence);
-
-            // Doesn't need to test other languages
-            break;
-
-          }
-
-        }
+        // stores error occurrence in filter report
+        report.addOccurrence(filterName, occurrence);
 
       }
 
