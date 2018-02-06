@@ -17,6 +17,13 @@ module.exports = function(row, idx, report) {
     'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i
   };
 
+  let occurrence = {
+    'rowId': idx,
+    'field': [],
+    'value': []
+  };
+
+
   // If field is related to 'track artists'
   fields.forEach(field => {
 
@@ -35,20 +42,17 @@ module.exports = function(row, idx, report) {
       // error condition is met
       if(langRegExp.test(value) || abbrRegExp.test(value)) {
 
-        var occurrence = {
-          'rowId': idx,
-          'field': field,
-          'value': row[field]
-        };
-
-        // stores error occurrence in filter report
-        report.addOccurrence(filterName, occurrence);
+        occurrence.field.push(field);
+        occurrence.value.push(row[field]);
 
       }
 
     }
 
   });
+
+  // If anything error occurred, creates report
+  if(occurrence.field.length > 0){ report.addOccurrence(filterName, occurrence); }
 
   return true;
 
