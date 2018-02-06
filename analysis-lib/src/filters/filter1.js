@@ -6,44 +6,43 @@ module.exports = function(row, idx, report) {
   let filterName = 'filter1';
   let removeDiacritics = require('../scripts/remove-diacritics');
 
-  // Captures all fields related to 'Track Artists'
-  let fieldRegex = /(track\_artist)(_+[a-z A-Z]+)*/i;
+  let fields = ['track_artist', 'track_artist_featuring'];
+  let language = row['release_meta_language'].trim().toLowerCase();
 
   // Captures invalid field values
-  let abbreviationsRegex = /v\/?\.?a.?/i;
-  let vaRegex = /(vario)u?(s)\,?\.?( (artist)s?)?/i;
+  let invalidStrings = {
+    'abbreviations':          /^v\/?\.?a\.?$/i,
+    'english':                /^(vario)u?(s)(\,?\.? ?(artist)s?)?$/i,
+    'portuguese':             /^(varios)(\-?\,?\.? ?(interpretes)?)?$/i,
+    'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i
+  };
 
-  // Iterates over each TSV field
-  Object.keys(row).forEach(field => {
+  // If field is related to 'track artists'
+  fields.forEach(field => {
 
-    if(fieldRegex.test(field)) {
+    let value = row[field];
 
-      // Removes diacritics, converts to lowercase and removes trimming
-      // whitespaces
-      var value = row[field];
+    // Only tests if value is non-null
+    if(value) {
+
+      let langRegExp = invalidStrings[language];
+      let abbrRegExp = invalidStrings["abbreviations"];
+
+      // Removes diacritics and removes trimming whitespaces
+      value = value.trim();
       value = removeDiacritics(value);
-      value = value.toLowerCase().trim();
 
-      // Various Artists is illegal unless the value of the field
-      // "Track Artist(s) - Remixer(s)" is non-null,
-      // or the value of the field "Version" contains "mix".
-      if(row['track_artist_remixer'] || row['version'].toLowerCase() === 'mix') {}
+      // error condition is met
+      if(langRegExp.test(value) || abbrRegExp.test(value)) {
 
-      else {
+        var occurrence = {
+          'rowId': idx,
+          'field': field,
+          'value': row[field]
+        };
 
-        // error condition is met
-        if(abbreviationsRegex.test(value) || vaRegex.test(value)) {
-
-          var occurrence = {
-            'rowId': idx,
-            'field': field,
-            'value': row[field]
-          };
-
-          // stores error occurrence in filter report
-          report.addOccurrence(filterName, occurrence);
-
-        }
+        // stores error occurrence in filter report
+        report.addOccurrence(filterName, occurrence);
 
       }
 

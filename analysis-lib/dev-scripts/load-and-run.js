@@ -36,5 +36,5 @@ dbPromise
   .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
   .then(rep => report.calcBatchResultsReport())
   .then(rep => dbInterface.saveBatchResultsReport(report.BRReport));
-  // .then(() => dbInterface.fetchBatchResultsReport())
-  // .then(report => console.log(report));
+  //// .then(() => dbInterface.fetchBatchResultsReport())
+  //// .then(report => console.log(report));
