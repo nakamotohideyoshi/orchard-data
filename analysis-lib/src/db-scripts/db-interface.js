@@ -3,8 +3,10 @@ module.exports = function() {
   let sqlite = require('sqlite');
   let Promise = require('bluebird');
   let dbInfo = require('./db-info');
-  let readTsv = require('../scripts/read-tsv');
+  let IO = require('../scripts/IO-module');
   let DATABASE = require('../scripts/constants').DATABASE;
+
+  let readTsv = new IO().readTsv;
 
   // stores db path
   this.init = function() {
@@ -169,6 +171,7 @@ module.exports = function() {
   // Save field by field report
   this.saveFieldByFieldReport = function(report) {
 
+    //console.log(report);
     var reportTable = dbInfo[DATABASE]['tables']['field_by_field_reports'];
 
     let dbPromise = Promise.resolve()

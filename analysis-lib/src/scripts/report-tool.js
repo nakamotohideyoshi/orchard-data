@@ -51,13 +51,13 @@ module.exports = function() {
     let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     let filterOccurrences = this.filters[filter]['occurs_on'];
-
     let rowId = occurrence['rowId'];
+    let rowOccurrence = filterOccurrences[rowId];
 
     // Creates object to hold occurrences for given rowId
-    if(!filterOccurrences[rowId]) {
+    if(!rowOccurrence) {
 
-      filterOccurrences[rowId] = {
+      rowOccurrence = {
         'rowId': rowId,
         'fields': [],
         'values': []
@@ -65,8 +65,10 @@ module.exports = function() {
 
     }
 
-    filterOccurrences[rowId]['fields'].push(occurrence['field']);
-    filterOccurrences[rowId]['values'].push(occurrence['value']);
+    rowOccurrence['fields'] = rowOccurrence['fields'].concat(occurrence['field']);
+    rowOccurrence['values'] = rowOccurrence['values'].concat(occurrence['value']);
+
+    filterOccurrences[rowId] = rowOccurrence;
 
   };
 
@@ -200,9 +202,9 @@ module.exports = function() {
   this.calcFieldByFieldReport = function(filterId, verbose) {
 
     // If report was already calculated, just returns
-    this.FBFReport = this.FBFreport || [];
+    this.FBFReport = this.FBFReport || [];
 
-    if(this.FBFReport.length > 0) { return; }
+    // if(this.FBFReport.length > 0) { return; }
 
     let filterRegex = /(filter)[0-9]+/i;
     let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
@@ -250,9 +252,10 @@ module.exports = function() {
   this.calcFieldByFieldReportAll = function() {
 
     return new Promise((resolve, reject) => {
-      Object.keys(this['filters']).forEach(filter =>
-                                           this.calcFieldByFieldReport(filter));
+
+      Object.keys(this['filters']).forEach(filter => this.calcFieldByFieldReport(filter));
       resolve(this);
+
     },
     (err) => reject(err));
 

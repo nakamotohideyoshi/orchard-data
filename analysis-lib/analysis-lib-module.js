@@ -10,6 +10,9 @@ let filtersModule = require('./src/filters/filters-module');
 let runAllFilters = require('./src/scripts/run-all-filters');
 
 let constants = require('./src/scripts/constants');
+let IO = require('./src/scripts/IO-module');
+let utils = require('./src/scripts/utils');
+
 
 // Main scripts
 
@@ -22,6 +25,8 @@ module.exports = {
   'filtersModule': filtersModule,
 
   'runAllFilters': runAllFilters,
-  'constants': constants
+  'constants': constants,
+  'IO': IO,
+  'utils': utils
 
 }
