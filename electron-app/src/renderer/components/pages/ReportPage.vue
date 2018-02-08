@@ -149,20 +149,16 @@ export default {
             this.overallRiskFlag = false
             this.appleTabFlag = false
           }
+
           this.$http
-            .post('http://localhost:3000/api/batch-results-report', {
-              'headers': {
-                'content-type': 'application/json'
+            .get('http://localhost:3000/api/batch-results-report/'+this.dbData.rowid)
+            .then(
+              (response) => {
+                this.errorPercent = response.data[0].error_percent
+                console.log("Error percent for dataset: ",this.errorPercent)
               }
-            }).then((response) => {
-              const results = response.data
-              results.map(result => {
-                if (result.dataset_id === this.dbData.rowid) {
-                  this.errorPercent = result.error_percent
-                  console.log(result)
-                }
-              })
-            })
+            )
+
         })
     }
   },
