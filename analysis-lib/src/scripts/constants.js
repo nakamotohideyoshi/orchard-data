@@ -1,3 +1,4 @@
 module.exports = {
-  'DATABASE': 'analysis-lib'
+  'DATABASE': 'analysis-lib',
+  'REPORTS-DIR': ['.', 'src', 'reports']
 };
