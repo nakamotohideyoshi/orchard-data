@@ -18,9 +18,9 @@ let utils = analysisLibModule.utils;
 
 // Filters metadata
 let filtersMeta = analysisLibModule.filtersMeta;
-let explanationCriteria = 'userExplanation';
 
-router.post('/api/save-and-run-filters', (req, res) => {
+// Sava TSV and run test cases
+router.post('/dataset', (req, res) => {
 
   let data = req.body;
   let datasetId;
@@ -49,41 +49,50 @@ router.post('/api/save-and-run-filters', (req, res) => {
 
 });
 
-router.get('/api/field-by-field-report/:datasetId', (req, res) => {
+// Fetch single report from DB
+router.get('/field-by-field-report/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
   dbInterface.fetchFieldByFieldReport(datasetId)
     .then(report => {
 
-      let response = [];
+      return new Promise((resolve, reject) => {
 
-      report.forEach(row => {
+        try { resolve(utils.parseFieldByFieldReport(report)); }
 
-        let fields = JSON.parse(row['test_data_field_ids']);
-        let values = JSON.parse(row['test_data_field_values']);
+        catch(err) { reject(err); }
 
-        let occurrence = {
-          'criteriaId': row['criteria_id'],
-          'dataRowId': row['test_data_row_id'],
+      });
 
-          'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
-        };
-
-        response.push(occurrence);
-
-      })
-
-      res.send(response)
-
-    });
+    })
+    .then(result => res.send(result));
 
 });
 
-router.get('/api/field-by-field-report-to-tsv/:datasetId', (req, res) => {
+// Fetch all reports
+router.get('/field-by-field-reports', (req, res) => {
+
+  dbInterface.fetchAllFieldByFieldReports()
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.parseFieldByFieldReport(report)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Returns report as a TSV
+router.get('/field-by-field-report/tsv/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
-  let headers = ['dataRowId', 'description', 'fields'];
 
   dbInterface.fetchFieldByFieldReport(datasetId)
     .then(report => {
@@ -97,30 +106,7 @@ router.get('/api/field-by-field-report-to-tsv/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try {
-
-          let parsed = headers.join("\t");
-          parsed += "\n";
-
-          report.forEach(row => {
-
-            let fields = JSON.parse(row['test_data_field_ids']);
-            let values = JSON.parse(row['test_data_field_values']);
-
-            let occurrence = [
-              row['test_data_row_id'],
-              filtersMeta[row['criteria_id']][explanationCriteria],
-              JSON.stringify(fields.map((name, i) => ({ 'name': name, 'value': values[i] })))
-            ];
-
-            parsed += occurrence.join("\t");
-            parsed += "\n";
-
-          });
-
-          resolve(parsed);
-
-        }
+        try { resolve(utils.fieldByFieldToTsv(report)); }
 
         catch(err) { reject(err); }
 
@@ -131,37 +117,8 @@ router.get('/api/field-by-field-report-to-tsv/:datasetId', (req, res) => {
 
 });
 
-router.get('/api/all-field-by-field-reports', (req, res) => {
-
-  dbInterface.fetchAllFieldByFieldReports()
-    .then(report => {
-
-      let response = [];
-
-      report.forEach(row => {
-
-        let fields = JSON.parse(row['test_data_field_ids']);
-        let values = JSON.parse(row['test_data_field_values']);
-
-        let occurrence = {
-          'criteriaId': row['criteria_id'],
-          'dataRowId': row['test_data_row_id'],
-
-          'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
-        };
-
-        response.push(occurrence);
-
-      })
-
-      res.send(response);
-
-    });
-
-});
-
 // Row by Row Aggregation Report
-router.get('/row-by-row/report/:datasetId', (req, res) => {
+router.get('/row-by-row/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
@@ -170,38 +127,7 @@ router.get('/row-by-row/report/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try {
-
-          if(report.length === 0) {
-
-            resolve(`Empty report for datasetId ${datasetId}.`);
-
-          }
-
-
-          let response = [];
-
-          report.forEach(row => {
-
-            let fields = JSON.parse(row['test_data_field_ids']);
-            let values = JSON.parse(row['test_data_field_values']);
-
-            let occurrence = {
-              'criteriaId': row['criteria_id'],
-              'dataRowId': row['test_data_row_id'],
-
-              'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
-            };
-
-            response.push(occurrence);
-
-          });
-
-          // Row by Row aggregation
-          let RBRReport = utils.rowByRow(report);
-          resolve(RBRReport);
-
-        }
+        try { resolve(utils.rowByRow(report)); }
 
         catch(err) { reject(err); }
 
@@ -216,7 +142,6 @@ router.get('/row-by-row/report/:datasetId', (req, res) => {
 router.get('/row-by-row/tsv/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
-  let headers = ['rowId', 'errors', 'warnings', 'grade'];
 
   dbInterface.fetchFieldByFieldReport(datasetId)
     .then(report => {
@@ -231,24 +156,9 @@ router.get('/row-by-row/tsv/:datasetId', (req, res) => {
 
           }
 
-          let response = headers.join('\t');
-          response += '\n';
-
           // Row by Row Aggregation
           let RBRReport = utils.rowByRow(report);
-
-          // Mounts TSV response
-          Object.keys(RBRReport).forEach(rowId => {
-
-            let occurrence = RBRReport[rowId];
-            let values = Object.keys(occurrence).map(key => occurrence[key]);
-
-            response += values.join('\t');
-            response += '\n';
-
-          });
-
-          resolve(response);
+          resolve(utils.rowByRowToTsv(RBRReport));
 
         }
 
@@ -261,7 +171,8 @@ router.get('/row-by-row/tsv/:datasetId', (req, res) => {
 
 });
 
-router.get('/api/batch-results-report/:datasetId', (req, res) => {
+// Fetch single report summary
+router.get('/report-summary/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
@@ -270,43 +181,39 @@ router.get('/api/batch-results-report/:datasetId', (req, res) => {
 
 });
 
-router.get('/api/all-batch-results-reports', (req, res) => {
+// Fetch all report summaries
+router.get('/report-summaries', (req, res) => {
 
   dbInterface.fetchAllBatchResultsReports()
     .then(report => res.send(report));
 
 });
 
-router.get('/api/dataset-meta', (req, res) => {
+// Fetch dataset meta table
+router.get('/dataset-meta/:rowId', (req, res) => {
 
-  let rowId = req.body.rowId;
-  let promise;
+  let rowId = req.params.rowId ;
 
-  if(!rowId) {
-    promise = dbInterface.fetchDatasetMeta()
-      .then(rows => res.send(rows));
-  }
-
-  else {
-    promise = dbInterface.fetchDatasetMetaRow(rowId)
-      .then(row => res.send(row));
-  }
+  dbInterface.fetchDatasetMetaRow(rowId)
+    .then(row => res.send(row));
 
 });
 
-router.get('/api/tsv-dataset', (req, res) => {
+// Fetch dataset meta table
+router.get('/dataset-meta-table', (req, res) => {
 
-  let datasetId = req.body['dataset-id'];
-  let promise;
+  dbInterface.fetchDatasetMeta()
+    .then(rows => res.send(rows));
 
-  if(datasetId) {
-    promise = dbInterface.fetchTsvDataset(datasetId)
-      .then(rows => res.send(rows));
-  }
+});
 
-  else {
-    res.send(new Promise.reject("No dataset ID specified"));
-  }
+// Fetch a TSV dataset
+router.get('/fetch-dataset/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+
+  dbInterface.fetchTsvDataset(datasetId)
+    .then(rows => res.send(rows));
 
 });
 

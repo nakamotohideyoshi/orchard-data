@@ -1,0 +1,3 @@
+dataRowId	criteriaId	description	fields
+10	filter1	"Various Artists" can't be used at the track level.	[{"name":"track_artist","value":"Various Artists"}]
+11	filter1	"Various Artists" can't be used at the track level.	[{"name":"track_artist","value":"Várious Ártísts"}]

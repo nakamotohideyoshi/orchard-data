@@ -24,7 +24,7 @@ npm run dev
 
 # Save Datasets Meta and Run Filters
 
-URL: '/api/save-and-run-filters' <br />
+URL: '/dataset' <br />
 Method: 'POST' <br />
 Content-Type: 'application/json' <br />
 <br />
@@ -32,46 +32,82 @@ Content-Type: 'application/json' <br />
 @return: JSON => an object containing a key 'dataset-id', which
 represents the ID of the recently saved dataset-meta.
 
+# Fetch Field by Field Report in TSV format
+
+URL: '/field-by-field-report/tsv/:datasetId'<br />
+Method: 'GET'<br />
+
+<br />
+@return: TSV => A TSV string of the FBF Report of the specified dataset.
+
 # Fetch All Field by Field Reports
 
-URL: '/api/all-field-by-field-reports' <br />
+URL: '/field-by-field-reports' <br />
 Method: 'GET' <br />
-Content-Type: 'application/json' <br />
+
 <br />
 @return: Array => An array containing all records (if any) in the
 field\_by\_field\_reports table.
 
 # Fetch Single Field by Field Reports
 
-URL: '/api/field-by-field-report/:datasetId'<br />
+URL: '/field-by-field-report/:datasetId'<br />
 Method: 'GET'<br />
-Content-Type: 'application/json'<br />
+
 <br />
 @return: Array => An array containing records from field\_by\_field\_reports table
 with dataset\_id = :datasetId.
 
-# Fetch All Batch Results Reports
+# Fetch Row by Row Aggregate
 
-URL: '/api/all-batch-results-report'<br />
+URL: '/row-by-row/:datasetId'<br />
 Method: 'GET'<br />
-Content-Type: 'application/json'<br />
+
+<br />
+@return: JSON => A JSON containing row-by-row reports of specified dataset
+
+# Fetch Row by Row Aggregate in TSV format
+
+URL: '/row-by-row/tsv/:datasetId'<br />
+Method: 'GET'<br />
+
+<br />
+@return: TSV => A TSV string containing row-by-row reports of specified dataset
+
+# Fetch Report Summaries
+
+URL: '/report-summaries'<br />
+Method: 'GET'<br />
+
 <br />
 @return: Array => An array containing all the records (if any) in the
 batch\_results\_reports table.
 
-# Fetch Single Batch Results Report
+# Fetch Single Report Summary
 
-URL: '/api/batch-results-report/:datasetId'<br />
+URL: '/report-summary/:datasetId'<br />
 Method: 'GET'<br />
-Content-Type: 'application/json'<br />
+
 <br />
 @return: Array => An array containing records (if any) from batch\_results\_reports table with dataset\_id = :datasetId.
 
 # Fetch Dataset Meta
 
-URL: '/api/batch-results-report'<br />
-Method: 'POST'<br />
-Content-Type: 'application/json'<br />
+URL: '/dataset-meta/:rowId'<br />
+Method: 'GET'<br />
 <br />
-@args JSON(optional) => must have key 'rowId'<br />
-@return: Promise => if 'rowId' was specified, fetch records from dataset\_meta table with rowId = 'rowId'.  Otherwise, returns all records.
+@return: Array => An array containing records from dataset\_meta table with rowId = 'rowId'
+
+# Fetch Dataset Meta Table
+
+URL: '/dataset-meta-table'<br />
+Method: 'GET'<br />
+<br />
+@return: Array => An array with all records from dataset\_meta
+
+# Fetch TSV Dataset
+
+URL: '/fetch-dataset/:datasetId'<br />
+Method: 'GET'<br />
+<br />
+@return: Array => An array containing a TSV dataset

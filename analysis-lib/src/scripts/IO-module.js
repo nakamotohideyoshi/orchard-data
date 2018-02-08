@@ -8,6 +8,8 @@ module.exports = function() {
 
   this.readTsv = function(inputFile) {
 
+    let handler = function(e) { console.log("bilola"); console.log(e); };
+
     let streamToPromise = function(stream) {
       let data = [];
 
