@@ -61,6 +61,19 @@ module.exports = function() {
 
   };
 
+  // gets the number of lines of give dataset
+  this.getDatasetSize = function(datasetId) {
+
+    let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => db.all(`SELECT COUNT(*) FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`));
+
+    return dbPromise;
+
+  };
+
   this.updateDatasetStatus = function(datasetId, status, dbPromise) {
 
     let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta'];

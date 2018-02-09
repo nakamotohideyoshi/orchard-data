@@ -15,7 +15,6 @@ let parseReport = function(report) {
   report.forEach(occurrence => {
 
     let data = {
-      'test_data_row_id': occurrence['dataRowId'],
       'criteria_id': occurrence['criteriaId']
     };
 
@@ -47,21 +46,10 @@ try {
     }
 
     let datasetSize = report[0]['datasetSize'] || 0;
-    let parsedReport = [];
+    let parsedReport = parseReport(report);
 
-    report.forEach(occurrence => {
-
-      let data = {
-        'test_data_row_id': occurrence['dataRowId'],
-        'criteria_id': occurrence['criteriaId']
-      };
-
-      parsedReport.push(data);
-
-    });
-
-    let RBRReport = utils.rowByRow(parsedReport, datasetSize);
-    console.log(utils.rowByRowToTsv(RBRReport));
+    let EBRReport = utils.errorByError(parsedReport, datasetSize);
+    console.log(utils.errorByErrorToTsv(EBRReport));
 
   }
 
@@ -81,10 +69,9 @@ try {
               resolve(`Empty Report. Exiting...`);
             }
 
-            let datasetSize = FBFReport[0]['datasetSize'];
             let parsedReport = parseReport(FBFReport);
-            let RBRReport = utils.rowByRow(parsedReport, datasetSize);
-            resolve(utils.rowByRowToTsv(RBRReport));
+            let EBEReport = utils.errorByError(parsedReport);
+            resolve(utils.errorByErrorToTsv(EBEReport));
 
           }
 

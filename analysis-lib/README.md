@@ -111,3 +111,25 @@ URL: '/dataset-meta-all'<br />
 Method: 'GET'<br />
 <br />
 @return: Array => An array with all records from dataset\_meta
+
+### CLI
+
+## Row by Row aggregate
+
+From input file: `npm run gen-row-report -- --input=<input\_file>`
+From STDIN: `STDIN | xargs -0 npm run gen-row-report`
+
+Examples:
+
+`curl http://localhost:3000/field-by-field-report/tsv/1 | xargs -0 npm run gen-row-report`
+`cat ./reports1.tsv | xargs -0 npm run gen-row-report`
+
+## Error by Error aggregate
+
+From input file: `npm run gen-error-report -- --input=<input\_file>`
+From STDIN: `STDIN | xargs -0 npm run gen-error-report`
+
+Examples:
+
+`curl http://localhost:3000/field-by-field-report/tsv/1 | xargs -0 npm run gen-error-report`
+`cat ./reports1.tsv | xargs -0 npm run gen-error-report`

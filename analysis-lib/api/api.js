@@ -64,13 +64,20 @@ router.post('/dataset', (req, res) => {
 router.get('/field-by-field-report/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
+  let datasetSize = 0;
 
-  dbInterface.fetchFieldByFieldReport(datasetId)
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
     .then(report => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report)); }
+        try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -101,11 +108,18 @@ router.get('/field-by-field-reports', (req, res) => {
 });
 
 // Returns report as a TSV
-router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
+router.get('/field-by-field-report/tsv/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
+  let datasetSize = 0;
 
-  dbInterface.fetchFieldByFieldReport(datasetId)
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
     .then(report => {
 
       if(report.length === 0) {
@@ -117,7 +131,7 @@ router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.fieldByFieldToTsv(report)); }
+        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -132,13 +146,20 @@ router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
 router.get('/row-by-row/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
+  let datasetSize = 0;
 
-  dbInterface.fetchFieldByFieldReport(datasetId)
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
     .then(report => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.rowByRow(report)); }
+        try { resolve(utils.rowByRow(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -151,6 +172,39 @@ router.get('/row-by-row/:datasetId', (req, res) => {
 
 // Row by Row Aggregation TSV
 router.get('/row-by-row/tsv/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try {
+
+          let RBRReport = utils.rowByRow(report, datasetSize);
+          resolve(utils.rowByRowToTsv(RBRReport));
+
+        }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Error by Error Aggregation
+router.get('/error-by-error/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
@@ -168,8 +222,41 @@ router.get('/row-by-row/tsv/:datasetId', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let RBRReport = utils.rowByRow(report);
-          resolve(utils.rowByRowToTsv(RBRReport));
+          let EBEReport = utils.errorByError(report);
+          resolve(EBEReport);
+
+        }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Error by Error Aggregation TSV
+router.get('/error-by-error/tsv/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+
+  dbInterface.fetchFieldByFieldReport(datasetId)
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try {
+
+          if(report.length === 0) {
+
+            resolve(`Empty report for datasetId ${datasetId}.`);
+
+          }
+
+          // Row by Row Aggregation
+          let EBEReport = utils.errorByError(report);
+          resolve(utils.errorByErrorToTsv(EBEReport));
 
         }
 
