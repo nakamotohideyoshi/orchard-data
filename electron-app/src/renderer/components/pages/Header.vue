@@ -12,7 +12,7 @@ include _mixins
                     li
                         router-link(:to="'/submissions'").is-active
                             +icon('ico-home')
-                            span Submissions (20)
+                            span Submissions ({{ submissions.length }})
                     li
                         router-link(:to="'/new-batch'").btn.btn-primary
                             span Add new dataset
@@ -50,14 +50,21 @@ include _mixins
 </template>
 
 <script>
-    export default {
-      name: 'app-header',
-      components: {
+import { SUBMISSIONS } from '@/constants/types';
 
-      },
-      methods: {
-      }
+export default {
+    computed: {
+        submissions() {
+            return this.$store.getters[SUBMISSIONS];
+        },
+    },
+    name: 'app-header',
+    components: {
+
+    },
+    methods: {
     }
+}
 </script>
 
 <style lang="sass" scoped>

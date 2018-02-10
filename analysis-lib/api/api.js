@@ -203,7 +203,10 @@ router.get('/dataset-meta/:rowId', (req, res) => {
 router.get('/dataset-meta-table', (req, res) => {
 
   dbInterface.fetchDatasetMeta()
-    .then(rows => res.send(rows));
+    .then(rows => res.send(rows))
+    .catch((e) => {
+      console.log(e, 'error on API');
+    });
 
 });
 
