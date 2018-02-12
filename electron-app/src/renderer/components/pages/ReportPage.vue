@@ -21,21 +21,21 @@ include _mixins
                                     // Summary
                                     .report-summary
                                         .report-summary__col
-                                            .report-summary__head risk analysis {{list1}}
+                                            .report-summary__head risk analysis
                                             .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red
-                                          span(v-if="dbData.status == 1") Success
-                                          span(v-if="dbData.status == 2") Fail
-                                          span(v-if="dbData.status == 3") IN PROGRESS
+                                          span(v-if="status === 1") Success
+                                          span(v-if="status === 2") Fail
+                                          span(v-if="status === 3") IN PROGRESS
                                         .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text {{new Date(dbData.time).toString().slice(0, -14)}}
+                                            .report-summary__text {{ time }}
 
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
-                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag == true, 'is-disabled': dbData.status == 3 }" :disabled="dbData.status == 3").report__tab Overall Risk Assessment
-                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag == true, 'is-disabled': dbData.status == 3 }" :disabled="dbData.status == 3").report__tab Apple & Itunes Guidelines
-                                        button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag == true }").report__tab Custom Parameters
+                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab Overall Risk Assessment
+                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab Apple & Itunes Guidelines
+                                        button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab Custom Parameters
 
 
                                     // summary
@@ -72,7 +72,7 @@ include _mixins
 
                                     .report-container(v-if="customFlag")
                                         // group
-                                        router-link(:to="`/csv/${dbData.rowid}`").report__view-link
+                                        router-link(:to="`/csv/${item.rowid}`").report__view-link
                                             +icon('ico-document')
                                             span {{fileName}}
                                         .upload__group
@@ -82,27 +82,33 @@ include _mixins
 
                                             .ui-group
                                                 label Artist blacklist
-                                                textarea.disabled(v-bind:placeholder="dbData.artist_blacklist" v-model="artistList" :disabled="true")
+                                                textarea.disabled(v-bind:placeholder="item.artist_blacklist" v-model="artistList" :disabled="true")
                                             .ui-group
                                                 label Keyword blacklist
-                                                textarea.disabled(v-bind:placeholder="dbData.keyword_blacklist" v-model="keywordList" :disabled="true")
+                                                textarea.disabled(v-bind:placeholder="item.keyword_blacklist" v-model="keywordList" :disabled="true")
                                             .ui-group
                                                 label Duplicates threshold
-                                                input(v-bind:placeholder="dbData.duplicates_threshold" type="number" v-model="threshold1" :disabled="true")
+                                                input(v-bind:placeholder="item.duplicates_threshold" type="number" v-model="threshold1" :disabled="true")
                                             .ui-group
                                                 label Various Artists threshold
-                                                input(v-bind:placeholder="dbData.various_artists_threshold" type="number" v-model="threshold2" :disabled="true")
+                                                input(v-bind:placeholder="item.various_artists_threshold" type="number" v-model="threshold2" :disabled="true")
                                             .ui-group
                                                 label Language
-                                                    .language(v-if="dbData.lang == 'en-US'") English
-                                                    .language(v-if="dbData.lang == 'en-ES'") Spanish
-                                                    .language(v-if="dbData.lang == 'pt-BR'") Brazilian Portugese
+                                                    .language(v-if="item.lang == 'en-US'") English
+                                                    .language(v-if="item.lang == 'en-ES'") Spanish
+                                                    .language(v-if="item.lang == 'pt-BR'") Brazilian Portugese
         block footer
             AppFooter
 </template>
 
 <script>
 import moment from 'moment'
+import { mapGetters } from 'vuex';
+import {
+  SUBMISSION,
+  SUBMISSIONS_REQUEST,
+  SUBMISSIONS_FAILURE
+} from '@/constants/types';
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
@@ -118,49 +124,43 @@ export default {
       overallRiskFlag: false,
       appleTabFlag: true,
       customFlag: false,
-      dbData: {},
       errorPercent: 0,
       artistList: '',
       keywordList: '',
       threshold1: '',
       threshold2: '',
       lang: '',
-      fileName: ''
     }
   },
   computed: {
-    list1: function () {
-      const data = {
-        rowId: this.id
+    fileName() {
+      if (this.item) {
+        const splitted = this.item.source.split('/');
+        const position = splitted.length - 1;
+
+        return splitted[position];
       }
-      this.$http
-        .post('http://localhost:3000/api/dataset-meta', data, {
-          'headers': {
-            'content-type': 'application/json'
-          }
-        })
-        .then((res) => {
-          console.log(res)
-          const position = res.data[0].source.lastIndexOf('/')
-          this.fileName = res.data[0].source.substr(position + 1, res.data[0].source.length)
-          this.dbData = res.data[0]
-          if (this.dbData.status === 3) {
-            this.customFlag = true
-            this.overallRiskFlag = false
-            this.appleTabFlag = false
-          }
 
-          this.$http
-            .get('http://localhost:3000/api/batch-results-report/'+this.dbData.rowid)
-            .then(
-              (response) => {
-                this.errorPercent = response.data[0].error_percent
-                console.log("Error percent for dataset: ",this.errorPercent)
-              }
-            )
+      return '';
+    },
+    time() {
+      if (this.item && this.item.time) {
+        return new Date(this.item.time).toString().slice(0, -14);
+      }
+      return '';
+    },
+    status() {
+      if (this.item && this.item.status >= 0) {
+        return this.item.status;
+      }
 
-        })
-    }
+      return -1;
+    },
+    ...mapGetters({
+      error: SUBMISSIONS_FAILURE,
+      loading: SUBMISSIONS_REQUEST,
+      item: SUBMISSION
+    })
   },
   methods: {
     showOverallRistk: function () {
@@ -177,12 +177,16 @@ export default {
       this.customFlag = true
       this.overallRiskFlag = false
       this.appleTabFlag = false
-    },
-    moment: function () {
-      return moment()
     }
   },
-  props: ['id']
+  props: ['id'],
+  async created() {
+    await this.$store.dispatch('fetchDataset', this.id);
+
+    if (this.status === 3) {
+        this.showCustom();
+    }
+  }
 }
 </script>
 
