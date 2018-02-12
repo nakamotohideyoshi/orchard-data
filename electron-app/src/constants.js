@@ -6,7 +6,7 @@ let constants = {
 
   // in dataset tsv file
   MAX_FIELDS: 52
-};
+}
 
 module.exports =
-  Object.freeze(constants); // freeze prevents changes by users
+  Object.freeze(constants) // freeze prevents changes by users
