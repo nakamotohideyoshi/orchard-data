@@ -17,7 +17,7 @@ include _mixins
                   span Submissions
 
                 // upload form
-                form.p-box.upload(action="#")
+                form.p-box.upload(action="#" @submit.prevent="submitForm")
                   .upload__title
                     +icon('ico-upload')
                     h1 Upload new dataset
@@ -75,15 +75,22 @@ include _mixins
                             span Brazilian Portugese
                     // CTA
                     .upload__cta
-                      button(type="submit" v-on:click="submitForm" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
+                      button(type="submit" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
                         span Start Testing
     block footer
       AppFooter
 </template>
 
 <script>
+// TODO: Use absolute paths when possible
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import { mapGetters } from 'vuex';
+import {
+  SUBMISSION,
+  SUBMISSIONS_REQUEST,
+  SUBMISSIONS_FAILURE
+} from '@/constants/types';
 
 export default {
   name: 'new-batch-page',
@@ -110,7 +117,13 @@ export default {
       file: {}
     }
   },
-
+  computed: {
+    ...mapGetters({
+      error: SUBMISSIONS_FAILURE,
+      loading: SUBMISSIONS_REQUEST,
+      item: SUBMISSION
+    })
+  },
   methods: {
     countdownArtistList: function (evt) {
       if (this.artistList.length >= this.textareaMax) {
@@ -122,8 +135,7 @@ export default {
         evt.preventDefault()
       }
     },
-    submitForm: function (e) {
-      e.preventDefault()
+    async submitForm(e) {
       if (this.filePath === '') {
         alert('Please select Dataset file')
         return
@@ -157,16 +169,11 @@ export default {
         time: Date.now()
       }
 
-      this.$http
-        .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
-          'headers': {
-            'content-type': 'application/json'
-          }
-        })
-        .then((res) => {
-          const submittedId = res.data['dataset-id']
-          this.$router.push(`/report/${submittedId}`)
-        })
+      await this.$store.dispatch('submitDataset', datasetMeta);
+
+      if (this.item) {
+        this.$router.push(`/report/${this.item['dataset-id']}`);
+      }
     },
     processFile: function (e) {
       this.file = event.target.files[0]
