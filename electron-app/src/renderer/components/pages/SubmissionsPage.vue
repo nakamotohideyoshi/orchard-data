@@ -36,7 +36,7 @@
                                                     span(v-if="data.status === 2") Fail
                                                     span(v-if="data.status === 3") In Progress
                                             td {{new Date(data.time).toString().slice(0, -14)}}
-                                            
+
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
@@ -59,11 +59,7 @@ export default {
   },
   created () {
     this.$http
-      .post('http://localhost:3000/api/dataset-meta', {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      })
+      .get('http://localhost:3000/dataset-meta-all')
       .then((res) => {
         console.log(res)
         this.dbData = res.data

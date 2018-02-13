@@ -19,7 +19,6 @@ describe('NewBatchPage.vue', () => {
     expect(typeof wrapper.methods().countdownKeywords).to.equal('function')
     expect(typeof wrapper.methods().submitForm).to.equal('function')
     expect(typeof wrapper.methods().processFile).to.equal('function')
-    expect(typeof wrapper.computed().list1).to.equal('function')
   })
 
   it('should get correct data', () => {

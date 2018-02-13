@@ -6,8 +6,12 @@ let express = require('express');
 let app = express();
 let cors = require('cors');
 let bodyParser = require('body-parser');
+let morgan = require('morgan')
 
 process.on('uncaughtException', (function(error) { return console.log(error.stack); }));
+
+if( process.env.NODE_DEBUG == "true" )
+  app.use(morgan('combined'))
 
 app.use(cors());
 

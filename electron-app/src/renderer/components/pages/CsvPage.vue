@@ -67,7 +67,7 @@ export default {
       'dataset-id': this.id
     }
     this.$http
-      .get('http://localhost:3000/fetch-dataset/'+this.id)
+      .get('http://localhost:3000/dataset/'+this.id+".tsv")
       .then((res) => {
         this.batches = res.data
         this.headers = Object.keys(this.batches[0])

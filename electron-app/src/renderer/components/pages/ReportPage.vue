@@ -134,11 +134,7 @@ export default {
         rowId: this.id
       }
       this.$http
-        .post('http://localhost:3000/api/dataset-meta', data, {
-          'headers': {
-            'content-type': 'application/json'
-          }
-        })
+        .get('http://localhost:3000/dataset-meta/'+this.id)
         .then((res) => {
           console.log(res)
           const position = res.data[0].source.lastIndexOf('/')
