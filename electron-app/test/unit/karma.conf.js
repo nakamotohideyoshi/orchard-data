@@ -57,6 +57,7 @@ module.exports = config => {
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
-    }
+    },
+    logLevel: config.LOG_INFO
   })
 }
