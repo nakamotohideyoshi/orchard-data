@@ -136,6 +136,8 @@ export default {
       }
     },
     async submitForm(e) {
+      // TODO: Improve the logic below, there is better way to compute
+      // the payload
       if (this.filePath === '') {
         alert('Please select Dataset file')
         return
@@ -188,5 +190,4 @@ export default {
 
 <style lang="sass" scoped>
 @import "../../assets/styles/app.sass";
-</style>"../../assets/styles/app.sass";
 </style>
