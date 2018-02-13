@@ -12,7 +12,7 @@ include _mixins
                     li
                         router-link(:to="'/submissions'").is-active
                             +icon('ico-home')
-                            span Submissions ({{ submissions.length }})
+                            span Submissions ({{ submissions && submissions.length }})
                     li
                         router-link(:to="'/new-batch'").btn.btn-primary
                             span Add new dataset
