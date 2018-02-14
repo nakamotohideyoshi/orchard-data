@@ -33,13 +33,13 @@ include _mixins
 
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
-                                        button(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab Overall Risk Assessment
-                                        button(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab Apple & Itunes Guidelines
-                                        button(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab Custom Parameters
+                                        button.overall-tab(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab Overall Risk Assessment
+                                        button.apple-tab(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab Apple & Itunes Guidelines
+                                        button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab Custom Parameters
 
 
                                     // summary
-                                    .report-container(v-if="appleTabFlag")
+                                    .report-container.apple-tab(v-if="appleTabFlag" :class="{ 'is-active': appleTabFlag }")
                                         .report__top
                                             .report__top-col
                                                 .report__top-percent {{(errorPercent * 100).toFixed(2)}} %
@@ -68,9 +68,9 @@ include _mixins
                                             router-link(:to="'/field-level'").report__view-link
                                                 +icon('ico-document')
                                                 span View the field level issues
-                                    .report-container(v-if="overallRiskFlag")
+                                    .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
 
-                                    .report-container(v-if="customFlag")
+                                    .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
                                         // group
                                         router-link(:to="`/csv/${item.rowid}`").report__view-link
                                             +icon('ico-document')
@@ -134,7 +134,7 @@ export default {
   },
   computed: {
     fileName() {
-      if (this.item) {
+      if (this.item && this.item.source) {
         const splitted = this.item.source.split('/');
         const position = splitted.length - 1;
 
