@@ -52,7 +52,7 @@ const actions = {
         commit(SUBMISSIONS_REQUEST, true);
 
         return axios
-            .get(`${API_URL}dataset-meta-table`, {
+            .get(`${API_URL}dataset-meta-all`, {
                 'headers': {
                     'content-type': 'application/json'
                 }
