@@ -19,6 +19,17 @@ let utils = analysisLibModule.utils;
 // Filters metadata
 let filtersMeta = analysisLibModule.filtersMeta;
 
+// Fetch a TSV dataset
+router.get('/dataset/:datasetId.tsv', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+
+  dbInterface.fetchTsvDataset(datasetId)
+    .then(rows => res.send(rows));
+
+});
+
+
 // Sava TSV and run test cases
 router.post('/dataset', (req, res) => {
 
@@ -90,7 +101,7 @@ router.get('/field-by-field-reports', (req, res) => {
 });
 
 // Returns report as a TSV
-router.get('/field-by-field-report/tsv/:datasetId', (req, res) => {
+router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
 
@@ -189,8 +200,8 @@ router.get('/report-summaries', (req, res) => {
 
 });
 
-// Fetch dataset meta table
-router.get('/dataset-meta/:rowId', (req, res) => {
+// Fetch params and status for a dataset
+  router.get('/dataset-meta/:rowId', (req, res) => {
 
   let rowId = req.params.rowId ;
 
@@ -199,24 +210,14 @@ router.get('/dataset-meta/:rowId', (req, res) => {
 
 });
 
-// Fetch dataset meta table
-router.get('/dataset-meta-table', (req, res) => {
+// Fetch params for all datasets
+router.get('/dataset-meta-all', (req, res) => {
 
   dbInterface.fetchDatasetMeta()
     .then(rows => res.send(rows))
     .catch((e) => {
       console.log(e, 'error on API');
     });
-
-});
-
-// Fetch a TSV dataset
-router.get('/fetch-dataset/:datasetId', (req, res) => {
-
-  let datasetId = req.params.datasetId ;
-
-  dbInterface.fetchTsvDataset(datasetId)
-    .then(rows => res.send(rows));
 
 });
 

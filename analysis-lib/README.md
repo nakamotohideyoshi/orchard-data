@@ -22,7 +22,14 @@ npm run dev
 
 ## Methods
 
-# Save Datasets Meta and Run Filters
+# Fetch a dataset in TSV format
+
+URL: '/dataset/:datasetId.tsv'<br />
+Method: 'GET'<br />
+<br />
+@return: Array => An array containing a TSV dataset
+
+# Create new dataset and run filters
 
 URL: '/dataset' <br />
 Method: 'POST' <br />
@@ -34,7 +41,7 @@ represents the ID of the recently saved dataset-meta.
 
 # Fetch Field by Field Report in TSV format
 
-URL: '/field-by-field-report/tsv/:datasetId'<br />
+URL: '/field-by-field-report/:datasetId.tsv'<br />
 Method: 'GET'<br />
 
 <br />
@@ -100,14 +107,7 @@ Method: 'GET'<br />
 
 # Fetch Dataset Meta Table
 
-URL: '/dataset-meta-table'<br />
+URL: '/dataset-meta-all'<br />
 Method: 'GET'<br />
 <br />
 @return: Array => An array with all records from dataset\_meta
-
-# Fetch TSV Dataset
-
-URL: '/fetch-dataset/:datasetId'<br />
-Method: 'GET'<br />
-<br />
-@return: Array => An array containing a TSV dataset

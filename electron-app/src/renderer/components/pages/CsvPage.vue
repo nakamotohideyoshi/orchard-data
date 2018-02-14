@@ -9,7 +9,7 @@ include _mixins
                 // add this class to make header static (not sticky)
                 // sticky might break header layout on this page
                 .header-static
-                    
+
                 // CSV container with white BG
                 .p-csv
                     .container
@@ -27,7 +27,7 @@ include _mixins
                                     a(href="../../../../tests/data/test.tsv" download).report-summary__text
                                         +icon('ico-download')
                             .report-summary__label.report-summary__label--green success
-                .table-responsive 
+                .table-responsive
                     table.p-table.p-table--subm(js-stacktable)
                         thead
                             tr
@@ -38,7 +38,7 @@ include _mixins
                                 td(v-for="header in headers")
                                     span {{batch[header]}}
 
-            
+
         block footer
             AppFooter
 </template>
@@ -67,11 +67,7 @@ export default {
       'dataset-id': this.id
     }
     this.$http
-      .post('http://localhost:3000/api/tsv-dataset', data, {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      })
+      .get('http://localhost:3000/dataset/'+this.id+".tsv")
       .then((res) => {
         this.batches = res.data
         this.headers = Object.keys(this.batches[0])

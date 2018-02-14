@@ -14,7 +14,7 @@ include _mixins
                 // page back
                 router-link(:to="'/submissions'").page-back
                   .icon.icon-arrow-back
-                  span Submissions {{list1}}
+                  span Submissions
 
                 // upload form
                 form.p-box.upload(action="#")
@@ -110,26 +110,7 @@ export default {
       file: {}
     }
   },
-  computed: {
-    list1: function () {
-      this.$http
-        .post('http://localhost:3000/api/dataset-meta', {
-          'headers': {
-            'content-type': 'application/json'
-          }
-        })
-        .then((res) => {
-          if (res.data.length > 0) {
-            this.dbData = res.data[res.data.length - 1]
-            this.artistList = this.dbData.artist_blacklist
-            this.keywordList = this.dbData.keyword_blacklist
-            this.lang = this.dbData.lang
-            this.threshold1 = this.dbData.duplicates_threshold
-            this.threshold2 = this.dbData.various_artists_threshold
-          }
-        })
-    }
-  },
+
   methods: {
     countdownArtistList: function (evt) {
       if (this.artistList.length >= this.textareaMax) {
