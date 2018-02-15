@@ -8,13 +8,15 @@
     "load-and-run": "node ./dev-scripts/load-and-run",
     "update-status": "node ./dev-scripts/update-status",
     "clear-tables": "node ./dev-scripts/clear-dev-tables",
-    "gen-row-report": "node ./src/scripts/gen-row-report"
+    "gen-row-report": "node ./src/scripts/gen-row-report",
+    "gen-error-report": "node ./src/scripts/gen-error-report"
   },
   "license": null,
   "dependencies": {
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "csv-parse": "^2.0.2",
     "csv-parser": "^1.12.0",
     "csv-write-stream": "^2.0.0",
     "express": "^4.16.2",
