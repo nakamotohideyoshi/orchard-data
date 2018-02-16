@@ -20,5 +20,22 @@ module.exports = {
     'userExplanation': `Release name must not be generic (e.g., 00s Best Hits)`,
     'category': 'risk',
     'type': 'warning'
+  },
+  'filter4': {
+    'orchardDescription': `Artist Name formatting (cannot be Last, First)`,
+    'programmerDescription': `Terminate test if there is no comma in artist name (e.g., The Beatles)
+
+                              Terminate test if the Language is English and any word is:
+                              & (e.g., Earth, Wind & Fire)
+                              and (e.g., Emerson, Lake and Palmer)
+                              band, quartet, sextet, trio, orchestra, choir
+                              the (e.g., "Beatles, The")
+
+                              Terminate test if there is more than one comma in artist name. (e.g., Andršt, Luboš , Group)
+
+                              Terminate test if there are more than three words. (e.g., Soul Gun Warriors , U-Mass)`,
+    'userExplanation': `An artist name must not be in "Last, First" format.`,
+    'category': 'iTunes',
+    'type': 'error'
   }
 };
