@@ -17,7 +17,7 @@ import CsvPage from '../components/pages/CsvPage'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -46,7 +46,7 @@ export default new Router({
       component: ReportProgressPage
     },
     {
-      path: '/field-level',
+      path: '/field-level/:id',
       name: 'field-level',
       component: FieldLevelPage
     },
@@ -72,3 +72,11 @@ export default new Router({
     }
   ]
 })
+
+// Just scroll to top for now, we can implement more comples
+// behaviors depending on the next server view
+router.afterEach(() => {
+  window.scrollTo(0, 0);
+});
+
+export default router;
