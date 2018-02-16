@@ -12,8 +12,8 @@
                                 // page-title
                                 .page-title
                                     i.icon.icon-list
-                                    h1 All Submissions ({{dbData.length}})
-                                    .page-title__num {{dbData.length}}
+                                    h1 All Submissions ({{items.length}})
+                                    .page-title__num {{items.length}}
 
 
                                 table.p-table.p-table--subm(js-stacktable)
@@ -26,7 +26,7 @@
                                                     i.icon.icon-calendar-grid
                                                     span Date Created
                                     tbody
-                                        tr(v-for="data in dbData")
+                                        tr(v-for="data in items")
                                             td
                                                 router-link(:to="`/report/${data.rowid}`").page-back {{data.rowid}}
                                             td
@@ -50,20 +50,23 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
+import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types';
+
 export default {
   name: 'submissions-page',
-  data () {
-    return {
-      dbData: []
+  computed: {
+    items() {
+        return this.$store.getters[SUBMISSIONS];
+    },
+    error() {
+        return this.$store.getters[SUBMISSIONS_FAILURE];
+    },
+    loading() {
+        return this.$store.getters[SUBMISSIONS_REQUEST];
     }
   },
   created () {
-    this.$http
-      .get('http://localhost:3000/dataset-meta-all')
-      .then((res) => {
-        console.log(res)
-        this.dbData = res.data
-      })
+    this.$store.dispatch('fetchSubmissions');
   },
   components: {
     AppHeader,

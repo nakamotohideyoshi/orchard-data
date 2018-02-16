@@ -4,7 +4,7 @@ import VModal from 'vue-js-modal'
 
 import App from './App'
 import router from './router'
-// import store from './store'
+import store from './store'
 Vue.use(VModal)
 // Vue.use(VModal, { dialog: true })
 
@@ -18,6 +18,7 @@ export const eventHub = new Vue()
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

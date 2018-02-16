@@ -21,21 +21,6 @@ describe('NewBatchPage.vue', () => {
     expect(typeof wrapper.methods().processFile).to.equal('function')
   })
 
-  it('should get correct data', () => {
-    Vue.use(VueRouter)
-    const list1 = () => `{
-      criteria_id: 'userExplanation',
-      dataset_id: 15,
-      error_percent: 0.18181818181818182,
-      error_score: 2.2766766398366327,
-      filter_id: "filter1",
-      no_of_errors: 2,
-      no_of_rows: 11,
-      rowid: 1
-    }`
-    wrapper.setMethods({list1})
-  })
-
   it('should send correct data', () => {
     Vue.use(VueRouter)
     const submitForm = `{

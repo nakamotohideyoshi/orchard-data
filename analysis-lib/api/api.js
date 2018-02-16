@@ -301,7 +301,10 @@ router.get('/report-summaries', (req, res) => {
 router.get('/dataset-meta-all', (req, res) => {
 
   dbInterface.fetchDatasetMeta()
-    .then(rows => res.send(rows));
+    .then(rows => res.send(rows))
+    .catch((e) => {
+      console.log(e, 'error on API');
+    });
 
 });
 
