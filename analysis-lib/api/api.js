@@ -60,8 +60,27 @@ router.post('/dataset', (req, res) => {
 
 });
 
+// Fetch all reports
+router.get('/field-by-field-reports', (req, res) => {
+
+  dbInterface.fetchAllFieldByFieldReports()
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.parseFieldByFieldReport(report)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
 // Returns report as a TSV
-router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
+router.get('/field-by-field-report/:datasetId\.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let datasetSize = 0;
@@ -113,25 +132,6 @@ router.get('/field-by-field-report/:datasetId', (req, res) => {
       return new Promise((resolve, reject) => {
 
         try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
-
-        catch(err) { reject(err); }
-
-      });
-
-    })
-    .then(result => res.send(result));
-
-});
-
-// Fetch all reports
-router.get('/field-by-field-reports', (req, res) => {
-
-  dbInterface.fetchAllFieldByFieldReports()
-    .then(report => {
-
-      return new Promise((resolve, reject) => {
-
-        try { resolve(utils.parseFieldByFieldReport(report)); }
 
         catch(err) { reject(err); }
 

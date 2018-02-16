@@ -51,7 +51,7 @@ const actions = {
     fetchSubmissions ({ commit }) {
         commit(SUBMISSIONS_REQUEST, true);
 
-        return axios
+        axios
             .get(`${API_URL}dataset-meta-all`, {
                 'headers': {
                     'content-type': 'application/json'
