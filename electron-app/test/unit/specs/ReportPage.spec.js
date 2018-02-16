@@ -62,60 +62,60 @@ describe('ReportPage.vue', () => {
   })
 
   it('should set flags when calling overallRiskFlag method', () => {
-    wrapper.vm.showOverallRistk();
-    wrapper.update();
-    expect(wrapper.vm.overallRiskFlag).to.equal(true);
-    expect(wrapper.vm.appleTabFlag).to.equal(false);
-    expect(wrapper.vm.customFlag).to.equal(false);
-  });
+    wrapper.vm.showOverallRistk()
+    wrapper.update()
+    expect(wrapper.vm.overallRiskFlag).to.equal(true)
+    expect(wrapper.vm.appleTabFlag).to.equal(false)
+    expect(wrapper.vm.customFlag).to.equal(false)
+  })
 
   it('should set flags when calling showAppleTab method', () => {
-    wrapper.vm.showAppleTab();
-    wrapper.update();
-    expect(wrapper.vm.overallRiskFlag).to.equal(false);
-    expect(wrapper.vm.appleTabFlag).to.equal(true);
-    expect(wrapper.vm.customFlag).to.equal(false);
-  });
+    wrapper.vm.showAppleTab()
+    wrapper.update()
+    expect(wrapper.vm.overallRiskFlag).to.equal(false)
+    expect(wrapper.vm.appleTabFlag).to.equal(true)
+    expect(wrapper.vm.customFlag).to.equal(false)
+  })
 
   it('should set flags when calling showCustom method', () => {
-    wrapper.vm.showCustom();
-    wrapper.update();
-    expect(wrapper.vm.overallRiskFlag).to.equal(false);
-    expect(wrapper.vm.appleTabFlag).to.equal(false);
-    expect(wrapper.vm.customFlag).to.equal(true);
-  });
+    wrapper.vm.showCustom()
+    wrapper.update()
+    expect(wrapper.vm.overallRiskFlag).to.equal(false)
+    expect(wrapper.vm.appleTabFlag).to.equal(false)
+    expect(wrapper.vm.customFlag).to.equal(true)
+  })
 
   it('should render apple tab data from getters', () => {
-    const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0];
-    const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0];
-    const parsedTime = new Date(item.time).toString().slice(0, -14);
-    const tabButton = wrapper.contains('.report__tabs.report__tabs--left .apple-tab.is-active');
-    const tab = wrapper.contains('.report-container.apple-tab.is-active');
+    const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
+    const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0]
+    const parsedTime = new Date(item.time).toString().slice(0, -14)
+    const tabButton = wrapper.contains('.report__tabs.report__tabs--left .apple-tab.is-active')
+    const tab = wrapper.contains('.report-container.apple-tab.is-active')
 
-    expect(label.text().trim()).to.equal('Success');
-    expect(time.text().trim()).to.equal(parsedTime.trim());
-    expect(tabButton).to.equal(true);
-    expect(tab).to.equal(true);
-    expect(actions.fetchDataset.calledOnce).to.equal(true);
-  });
+    expect(label.text().trim()).to.equal('Success')
+    expect(time.text().trim()).to.equal(parsedTime.trim())
+    expect(tabButton).to.equal(true)
+    expect(tab).to.equal(true)
+    expect(actions.fetchDataset.calledOnce).to.equal(true)
+  })
 
   it('should render custom tab data from getters', () => {
     // Switch tab and check data
-    wrapper.vm.showCustom();
-    wrapper.update();
+    wrapper.vm.showCustom()
+    wrapper.update()
 
-    const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0];
-    const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0];
-    const fileName = wrapper.find('.report-container.custom-tab .report__view-link span')[0];
-    const parsedTime = new Date(item.time).toString().slice(0, -14);
-    const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active');
-    const tab = wrapper.contains('.report-container.custom-tab.is-active');
+    const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
+    const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0]
+    const fileName = wrapper.find('.report-container.custom-tab .report__view-link span')[0]
+    const parsedTime = new Date(item.time).toString().slice(0, -14)
+    const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active')
+    const tab = wrapper.contains('.report-container.custom-tab.is-active')
 
-    expect(label.text().trim()).to.equal('Success');
-    expect(time.text().trim()).to.equal(parsedTime.trim());
-    expect(fileName.text().trim()).to.equal(item.source.split('/')[2]);
-    expect(tabButton).to.equal(true);
-    expect(tab).to.equal(true);
-    expect(actions.fetchDataset.calledOnce).to.equal(true);
-  });
+    expect(label.text().trim()).to.equal('Success')
+    expect(time.text().trim()).to.equal(parsedTime.trim())
+    expect(fileName.text().trim()).to.equal(item.source.split('/')[2])
+    expect(tabButton).to.equal(true)
+    expect(tab).to.equal(true)
+    expect(actions.fetchDataset.calledOnce).to.equal(true)
+  })
 })
