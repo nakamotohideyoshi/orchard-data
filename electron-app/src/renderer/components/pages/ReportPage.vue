@@ -65,14 +65,14 @@ include _mixins
                                                 span View the input row scores
                                         .report__view
                                             .report__view-title Which fields in the dataset failed?
-                                            router-link(:to="'/field-level'").report__view-link
+                                            router-link(:to="`/field-level/${itemid}`").report__view-link
                                                 +icon('ico-document')
                                                 span View the field level issues
                                     .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
 
                                     .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
                                         // group
-                                        router-link(:to="`/csv/${item.rowid}`").report__view-link
+                                        router-link(:to="`/csv/${itemid}`").report__view-link
                                             +icon('ico-document')
                                             span {{fileName}}
                                         .upload__group
@@ -155,6 +155,13 @@ export default {
       }
 
       return -1
+    },
+    itemid() {
+      if (this.item && this.item.rowid) {
+        return this.item.rowid;
+      }
+
+      return '';
     },
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,

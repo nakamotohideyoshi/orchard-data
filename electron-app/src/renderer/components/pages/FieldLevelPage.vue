@@ -24,7 +24,7 @@ include _mixins
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text {{moment(batchData.batchDate).format('MM-DD-YYYY. HH:mm')}}
+                                            .report-summary__text {{batchDate}}
                                         .report-summary__col
                                             .report-summary__head download
                                             a(href="../../../../tests/data/test.tsv" download).report-summary__text
@@ -36,16 +36,16 @@ include _mixins
                                                 td Test Data Row ID
                                                 td Description
                                         tbody
-                                            tr(v-for="data in dbData" v-on:click="show(data)" @before-open="beforeOpen")
-                                                td {{data.rowid}}
-                                                td {{data.test_data_row_id}}
-                                                td This is a test
+                                            tr(v-for="data in items" v-on:click="show(data)" @before-open="beforeOpen")
+                                                td {{data.id}}
+                                                td {{data.criteria}}
+                                                td {{getFilter(data.criteria)}}
 
                                 // more btn
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
-                                modal(name="hello-world" height="auto").modal
+                                modal(name="hello-world" height="auto" @before-open="beforeOpen").modal
                                     button.close-button(v-on:click="hide()")
                                         +icon('ico-close')
                                     label Description
@@ -68,9 +68,16 @@ include _mixins
 
 <script>
 import moment from 'moment'
-
+import { mapGetters } from 'vuex'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import {
+  FIELDS,
+  FIELDS_REQUEST,
+  FIELDS_FAILURE,
+  FILTERS_META  
+} from '@/constants/types';
+import NewBatchPageVue from './NewBatchPage.vue';
 
 export default {
   name: 'field-level-page',
@@ -78,38 +85,42 @@ export default {
     AppHeader,
     AppFooter
   },
+  computed: {
+    ...mapGetters({
+      error: FIELDS_FAILURE,
+      loading: FIELDS_REQUEST,
+      items: FIELDS,
+      filters: FILTERS_META
+    }),
+    batchDate() {
+      let date = new Date();
+
+      if (this.batchData && this.batchData.batchDate) {
+        date = this.batchData.batchDate;
+      }
+
+      return moment(date).format('MM-DD-YYYY. HH:mm');
+    }
+  },
   data () {
     return {
       batchData: {
         batchDate: new Date()
       },
-      dbData: {},
       detailData: ''
     }
   },
   created: function () {
-    console.warn('The data-driven code for this page (the field by field report) has not yet been implemented.')
-    /*
-    Stubbed out by Lucas, Feb 15. This is the wrong URL, wrong method, and there is not yet a way to get the dataset ID in this page so we can't even construct the URL.
+    const { id } = this.$route.params;
 
-    this.$http
-      .post('http://localhost:3000/field-by-field-report', {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      })
-      .then((res) => {
-        console.log(res)
-        this.dbData = res.data
-      })
-      */
+    if (id) {
+      this.$store.dispatch('fetchFields', id);
+    } else {
+      this.error = new Error('No dataset ID defined');
+    }
   },
   methods: {
-    moment: function () {
-      return moment()
-    },
     show (data) {
-      console.log(data)
       this.detailData = data
       this.$modal.show('hello-world')
     },
@@ -117,9 +128,14 @@ export default {
       this.$modal.hide('hello-world')
     },
     beforeOpen (event) {
-      console.log(12312312)
-      console.log(event)
       this.detailData = 'asdasdas'
+    },
+    getFilter (id) {
+      if (this.filters && this.filters[id] && this.filters[id].userExplanation) {
+        return this.filters[id].userExplanation;
+      }
+
+      return '';
     }
   }
 }

@@ -1,13 +1,5 @@
 import axios from 'axios'
 import {
-<<<<<<< b7ceee8ebe63cf9fe4f1cc69ac2272bca8679067
-  SUBMISSIONS,
-  SUBMISSION,
-  SUBMISSIONS_REQUEST,
-  SUBMISSIONS_FAILURE,
-  SUBMISSIONS_ADD
-} from '@/constants/types'
-=======
     SUBMISSIONS,
     SUBMISSION,
     SUBMISSIONS_REQUEST,
@@ -17,7 +9,6 @@ import {
     FIELDS_FAILURE,
     FIELDS_REQUEST
 } from '@/constants/types';
->>>>>>> #60 Added fetch field-by-field action
 import {
   API_URL
 } from '@/constants/config'
