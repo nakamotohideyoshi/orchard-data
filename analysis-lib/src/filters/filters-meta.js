@@ -14,4 +14,11 @@ module.exports = {
     'category': 'iTunes',
     'type': 'warning'
   },
+  'filter3': {
+    'orchardDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
+    'programmerDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
+    'userExplanation': `Release name must not be generic (e.g., 00s Best Hits)`,
+    'category': 'risk',
+    'type': 'warning'
+  }
 };
