@@ -2,7 +2,7 @@ module.exports = function() {
 
   // load modules
   let fs  = require('fs');
-  let csvParser = require('csv-parser');
+  let csvParser = require('csv-parse');
   let csvWriter = require('csv-write-stream');
   let Promise = require('bluebird');
 
@@ -22,11 +22,22 @@ module.exports = function() {
       });
     };
 
-    // Creates stream of data
-    let stream = fs.createReadStream(inputFile, { encoding: "utf-8" })
-      .pipe(csvParser({separator: '\t'}));
+    // Checks if file exist
+    if(fs.existsSync(inputFile)) {
 
-    return streamToPromise(stream);
+      // Creates stream of data
+      let stream = fs.createReadStream(inputFile, { encoding: "utf-8" })
+        .pipe(csvParser({
+          delimiter: '\t',
+          columns: true,
+          quote: "`"
+        }));
+
+      return streamToPromise(stream);
+
+    }
+
+    else { return Promise.reject({ thrower: 'readTsv', message: 'File does not exist' }); }
 
   };
 

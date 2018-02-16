@@ -29,7 +29,6 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
 
 });
 
-
 // Sava TSV and run test cases
 router.post('/dataset', (req, res) => {
 
@@ -43,7 +42,6 @@ router.post('/dataset', (req, res) => {
   dbPromise
     .then(result => {
       datasetId = result.lastID;
-      res.send({ "dataset-id": datasetId });
       let tsvPromise = dbInterface.saveTsvIntoDB(data.source, datasetId);
       return tsvPromise;
     })
@@ -55,8 +53,41 @@ router.post('/dataset', (req, res) => {
     .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
     .then(() => report.calcBatchResultsReport())
     .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
-    .then(() => console.log("Finished"));
-    // .then(FBFReport => console.log(FBFReport));
+    .then(() => console.log("Finished Reports"))
+    .then(() => res.send({ status: "OK", datasetId: datasetId }))
+    .catch(err => {
+
+      switch(err.thrower) {
+
+        case 'saveTsvIntoDB':
+
+          let parsedError = {
+            "thrower": err.filename,
+            "message": err.message,
+            "row_id": err.rowId || -1
+          };
+
+          // Update status and logs error on a table
+          dbInterface.updateDatasetStatus(datasetId, dbInterface.dbStatus.FAIL)
+            .then(() => dbInterface.logErrorIntoDB(datasetId, parsedError))
+            .then(() => res.send(parsedError))
+            .catch(err2 => {
+              console.log(err2);
+              console.log(err2.message);
+              res.send(err2.message);
+
+              // res.send(err2)
+            });
+          break;
+
+        default:
+          res.send(err.message);
+
+          break;
+
+      }
+
+    });
 
 });
 
@@ -346,6 +377,14 @@ router.get('/dataset-meta-all', (req, res) => {
     .then(rows => res.send(rows));
 
 });
+
+// Return filters meta data
+router.get('/config', (req, res) => {
+
+  res.status(200).json(analysisLibModule.filtersMeta);
+
+});
+
 
 // Export modules
 module.exports = router;
