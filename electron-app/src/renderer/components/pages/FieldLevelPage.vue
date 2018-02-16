@@ -68,15 +68,27 @@ include _mixins
 
 <script>
 import moment from 'moment'
-
+import { mapGetters } from 'vuex'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import {
+  FIELDS,
+  FIELDS_REQUEST,
+  FIELDS_FAILURE  
+} from '@/constants/types';
 
 export default {
   name: 'field-level-page',
   components: {
     AppHeader,
     AppFooter
+  },
+  computed: {
+    ...mapGetters({
+      error: FIELDS_FAILURE,
+      loading: FIELDS_REQUEST,
+      items: FIELDS
+    })
   },
   data () {
     return {
@@ -88,21 +100,15 @@ export default {
     }
   },
   created: function () {
-    console.warn("The data-driven code for this page (the field by field report) has not yet been implemented.");
-    /*
-    Stubbed out by Lucas, Feb 15. This is the wrong URL, wrong method, and there is not yet a way to get the dataset ID in this page so we can't even construct the URL.
+    const { id } = this.$route.params;
 
-    this.$http
-      .post('http://localhost:3000/field-by-field-report', {
-        'headers': {
-          'content-type': 'application/json'
-        }
-      })
-      .then((res) => {
-        console.log(res)
-        this.dbData = res.data
-      })
-      */
+    console.log(id, 'id');
+
+    if (id) {
+      this.$store.dispatch('fetchFields', id);
+    } else {
+      this.error = new Error('No dataset ID defined');
+    }
   },
   methods: {
     moment: function () {
