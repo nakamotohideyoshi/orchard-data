@@ -143,9 +143,9 @@ module.exports = {
        let values = JSON.parse(row['test_data_field_values']);
 
        let occurrence = {
-         'datasetSize': datasetSize,
-         'criteriaId': row['criteria_id'],
-         'dataRowId': row['test_data_row_id'],
+         'size': datasetSize,
+         'criteria': row['criteria_id'],
+         'id': row['test_data_row_id'],
 
          'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
        };
