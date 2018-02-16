@@ -134,7 +134,7 @@ export default {
         rowId: this.id
       }
       this.$http
-        .get('http://localhost:3000/dataset-meta/'+this.id)
+        .get('http://localhost:3000/dataset-meta/' + this.id)
         .then((res) => {
           console.log(res)
           const position = res.data[0].source.lastIndexOf('/')
@@ -147,14 +147,12 @@ export default {
           }
 
           this.$http
-            .get('http://localhost:3000/api/batch-results-report/'+this.dbData.rowid)
+            .get('http://localhost:3000/report-summary/' + this.dbData.rowid)
             .then(
               (response) => {
                 this.errorPercent = response.data[0].error_percent
-                console.log("Error percent for dataset: ",this.errorPercent)
               }
             )
-
         })
     }
   },

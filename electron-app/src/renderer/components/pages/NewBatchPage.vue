@@ -158,7 +158,7 @@ export default {
       }
 
       this.$http
-        .post('http://localhost:3000/api/save-and-run-filters', datasetMeta, {
+        .post('http://localhost:3000/dataset', datasetMeta, {
           'headers': {
             'content-type': 'application/json'
           }

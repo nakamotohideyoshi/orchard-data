@@ -14,13 +14,13 @@ include _mixins
                                 router-link(:to="'/submissions'").page-back
                                     .icon.icon-arrow-back
                                     span Report Summary
-                        
+
                                 .p-box.report
                                     // summary
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head risk analysis
-                                            .report-summary__text.report-summary__text--red Errors Per Row 
+                                            .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch
@@ -40,7 +40,7 @@ include _mixins
                                                 td {{data.rowid}}
                                                 td {{data.test_data_row_id}}
                                                 td This is a test
-                                
+
                                 // more btn
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
@@ -48,7 +48,7 @@ include _mixins
                                 modal(name="hello-world" height="auto").modal
                                     button.close-button(v-on:click="hide()")
                                         +icon('ico-close')
-                                    label Description                                    
+                                    label Description
                                     .description this is test
                                     label Row Id in field-by-field report
                                     .description {{detailData.rowid}}
@@ -88,8 +88,12 @@ export default {
     }
   },
   created: function () {
+    console.warn("The data-driven code for this page (the field by field report) has not yet been implemented.");
+    /*
+    Stubbed out by Lucas, Feb 15. This is the wrong URL, wrong method, and there is not yet a way to get the dataset ID in this page so we can't even construct the URL.
+
     this.$http
-      .post('http://localhost:3000/api/field-by-field-report', {
+      .post('http://localhost:3000/field-by-field-report', {
         'headers': {
           'content-type': 'application/json'
         }
@@ -98,6 +102,7 @@ export default {
         console.log(res)
         this.dbData = res.data
       })
+      */
   },
   methods: {
     moment: function () {
