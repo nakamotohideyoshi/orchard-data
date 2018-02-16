@@ -97,7 +97,8 @@ router.get('/run-filter/:filterId/:datasetId', (req, res) => {
       });
 
     })
-    .then(result => res.send(result));
+    .then(result => res.send(result))
+    .catch(err => res.send(err));
 
 });
 
