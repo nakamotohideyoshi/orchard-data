@@ -86,7 +86,7 @@ export default {
 	  top: 120px;
 	  left: 355px;
 	  bottom: 40px;
-		opacity: 1;		
+		opacity: 1;
 		margin: 0 auto;
 		transform-origin: 0 0;
 		box-shadow: 0 0 20px rgba(0,0,0,.6);

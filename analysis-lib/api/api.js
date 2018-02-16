@@ -60,6 +60,41 @@ router.post('/dataset', (req, res) => {
 
 });
 
+// Returns report as a TSV
+router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
+    .then(report => {
+
+      if(report.length === 0) {
+
+        res.send(`Empty report for datasetId ${datasetId}.`);
+        return;
+
+      }
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
 // Fetch single report from DB
 router.get('/field-by-field-report/:datasetId', (req, res) => {
 
@@ -97,41 +132,6 @@ router.get('/field-by-field-reports', (req, res) => {
       return new Promise((resolve, reject) => {
 
         try { resolve(utils.parseFieldByFieldReport(report)); }
-
-        catch(err) { reject(err); }
-
-      });
-
-    })
-    .then(result => res.send(result));
-
-});
-
-// Returns report as a TSV
-router.get('/field-by-field-report/tsv/:datasetId', (req, res) => {
-
-  let datasetId = req.params.datasetId ;
-  let datasetSize = 0;
-
-  dbInterface
-    .getDatasetSize(datasetId)
-    .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
-      return Promise.resolve(datasetSize);
-    })
-    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
-    .then(report => {
-
-      if(report.length === 0) {
-
-        res.send(`Empty report for datasetId ${datasetId}.`);
-        return;
-
-      }
-
-      return new Promise((resolve, reject) => {
-
-        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
 
         catch(err) { reject(err); }
 

@@ -121,7 +121,7 @@ From STDIN: `STDIN | xargs -0 npm run gen-row-report`
 
 Examples:
 
-`curl http://localhost:3000/field-by-field-report/tsv/1 | xargs -0 npm run gen-row-report`
+`curl http://localhost:3000/field-by-field-report/1.tsv | xargs -0 npm run gen-row-report`
 `cat ./reports1.tsv | xargs -0 npm run gen-row-report`
 
 ## Error by Error aggregate
@@ -131,5 +131,5 @@ From STDIN: `STDIN | xargs -0 npm run gen-error-report`
 
 Examples:
 
-`curl http://localhost:3000/field-by-field-report/tsv/1 | xargs -0 npm run gen-error-report`
+`curl http://localhost:3000/field-by-field-report/1.tsv | xargs -0 npm run gen-error-report`
 `cat ./reports1.tsv | xargs -0 npm run gen-error-report`
