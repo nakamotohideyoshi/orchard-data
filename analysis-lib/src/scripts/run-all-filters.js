@@ -26,27 +26,40 @@ module.exports = function(datasetId) {
   let dbPromise = dbInterface.fetchTsvDataset(datasetId)
     .then(rows => {
 
-      noOfRows = rows.length;
+      return new Promise((resolve, reject) => {
 
-      Object.keys(filters).forEach(filter => {
+        try {
 
-        // For each row run filter
-        rows.forEach((row, idx) => {
+          noOfRows = rows.length;
 
-          report.addFilter(filter);
-          filters[filter](row, idx + 1, report);
+          Object.keys(filters).forEach(filter => {
 
-        });
+            // For each row run filter
+            rows.forEach((row, idx) => {
+
+              report.addFilter(filter);
+              filters[filter](row, idx + 1, report);
+
+            });
+
+          });
+
+          resolve();
+
+        }
+
+        catch(err) { reject(err); }
 
       });
 
     })
     .then(() => {
 
+      return new Promise((resolve, reject) => {
+
         if(noOfRows === 0) {
 
-          console.log(`*** dataset_id ${datasetId} does not
-                      exist on table ${orchardTable.name} ***`);
+          reject(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`);
 
         }
 
@@ -54,11 +67,13 @@ module.exports = function(datasetId) {
 
           // Stashes total number of rows for analysis
           report.saveNoOfRows(noOfRows);
-          return report;
+          resolve(report);
 
         }
 
       });
+
+    });
 
   return dbPromise;
 
