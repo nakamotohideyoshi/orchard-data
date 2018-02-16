@@ -5,7 +5,6 @@ let bodyParser = require('body-parser');
 
 let analysisLibModule = require('../analysis-lib-module');
 
-
 console.log("\n***** Initializing Analysis Lib Module API *****\n");
 
 // DB interface
@@ -61,6 +60,47 @@ router.post('/dataset', (req, res) => {
 
 });
 
+// Sava TSV and run test cases
+router.get('/run-filter/:filterId/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let filterId = "filter" + req.params.filterId;
+  let datasetSize = 0;
+  let report;
+
+  analysisLibModule.runSingleFilter(datasetId, filterId)
+    .then(rep => {
+      report = rep;
+      return report.calcFieldByFieldReportAll();
+    })
+    .then(() => report.calcBatchResultsReport())
+    .then(() => dbInterface.getDatasetSize(datasetId))
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => {
+
+      if(report.length === 0) {
+
+        res.send(`Empty report for datasetId ${datasetId}.`);
+        return;
+
+      }
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.fieldByFieldToTsv(report.FBFReport, datasetSize)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
 // Fetch all reports
 router.get('/field-by-field-reports', (req, res) => {
 
@@ -81,11 +121,7 @@ router.get('/field-by-field-reports', (req, res) => {
 });
 
 // Returns report as a TSV
-// We need to define the right order for the routed to be executed
-// and to use the regex form for the .tsv route so it does not confuses
-// express, also we need to define the non-tsv form last so if no .tsv
-// extension is passes we return .json data
-router.get('/field-by-field-report/:datasetId\.tsv', (req, res) => {
+router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let datasetSize = 0;
@@ -147,6 +183,39 @@ router.get('/field-by-field-report/:datasetId', (req, res) => {
 
 });
 
+// Row by Row Aggregation TSV
+router.get('/row-by-row/:datasetId.tsv', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try {
+
+          let RBRReport = utils.rowByRow(report, datasetSize);
+          resolve(utils.rowByRowToTsv(RBRReport));
+
+        }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
 // Row by Row Aggregation Report
 router.get('/row-by-row/:datasetId', (req, res) => {
 
@@ -175,27 +244,27 @@ router.get('/row-by-row/:datasetId', (req, res) => {
 
 });
 
-// Row by Row Aggregation TSV
-router.get('/row-by-row/tsv/:datasetId', (req, res) => {
+// Error by Error Aggregation TSV
+router.get('/error-by-error/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
-  let datasetSize = 0;
 
-  dbInterface
-    .getDatasetSize(datasetId)
-    .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
-      return Promise.resolve(datasetSize);
-    })
-    .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
+  dbInterface.fetchFieldByFieldReport(datasetId)
     .then(report => {
 
       return new Promise((resolve, reject) => {
 
         try {
 
-          let RBRReport = utils.rowByRow(report, datasetSize);
-          resolve(utils.rowByRowToTsv(RBRReport));
+          if(report.length === 0) {
+
+            resolve(`Empty report for datasetId ${datasetId}.`);
+
+          }
+
+          // Row by Row Aggregation
+          let EBEReport = utils.errorByError(report);
+          resolve(utils.errorByErrorToTsv(EBEReport));
 
         }
 
@@ -241,39 +310,6 @@ router.get('/error-by-error/:datasetId', (req, res) => {
 
 });
 
-// Error by Error Aggregation TSV
-router.get('/error-by-error/tsv/:datasetId', (req, res) => {
-
-  let datasetId = req.params.datasetId ;
-
-  dbInterface.fetchFieldByFieldReport(datasetId)
-    .then(report => {
-
-      return new Promise((resolve, reject) => {
-
-        try {
-
-          if(report.length === 0) {
-
-            resolve(`Empty report for datasetId ${datasetId}.`);
-
-          }
-
-          // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report);
-          resolve(utils.errorByErrorToTsv(EBEReport));
-
-        }
-
-        catch(err) { reject(err); }
-
-      });
-
-    })
-    .then(result => res.send(result));
-
-});
-
 // Fetch single report summary
 router.get('/report-summary/:datasetId', (req, res) => {
 
@@ -293,7 +329,7 @@ router.get('/report-summaries', (req, res) => {
 });
 
 // Fetch params and status for a dataset
-  router.get('/dataset-meta/:rowId', (req, res) => {
+router.get('/dataset-meta/:rowId', (req, res) => {
 
   let rowId = req.params.rowId ;
 
@@ -306,17 +342,7 @@ router.get('/report-summaries', (req, res) => {
 router.get('/dataset-meta-all', (req, res) => {
 
   dbInterface.fetchDatasetMeta()
-    .then(rows => res.send(rows))
-    .catch((e) => {
-      console.log(e, 'error on API');
-    });
-
-});
-
-// Return filters meta data
-router.get('/config', (req, res) => {
-
-  res.status(200).json(analysisLibModule.filtersMeta);
+    .then(rows => res.send(rows));
 
 });
 
