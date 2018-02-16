@@ -1,24 +1,26 @@
 module.exports = {
 
-  'rowByRow': function(report) {
+  'rowByRow': function(report, datasetSize) {
 
-    // Row by Row Report
-    let RBRReport = {};
     let filtersMeta = require("../filters/filters-meta");
+    let dbInterfaceModule = require('../db-scripts/db-interface');
+    let dbInterface = new dbInterfaceModule();
+
+    let RBRReport = {};
+
+    // Initializes empty report
+    for(let i = 0; i <= datasetSize; i++) {
+
+      RBRReport[i] = {
+        'rowID': i,
+        'errors': 0,
+        'warnings': 0,
+        'grade': 'PASS'
+      };
+
+    }
 
     report.forEach(occurrence => {
-
-      // Creates object
-      if(!RBRReport[occurrence['test_data_row_id']]) {
-
-        RBRReport[occurrence['test_data_row_id']] = {
-          'rowID': occurrence['test_data_row_id'],
-          'errors': 0,
-          'warnings': 0,
-          'grade': 'PASS'
-        };
-
-      }
 
       // warning or error
       let filterType = filtersMeta[occurrence['criteria_id']]['type'].toLowerCase();
@@ -43,20 +45,105 @@ module.exports = {
 
     });
 
-    return RBRReport;
+    reportArray = Object.keys(RBRReport).map(key => RBRReport[key]);
+    reportArray.sort((a, b) => {
+
+      let a_Problems = a['errors'] + a['warnings'];
+      let b_Problems = b['errors'] + b['warnings'];
+
+      return b_Problems - a_Problems || b['errors'] - a['errors'];
+
+    });
+
+    return reportArray;
 
   },
 
-  'parseFieldByFieldReport': function(report) {
+  'rowByRowToTsv': function(report) {
+
+    let headers = ['rowId', 'errors', 'warnings', 'grade'];
+
+    let tsv = headers.join('\t');
+    tsv += '\n';
+
+    // Mounts TSV tsv
+    report.forEach(occurrence => {
+
+      let values = Object.keys(occurrence).map(key => occurrence[key]);
+
+      tsv += values.join('\t');
+      tsv += '\n';
+
+    });
+
+    return tsv;
+
+  },
+
+  'errorByError': function(report) {
+
+    // Row by Row Report
+    let EBEReport = {};
+    let filtersMeta = require("../filters/filters-meta");
+    let explanationCriteria = 'userExplanation';
+
+    // Creates JSON for each possible error
+    Object.keys(filtersMeta).forEach(filterId => {
+
+      EBEReport[filterId] = {
+        'count': 0,
+        'criteriaId': filterId,
+        'description': filtersMeta[filterId][explanationCriteria]
+      };
+
+    });
+
+    report.forEach(occurrence => {
+
+      let filterId = occurrence['criteria_id'];
+
+      EBEReport[filterId]['count'] += 1;
+
+    });
+
+    reportArray = Object.keys(EBEReport).map(key => EBEReport[key]);
+    reportArray.sort((a,b) => b['count'] - a['count']);
+
+    return reportArray;
+
+  },
+
+  'errorByErrorToTsv': function(report) {
+
+    let headers = ['criteriaId', 'description', 'count'];
+
+    let tsv = headers.join('\t');
+    tsv += '\n';
+
+    // Mounts TSV tsv
+    report.forEach(occurrence => {
+
+      let values = Object.keys(occurrence).map(key => occurrence[key]);
+
+      tsv += values.join('\t');
+      tsv += '\n';
+
+    });
+
+    return tsv;
+
+  },
+
+  'parseFieldByFieldReport': function(report, datasetSize) {
 
      let parsed = [];
-
      report.forEach(row => {
 
        let fields = JSON.parse(row['test_data_field_ids']);
        let values = JSON.parse(row['test_data_field_values']);
 
        let occurrence = {
+         'datasetSize': datasetSize,
          'criteriaId': row['criteria_id'],
          'dataRowId': row['test_data_row_id'],
 
@@ -71,11 +158,11 @@ module.exports = {
 
   },
 
-  'fieldByFieldToTsv': function(report) {
+  'fieldByFieldToTsv': function(report, datasetSize) {
 
     let filtersMeta = require('../filters/filters-meta');
     let explanationCriteria = 'userExplanation';
-    let headers = ['dataRowId', 'criteriaId','description', 'fields'];
+    let headers = ['datasetSize', 'dataRowId', 'criteriaId','description', 'fields'];
 
     let tsv = headers.join("\t");
     tsv += "\n";
@@ -86,6 +173,7 @@ module.exports = {
       let values = JSON.parse(row['test_data_field_values']);
 
       let occurrence = [
+        datasetSize,
         row['test_data_row_id'],
         row['criteria_id'],
         filtersMeta[row['criteria_id']][explanationCriteria],
@@ -94,30 +182,6 @@ module.exports = {
 
       tsv += occurrence.join("\t");
       tsv += "\n";
-
-    });
-
-    return tsv;
-
-  },
-
-  'rowByRowToTsv': function(report) {
-
-    let filtersMeta = require('../filters/filters-meta');
-    let explanationCriteria = 'userExplanation';
-    let headers = ['rowId', 'errors', 'warnings', 'grade'];
-
-    let tsv = headers.join('\t');
-    tsv += '\n';
-
-    // Mounts TSV tsv
-    Object.keys(report).forEach(rowId => {
-
-      let occurrence = report[rowId];
-      let values = Object.keys(occurrence).map(key => occurrence[key]);
-
-      tsv += values.join('\t');
-      tsv += '\n';
 
     });
 
