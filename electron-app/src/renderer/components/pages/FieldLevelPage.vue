@@ -36,16 +36,16 @@ include _mixins
                                                 td Test Data Row ID
                                                 td Description
                                         tbody
-                                            tr(v-for="data in dbData" v-on:click="show(data)" @before-open="beforeOpen")
-                                                td {{data.rowid}}
-                                                td {{data.test_data_row_id}}
-                                                td This is a test
+                                            tr(v-for="data in items" v-on:click="show(data)" @before-open="beforeOpen")
+                                                td {{data.id}}
+                                                td {{data.criteria}}
+                                                td {{getFilter(data.criteria)}}
 
                                 // more btn
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
-                                modal(name="hello-world" height="auto").modal
+                                modal(name="hello-world" height="auto" @before-open="beforeOpen").modal
                                     button.close-button(v-on:click="hide()")
                                         +icon('ico-close')
                                     label Description
@@ -74,7 +74,8 @@ import AppFooter from './Footer.vue'
 import {
   FIELDS,
   FIELDS_REQUEST,
-  FIELDS_FAILURE  
+  FIELDS_FAILURE,
+  FILTERS_META  
 } from '@/constants/types';
 
 export default {
@@ -87,7 +88,8 @@ export default {
     ...mapGetters({
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
-      items: FIELDS
+      items: FIELDS,
+      filters: FILTERS_META
     })
   },
   data () {
@@ -102,8 +104,6 @@ export default {
   created: function () {
     const { id } = this.$route.params;
 
-    console.log(id, 'id');
-
     if (id) {
       this.$store.dispatch('fetchFields', id);
     } else {
@@ -115,7 +115,6 @@ export default {
       return moment()
     },
     show (data) {
-      console.log(data)
       this.detailData = data
       this.$modal.show('hello-world')
     },
@@ -123,9 +122,14 @@ export default {
       this.$modal.hide('hello-world')
     },
     beforeOpen (event) {
-      console.log(12312312)
-      console.log(event)
       this.detailData = 'asdasdas'
+    },
+    getFilter (id) {
+      if (this.filters && this.filters[id] && this.filters[id].userExplanation) {
+        return this.filters[id].userExplanation;
+      }
+
+      return '';
     }
   }
 }
