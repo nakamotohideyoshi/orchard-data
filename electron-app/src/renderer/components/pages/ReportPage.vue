@@ -103,12 +103,12 @@ include _mixins
 
 <script>
 import moment from 'moment'
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
-} from '@/constants/types';
+} from '@/constants/types'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
@@ -129,32 +129,32 @@ export default {
       keywordList: '',
       threshold1: '',
       threshold2: '',
-      lang: '',
+      lang: ''
     }
   },
   computed: {
-    fileName() {
+    fileName () {
       if (this.item && this.item.source) {
-        const splitted = this.item.source.split('/');
-        const position = splitted.length - 1;
+        const splitted = this.item.source.split('/')
+        const position = splitted.length - 1
 
-        return splitted[position];
+        return splitted[position]
       }
 
-      return '';
+      return ''
     },
-    time() {
+    time () {
       if (this.item && this.item.time) {
-        return new Date(this.item.time).toString().slice(0, -14);
+        return new Date(this.item.time).toString().slice(0, -14)
       }
-      return '';
+      return ''
     },
-    status() {
+    status () {
       if (this.item && this.item.status >= 0) {
-        return this.item.status;
+        return this.item.status
       }
 
-      return -1;
+      return -1
     },
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,
@@ -180,11 +180,11 @@ export default {
     }
   },
   props: ['id'],
-  async created() {
-    await this.$store.dispatch('fetchDataset', this.id);
+  async created () {
+    await this.$store.dispatch('fetchDataset', this.id)
 
     if (this.status === 3) {
-        this.showCustom();
+      this.showCustom()
     }
   }
 }

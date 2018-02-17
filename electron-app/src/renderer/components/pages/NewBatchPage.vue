@@ -85,12 +85,12 @@ include _mixins
 // TODO: Use absolute paths when possible
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
-} from '@/constants/types';
+} from '@/constants/types'
 
 export default {
   name: 'new-batch-page',
@@ -135,7 +135,7 @@ export default {
         evt.preventDefault()
       }
     },
-    async submitForm(e) {
+    async submitForm (e) {
       // TODO: Improve the logic below, there is better way to compute
       // the payload
       if (this.filePath === '') {
@@ -171,10 +171,10 @@ export default {
         time: Date.now()
       }
 
-      await this.$store.dispatch('submitDataset', datasetMeta);
+      await this.$store.dispatch('submitDataset', datasetMeta)
 
       if (this.item) {
-        this.$router.push(`/report/${this.item['dataset-id']}`);
+        this.$router.push(`/report/${this.item['dataset-id']}`)
       }
     },
     processFile: function (e) {

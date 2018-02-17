@@ -88,7 +88,7 @@ export default {
     }
   },
   created: function () {
-    console.warn("The data-driven code for this page (the field by field report) has not yet been implemented.");
+    console.warn('The data-driven code for this page (the field by field report) has not yet been implemented.')
     /*
     Stubbed out by Lucas, Feb 15. This is the wrong URL, wrong method, and there is not yet a way to get the dataset ID in this page so we can't even construct the URL.
 

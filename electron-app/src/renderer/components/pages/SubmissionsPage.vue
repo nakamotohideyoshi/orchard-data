@@ -50,23 +50,23 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types';
+import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types'
 
 export default {
   name: 'submissions-page',
   computed: {
-    items() {
-        return this.$store.getters[SUBMISSIONS];
+    items () {
+      return this.$store.getters[SUBMISSIONS]
     },
-    error() {
-        return this.$store.getters[SUBMISSIONS_FAILURE];
+    error () {
+      return this.$store.getters[SUBMISSIONS_FAILURE]
     },
-    loading() {
-        return this.$store.getters[SUBMISSIONS_REQUEST];
+    loading () {
+      return this.$store.getters[SUBMISSIONS_REQUEST]
     }
   },
   created () {
-    this.$store.dispatch('fetchSubmissions');
+    this.$store.dispatch('fetchSubmissions')
   },
   components: {
     AppHeader,

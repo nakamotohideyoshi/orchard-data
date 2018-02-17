@@ -50,20 +50,20 @@ include _mixins
 </template>
 
 <script>
-import { SUBMISSIONS } from '@/constants/types';
+import { SUBMISSIONS } from '@/constants/types'
 
 export default {
-    computed: {
-        submissions() {
-            return this.$store.getters[SUBMISSIONS];
-        },
-    },
-    name: 'app-header',
-    components: {
-
-    },
-    methods: {
+  computed: {
+    submissions () {
+      return this.$store.getters[SUBMISSIONS]
     }
+  },
+  name: 'app-header',
+  components: {
+
+  },
+  methods: {
+  }
 }
 </script>
 
