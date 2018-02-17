@@ -22,17 +22,11 @@ const mutations = {
 
         return Object.assign(s, { [`${FILTERS_META}`]: null });
     },
-    [`${CONFIG_FAILURE}`](s, status) {
-        let finalStatus = false;
-
-        if(status) {
-            finalStatus = true;
-        }
-
-        return Object.assign(s, { [`${CONFIG_FAILURE}`]: finalStatus });
+    [`${CONFIG_REQUEST}`](s, status = false) {
+        return Object.assign(s, { [`${CONFIG_REQUEST}`]: status });
     },
-    [`${CONFIG_REQUEST}`](s, error) {
-        return Object.assign(s, { [`${CONFIG_REQUEST}`]: error });
+    [`${CONFIG_FAILURE}`](s, error) {
+        return Object.assign(s, { [`${CONFIG_FAILURE}`]: error });
     },
 }
 
