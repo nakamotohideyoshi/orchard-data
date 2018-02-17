@@ -5,6 +5,7 @@ let bodyParser = require('body-parser');
 
 let analysisLibModule = require('../analysis-lib-module');
 
+
 console.log("\n***** Initializing Analysis Lib Module API *****\n");
 
 // DB interface
@@ -309,6 +310,13 @@ router.get('/dataset-meta-all', (req, res) => {
     .catch((e) => {
       console.log(e, 'error on API');
     });
+
+});
+
+// Return filters meta data
+router.get('/config', (req, res) => {
+
+  res.status(200).json(analysisLibModule.filtersMeta);
 
 });
 
