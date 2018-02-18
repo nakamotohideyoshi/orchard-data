@@ -76,9 +76,8 @@ import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META  
+  FILTERS_META
 } from '@/constants/types';
-import NewBatchPageVue from './NewBatchPage.vue';
 
 export default {
   name: 'field-level-page',
@@ -117,7 +116,11 @@ export default {
     if (id) {
       this.fetchFields(id);
     } else {
-      this.$store.commit(FIELDS_FAILURE, 'No dataset ID defined')
+      // GOTCHA: mocha seems to have problems when checking if an object
+      // is instance of a native type (e.g. Array, Error), let's find a better
+      // way to unit test this and to properly make it through Karma all
+      // the way down to where mocha is executed
+      this.$store.commit(FIELDS_FAILURE, new Error('No dataset ID defined'))
     }
   },
   methods: {

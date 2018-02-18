@@ -163,6 +163,13 @@ export default {
 
       return '';
     },
+    itemid() {
+      if (this.item && this.item.rowid) {
+        return this.item.rowid;
+      }
+
+      return '';
+    },
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,
       loading: SUBMISSIONS_REQUEST,
