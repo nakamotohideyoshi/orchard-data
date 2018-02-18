@@ -15,7 +15,8 @@ import RowScoresPage from '../components/pages/RowScoresPage'
 import CriteriaScoresPage from '../components/pages/CriteriaScoresPage'
 import CsvPage from '../components/pages/CsvPage'
 
-Vue.use(Router)
+// Enable router override on test environment
+if (process.env.BABEL_ENV !== 'test') Vue.use(Router)
 
 const router = new Router({
   routes: [
