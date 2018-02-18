@@ -1,19 +1,19 @@
-import Vue from 'vue'
 import { mount } from 'avoriaz'
-import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import sinon from 'sinon'
+import moment from 'moment'
 import ReportPage from '@/components/pages/ReportPage'
 import {
-  SUBMISSION,
+  SUBMISSION
+  /* Stubbing to pass lint, will work on it later
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
+  */
 } from '@/constants/types'
 import router from '../../../src/renderer/router'
 
 describe('ReportPage.vue', () => {
   let wrapper
-  let state
   let getters
   let store
   let actions
@@ -28,6 +28,7 @@ describe('ReportPage.vue', () => {
     status: 1,
     time: 1518462941917
   }
+  const parsedTime = moment(item.time).format('MM-DD-YYYY. HH:mm')
 
   beforeEach(() => {
     getters = {
@@ -85,7 +86,6 @@ describe('ReportPage.vue', () => {
   it('should render apple tab data from getters', () => {
     const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
     const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0]
-    const parsedTime = new Date(item.time).toString().slice(0, -14)
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .apple-tab.is-active')
     const tab = wrapper.contains('.report-container.apple-tab.is-active')
 
@@ -104,7 +104,6 @@ describe('ReportPage.vue', () => {
     const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
     const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0]
     const fileName = wrapper.find('.report-container.custom-tab .report__view-link span')[0]
-    const parsedTime = new Date(item.time).toString().slice(0, -14)
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active')
     const tab = wrapper.contains('.report-container.custom-tab.is-active')
 

@@ -1,9 +1,6 @@
-import Vue from 'vue'
-import { mount, shallow } from 'avoriaz'
-import VueRouter from 'vue-router'
+import { shallow } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
-import moment from 'moment'
 import FieldLevelPage from '@/components/pages/FieldLevelPage'
 import {
   FIELDS,
@@ -16,14 +13,12 @@ import router from '../../../src/renderer/router'
 
 describe('FieldLevelPage.vue', () => {
   let wrapper
-  let invalidWrapper
   let store
   let getters
   let actions
   let $validRoute
   let $invalidRoute
-  let fields
-  const noDataSetErrorMessage = 'No dataset ID defined'
+  // const noDataSetErrorMessage = 'No dataset ID defined'
 
   beforeEach(() => {
     getters = {
@@ -33,7 +28,7 @@ describe('FieldLevelPage.vue', () => {
       filters: () => FILTERS_META,
       [`${FIELDS}`]: () => [],
       [`${FIELDS_FAILURE}`]: () => ({}),
-      [`${FILTERS_META}`]: () => ({}),
+      [`${FILTERS_META}`]: () => ({})
     }
 
     actions = {

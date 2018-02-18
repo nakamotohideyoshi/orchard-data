@@ -18,23 +18,23 @@ import {
   CONFIG_FAILURE
 } from '@/constants/types'
 
-  export default {
-    name: 'app',
-    computed: {
-      ...mapGetters({
-        loaded: FILTERS_META,
-        error: CONFIG_FAILURE
-      })
-    },
-    async created() {
-      await this.$store.dispatch('getConfig');
-    },
-    methods: {
-      async retry() {
-        await this.$store.dispatch('getConfig');
-      }
+export default {
+  name: 'app',
+  computed: {
+    ...mapGetters({
+      loaded: FILTERS_META,
+      error: CONFIG_FAILURE
+    })
+  },
+  async created () {
+    await this.$store.dispatch('getConfig')
+  },
+  methods: {
+    async retry () {
+      await this.$store.dispatch('getConfig')
     }
   }
+}
 </script>
 
 <style>

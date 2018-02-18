@@ -144,9 +144,13 @@ export default {
       return ''
     },
     time () {
+      let date = ''
+
       if (this.item && this.item.time) {
-        return new Date(this.item.time).toString().slice(0, -14)
+        date = new Date(this.item.time)
+        return moment(date).format('MM-DD-YYYY. HH:mm')
       }
+
       return ''
     },
     status () {
@@ -156,19 +160,12 @@ export default {
 
       return -1
     },
-    itemid() {
+    itemid () {
       if (this.item && this.item.rowid) {
-        return this.item.rowid;
+        return this.item.rowid
       }
 
-      return '';
-    },
-    itemid() {
-      if (this.item && this.item.rowid) {
-        return this.item.rowid;
-      }
-
-      return '';
+      return ''
     },
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,

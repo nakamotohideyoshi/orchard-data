@@ -1,6 +1,4 @@
-import Vue from 'vue'
 import { mount } from 'avoriaz'
-import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import sinon from 'sinon'
 import App from '@/App'

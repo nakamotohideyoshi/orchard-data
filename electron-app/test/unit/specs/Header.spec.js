@@ -1,6 +1,4 @@
-import Vue from 'vue'
 import { mount } from 'avoriaz'
-import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import Header from '@/components/pages/Header'
 import router from '../../../src/renderer/router'
@@ -18,7 +16,7 @@ describe('Header.vue', () => {
     state = {
       [`${SUBMISSIONS}`]: []
     }
-    
+
     getters = {
       [`${SUBMISSIONS}`]: () => {}
     }

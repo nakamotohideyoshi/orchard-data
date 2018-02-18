@@ -77,7 +77,7 @@ import {
   FIELDS_REQUEST,
   FIELDS_FAILURE,
   FILTERS_META
-} from '@/constants/types';
+} from '@/constants/types'
 
 export default {
   name: 'field-level-page',
@@ -92,14 +92,14 @@ export default {
       items: FIELDS,
       filters: FILTERS_META
     }),
-    batchDate() {
-      let date = new Date();
+    batchDate () {
+      let date = new Date()
 
       if (this.batchData && this.batchData.batchDate) {
-        date = this.batchData.batchDate;
+        date = this.batchData.batchDate
       }
 
-      return moment(date).format('MM-DD-YYYY. HH:mm');
+      return moment(date).format('MM-DD-YYYY. HH:mm')
     }
   },
   data () {
@@ -111,10 +111,10 @@ export default {
     }
   },
   created: function () {
-    const { id } = this.$route.params;
+    const { id } = this.$route.params
 
     if (id) {
-      this.fetchFields(id);
+      this.fetchFields(id)
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
       // is instance of a native type (e.g. Array, Error), let's find a better
@@ -131,15 +131,15 @@ export default {
     hide () {
       this.$modal.hide('hello-world')
     },
-    beforeOpen (event) {
+    beforeOpen (/* event */) {
       this.detailData = 'asdasdas'
     },
     getFilter (id) {
       if (this.filters && this.filters[id] && this.filters[id].userExplanation) {
-        return this.filters[id].userExplanation;
+        return this.filters[id].userExplanation
       }
 
-      return '';
+      return ''
     },
     ...mapActions([
       'fetchFields'

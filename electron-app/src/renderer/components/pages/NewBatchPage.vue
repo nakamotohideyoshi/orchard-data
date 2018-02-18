@@ -135,7 +135,7 @@ export default {
         evt.preventDefault()
       }
     },
-    async submitForm (e) {
+    async submitForm (/* e */) {
       // TODO: Improve the logic below, there is better way to compute
       // the payload
       if (this.filePath === '') {
@@ -177,7 +177,7 @@ export default {
         this.$router.push(`/report/${this.item['dataset-id']}`)
       }
     },
-    processFile: function (e) {
+    processFile: function (/* e */) {
       this.file = event.target.files[0]
       this.fileName = this.file.name
       this.filePath = this.file.path

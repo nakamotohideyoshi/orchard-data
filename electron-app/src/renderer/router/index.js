@@ -77,7 +77,7 @@ const router = new Router({
 // Just scroll to top for now, we can implement more comples
 // behaviors depending on the next server view
 router.afterEach(() => {
-  window.scrollTo(0, 0);
-});
+  window.scrollTo(0, 0)
+})
 
-export default router;
+export default router

@@ -1,6 +1,4 @@
-import Vue from 'vue'
 import { mount } from 'avoriaz'
-import VueRouter from 'vue-router'
 import NewBatchPage from '@/components/pages/NewBatchPage'
 import router from '../../../src/renderer/router'
 
