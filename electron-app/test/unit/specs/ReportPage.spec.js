@@ -50,9 +50,6 @@ describe('ReportPage.vue', () => {
       router,
       store
     })
-
-    Vue.use(VueRouter)
-    Vue.use(Vuex)
   })
 
   it('should render correct function', () => {
@@ -118,4 +115,9 @@ describe('ReportPage.vue', () => {
     expect(tab).to.equal(true)
     expect(actions.fetchDataset.calledOnce).to.equal(true)
   })
+
+  // TODO: Write test for the following cases:
+  //       * Failure on upload
+  //       * Malformed data in uploaded file
+  //       * Invalid file extension (if applies, maybe this is a e2e one instead)
 })
