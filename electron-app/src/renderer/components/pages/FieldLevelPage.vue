@@ -68,7 +68,8 @@ include _mixins
 
 <script>
 import moment from 'moment'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 import {
@@ -114,9 +115,9 @@ export default {
     const { id } = this.$route.params;
 
     if (id) {
-      this.$store.dispatch('fetchFields', id);
+      this.fetchFields(id);
     } else {
-      this.error = new Error('No dataset ID defined');
+      this.$store.commit(FIELDS_FAILURE, 'No dataset ID defined')
     }
   },
   methods: {
@@ -136,7 +137,10 @@ export default {
       }
 
       return '';
-    }
+    },
+    ...mapActions([
+      'fetchFields'
+    ])
   }
 }
 </script>
