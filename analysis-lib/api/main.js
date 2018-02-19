@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 app.set('port', process.env.PORT || 3000);
 
-app.use('/api', require('./api'));
+app.use('/', require('./api'));
 
 let server = app.listen(app.get('port'), function() {
   return console.log('Listening on port ' + app.get('port'));
