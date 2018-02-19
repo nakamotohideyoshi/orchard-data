@@ -63,9 +63,11 @@ export default {
     }
   },
   created: function () {
+    /* Stubbed by Jaime Tanori until this page is reworked
     const data = {
       'dataset-id': this.id
     }
+    */
     this.$http
       .get('http://localhost:3000/dataset/' + this.id + '.tsv')
       .then((res) => {

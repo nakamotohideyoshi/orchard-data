@@ -4,7 +4,10 @@ import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE,
-  SUBMISSIONS_ADD
+  SUBMISSIONS_ADD,
+  FIELDS,
+  FIELDS_FAILURE,
+  FIELDS_REQUEST
 } from '@/constants/types'
 import {
   API_URL
@@ -14,7 +17,10 @@ const state = {
   [`${SUBMISSIONS}`]: [],
   [`${SUBMISSION}`]: null,
   [`${SUBMISSIONS_REQUEST}`]: false,
-  [`${SUBMISSIONS_FAILURE}`]: null
+  [`${SUBMISSIONS_FAILURE}`]: null,
+  [`${FIELDS}`]: null,
+  [`${FIELDS_REQUEST}`]: false,
+  [`${FIELDS_FAILURE}`]: null
 }
 
 const mutations = {
@@ -44,6 +50,25 @@ const mutations = {
     return Object.assign(s, {
       [`${SUBMISSIONS}`]: s[SUBMISSIONS].concat(newSubmission)
     })
+  },
+  [`${FIELDS}`] (s, item) {
+    if (item instanceof Object) {
+      return Object.assign(s, { [`${FIELDS}`]: item })
+    }
+
+    return Object.assign(s, { [`${FIELDS}`]: {} })
+  },
+  [`${FIELDS_REQUEST}`] (s, status) {
+    let finalStatus = false
+
+    if (status) {
+      finalStatus = true
+    }
+
+    return Object.assign(s, { [`${FIELDS_REQUEST}`]: finalStatus })
+  },
+  [`${FIELDS_FAILURE}`] (s, error) {
+    return Object.assign(s, { [`${FIELDS_FAILURE}`]: error })
   }
 }
 
@@ -112,6 +137,31 @@ const actions = {
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, e)
       })
+  },
+  fetchFields ({ commit }, id) {
+    commit(FIELDS_REQUEST, true)
+    commit(FIELDS_FAILURE, null)
+    commit(FIELDS, null)
+
+    return axios
+      .get(`${API_URL}field-by-field-report/${id}`, {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
+      .then((res) => {
+        // Still think we should have some
+        commit(FIELDS_REQUEST, false)
+        if (res.data[0]) {
+          commit(FIELDS, res.data)
+        } else {
+          throw new Error('Fields not found')
+        }
+      })
+      .catch((e) => {
+        commit(FIELDS_REQUEST, false)
+        commit(FIELDS_FAILURE, e)
+      })
   }
 }
 
@@ -119,7 +169,10 @@ const getters = {
   [`${SUBMISSION}`]: s => s[SUBMISSION],
   [`${SUBMISSIONS}`]: s => s[SUBMISSIONS],
   [`${SUBMISSIONS_REQUEST}`]: s => s[SUBMISSIONS_REQUEST],
-  [`${SUBMISSIONS_FAILURE}`]: s => s[SUBMISSIONS_FAILURE]
+  [`${SUBMISSIONS_FAILURE}`]: s => s[SUBMISSIONS_FAILURE],
+  [`${FIELDS}`]: s => s[FIELDS],
+  [`${FIELDS_REQUEST}`]: s => s[FIELDS_REQUEST],
+  [`${FIELDS_FAILURE}`]: s => s[FIELDS_FAILURE]
 }
 
 export default {

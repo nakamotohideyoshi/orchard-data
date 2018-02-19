@@ -5,6 +5,7 @@ let bodyParser = require('body-parser');
 
 let analysisLibModule = require('../analysis-lib-module');
 
+
 console.log("\n***** Initializing Analysis Lib Module API *****\n");
 
 // DB interface
@@ -80,6 +81,10 @@ router.get('/field-by-field-reports', (req, res) => {
 });
 
 // Returns report as a TSV
+// We need to define the right order for the routed to be executed
+// and to use the regex form for the .tsv route so it does not confuses
+// express, also we need to define the non-tsv form last so if no .tsv
+// extension is passes we return .json data
 router.get('/field-by-field-report/:datasetId\.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
@@ -305,6 +310,13 @@ router.get('/dataset-meta-all', (req, res) => {
     .catch((e) => {
       console.log(e, 'error on API');
     });
+
+});
+
+// Return filters meta data
+router.get('/config', (req, res) => {
+
+  res.status(200).json(analysisLibModule.filtersMeta);
 
 });
 

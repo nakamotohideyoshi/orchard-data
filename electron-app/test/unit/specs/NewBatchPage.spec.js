@@ -1,6 +1,4 @@
-import Vue from 'vue'
 import { mount } from 'avoriaz'
-import VueRouter from 'vue-router'
 import NewBatchPage from '@/components/pages/NewBatchPage'
 import router from '../../../src/renderer/router'
 
@@ -9,12 +7,11 @@ describe('NewBatchPage.vue', () => {
 
   beforeEach(() => {
     wrapper = mount(NewBatchPage, {
-      router: router
+      router
     })
   })
 
   it('should render correct function', () => {
-    Vue.use(VueRouter)
     expect(typeof wrapper.methods().countdownArtistList).to.equal('function')
     expect(typeof wrapper.methods().countdownKeywords).to.equal('function')
     expect(typeof wrapper.methods().submitForm).to.equal('function')
@@ -22,7 +19,6 @@ describe('NewBatchPage.vue', () => {
   })
 
   it('should send correct data', () => {
-    Vue.use(VueRouter)
     const submitForm = `{
       artist_blacklist: 12,
       duplicates_threshold: 10,

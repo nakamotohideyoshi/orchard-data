@@ -1,6 +1,4 @@
-import Vue from 'vue'
 import { mount } from 'avoriaz'
-import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import Header from '@/components/pages/Header'
 import router from '../../../src/renderer/router'
@@ -19,12 +17,6 @@ describe('Header.vue', () => {
       [`${SUBMISSIONS}`]: []
     }
 
-    console.log('getters assignment stubbed out by Lucas to get the build working')
-    /*
-    getters = {
-      [`${SUBMISSIONS}`]: () => item
-    }
-    */
     getters = {
       [`${SUBMISSIONS}`]: () => {}
     }
@@ -38,11 +30,14 @@ describe('Header.vue', () => {
       router,
       store
     })
-    Vue.use(VueRouter)
-    Vue.use(Vuex)
   })
 
   it('should render correct header', () => {
     expect(wrapper.is('div')).to.equal(true)
   })
+
+  // TODO: Write test cases for the following:
+  //      * No items in array
+  //      * Items in array
+  //      * No array at all (undefined or null)
 })
