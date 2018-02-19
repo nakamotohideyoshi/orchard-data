@@ -24,37 +24,125 @@ module.exports = function() {
   // Loads TSV File into DATABASE
   this.saveTsvIntoDB = function(inputPath, datasetId) {
 
+    console.log("\n***** Saving TSV *****\n");
+
     // The table to add the TSV Files
     let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
+    let fields_dict = orchardTable['columns_dict'];
     let tsvFile;
 
     let dbPromise = readTsv(inputPath)
       .then(file => tsvFile = file)
+      .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.INPROGRESS))
       .then(() => sqlite.open(this.dbPath, { Promise }))
-      .then(db => this.updateDatasetStatus(datasetId, this.dbStatus.INPROGRESS))
       .then(db => {
 
-        return Promise.map(tsvFile, (row) => {
+        // Raw Fields
+        let tsvFields = Object.keys(tsvFile[0]);
+        let numberOfFields = tsvFields.length;
+
+        // Filters are maped to datavase columns
+        let fields = ['dataset_id'];
+        Object.keys(tsvFile[0]).forEach(key => fields.push(fields_dict[key]));
+
+        // Checks if TSV has missing or extra fields
+        console.log("***** Checking Number of Fields *****\n");
+        if(numberOfFields !== 52) {
+
+          console.log("Error when trying to upload TSV\n");
+
+          return Promise.reject({
+            "thrower": "saveTsvIntoDB",
+            "row_id": -1,
+            "message": `Invalid number of fields: ${numberOfFields}`
+          });
+
+        }
+
+        // Checks if some field is undefined
+        console.log("***** Checking for undefined fields *****\n");
+        for(let i = 0; i < fields.length; i++) {
+
+          let field = fields[i];
+
+          if(typeof(field) === 'undefined') {
+
+            return Promise.reject({
+              "thrower": "saveTsvIntoDB",
+              "row_id": -1,
+              "message": `Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`
+            });
+
+          }
+
+        }
+
+        // If it has made this far, then it's ok
+        console.log("***** Reading TSV File *****\n");
+
+        return Promise.map(tsvFile, (row, idx) => {
 
           let values = [datasetId];
           Object.keys(row).forEach(key => values.push(row[key]));
 
           let placeholders = values.map((val) => '(?)').join(',');
-          let stmt = `INSERT INTO ${orchardTable.name} VALUES (${placeholders})`;
+          let stmt = `INSERT INTO ${orchardTable.name}(${fields}) VALUES (${placeholders})`;
 
           return db.run(stmt, values)
             .then((result) => {
-              console.log(`Rows inserted: ${result.changes} with rowId: ${result.lastID}`);
+              return Promise.resolve(this.dbStatus.OK);
             },
-            (err) => { console.log(err); }
-                 );
+            (err) => {
+
+              return Promise.reject({
+                "thrower": "saveTsvIntoDB",
+                "row_id": idx,
+                "message": err
+              });
+
+            });
+
         });
 
       })
       .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.OK))
-      .catch(err => {
-        this.updateDatasetStatus(datasetId, this.dbStatus.ERROR);
-        return err;
+      .then(() => console.log("***** Finished *****"));
+
+    return dbPromise;
+
+  };
+
+  this.logErrorIntoDB = function(datasetId, error) {
+
+    // The table to add the TSV Files
+    let logsTable = dbInfo[DATABASE]['tables']['tsv_logs_table'];
+
+    // Opens a new connection or uses an existing one
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => {
+
+        let fields = ['dataset_id', 'row_id', 'message'];
+        let values = [datasetId, error['row_id'] || -1, error['message'].toString()];
+
+        let placeholders = values.map((val) => '(?)').join(',');
+        let stmt = `INSERT INTO ${logsTable.name}(${fields}) VALUES (${placeholders})`;
+
+        return db.run(stmt, values)
+          .then((result) => {
+            return Promise.resolve("OK");
+          },
+          (err) => {
+            return Promise.reject({
+              "thrower": "logErrorIntoDB",
+              "message": err
+            })
+          });
+
+      })
+      .then(result => {
+        console.log(`logIntoErrorDB returned status ${result}: ${this.dbStatus[result]}`);
+        console.log("Log Completed");
       });
 
     return dbPromise;
@@ -74,18 +162,33 @@ module.exports = function() {
 
   };
 
-  this.updateDatasetStatus = function(datasetId, status, dbPromise) {
+  this.updateDatasetStatus = function(datasetId, status) {
+
+    console.log(`***** Updating dataset status: ${status} *****\n`);
 
     let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta'];
 
-    dbPromise = dbPromise || Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, { Promise }));
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => {
 
-    dbPromise.then(db => db.run(`
-        UPDATE ${datasetMetaTable.name}
-        SET status = ${status}
-        WHERE rowId = ${datasetId}
-      `));
+        return db.run(`
+          UPDATE ${datasetMetaTable.name}
+          SET status = ${status}
+          WHERE rowId = ${datasetId}
+        `)
+        .then(result => { return Promise.resolve(result); },
+        (err) => {
+          console.log("ROLA");
+          console.log(err);
+          console.log(err.message);
+          return Promise.reject({
+            "message": err.message,
+            "row_id": -1
+          })
+        });
+
+      });
 
     return dbPromise;
 
@@ -97,7 +200,7 @@ module.exports = function() {
 
     try {
 
-      let dbPromise = Promise.resolve()
+      let dbPromise = readTsv(metadata.source)
         .then(() => sqlite.open(this.dbPath, { Promise }))
         .then(db => {
 
@@ -127,7 +230,7 @@ module.exports = function() {
 
     catch (err) {
 
-      next(err);
+      return Promise.reject(err);
 
     }
 

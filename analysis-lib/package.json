@@ -4,7 +4,7 @@
   "description": "Command line interface to run the TSV tests",
   "author": "",
   "scripts": {
-    "dev": "nodemon api/main.js",
+    "dev": "fuser -k 3000/tcp && nodemon api/main.js",
     "load-and-run": "node ./dev-scripts/load-and-run",
     "update-status": "node ./dev-scripts/update-status",
     "clear-tables": "node ./dev-scripts/clear-dev-tables",
