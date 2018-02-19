@@ -115,7 +115,7 @@ module.exports = {
 
   'errorByErrorToTsv': function(report) {
 
-    let headers = ['criteriaId', 'description', 'count'];
+    let headers = ['count', 'criteriaId', 'description'];
 
     let tsv = headers.join('\t');
     tsv += '\n';

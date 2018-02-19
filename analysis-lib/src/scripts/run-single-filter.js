@@ -1,4 +1,4 @@
-module.exports = function(datasetId) {
+module.exports = function(datasetId, filter) {
 
   let filters = require('../filters/filters-module');
   let reportToolModule = require('./report-tool');
@@ -32,15 +32,11 @@ module.exports = function(datasetId) {
 
           noOfRows = rows.length;
 
-          Object.keys(filters).forEach(filter => {
+          // For each row run filter
+          rows.forEach((row, idx) => {
 
-            // For each row run filter
-            rows.forEach((row, idx) => {
-
-              report.addFilter(filter);
-              filters[filter](row, idx + 1, report);
-
-            });
+            report.addFilter(filter);
+            filters[filter](row, idx + 1, report);
 
           });
 
