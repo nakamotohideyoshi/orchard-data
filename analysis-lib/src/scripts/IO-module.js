@@ -7,37 +7,30 @@ module.exports = function() {
   let Promise = require('bluebird');
 
   this.readTsv = function(inputFile) {
-    let handler = function(e) { console.log("bilola"); console.log(e); };
+    const data = [];
 
-    let streamToPromise = function(stream) {
-      let data = [];
-
-      return new Promise((resolve, reject) => {
-
-        stream.on("data", (row) => data.push(row));
-        stream.on("error", reject);
-        stream.on("end", () => resolve(data));
-
-      });
-    };
-
-    // Checks if file exist
-    if(fs.existsSync(inputFile)) {
-
-      // Creates stream of data
-      let stream = fs.createReadStream(inputFile, { encoding: "utf-8" })
-        .pipe(csvParser({
+    return new Promise((resolve, reject) => {
+      // Checks if file exist
+      if(fs.existsSync(inputFile)) {
+        // Creates stream of data
+        let stream = fs.createReadStream(inputFile, { encoding: "utf-8" });
+        let parser = csvParser({
           delimiter: '\t',
           columns: true,
           quote: "`"
-        }));
+        }, (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        });
 
-      return streamToPromise(stream);
-
-    }
-
-    else { return Promise.reject(new Error('File does not exist')); }
-
+        stream.pipe(parser);
+      } else {
+        reject(new Error('File does not exist'));
+      }
+    });
   };
 
   this.writeTsv = function(outPath, data, headers) {

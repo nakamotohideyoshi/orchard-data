@@ -185,6 +185,10 @@ export default {
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
     }
+  },
+  created() {
+    this.$store.commit(SUBMISSION, null);
+    this.$store.commit(SUBMISSIONS_FAILURE, null);
   }
 }
 </script>

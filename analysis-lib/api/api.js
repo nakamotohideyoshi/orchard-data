@@ -42,8 +42,7 @@ router.post('/dataset', (req, res) => {
   dbPromise
     .then(result => {
       datasetId = result.lastID;
-      let tsvPromise = dbInterface.saveTsvIntoDB(data.source, datasetId);
-      return tsvPromise;
+      return dbInterface.saveTsvIntoDB(data.source, datasetId);
     })
     .then(() => analysisLibModule.runAllFilters(datasetId))
     .then(rep => {
@@ -76,7 +75,8 @@ router.post('/dataset', (req, res) => {
           break;
 
         default:
-          res.status(400).json(err);
+
+          res.status(400).json({ message: err.message });
 
           break;
 
