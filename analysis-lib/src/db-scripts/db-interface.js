@@ -219,7 +219,10 @@ module.exports = function() {
 
                 return result;
               },
-              (err) => { console.log(err); }
+              (err) => { 
+                console.log('ERROR:', err);
+                return err;
+              }
             );
 
         });
