@@ -54,7 +54,7 @@ module.exports = function() {
           return Promise.reject({
             "thrower": "saveTsvIntoDB",
             "row_id": -1,
-            "message": `Invalid number of fields: ${numberOfFields}`
+            "error": new Error(`Invalid number of fields: ${numberOfFields}`)
           });
 
         }
@@ -70,7 +70,7 @@ module.exports = function() {
             return Promise.reject({
               "thrower": "saveTsvIntoDB",
               "row_id": -1,
-              "message": `Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`
+              "error": new Error(`Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`)
             });
 
           }
@@ -97,7 +97,7 @@ module.exports = function() {
               return Promise.reject({
                 "thrower": "saveTsvIntoDB",
                 "row_id": idx,
-                "message": err
+                "error": new Error(err)
               });
 
             });
@@ -135,7 +135,7 @@ module.exports = function() {
           (err) => {
             return Promise.reject({
               "thrower": "logErrorIntoDB",
-              "message": err
+              "error": new Error(err)
             })
           });
 
@@ -179,11 +179,8 @@ module.exports = function() {
         `)
         .then(result => { return Promise.resolve(result); },
         (err) => {
-          console.log("ROLA");
-          console.log(err);
-          console.log(err.message);
           return Promise.reject({
-            "message": err.message,
+            "error": err,
             "row_id": -1
           })
         });
@@ -219,7 +216,7 @@ module.exports = function() {
 
                 return result;
               },
-              (err) => { 
+              (err) => {
                 console.log('ERROR:', err);
                 return err;
               }

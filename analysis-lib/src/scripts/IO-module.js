@@ -35,9 +35,8 @@ module.exports = function() {
       return streamToPromise(stream);
 
     }
-    // TODO: User proper error object here
-    // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
-    else { return Promise.reject({ thrower: 'readTsv', message: 'File does not exist' }); }
+
+    else { return Promise.reject(new Error('File does not exist')); }
 
   };
 
