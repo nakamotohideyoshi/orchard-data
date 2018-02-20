@@ -179,9 +179,6 @@ module.exports = function() {
         `)
         .then(result => { return Promise.resolve(result); },
         (err) => {
-          console.log("ROLA");
-          console.log(err);
-          console.log(err.message);
           return Promise.reject({
             "message": err.message,
             "row_id": -1
@@ -219,7 +216,7 @@ module.exports = function() {
 
                 return result;
               },
-              (err) => { 
+              (err) => {
                 console.log('ERROR:', err);
                 return err;
               }
