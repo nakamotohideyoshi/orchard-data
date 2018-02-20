@@ -1,4 +1,5 @@
 // Packages
+let config = require('config')
 let fs = require('fs');
 let readline = require('readline');
 let stream = require('stream');
@@ -10,7 +11,7 @@ let morgan = require('morgan')
 
 process.on('uncaughtException', (function(error) { return console.log(error.stack); }));
 
-if( process.env.NODE_DEBUG == "true" )
+if( process.env.NODE_ENV !== 'test' )
   app.use(morgan('combined'))
 
 app.use(cors());
