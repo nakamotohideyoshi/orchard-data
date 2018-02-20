@@ -133,3 +133,19 @@ Examples:
 
 `curl http://localhost:3000/field-by-field-report/1.tsv | xargs -0 npm run gen-error-report`
 `cat ./reports1.tsv | xargs -0 npm run gen-error-report`
+
+## Unit Testing
+
+We have two ways to run unit testing in the API project and while in a local environment, examples:
+
+`npm run test:unit`
+
+This one will create a new database (see `analysis-lib/test/unit/global.js`), perform test found in `analysis-lib/unit`, report back and then wipe the test database.
+
+Sometimes we may want to inspect the database created after all test run, to achieve that you can easily run the following command:
+
+`npm run test:unit:keep_db`
+
+Unlike `test:unit` command the `keep_db` version will not remove the *.db* file created at unit test warmup, however this database will be wiped the next time the test suite is executed.
+
+*More details to come*

@@ -62,26 +62,21 @@ router.post('/dataset', (req, res) => {
         case 'saveTsvIntoDB':
 
           let parsedError = {
-            "thrower": err.filename,
-            "message": err.message,
-            "row_id": err.rowId || -1
+            "thrower": err.filename || "db-interface: saveTsvIntoDB",
+            "message": err.error.message,
+            "row_id": err.row_id || -1
           };
 
           // Update status and logs error on a table
           dbInterface.updateDatasetStatus(datasetId, dbInterface.dbStatus.FAIL)
             .then(() => dbInterface.logErrorIntoDB(datasetId, parsedError))
-            .then(() => res.send(parsedError))
-            .catch(err2 => {
-              console.log(err2);
-              console.log(err2.message);
-              res.send(err2.message);
+            .then(() => res.send(parsedError.message))
+            .catch(err2 => res.send(`${err.name}: ${err.message}`));
 
-              // res.send(err2)
-            });
           break;
 
         default:
-          res.send(err.message);
+          res.send(`${err.name}: ${err.message}`);
 
           break;
 

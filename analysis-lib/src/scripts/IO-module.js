@@ -7,7 +7,6 @@ module.exports = function() {
   let Promise = require('bluebird');
 
   this.readTsv = function(inputFile) {
-
     let handler = function(e) { console.log("bilola"); console.log(e); };
 
     let streamToPromise = function(stream) {
@@ -37,7 +36,7 @@ module.exports = function() {
 
     }
 
-    else { return Promise.reject({ thrower: 'readTsv', message: 'File does not exist' }); }
+    else { return Promise.reject(new Error('File does not exist')); }
 
   };
 
