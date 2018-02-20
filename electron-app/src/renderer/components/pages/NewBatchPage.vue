@@ -174,7 +174,7 @@ export default {
       await this.$store.dispatch('submitDataset', datasetMeta)
 
       if (this.item) {
-        this.$router.push(`/report/${this.item['dataset-id']}`)
+        this.$router.push(`/report/${this.item['datasetId']}`)
       }
     },
     processFile: function (/* e */) {
