@@ -186,10 +186,12 @@ export default {
       this.btnClass = 'btn-primary'
     }
   },
-  created() {
-    this.$store.commit(SUBMISSION, null);
-    this.$store.commit(SUBMISSIONS_FAILURE, null);
-  }
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$store.commit(SUBMISSION, null);
+      vm.$store.commit(SUBMISSIONS_FAILURE, null);
+    });
+  },
 }
 </script>
 
