@@ -75,6 +75,7 @@ include _mixins
                             span Brazilian Portugese
                     // CTA
                     .upload__cta
+                      .ui-group__text--red(v-if="error") {{ error.response.data.message }}
                       button(type="submit" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
                         span Start Testing
     block footer
@@ -184,7 +185,13 @@ export default {
       this.buttonDisabled = false
       this.btnClass = 'btn-primary'
     }
-  }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$store.commit(SUBMISSION, null);
+      vm.$store.commit(SUBMISSIONS_FAILURE, null);
+    });
+  },
 }
 </script>
 

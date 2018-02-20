@@ -42,8 +42,7 @@ router.post('/dataset', (req, res) => {
   dbPromise
     .then(result => {
       datasetId = result.lastID;
-      let tsvPromise = dbInterface.saveTsvIntoDB(data.source, datasetId);
-      return tsvPromise;
+      return dbInterface.saveTsvIntoDB(data.source, datasetId);
     })
     .then(() => analysisLibModule.runAllFilters(datasetId))
     .then(rep => {
@@ -54,7 +53,7 @@ router.post('/dataset', (req, res) => {
     .then(() => report.calcBatchResultsReport())
     .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
     .then(() => console.log("Finished Reports"))
-    .then(() => res.send({ status: "OK", datasetId: datasetId }))
+    .then(() => res.status(200).json({ status: "OK", datasetId: datasetId }))
     .catch(err => {
 
       switch(err.thrower) {
@@ -70,13 +69,14 @@ router.post('/dataset', (req, res) => {
           // Update status and logs error on a table
           dbInterface.updateDatasetStatus(datasetId, dbInterface.dbStatus.FAIL)
             .then(() => dbInterface.logErrorIntoDB(datasetId, parsedError))
-            .then(() => res.send(parsedError.message))
-            .catch(err2 => res.send(`${err.name}: ${err.message}`));
+            .then(() => res.status(400).json(parsedError))
+            .catch(err2 => res.status(500).json(err)); // Let's merge errors (err2 and err)
 
           break;
 
         default:
-          res.send(`${err.name}: ${err.message}`);
+
+          res.status(400).json({ message: err.message });
 
           break;
 
