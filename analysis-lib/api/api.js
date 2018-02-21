@@ -211,6 +211,72 @@ router.get('/field-by-field-report/:datasetId', (req, res) => {
 
 });
 
+// Returns report as a TSV
+router.get('/field-by-field-report/:category/:datasetId.tsv', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let category = req.params.category ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
+    .then(report => {
+
+      if(report.length === 0) {
+
+        res.send(`Empty report for datasetId ${datasetId}.`);
+        return;
+
+      }
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result))
+    .catch(err => res.send(err));
+
+});
+
+// Fetch single report from DB
+router.get('/field-by-field-report/:category/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let category = req.params.category ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
 // Row by Row Aggregation TSV
 router.get('/row-by-row/:datasetId.tsv', (req, res) => {
 
@@ -257,6 +323,69 @@ router.get('/row-by-row/:datasetId', (req, res) => {
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try { resolve(utils.rowByRow(report, datasetSize)); }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Row by Row Aggregation TSV
+router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let category = req.params.category ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try {
+
+          let RBRReport = utils.rowByRow(report, datasetSize);
+          resolve(utils.rowByRowToTsv(RBRReport));
+
+        }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Row by Row Aggregation Report
+router.get('/row-by-row/:category/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let category = req.params.category ;
+  let datasetSize = 0;
+
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result[0]['COUNT(*)'];
+      return Promise.resolve(datasetSize);
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
     .then(report => {
 
       return new Promise((resolve, reject) => {
@@ -325,6 +454,74 @@ router.get('/error-by-error/:datasetId', (req, res) => {
 
           // Row by Row Aggregation
           let EBEReport = utils.errorByError(report);
+          resolve(EBEReport);
+
+        }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Error by Error Aggregation TSV
+router.get('/error-by-error/:category/:datasetId.tsv', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let category = req.params.category ;
+
+  dbInterface.fetchFieldByFieldReport(datasetId, category)
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try {
+
+          if(report.length === 0) {
+
+            resolve(`Empty report for datasetId ${datasetId}.`);
+
+          }
+
+          // Row by Row Aggregation
+          let EBEReport = utils.errorByError(report, category);
+          resolve(utils.errorByErrorToTsv(EBEReport));
+
+        }
+
+        catch(err) { reject(err); }
+
+      });
+
+    })
+    .then(result => res.send(result));
+
+});
+
+// Error by Error Aggregation
+router.get('/error-by-error/:category/:datasetId', (req, res) => {
+
+  let datasetId = req.params.datasetId ;
+  let category = req.params.category ;
+
+  dbInterface.fetchFieldByFieldReport(datasetId, category)
+    .then(report => {
+
+      return new Promise((resolve, reject) => {
+
+        try {
+
+          if(report.length === 0) {
+
+            resolve(`Empty report for datasetId ${datasetId}.`);
+
+          }
+
+          // Row by Row Aggregation
+          let EBEReport = utils.errorByError(report, category);
           resolve(EBEReport);
 
         }

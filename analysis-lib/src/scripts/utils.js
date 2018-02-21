@@ -1,6 +1,6 @@
 module.exports = {
 
-  'rowByRow': function(report, datasetSize) {
+  'rowByRow': function(report, datasetSize, category) {
 
     let filtersMeta = require("../filters/filters-meta");
     let dbInterfaceModule = require('../db-scripts/db-interface');
@@ -20,7 +20,11 @@ module.exports = {
 
     }
 
-    report.forEach(occurrence => {
+    for(let i = 0; i < report.length; i++) {
+
+      let occurrence = report[i];
+
+      if(category && filtersMeta[occurrence['criteria_id']]['category'].toLowerCase() !== category) { continue; }
 
       // warning or error
       let filterType = filtersMeta[occurrence['criteria_id']]['type'].toLowerCase();
@@ -43,7 +47,7 @@ module.exports = {
 
       }
 
-    });
+    }
 
     reportArray = Object.keys(RBRReport).map(key => RBRReport[key]);
     reportArray.sort((a, b) => {
@@ -80,15 +84,19 @@ module.exports = {
 
   },
 
-  'errorByError': function(report) {
+  'errorByError': function(report, category) {
 
     // Row by Row Report
     let EBEReport = {};
     let filtersMeta = require("../filters/filters-meta");
     let explanationCriteria = 'userExplanation';
 
-    // Creates JSON for each possible error
-    Object.keys(filtersMeta).forEach(filterId => {
+    let allFilters = Object.keys(filtersMeta);
+
+    // Filters by category if any
+    if(category) { allFilters = allFilters.filter(filterId => filtersMeta[filterId]['category'].toLowerCase() === category) }
+
+    allFilters.forEach(filterId => {
 
       EBEReport[filterId] = {
         'count': 0,
@@ -98,11 +106,12 @@ module.exports = {
 
     });
 
+
     report.forEach(occurrence => {
 
       let filterId = occurrence['criteria_id'];
-
-      EBEReport[filterId]['count'] += 1;
+      // If occurrence is of the chosen category
+      if(allFilters.indexOf(filterId) !== -1) { EBEReport[filterId]['count'] += 1; }
 
     });
 

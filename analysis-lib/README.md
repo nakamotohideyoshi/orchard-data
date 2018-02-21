@@ -41,11 +41,22 @@ represents the ID of the recently saved dataset-meta.
 
 # Fetch Field by Field Report in TSV format
 
-URL: '/field-by-field-report/:datasetId.tsv'<br />
+URL:  '/field-by-field-report/:datasetId.tsv'<br />
+URL2: '/field-by-field-report/:category/:datasetId.tsv'<br />
 Method: 'GET'<br />
 
 <br />
 @return: TSV => A TSV string of the FBF Report of the specified dataset.
+
+# Fetch Single Field by Field Report
+
+URL: '/field-by-field-report/:datasetId'<br />
+URL: '/field-by-field-report/:category/:datasetId'<br />
+Method: 'GET'<br />
+
+<br />
+@return: Array => An array containing records from field\_by\_field\_reports table
+with dataset\_id = :datasetId.
 
 # Fetch All Field by Field Reports
 
@@ -56,18 +67,10 @@ Method: 'GET' <br />
 @return: Array => An array containing all records (if any) in the
 field\_by\_field\_reports table.
 
-# Fetch Single Field by Field Reports
-
-URL: '/field-by-field-report/:datasetId'<br />
-Method: 'GET'<br />
-
-<br />
-@return: Array => An array containing records from field\_by\_field\_reports table
-with dataset\_id = :datasetId.
-
 # Fetch Row by Row Aggregate
 
 URL: '/row-by-row/:datasetId'<br />
+URL: '/row-by-row/:category/:datasetId'<br />
 Method: 'GET'<br />
 
 <br />
@@ -75,7 +78,8 @@ Method: 'GET'<br />
 
 # Fetch Row by Row Aggregate in TSV format
 
-URL: '/row-by-row/tsv/:datasetId'<br />
+URL: '/row-by-row/:datasetId.tsv'<br />
+URL: '/row-by-row/:category/:datasetId.tsv'<br />
 Method: 'GET'<br />
 
 <br />
