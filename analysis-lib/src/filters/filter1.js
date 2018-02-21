@@ -36,11 +36,11 @@ module.exports = function(row, idx, report) {
       let abbrRegExp = invalidStrings["abbreviations"];
 
       // Removes diacritics and removes trimming whitespaces
-      value = value.trim();
+      value = value.trim().toLowerCase();
       value = removeDiacritics(value);
 
       // error condition is met
-      if(langRegExp.test(value) || abbrRegExp.test(value)) {
+      if((langRegExp && langRegExp.test(value)) || (abbrRegExp && abbrRegExp.test(value))) {
 
         occurrence.field.push(field);
         occurrence.value.push(row[field]);
