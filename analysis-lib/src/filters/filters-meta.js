@@ -37,5 +37,13 @@ module.exports = {
     'userExplanation': `An artist name must not be in "Last, First" format.`,
     'category': 'iTunes',
     'type': 'error'
-  }
+  },
+  'filter5': {
+    'orchardDescription': `Artists names must not be generic (e.g., 00s Best Hits)`,
+    'programmerDescription': `It is a warning if "Release Artist(s)-Primary Artist(s)" contains any of the following: Yoga, Workout, Meditation, Baby, Christmas, Top Hits, Chorus, Orchestra, Singer, or Cast`,
+    'userExplanation': `Generic artists (such as such as Yoga, Workout, Meditation, Baby, Christmas, Top Hits, Chorus, Orchestra, or Singer) are not accepted.
+    `,
+    'category': 'iTunes',
+    'type': 'warning'
+  },
 };
