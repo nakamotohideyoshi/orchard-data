@@ -6,6 +6,7 @@ let IOModule = require('./IO-module');
 let utils = require('./utils');
 
 let input = argv['input'];
+let category = argv['category'];
 let dbInterface = new dbInterfaceModule();
 
 let parseReport = function(report) {
@@ -60,7 +61,7 @@ try {
 
     });
 
-    let RBRReport = utils.rowByRow(parsedReport, datasetSize);
+    let RBRReport = utils.rowByRow(parsedReport, datasetSize, category);
     console.log(utils.rowByRowToTsv(RBRReport));
 
   }
@@ -83,7 +84,7 @@ try {
 
             let datasetSize = FBFReport[0]['datasetSize'];
             let parsedReport = parseReport(FBFReport);
-            let RBRReport = utils.rowByRow(parsedReport, datasetSize);
+            let RBRReport = utils.rowByRow(parsedReport, datasetSize, category);
             resolve(utils.rowByRowToTsv(RBRReport));
 
           }

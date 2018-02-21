@@ -6,6 +6,8 @@ let IOModule = require('./IO-module');
 let utils = require('./utils');
 
 let input = argv['input'];
+let category = argv['category'];
+
 let dbInterface = new dbInterfaceModule();
 
 let parseReport = function(report) {
@@ -48,7 +50,7 @@ try {
     let datasetSize = report[0]['datasetSize'] || 0;
     let parsedReport = parseReport(report);
 
-    let EBRReport = utils.errorByError(parsedReport, datasetSize);
+    let EBRReport = utils.errorByError(parsedReport, category);
     console.log(utils.errorByErrorToTsv(EBRReport));
 
   }
@@ -70,7 +72,7 @@ try {
             }
 
             let parsedReport = parseReport(FBFReport);
-            let EBEReport = utils.errorByError(parsedReport);
+            let EBEReport = utils.errorByError(parsedReport, category);
             resolve(utils.errorByErrorToTsv(EBEReport));
 
           }

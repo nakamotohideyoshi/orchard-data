@@ -5,6 +5,7 @@ module.exports = function() {
   let dbInfo = require('./db-info');
   let IO = require('../scripts/IO-module');
   let DATABASE = require('../scripts/constants').DATABASE;
+  let filtersMeta = require('../filters/filters-meta');
 
   let readTsv = new IO().readTsv;
 
@@ -343,19 +344,39 @@ module.exports = function() {
 
   };
 
-  this.fetchFieldByFieldReport = function(datasetId) {
+  this.fetchFieldByFieldReport = function(datasetId, category) {
 
     let FBFReportTable = dbInfo[DATABASE]['tables']['field_by_field_reports'];
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, { Promise }))
-      .then(db => db.all(`
-        SELECT rowId, *
-        FROM ${FBFReportTable.name}
-        WHERE dataset_id = ${datasetId}
-      `));
+      .then(() => sqlite.open(this.dbPath, { Promise }));
 
-    return dbPromise;
+    // Returns all rows
+    if(!category) {
+
+      return dbPromise
+        .then(db => db.all(`
+          SELECT rowId, *
+          FROM ${FBFReportTable.name}
+          WHERE dataset_id = ${datasetId}
+        `));
+
+    }
+
+    else {
+
+      let filters = Object.keys(filtersMeta).filter(filterId  => filtersMeta[filterId]['category'].toLowerCase() === category);
+      let placeholders = filters.map((val) => '(?)').join(',');
+
+      return dbPromise
+        .then(db => db.all(`
+          SELECT rowId, *
+          FROM ${FBFReportTable.name}
+          WHERE dataset_id = ${datasetId}
+          AND criteria_id IN (${placeholders})
+        `, filters));
+
+    }
 
   };
 
