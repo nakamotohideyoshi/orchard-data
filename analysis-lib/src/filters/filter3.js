@@ -72,6 +72,7 @@ module.exports = function(row, idx, report) {
       /Relaxar/gi,
       /Academia/gi,
       /Musculacao/gi,
+      /Malhação/gi,
       /Halloween/gi,
       /Natal/gi,
       /Namorados/gi,

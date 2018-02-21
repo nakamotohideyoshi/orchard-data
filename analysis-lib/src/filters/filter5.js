@@ -6,7 +6,7 @@ module.exports = function(row, idx, report) {
 
   let filterName = 'filter5';
   let fields = ['orchard_artist', 'release_artists_primary_artist'];
-  let releaseName = row[field];
+  let releaseLanguage = row['release_meta_language'].toLowerCase();
 
   let occurrence = {
     'rowId': idx,
@@ -77,6 +77,7 @@ module.exports = function(row, idx, report) {
       /Relaxar/gi,
       /Academia/gi,
       /Musculacao/gi,
+      /Malhacao/gi,
       /Halloween/gi,
       /Natal/gi,
       /Namorados/gi,
@@ -84,8 +85,13 @@ module.exports = function(row, idx, report) {
       /Cantor(a)?(s|es)?/gi,
       /Orquestra/gi,
       /Grupo/gi,
+      /Coral/gi,
+      /Coro/gi,
     ],
   };
+
+  // Language not supported
+  if(Object.keys(invalidKeywords).indexOf(releaseLanguage) === -1) { return occurrence; }
 
   // If field is related to 'track artists'
   Object.keys(row).forEach(field => {
@@ -93,38 +99,35 @@ module.exports = function(row, idx, report) {
     // Field should be tested
     if(fields.indexOf(field) !== -1) {
 
-      // forEach does not allow the use of break/continue
-      Object.keys(invalidKeywords).forEach(language => {
+      let value = row[field];
 
-        let value = row[field];
+      // Only tests if value is non-null
+      if(value) {
 
-        // Only tests if value is non-null
-        if(value) {
+        // Removes trailling whitespaces and diacritics
+        value = value.trim();
+        value = removeDiacritics(value);
 
-          // Removes trailling whitespaces and diacritics
-          value = value.trim();
-          value = removeDiacritics(value);
+        let regExps = invalidKeywords[releaseLanguage];
 
-          let regExps = invalidKeywords[language];
+        for(let i = 0; i < regExps.length; i++) {
 
-          for(let i = 0; i < regExps.length; i++) {
+          let regExp = regExps[i];
 
-            let regExp = regExps[i];
+          // Invalid Value
+          if(regExp.test(value)) {
 
-            // Invalid Value
-            if(regExp.test(value)) {
-              occurrence.field.push(field);
-              occurrence.value.push(row[field]);
+            occurrence.field.push(field);
+            occurrence.value.push(row[field]);
 
-              // Doesn't need to test other regex
-              break;
-            }
+            // Doesn't need to test other regex
+            break;
 
           }
 
         }
 
-      });
+      }
 
     }
 
