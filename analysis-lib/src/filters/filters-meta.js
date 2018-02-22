@@ -66,7 +66,7 @@ module.exports = {
       If genre is soundtrack and there is one composer for "Track Artist(s)
       - Composer(s)" across all tracks in the release, Orchard Artist and Release
       Artist(s)-Primary Artist(s) must be the composer.`,
-    'userExplanation': `The composer cannot be listed as primary artist.`,
+    'userExplanation': `The composer cannot be listed as primary artist. Refer to iTunes style guide 2.3, 4.4 or 24.4`,
     'category': 'iTunes',
     'type': 'error',
     'basis': 'dataset'
