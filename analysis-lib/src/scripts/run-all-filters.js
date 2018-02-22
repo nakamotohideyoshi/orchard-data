@@ -1,9 +1,14 @@
 module.exports = function(datasetId) {
 
-  let filters = require('../filters/filters-module');
-  let reportToolModule = require('./report-tool');
   let Promise = require('bluebird')
+
+  // tools and constants
+  let reportToolModule = require('./report-tool');
   let DATABASE = require('./constants').DATABASE;
+
+  // Filters module
+  let filters = require('../filters/filters-module');
+  let filtersMeta = require('../filters/filters-meta');
 
   // DB modules
   let sqlite = require('sqlite');
@@ -18,29 +23,43 @@ module.exports = function(datasetId) {
   let dbInterface = new dbInterfaceModule();
   dbInterface.init();
 
+  // Main table
   let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
 
   // total no of rows the filter is going to be applied
   let noOfRows = 0;
 
   let dbPromise = dbInterface.fetchTsvDataset(datasetId)
-    .then(rows => {
+    .then(dataset => {
 
       return new Promise((resolve, reject) => {
 
         try {
 
-          noOfRows = rows.length;
+          noOfRows = dataset.length;
 
-          Object.keys(filters).forEach(filter => {
+          let rowFilters = Object.keys(filtersMeta)
+            .filter(filterId => filtersMeta[filterId]['basis'] === 'row');
+
+          let datasetFilters = Object.keys(filtersMeta)
+            .filter(filterId => filtersMeta[filterId]['basis'] === 'dataset');
+
+          rowFilters.forEach(filter => {
 
             // For each row run filter
-            rows.forEach((row, idx) => {
+            dataset.forEach((row, idx) => {
 
               report.addFilter(filter);
               filters[filter](row, idx + 1, report);
 
             });
+
+          });
+
+          datasetFilters.forEach(filter => {
+
+            report.addFilter(filter);
+            filters[filter](dataset, report);
 
           });
 

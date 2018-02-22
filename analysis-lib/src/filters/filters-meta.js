@@ -5,21 +5,24 @@ module.exports = {
     'programmerDescription': `The artist for a track can't be "Various Artists." VA can only be for an album.`,
     'userExplanation': `"Various Artists" can't be used at the track level.`,
     'category': 'iTunes',
-    'type': 'error'
+    'type': 'error',
+    'basis': 'row'
   },
   'filter2': {
     'orchardDescription': `Artist name cannot include any additional info (Like their instrument, etc)`,
     'programmerDescription': `2.4. Additional Information. The artist name must not include any additional information, such as role, date, instrument, former band, website, and so on." Incorrect: 'Joe Satriani (Guitarist)', 'Johann Sebastian Bach (1685-1750).`,
     'userExplanation': `The artist name must not include any additional information, such as role, date, instrument, former band, website, and so on.`,
     'category': 'iTunes',
-    'type': 'warning'
+    'type': 'warning',
+    'basis': 'row'
   },
   'filter3': {
     'orchardDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
     'programmerDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
     'userExplanation': `Release name must not be generic (e.g., 00s Best Hits)`,
     'category': 'risk',
-    'type': 'warning'
+    'type': 'warning',
+    'basis': 'row'
   },
   'filter4': {
     'orchardDescription': `Artist Name formatting (cannot be Last, First)`,
@@ -36,7 +39,8 @@ module.exports = {
                               Terminate test if there are more than three words. (e.g., Soul Gun Warriors , U-Mass)`,
     'userExplanation': `An artist name must not be in "Last, First" format.`,
     'category': 'iTunes',
-    'type': 'error'
+    'type': 'error',
+    'basis': 'row'
   },
   'filter5': {
     'orchardDescription': `Artists names must not be generic (e.g., 00s Best Hits)`,
@@ -44,6 +48,27 @@ module.exports = {
     'userExplanation': `Generic artists (such as such as Yoga, Workout, Meditation, Baby, Christmas, Top Hits, Chorus, Orchestra, or Singer) are not accepted.
     `,
     'category': 'iTunes',
-    'type': 'warning'
+    'type': 'warning',
+    'basis': 'row'
+  },
+  'filter6': {
+    'orchardDescription': `Composer cannot be listed as primary artist`,
+    'programmerDescription': `Let release artist = both "Orchard Artist" and
+      "Release Artist(s)-Primary Artist(s)")
+
+      If release artist is the same as (release_artists_composer or any
+      track_artist_composer) and genre is not classical or soundtrack, it is an error.
+
+      If release artist is the same as (release_artists_composer or any
+      track_artist_composer) and there is more than one value for
+      track_artist_composer, it is an error.
+
+      If genre is soundtrack and there is one composer for "Track Artist(s)
+      - Composer(s)" across all tracks in the release, Orchard Artist and Release
+      Artist(s)-Primary Artist(s) must be the composer.`,
+    'userExplanation': `The composer cannot be listed as primary artist.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'dataset'
   },
 };
