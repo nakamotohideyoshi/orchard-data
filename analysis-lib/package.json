@@ -11,7 +11,9 @@
     "update-status": "node ./dev-scripts/update-status",
     "clear-tables": "node ./dev-scripts/clear-dev-tables",
     "gen-row-report": "node ./src/scripts/gen-row-report",
-    "gen-error-report": "node ./src/scripts/gen-error-report"
+    "gen-error-report": "node ./src/scripts/gen-error-report",
+    "tsv-to-json": "node ./dev-scripts/tsv-to-json",
+    "run-filter": "node ./dev-scripts/run-filter"
   },
   "license": "",
   "dependencies": {

@@ -71,4 +71,30 @@ module.exports = {
     'type': 'error',
     'basis': 'dataset'
   },
+  'filter7': {
+    'orchardDescription': `Track/Album versions that aren’t allowed`,
+    'programmerDescription': `
+
+      If there are matching parenthesis or square brackets, there is no error
+      If the following text occurs in the parenthesis or square brackets, there is an error.
+
+      Album Version
+      Original Version
+      Previously Unreleased
+      Reissue
+      Original Mix
+      iTunes LP Version
+      Clean Version
+      Explicit Version
+      Mastered for iTunes
+
+      A warning to the programmer: there can be two of these strings, first
+      parens and then in square brackets, like "Lorem (ipsum)[dolor]."
+
+    `,
+    'userExplanation': `This type of content version (in parens) is not permitted.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'dataset'
+  },
 };

@@ -14,7 +14,7 @@ describe('should test filter 6', () => {
 
   let report = new reportModule();
   report.init();
-  report.addFilter('filter5');
+  report.addFilter('filter6');
 
   it('should fail genre is folk', () => {
 

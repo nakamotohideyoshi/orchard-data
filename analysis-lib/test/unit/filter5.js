@@ -91,7 +91,7 @@ describe('should test filter 5', () => {
 
   });
 
-  // Valid test should return occurrence with empty fields
+  // Valid test should return false
   it('should pass ', () => {
 
     const { valid } = mocks;
@@ -99,11 +99,7 @@ describe('should test filter 5', () => {
     valid.forEach((row, idx) => {
 
       let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(occurrence.rowId, 0);
-      assert.equal(_.isEmpty(occurrence.field), true);
-      assert.equal(_.isEmpty(occurrence.value), true);
+      assert.equal(occurrence, false);
 
     });
 
@@ -185,7 +181,7 @@ describe('should test filter 5', () => {
 
   });
 
-  // Valid test should return occurrence with empty fields
+  // Valid test should return false
   it('should pass portuguese', () => {
 
     const { validPortuguese } = mocks;
@@ -193,17 +189,13 @@ describe('should test filter 5', () => {
     validPortuguese.forEach((row, idx) => {
 
       let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(occurrence.rowId, 0);
-      assert.equal(_.isEmpty(occurrence.field), true);
-      assert.equal(_.isEmpty(occurrence.value), true);
+      assert.equal(occurrence, false);
 
     });
 
   });
 
-  // Valid test should return occurrence with empty fields
+  // Valid test should return false
   it('should return empty occurrence - invalid language', () => {
 
     const { invalidLanguage } = mocks;
@@ -211,11 +203,7 @@ describe('should test filter 5', () => {
     invalidLanguage.forEach((row, idx) => {
 
       let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(occurrence.rowId, 0);
-      assert.equal(_.isEmpty(occurrence.field), true);
-      assert.equal(_.isEmpty(occurrence.value), true);
+      assert.equal(occurrence, false);
 
     });
 

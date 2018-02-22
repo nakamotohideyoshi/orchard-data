@@ -91,7 +91,7 @@ module.exports = function(row, idx, report) {
   };
 
   // Language not supported
-  if(Object.keys(invalidKeywords).indexOf(releaseLanguage) === -1) { return occurrence; }
+  if(Object.keys(invalidKeywords).indexOf(releaseLanguage) === -1) { return false; }
 
   // If field is related to 'track artists'
   Object.keys(row).forEach(field => {
@@ -134,8 +134,13 @@ module.exports = function(row, idx, report) {
   });
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){ report.addOccurrence(filterName, occurrence); }
+  if(occurrence.field.length > 0){
 
-  return occurrence;
+    report.addOccurrence(filterName, occurrence);
+    return occurrence;
+
+  }
+
+  else { return false; }
 
 };
