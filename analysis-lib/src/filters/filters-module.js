@@ -5,6 +5,7 @@ var filter4 = require("./filter4");
 var filter5 = require("./filter5");
 var filter6 = require("./filter6");
 var filter7 = require("./filter7");
+var filter8 = require("./filter8");
 
 module.exports = {
   'filter1': filter1,
@@ -14,4 +15,5 @@ module.exports = {
   'filter5': filter5,
   'filter6': filter6,
   'filter7': filter7,
+  'filter8': filter8,
 };

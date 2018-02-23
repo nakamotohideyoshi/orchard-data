@@ -45,8 +45,11 @@ module.exports = {
 
   'getTextInBetween': function(string) {
 
-    let parenthesesRegExp = /\(([^)]+)\)/g;
-    return string.match(parenthesesRegExp)[0];
+    let parenthesesRegExp = /(\(|\{|\[)([^)]+)(\)|\]|\})/g;
+    let match = string.match(parenthesesRegExp);
+
+    if(match) { return match[0]; }
+    else return '';
 
   },
 

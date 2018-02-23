@@ -50,17 +50,20 @@ module.exports = function(row, idx, report) {
           // Get values in parentheses
           let parenthesesValue = parenthesesModule.getTextInBetween(value);
 
-          invalidStrings.forEach(regExp => {
+          for(let i = 0; i < invalidStrings.length; i++) {
+
+            let regExp = invalidStrings[i];
 
             // Invalid string detected
             if(regExp.test(parenthesesValue)) {
 
               occurrence.field.push(field);
               occurrence.value.push(row[field]);
+              break;
 
             }
 
-          });
+          }
 
         }
 

@@ -95,6 +95,30 @@ module.exports = {
     'userExplanation': `This type of content version (in parens) is not permitted.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'dataset'
+    'basis': 'row'
+  },
+  'filter8': {
+    'orchardDescription': `Soundtracks and scores must include version information in the album title, enclosed by parentheses or brackets`,
+    'programmerDescription': `
+
+      There is no error if genre is not soundtrack or score
+
+      There is an error if release title does not contain an expression in
+      parenthesis in parenthesis or square brackets
+
+      There is an error if release title does not contain one of the following:
+
+      Soundtrack
+      Original Score
+      Music Inspired By
+      Original
+      Cast
+      Music from
+
+    `,
+    'userExplanation': `Soundtracks and scores must include version information in the album title.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row'
   },
 };

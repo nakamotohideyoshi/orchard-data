@@ -4,27 +4,38 @@ const _ = require('lodash');
 const path = require('path');
 const validator = require('is-my-json-valid');
 
-const mocks = require('../../mocks/filter7');
-const filter = require('../../src/filters/filter7');
+const mocks = require('../../mocks/filter8');
+const filter = require('../../src/filters/filter8');
 
 const filtersMeta = require('../../src/filters/filters-meta');
 const reportModule = require('../../src/scripts/report-tool');
 
-describe('should test filter 7', () => {
+describe('should test filter 8', () => {
 
   let report = new reportModule();
   report.init();
-  report.addFilter('filter7');
+  report.addFilter('filter8');
 
-  // name after parentheses
-  it('should not report - value after parenthesis', () => {
+  // Valid
+  it('should not report - genre is not soundtrack or score', () => {
 
     try {
 
-      const mock = mocks['nameAfterParenthesis'];
-      let occurrence = filter(mock[0], 0, report);
+      const mock = mocks['valid'];
 
-      assert.equal(occurrence, false);
+      mock.forEach((row, idx) => {
+
+        let occurrence = filter(row, idx, report);
+
+        switch(idx) {
+
+          case 0:
+            assert.equal(occurrence, false);
+            break;
+
+        }
+
+      });
 
     }
 
@@ -32,8 +43,119 @@ describe('should test filter 7', () => {
 
   });
 
-  // invalid releases
-  it('should report - invalid release names', () => {
+  // Invalid value inside brackets
+  it('should report - value inside parentheses is invalid', () => {
+
+    try {
+
+      const mock = mocks['invalidValueInsideBrackets'];
+
+      mock.forEach((row, idx) => {
+
+        let occurrence = filter(row, idx, report);
+
+        // same number of fields and values
+        assert.equal(!_.isEmpty(occurrence.field), true);
+        assert.equal(!_.isEmpty(occurrence.value), true);
+        assert.equal(occurrence.field.length, occurrence.value.length);
+
+        // Only field being tested
+        assert.equal(occurrence.field[0], 'release_name');
+
+        switch(idx) {
+
+          case 0:
+            assert.equal(occurrence.value, 'Cosmos: A SpaceTime Odyssey [I carry no information], Vol. 1');
+            break;
+
+        }
+
+      });
+
+    }
+
+    catch(err) { throw err; }
+
+  });
+
+  // invalidScore
+  it('should report - genre is score but there are no parenthesis', () => {
+
+    try {
+
+      const mock = mocks['invalidScore'];
+
+      mock.forEach((row, idx) => {
+
+        let occurrence = filter(row, idx, report);
+
+        // same number of fields and values
+        assert.equal(!_.isEmpty(occurrence.field), true);
+        assert.equal(!_.isEmpty(occurrence.value), true);
+        assert.equal(occurrence.field.length, occurrence.value.length);
+
+        // Only field being tested
+        assert.equal(occurrence.field[0], 'release_name');
+
+        switch(idx) {
+
+          case 0:
+            assert.equal(occurrence.value, 'Telephone Free Landslide Victory');
+            break;
+
+        }
+
+      });
+
+    }
+
+    catch(err) { throw err; }
+
+  });
+
+  // squareBrackets
+  it('should not report - information inside square brackets ', () => {
+
+    try {
+
+      const mock = mocks['squareBrackets'];
+
+      mock.forEach((row, idx) => {
+
+        let occurrence = filter(row, idx, report);
+        assert.equal(occurrence, false);
+
+      });
+
+    }
+
+    catch(err) { throw err; }
+
+  });
+
+  // squareBrackets
+  it('should not report - genre is soundtrack and information is inside parentheses', () => {
+
+    try {
+
+      const mock = mocks['validSoundtrack'];
+
+      mock.forEach((row, idx) => {
+
+        let occurrence = filter(row, idx, report);
+        assert.equal(occurrence, false);
+
+      });
+
+    }
+
+    catch(err) { throw err; }
+
+  });
+
+  /*
+  // Valid test should return occurrence with empty fields
+  it('report should not be empty - invalid release names', () => {
 
     try {
 
@@ -101,8 +223,8 @@ describe('should test filter 7', () => {
 
   });
 
-  // invalid tracks
-  it('should report - invalid track names', () => {
+  // Valid test should return occurrence with empty fields
+  it('report should not be empty - invalid track names', () => {
 
     try {
 
@@ -170,8 +292,8 @@ describe('should test filter 7', () => {
 
   });
 
-  // multiple errors on row
-  it('should report - multiple errors on same row', () => {
+  // Valid test should return occurrence with empty fields
+  it('report should not be empty - multiple errors on same row', () => {
 
     try {
 
@@ -215,8 +337,8 @@ describe('should test filter 7', () => {
 
   });
 
-  // multiple parenthesis
-  it('should report - multiple parentheses', () => {
+  // Valid test should return occurrence with empty fields
+  it('report be empty - multiple parentheses', () => {
 
     try {
 
@@ -248,25 +370,6 @@ describe('should test filter 7', () => {
     catch(err) { throw err; }
 
   });
-
-  // multiple parentheses with invalid values
-  it('should not report - multiple parentheses', () => {
-
-    try {
-
-      const mock = mocks['multipleParentheses2'];
-
-      mock.forEach((row, idx) => {
-
-        occurrence = filter(row, idx, report);
-        assert.equal(occurrence, false);
-
-      });
-
-    }
-
-    catch(err) { throw err; }
-
-  });
+  */
 
 });
