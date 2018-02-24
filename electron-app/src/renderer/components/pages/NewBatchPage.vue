@@ -188,10 +188,10 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.$store.commit(SUBMISSION, null);
-      vm.$store.commit(SUBMISSIONS_FAILURE, null);
-    });
-  },
+      vm.$store.commit(SUBMISSION, null)
+      vm.$store.commit(SUBMISSIONS_FAILURE, null)
+    })
+  }
 }
 </script>
 
