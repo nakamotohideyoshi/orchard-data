@@ -1,12 +1,12 @@
-// Generic Release Titles
+// Generic Artist Names
 
 module.exports = function(row, idx, report) {
 
   let removeDiacritics = require('../scripts/remove-diacritics');
 
-  let filterName = 'filter3';
-  let field = 'release_name'
-  let releaseName = row[field]
+  let filterName = 'filter5';
+  let fields = ['orchard_artist', 'release_artists_primary_artist'];
+  let releaseLanguage = row['release_meta_language'].toLowerCase();
 
   let occurrence = {
     'rowId': idx,
@@ -45,6 +45,11 @@ module.exports = function(row, idx, report) {
       /Christmas/gi,
       /Valentines/gi,
       /St(\.)? ?Patrick('s)?/gi,
+      /Baby/gi,
+      /Singer(s)?/gi,
+      /Chorus/gi,
+      /Orchestra/gi,
+      /Cast/gi,
     ],
     'portuguese': [
       /Vol(\.? ?[0-9]*)?/gi,
@@ -72,39 +77,54 @@ module.exports = function(row, idx, report) {
       /Relaxar/gi,
       /Academia/gi,
       /Musculacao/gi,
-      /Malhação/gi,
+      /Malhacao/gi,
       /Halloween/gi,
       /Natal/gi,
       /Namorados/gi,
       /St(\.)? ?Patrick/gi,
+      /Cantor(a)?(s|es)?/gi,
+      /Orquestra/gi,
+      /Grupo/gi,
+      /Coral/gi,
+      /Coro/gi,
     ],
   };
 
-  // forEach does not allow the use of break/continue
-  Object.keys(invalidKeywords).forEach(language => {
+  // Language not supported
+  if(Object.keys(invalidKeywords).indexOf(releaseLanguage) === -1) { return false; }
 
-    let value = releaseName;
+  // If field is related to 'track artists'
+  Object.keys(row).forEach(field => {
 
-    // Only tests if value is non-null
-    if(value) {
+    // Field should be tested
+    if(fields.indexOf(field) !== -1) {
 
-      // Removes trailling whitespaces and diacritics
-      value = value.trim();
-      value = removeDiacritics(value);
+      let value = row[field];
 
-      let regExps = invalidKeywords[language];
+      // Only tests if value is non-null
+      if(value) {
 
-      for(let i = 0; i < regExps.length; i++) {
+        // Removes trailling whitespaces and diacritics
+        value = value.trim();
+        value = removeDiacritics(value);
 
-        let regExp = regExps[i];
+        let regExps = invalidKeywords[releaseLanguage];
 
-        // Invalid Value
-        if(regExp.test(value)) {
-          occurrence.field.push(field);
-          occurrence.value.push(row[field]);
+        for(let i = 0; i < regExps.length; i++) {
 
-          // Doesn't need to test other regex
-          break;
+          let regExp = regExps[i];
+
+          // Invalid Value
+          if(regExp.test(value)) {
+
+            occurrence.field.push(field);
+            occurrence.value.push(row[field]);
+
+            // Doesn't need to test other regex
+            break;
+
+          }
+
         }
 
       }
@@ -114,8 +134,13 @@ module.exports = function(row, idx, report) {
   });
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){ report.addOccurrence(filterName, occurrence); }
+  if(occurrence.field.length > 0){
 
-  return true;
+    report.addOccurrence(filterName, occurrence);
+    return occurrence;
+
+  }
+
+  else { return false; }
 
 };
