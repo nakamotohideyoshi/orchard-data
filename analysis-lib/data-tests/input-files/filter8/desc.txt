@@ -1,2 +1,1 @@
-Filter: compound artist names
-
+Soundtracks and scores must include version information in the album title
