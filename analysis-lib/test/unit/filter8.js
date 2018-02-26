@@ -114,7 +114,7 @@ describe('should test filter 8', () => {
   });
 
   // squareBrackets
-  it('should not report - information inside square brackets ', () => {
+  it('should not report - information inside square brackets is valid', () => {
 
     try {
 

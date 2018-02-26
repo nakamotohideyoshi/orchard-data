@@ -16,7 +16,7 @@ describe('should test filter 6', () => {
   report.init();
   report.addFilter('filter6');
 
-  it('should fail genre is folk', () => {
+  it('should report - genre is folk and composer is artist', () => {
 
     const { invalidGenre } = mocks;
 
@@ -44,7 +44,7 @@ describe('should test filter 6', () => {
 
   });
 
-  it('should pass genre is classical', () => {
+  it('should not report - composer is artist but genre is classical', () => {
 
     const { validGenre } = mocks;
 
@@ -56,7 +56,7 @@ describe('should test filter 6', () => {
 
   });
 
-  it('should pass', () => {
+  it('should not report - composer is not listed as artist', () => {
 
     const { valid } = mocks;
 
@@ -68,7 +68,7 @@ describe('should test filter 6', () => {
 
   });
 
-  it('should fail multiple track composers and single release composer', () => {
+  it('should report - multiple track composers and single release composer', () => {
 
     const { multipleTrackComposers } = mocks;
 
@@ -107,7 +107,8 @@ describe('should test filter 6', () => {
   });
 
   // Valid test should return occurrence with empty fields
-  it('should fail wrong name', () => {
+  it(`should report - genre is soundtrack, one composer on track level but artist
+      is not composer`, () => {
 
     const { wrongName } = mocks;
 
@@ -148,120 +149,5 @@ describe('should test filter 6', () => {
     assert.equal(occurrences[1].value[3], '["Wrong Name","Pyotr Ilyich Tchaikovsky"]');
 
   });
-
-  /*
-  it('should acuse occurrences portuguese', () => {
-
-    const { invalidPortuguese } = mocks;
-
-    invalidPortuguese.forEach((row, idx) => {
-
-      let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(!_.isEmpty(occurrence.field), true);
-      assert.equal(!_.isEmpty(occurrence.value), true);
-
-      switch(occurrence.rowId) {
-
-        case 0:
-          assert.include(occurrence.field, 'release_artists_primary_artist');
-          assert.include(occurrence.value, 'Yoga');
-
-          break;
-
-        case 1:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.field, 'release_artists_primary_artist');
-          assert.include(occurrence.value, 'Yoga');
-          assert.include(occurrence.value, 'Natal');
-
-          break;
-
-        case 2:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Melhores Hits');
-
-          break;
-
-        case 3:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Coral');
-
-          break;
-
-        case 4:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Orquestra');
-
-          break;
-
-        case 5:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Cantor');
-
-          break;
-
-        case 6:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Meditação');
-
-          break;
-
-        case 7:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Cantora');
-
-          break;
-
-        case 8:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Malhação');
-
-          break;
-
-      }
-
-    });
-
-  });
-
-  // Valid test should return occurrence with empty fields
-  it('should pass portuguese', () => {
-
-    const { validPortuguese } = mocks;
-
-    validPortuguese.forEach((row, idx) => {
-
-      let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(occurrence.rowId, 0);
-      assert.equal(_.isEmpty(occurrence.field), true);
-      assert.equal(_.isEmpty(occurrence.value), true);
-
-    });
-
-  });
-
-  // Valid test should return occurrence with empty fields
-  it('should return empty occurrence - invalid language', () => {
-
-    const { invalidLanguage } = mocks;
-
-    invalidLanguage.forEach((row, idx) => {
-
-      let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(occurrence.rowId, 0);
-      assert.equal(_.isEmpty(occurrence.field), true);
-      assert.equal(_.isEmpty(occurrence.value), true);
-
-    });
-
-  });
-
-  */
 
 });

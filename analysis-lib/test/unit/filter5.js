@@ -15,7 +15,7 @@ describe('should test filter 5', () => {
   report.init();
   report.addFilter('filter5');
 
-  it('should acuse occurrences', () => {
+  it('should report - invalid keywords occur on artists fields', () => {
 
     const { invalid } = mocks;
 
@@ -92,7 +92,7 @@ describe('should test filter 5', () => {
   });
 
   // Valid test should return false
-  it('should pass ', () => {
+  it('should not report - invalid keywords do not occur ', () => {
 
     const { valid } = mocks;
 
@@ -105,7 +105,7 @@ describe('should test filter 5', () => {
 
   });
 
-  it('should acuse occurrences portuguese', () => {
+  it('should report - invalid portuguese keywords occur on artists fields', () => {
 
     const { invalidPortuguese } = mocks;
 
@@ -182,7 +182,7 @@ describe('should test filter 5', () => {
   });
 
   // Valid test should return false
-  it('should pass portuguese', () => {
+  it('should not report - invalid portuguese keywords do not occur', () => {
 
     const { validPortuguese } = mocks;
 
@@ -196,7 +196,7 @@ describe('should test filter 5', () => {
   });
 
   // Valid test should return false
-  it('should return empty occurrence - invalid language', () => {
+  it('should not report - language not supported', () => {
 
     const { invalidLanguage } = mocks;
 
