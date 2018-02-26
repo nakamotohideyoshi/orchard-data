@@ -143,4 +143,32 @@ module.exports = {
     'type': 'error',
     'basis': 'row'
   },
+  'filter10': {
+    'orchardDescription': `Titles including release dates, album name, track number, additional info (producers, single, etc), search terms, artist info`,
+    'programmerDescription': `
+
+      It is an error if a release name contains " - Album"
+      Example: Dawns Welcome to the Club - Album (feat. Ricky J)
+
+      It is an error if a track name begins with a number followed by a period and subsequent text
+      Example: 12. I'll Be Walking Alone in a Crowd
+
+      It is an error if a release name or track title contains the substring "(Produced By [.*])
+      Example: Campus Girl (Produced By T.J. Douglas) - Single
+
+      It is an error if a release name or track title is prefixed with the track artist's name and a hyphen
+      Example: Aerosmith - Draw the Line
+
+      It is an error if a release name contains "(Exclusive)", "[Exclusive]", or "- Exclusive."
+      Example: In Through The Out Door (Exclusive)
+
+      It is an error if a release name contains "(Limited Edition)", "[Limited Edition]", or "- Limited Edition."
+      Example: In Through The Out Door - Limited Edition
+
+    `,
+    'userExplanation': `Titles may not include release dates, track number, additional info (producers, single, etc), search terms, or artist info.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row'
+  },
 };

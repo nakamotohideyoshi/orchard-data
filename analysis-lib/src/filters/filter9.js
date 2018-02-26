@@ -39,7 +39,7 @@ module.exports = function(row, idx, report) {
   };
 
   // language not supported
-  if(!language in patterns) { return false; }
+  if(!(language in patterns)) { return false; }
 
   let occurrence = {
     'rowId': idx,
