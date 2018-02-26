@@ -7,6 +7,7 @@ module.exports = function(row, idx, report) {
   let filterName = 'filter3';
   let field = 'release_name'
   let releaseName = row[field]
+  let releaseLanguage = row['release_meta_language'].trim().toLowerCase();
 
   let occurrence = {
     'rowId': idx,
@@ -80,42 +81,48 @@ module.exports = function(row, idx, report) {
     ],
   };
 
+  // Language not supported
+  if(!(releaseLanguage in invalidKeywords)) { return false; }
+
   // forEach does not allow the use of break/continue
-  Object.keys(invalidKeywords).forEach(language => {
+  let value = releaseName;
 
-    let value = releaseName;
+  // Only tests if value is non-null
+  if(value) {
 
-    // Only tests if value is non-null
-    if(value) {
+    // Removes trailling whitespaces and diacritics
+    value = value.trim();
+    value = removeDiacritics(value);
 
-      // Removes trailling whitespaces and diacritics
-      value = value.trim();
-      value = removeDiacritics(value);
+    let regExps = invalidKeywords[releaseLanguage];
 
-      let regExps = invalidKeywords[language];
+    for(let i = 0; i < regExps.length; i++) {
 
-      for(let i = 0; i < regExps.length; i++) {
+      let regExp = regExps[i];
 
-        let regExp = regExps[i];
+      // Invalid Value
+      if(regExp.test(value)) {
 
-        // Invalid Value
-        if(regExp.test(value)) {
-          occurrence.field.push(field);
-          occurrence.value.push(row[field]);
+        occurrence.field.push(field);
+        occurrence.value.push(row[field]);
 
-          // Doesn't need to test other regex
-          break;
-        }
+        // Doesn't need to test other regex
+        break;
 
       }
 
     }
 
-  });
+  };
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){ report.addOccurrence(filterName, occurrence); }
+  if(occurrence.field.length > 0){
 
-  return true;
+    report.addOccurrence(filterName, occurrence);
+    return occurrence;
+
+  }
+
+  return false;
 
 };

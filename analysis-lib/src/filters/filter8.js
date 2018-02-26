@@ -38,6 +38,9 @@ module.exports = function(row, idx, report) {
     'portuguese': []
   };
 
+  // language not supported
+  if(!language in patterns) { return false; }
+
   let occurrence = {
     'rowId': idx,
     'field': [],
