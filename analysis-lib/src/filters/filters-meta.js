@@ -121,4 +121,26 @@ module.exports = {
     'type': 'error',
     'basis': 'row'
   },
+  'filter9': {
+    'orchardDescription': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version`,
+    'programmerDescription': `
+
+      There is no error if genre is not
+
+      Original Score
+      Soundtrack
+      Musicals
+      Musical
+      Video Game
+      TV Soundtrack
+
+      There is no error if there is not an expression in parenthesis or square brackets
+      There is an error if the expression is O.S.T. or OST
+
+    `,
+    'userExplanation': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version for scores, movies, TV, musicals, or video games.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row'
+  },
 };

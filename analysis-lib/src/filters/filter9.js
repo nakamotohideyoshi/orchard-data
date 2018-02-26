@@ -5,13 +5,17 @@ module.exports = function(row, idx, report) {
   let removeDiacritics = require('../scripts/remove-diacritics');
   let parenthesesModule = require('../scripts/parentheses-module');
 
-  let filterName = 'filter8';
+  let filterName = 'filter9';
 
   let field = 'release_name';
   let value = row[field];
   value = removeDiacritics(value).trim().toLowerCase();
 
   if(!value) { return false; }
+
+  // No parentheses expression or parentheses are not balanced
+  let parensStr = parenthesesModule.stripParentheses(value);
+  if(parensStr.length === 0 || !parenthesesModule.parenthesesAreBalanced(parensStr)) { return false; }
 
   // language defaults to english if not specified on tsv file
   let language = removeDiacritics(row['release_meta_language']).trim().toLowerCase();
@@ -21,18 +25,14 @@ module.exports = function(row, idx, report) {
   let genre = row['genre'] || row['subgenre'];
   genre = removeDiacritics(genre).trim().toLowerCase();
 
+  let invalidGenres = ['original score', 'soundtrack', 'musicals',
+                       'musical', 'video game', 'tv soundtrack'];
+
   // nothing to be tested or genre is not soundtrack or not related to score
-  if(!genre || (genre !== 'soundtrack' && !/Score/gi.test(genre))) { return false; }
+  if(!genre || invalidGenres.indexOf(genre) === -1) { return false; }
 
   let patterns = {
-    'english': [
-      /Soundtrack/gi,
-      /Original Score/gi,
-      /Music Inspired By/gi,
-      /Original/gi,
-      /Cast/gi,
-      /Music From/gi
-    ],
+    'english': /O\,?\.?S\,?\.?T\,?\.?/gi,
 
     //TODO: research portuguese keywords
     'portuguese': []
@@ -47,36 +47,14 @@ module.exports = function(row, idx, report) {
     'value': []
   };
 
-  let parensStr = parenthesesModule.stripParentheses(value);
+  // retrieves value inside parentheses
+  let parenthesesValue = parenthesesModule.getTextInBetween(value);
 
-  // No parentheses on release name or parentheses are not normalized
-  if(parensStr.length === 0 || !parenthesesModule.parenthesesAreBalanced(parensStr)) {
+  // if it's a match, pushes occurrence
+  if(patterns[language].test(parenthesesValue)) {
 
     occurrence.field.push(field);
     occurrence.value.push(row[field]);
-
-  }
-
-  else {
-
-    // retrieves value inside parentheses
-    let parenthesesValue = parenthesesModule.getTextInBetween(value);
-
-    // tests each regex
-    let match = false;
-    patterns[language].forEach(regExp => {
-
-      if(regExp.test(parenthesesValue)) { match = true; }
-
-    });
-
-    // if required values were not found, reports occurrence
-    if(!match) {
-
-      occurrence.field.push(field);
-      occurrence.value.push(row[field]);
-
-    }
 
   }
 

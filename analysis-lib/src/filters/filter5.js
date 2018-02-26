@@ -91,7 +91,7 @@ module.exports = function(row, idx, report) {
   };
 
   // Language not supported
-  if(Object.keys(invalidKeywords).indexOf(releaseLanguage) === -1) { return false; }
+  if(!(releaseLanguage in invalidKeywords)) { return false; }
 
   // If field is related to 'track artists'
   Object.keys(row).forEach(field => {

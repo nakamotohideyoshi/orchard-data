@@ -17,6 +17,9 @@ module.exports = function(row, idx, report) {
     'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i
   };
 
+  // language not supported
+  if(!(language in invalidStrings)) { return false; }
+
   let occurrence = {
     'rowId': idx,
     'field': [],
@@ -52,8 +55,13 @@ module.exports = function(row, idx, report) {
   });
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){ report.addOccurrence(filterName, occurrence); }
+  if(occurrence.field.length > 0){
 
-  return true;
+    report.addOccurrence(filterName, occurrence);
+    return occurrence;
+
+  }
+
+  return false;
 
 };

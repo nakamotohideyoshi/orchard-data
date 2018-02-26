@@ -33,7 +33,7 @@ describe('should test filter 7', () => {
   });
 
   // invalid releases
-  it('should report - invalid release names', () => {
+  it('should report - invalid strings occur on release names', () => {
 
     try {
 
@@ -102,7 +102,7 @@ describe('should test filter 7', () => {
   });
 
   // invalid tracks
-  it('should report - invalid track names', () => {
+  it('should report - invalid strings occur on track names', () => {
 
     try {
 
@@ -171,7 +171,7 @@ describe('should test filter 7', () => {
   });
 
   // multiple errors on row
-  it('should report - multiple errors on same row', () => {
+  it('should report - invalid strings occur on release and track names', () => {
 
     try {
 
@@ -216,7 +216,7 @@ describe('should test filter 7', () => {
   });
 
   // multiple parenthesis
-  it('should report - multiple parentheses', () => {
+  it(`should report - multiple parentheses occur on a field with invalid values`, () => {
 
     try {
 
@@ -250,7 +250,7 @@ describe('should test filter 7', () => {
   });
 
   // multiple parentheses with invalid values
-  it('should not report - multiple parentheses', () => {
+  it('should not report - multiple parentheses occur on a field with valid values', () => {
 
     try {
 
