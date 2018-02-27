@@ -148,7 +148,7 @@ router.get('/field-by-field-reports', (req, res) => {
 });
 
 // Returns report as a TSV
-router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
+router.get('/field-by-field/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let datasetSize = 0;
@@ -184,7 +184,7 @@ router.get('/field-by-field-report/:datasetId.tsv', (req, res) => {
 });
 
 // Fetch single report from DB
-router.get('/field-by-field-report/:datasetId', (req, res) => {
+router.get('/field-by-field/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let datasetSize = 0;
@@ -212,7 +212,7 @@ router.get('/field-by-field-report/:datasetId', (req, res) => {
 });
 
 // Returns report as a TSV
-router.get('/field-by-field-report/:category/:datasetId.tsv', (req, res) => {
+router.get('/field-by-field/:category/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let category = req.params.category ;
@@ -249,7 +249,7 @@ router.get('/field-by-field-report/:category/:datasetId.tsv', (req, res) => {
 });
 
 // Fetch single report from DB
-router.get('/field-by-field-report/:category/:datasetId', (req, res) => {
+router.get('/field-by-field/:category/:datasetId', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let category = req.params.category ;

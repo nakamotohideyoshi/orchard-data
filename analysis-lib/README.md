@@ -41,8 +41,8 @@ represents the ID of the recently saved dataset-meta.
 
 # Fetch Field by Field Report in TSV format
 
-URL:  '/field-by-field-report/:datasetId.tsv'<br />
-URL2: '/field-by-field-report/:category/:datasetId.tsv'<br />
+URL:  '/field-by-field/:datasetId.tsv'<br />
+URL2: '/field-by-field/:category/:datasetId.tsv'<br />
 Method: 'GET'<br />
 
 <br />
@@ -50,8 +50,8 @@ Method: 'GET'<br />
 
 # Fetch Single Field by Field Report
 
-URL: '/field-by-field-report/:datasetId'<br />
-URL: '/field-by-field-report/:category/:datasetId'<br />
+URL: '/field-by-field/:datasetId'<br />
+URL: '/field-by-field/:category/:datasetId'<br />
 Method: 'GET'<br />
 
 <br />
@@ -125,7 +125,7 @@ From STDIN: `STDIN | xargs -0 npm run gen-row-report`
 
 Examples:
 
-`curl http://localhost:3000/field-by-field-report/1.tsv | xargs -0 npm run gen-row-report`
+`curl http://localhost:3000/field-by-field/1.tsv | xargs -0 npm run gen-row-report`
 `cat ./reports1.tsv | xargs -0 npm run gen-row-report`
 
 ## Error by Error aggregate
@@ -135,7 +135,7 @@ From STDIN: `STDIN | xargs -0 npm run gen-error-report`
 
 Examples:
 
-`curl http://localhost:3000/field-by-field-report/1.tsv | xargs -0 npm run gen-error-report`
+`curl http://localhost:3000/field-by-field/1.tsv | xargs -0 npm run gen-error-report`
 `cat ./reports1.tsv | xargs -0 npm run gen-error-report`
 
 ## Unit Testing
