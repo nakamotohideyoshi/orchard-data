@@ -7,7 +7,7 @@
 			<div v-if="pageData == 'report-progress'"><report-progress-page></report-progress-page></div>
 			<div v-if="pageData == 'FieldByFieldReport'"><FieldByFieldReport></FieldByFieldReport></div>
 			<div v-if="pageData == 'RowByRowReport'"><RowByRowReport></RowByRowReport></div>
-			<div v-if="pageData == 'criteria-scores'"><ErrorByErrorReport></ErrorByErrorReport></div>
+			<div v-if="pageData == 'ErrorByErrorReport'"><ErrorByErrorReport></ErrorByErrorReport></div>
 			<div v-if="pageData == 'csv'"><csv-page></csv-page></div>
 		</aside>
 	</div>

@@ -56,8 +56,8 @@
 	      </div>
       </li>
       <li>
-	      <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'criteria-scores'}" @click="sidebarToggle('criteria-scores')"><span>7.</span><em>criteria-scores</em></a>
-	      <router-link :to="'/criteria-scores'" class="pagelist__url">
+	      <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'ErrorByErrorReport'}" @click="sidebarToggle('ErrorByErrorReport')"><span>7.</span><em>ErrorByErrorReport</em></a>
+	      <router-link :to="'/ErrorByErrorReport'" class="pagelist__url">
           <svg class="icon icon-link"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-link"></use></svg>
         </router-link>
 	      <div class="pagelist__progress">

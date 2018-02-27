@@ -57,8 +57,8 @@ const router = new Router({
       component: RowByRowReport
     },
     {
-      path: '/criteria-scores',
-      name: 'criteria-scores',
+      path: '/ErrorByErrorReport',
+      name: 'ErrorByErrorReport',
       component: ErrorByErrorReport
     },
     {

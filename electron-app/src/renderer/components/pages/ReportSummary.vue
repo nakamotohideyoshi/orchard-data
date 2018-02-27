@@ -55,7 +55,7 @@ include _mixins
                                         // report view
                                         .report__view
                                             .report__view-title What are the biggest problems with the dataset?
-                                            router-link(:to="'/criteria-scores'").report__view-link
+                                            router-link(:to="'/ErrorByErrorReport'").report__view-link
                                                 +icon('ico-document')
                                                 span View the test criteria scores
                                         .report__view
