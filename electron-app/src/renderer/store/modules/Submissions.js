@@ -144,7 +144,7 @@ const actions = {
     commit(FIELDS, null)
 
     return axios
-      .get(`${API_URL}field-by-field-report/${id}`, {
+      .get(`${API_URL}field-by-field/${id}`, {
         'headers': {
           'content-type': 'application/json'
         }
