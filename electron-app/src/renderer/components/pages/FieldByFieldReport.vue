@@ -80,7 +80,7 @@ import {
 } from '@/constants/types'
 
 export default {
-  name: 'field-level-page',
+  name: 'FieldByFieldReport',
   components: {
     AppHeader,
     AppFooter

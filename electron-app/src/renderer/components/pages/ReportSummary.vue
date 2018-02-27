@@ -60,12 +60,12 @@ include _mixins
                                                 span View the test criteria scores
                                         .report__view
                                             .report__view-title What is the sum of problems in each row?
-                                            router-link(:to="'/row-scores'").report__view-link
+                                            router-link(:to="'/RowByRowReport'").report__view-link
                                                 +icon('ico-document')
                                                 span View the input row scores
                                         .report__view
                                             .report__view-title Which fields in the dataset failed?
-                                            router-link(:to="`/field-level/${itemid}`").report__view-link
+                                            router-link(:to="`/FieldByFieldReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
                                                 span View the field level issues
                                     .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
@@ -115,7 +115,7 @@ import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
 export default {
-  name: 'report-page',
+  name: 'ReportSummary',
   components: {
     AppHeader,
     AppFooter

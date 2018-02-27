@@ -8,11 +8,11 @@ import Container from '../components/Container'
 // import LandingPage from '../components/pages/LandingPage'
 import SubmissionsPage from '../components/pages/SubmissionsPage'
 import NewBatchPage from '../components/pages/NewBatchPage'
-import ReportPage from '../components/pages/ReportPage'
+import ReportSummary from '../components/pages/ReportSummary'
 import ReportProgressPage from '../components/pages/ReportProgressPage'
-import FieldLevelPage from '../components/pages/FieldLevelPage'
-import RowScoresPage from '../components/pages/RowScoresPage'
-import CriteriaScoresPage from '../components/pages/CriteriaScoresPage'
+import FieldByFieldReport from '../components/pages/FieldByFieldReport'
+import RowByRowReport from '../components/pages/RowByRowReport'
+import ErrorByErrorReport from '../components/pages/ErrorByErrorReport'
 import CsvPage from '../components/pages/CsvPage'
 
 // Enable router override on test environment
@@ -27,7 +27,7 @@ const router = new Router({
     },
     {
       path: '/submissions',
-      name: 'submissions-page',
+      name: 'SubmissionsPage',
       component: SubmissionsPage
     },
     {
@@ -38,7 +38,7 @@ const router = new Router({
     {
       path: '/report/:id',
       name: 'report',
-      component: ReportPage,
+      component: ReportSummary,
       props: true
     },
     {
@@ -47,19 +47,19 @@ const router = new Router({
       component: ReportProgressPage
     },
     {
-      path: '/field-level/:id',
-      name: 'field-level',
-      component: FieldLevelPage
+      path: '/FieldByFieldReport/:id',
+      name: 'FieldByFieldReport',
+      component: FieldByFieldReport
     },
     {
-      path: '/row-scores',
-      name: 'row-scores',
-      component: RowScoresPage
+      path: '/RowByRowReport',
+      name: 'RowByRowReport',
+      component: RowByRowReport
     },
     {
       path: '/criteria-scores',
       name: 'criteria-scores',
-      component: CriteriaScoresPage
+      component: ErrorByErrorReport
     },
     {
       path: '/csv/:id',

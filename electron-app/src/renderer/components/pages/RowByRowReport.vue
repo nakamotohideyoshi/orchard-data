@@ -5,7 +5,7 @@ include _mixins
         block header
             AppHeader
         .page__content
-            block content 
+            block content
                 .p-container
                     .container
                         .p-container__wrapper
@@ -14,13 +14,13 @@ include _mixins
                                 router-link(:to="'/submissions'").page-back
                                     .icon.icon-arrow-back
                                     span Report Summary
-                        
+
                                 .p-box.report
                                     // summary
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head risk analysis
-                                            .report-summary__text.report-summary__text--red Errors Per Row 
+                                            .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch id
@@ -32,8 +32,8 @@ include _mixins
                                             .report-summary__head download
                                             a(href="#").report-summary__text
                                                 +icon('ico-download')
-                                    
-                                    
+
+
                                     // table
                                     table.p-table.p-table--full(js-stacktable)
                                         thead
@@ -43,7 +43,7 @@ include _mixins
                                                 td Count of Errors
                                                 td Count of Warnings
                                                 td Overall Status
-                                                
+
                                         tbody
                                             tr.p-table__status-warn(js-modal data-mfp-src='#modal-1')
                                                 td #
@@ -80,7 +80,7 @@ include _mixins
                                                 td 124125412
                                                 td 0
                                                 td 23
-                                                td Error        
+                                                td Error
                                             tr.p-table__status-warn(js-modal data-mfp-src='#modal-1')
                                                 td #
                                                 td 1039232
@@ -134,7 +134,7 @@ include _mixins
                                                 td 124125412
                                                 td 0
                                                 td 23
-                                                td Error        
+                                                td Error
                                             tr.p-table__status-warn(js-modal data-mfp-src='#modal-1')
                                                 td #
                                                 td 1039232
@@ -144,7 +144,7 @@ include _mixins
                                 .p-container__more
                                     a(href="#" js-load-more).btn.btn-more
                                         span Load more
-                                        
+
                 //- include components/_modal
         block footer
             AppFooter
@@ -155,7 +155,7 @@ import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
 export default {
-  name: 'row-scores-page',
+  name: 'RowByRowReport',
   components: {
     AppHeader,
     AppFooter

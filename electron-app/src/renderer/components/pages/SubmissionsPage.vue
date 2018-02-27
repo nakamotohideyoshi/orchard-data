@@ -53,7 +53,7 @@ import AppFooter from './Footer.vue'
 import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types'
 
 export default {
-  name: 'submissions-page',
+  name: 'SubmissionsPage',
   computed: {
     items () {
       return this.$store.getters[SUBMISSIONS]

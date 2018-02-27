@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<aside class="preview" id="preview-wrapper" v-bind:style="{width: previewSize+'px'}">
-			<div v-if="pageData == 'submissions'"><submissions-page></submissions-page></div>
+			<div v-if="pageData == 'submissions'"><SubmissionsPage></SubmissionsPage></div>
 			<div v-if="pageData == 'new-batch'"><new-batch-page></new-batch-page></div>
-			<div v-if="pageData == 'report'"><report-page></report-page></div>
+			<div v-if="pageData == 'report'"><ReportSummary></ReportSummary></div>
 			<div v-if="pageData == 'report-progress'"><report-progress-page></report-progress-page></div>
-			<div v-if="pageData == 'field-level'"><field-level-page></field-level-page></div>
-			<div v-if="pageData == 'row-scores'"><row-scores-page></row-scores-page></div>
-			<div v-if="pageData == 'criteria-scores'"><criteria-scores-page></criteria-scores-page></div>
+			<div v-if="pageData == 'FieldByFieldReport'"><FieldByFieldReport></FieldByFieldReport></div>
+			<div v-if="pageData == 'RowByRowReport'"><RowByRowReport></RowByRowReport></div>
+			<div v-if="pageData == 'criteria-scores'"><ErrorByErrorReport></ErrorByErrorReport></div>
 			<div v-if="pageData == 'csv'"><csv-page></csv-page></div>
 		</aside>
 	</div>
@@ -16,11 +16,11 @@
 <script>
 import SubmissionsPage from '../pages/SubmissionsPage'
 import NewBatchPage from '../pages/NewBatchPage'
-import ReportPage from '../pages/ReportPage'
+import ReportSummary from '../pages/ReportSummary'
 import ReportProgressPage from '../pages/ReportProgressPage'
-import FieldLevelPage from '../pages/FieldLevelPage'
-import RowScoresPage from '../pages/RowScoresPage'
-import CriteriaScoresPage from '../pages/CriteriaScoresPage'
+import FieldByFieldReport from '../pages/FieldByFieldReport'
+import RowByRowReport from '../pages/RowByRowReport'
+import ErrorByErrorReport from '../pages/ErrorByErrorReport'
 import CsvPage from '../pages/CsvPage'
 import { eventHub } from '../../main.js'
 
@@ -29,11 +29,11 @@ export default {
   components: {
     SubmissionsPage,
     NewBatchPage,
-    ReportPage,
+    ReportSummary,
     ReportProgressPage,
-    FieldLevelPage,
-    RowScoresPage,
-    CriteriaScoresPage,
+    FieldByFieldReport,
+    RowByRowReport,
+    ErrorByErrorReport,
     CsvPage
   },
   props: ['page-name'],

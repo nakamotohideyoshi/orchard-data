@@ -38,8 +38,8 @@
         </div>
       </li>
       <li>
-	      <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'field-level'}" @click="sidebarToggle('field-level')"><span>5.</span><em>field-level</em></a>
-	      <router-link :to="'/field-level'" class="pagelist__url">
+	      <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'FieldByFieldReport'}" @click="sidebarToggle('FieldByFieldReport')"><span>5.</span><em>FieldByFieldReport</em></a>
+	      <router-link :to="'/FieldByFieldReport'" class="pagelist__url">
           <svg class="icon icon-link"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-link"></use></svg>
         </router-link>
 	      <div class="pagelist__progress">
@@ -47,8 +47,8 @@
 	      </div>
       </li>
       <li>
-	      <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'row-scores'}" @click="sidebarToggle('row-scores')"><span>6.</span><em>row-scores</em></a>
-	      <router-link :to="'/row-scores'" class="pagelist__url">
+	      <a class="pagelist__title" v-bind:class="{'is-active': currentPage == 'RowByRowReport'}" @click="sidebarToggle('RowByRowReport')"><span>6.</span><em>RowByRowReport</em></a>
+	      <router-link :to="'/RowByRowReport'" class="pagelist__url">
           <svg class="icon icon-link"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-link"></use></svg>
         </router-link>
 	      <div class="pagelist__progress">

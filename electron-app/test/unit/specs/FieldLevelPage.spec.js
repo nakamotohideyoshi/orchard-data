@@ -1,7 +1,7 @@
 import { shallow } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
-import FieldLevelPage from '@/components/pages/FieldLevelPage'
+import FieldByFieldReport from '@/components/pages/FieldByFieldReport'
 import {
   FIELDS,
   FIELDS_REQUEST,
@@ -11,7 +11,7 @@ import {
 import module from '../../../src/renderer/store/modules/Submissions'
 import router from '../../../src/renderer/router'
 
-describe('FieldLevelPage.vue', () => {
+describe('FieldByFieldReport.vue', () => {
   let wrapper
   let store
   let getters
@@ -42,19 +42,19 @@ describe('FieldLevelPage.vue', () => {
     })
 
     $validRoute = {
-      name: 'field-level',
+      name: 'FieldByFieldReport',
       params: {
         id: 1
       }
     }
 
     $invalidRoute = {
-      name: 'field-level'
+      name: 'FieldByFieldReport'
     }
   })
 
   it('should render correct function', () => {
-    wrapper = shallow(FieldLevelPage, {
+    wrapper = shallow(FieldByFieldReport, {
       router,
       store,
       globals: { $route: $validRoute }
@@ -68,7 +68,7 @@ describe('FieldLevelPage.vue', () => {
   })
 
   it('should verify vuex actions were executed on init', () => {
-    wrapper = shallow(FieldLevelPage, {
+    wrapper = shallow(FieldByFieldReport, {
       router,
       store,
       globals: { $route: $validRoute }
@@ -79,7 +79,7 @@ describe('FieldLevelPage.vue', () => {
   })
 
   it('should execute no vuex actions on init if no id is passed in the $route', async () => {
-    wrapper = shallow(FieldLevelPage, {
+    wrapper = shallow(FieldByFieldReport, {
       router,
       store,
       globals: { $route: $invalidRoute }

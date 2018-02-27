@@ -2,7 +2,7 @@ import { mount } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
 import moment from 'moment'
-import ReportPage from '@/components/pages/ReportPage'
+import ReportSummary from '@/components/pages/ReportSummary'
 import {
   SUBMISSION
   /* Stubbing to pass lint, will work on it later
@@ -12,7 +12,7 @@ import {
 } from '@/constants/types'
 import router from '../../../src/renderer/router'
 
-describe('ReportPage.vue', () => {
+describe('ReportSummary.vue', () => {
   let wrapper
   let getters
   let store
@@ -47,7 +47,7 @@ describe('ReportPage.vue', () => {
       actions
     })
 
-    wrapper = mount(ReportPage, {
+    wrapper = mount(ReportSummary, {
       router,
       store
     })
