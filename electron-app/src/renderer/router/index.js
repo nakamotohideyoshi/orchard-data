@@ -52,7 +52,7 @@ const router = new Router({
       component: FieldByFieldReport
     },
     {
-      path: '/RowByRowReport',
+      path: '/RowByRowReport/:id',
       name: 'RowByRowReport',
       component: RowByRowReport
     },
