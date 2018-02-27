@@ -2,12 +2,16 @@
 
 module.exports = function(row, idx, report) {
 
-  let removeDiacritics = require('../scripts/remove-diacritics');
-  let parenthesesModule = require('../scripts/parentheses-module');
+  const removeDiacritics = require('../scripts/remove-diacritics');
+  const parenthesesModule = require('../scripts/parentheses-module');
 
-  let filterName = 'filter10';
+  const filterName = 'filter10';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let fields = ['track_name', 'release_name'];
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
+
+  const fields = ['track_name', 'release_name'];
   let trackArtist = row['track_artist'];
 
   trackArtist = removeDiacritics(trackArtist).trim().toLowerCase();
@@ -16,7 +20,9 @@ module.exports = function(row, idx, report) {
   let language = removeDiacritics(row['release_meta_language']).trim().toLowerCase();
   language = language || 'english';
 
-  let patterns = {
+  const yearPattern = /\([0-9]{4}\)/;
+
+  const patterns = {
     'english': [
       /Album/gi,
       /[0-9]+\./gi,
@@ -25,7 +31,6 @@ module.exports = function(row, idx, report) {
       /- *Exclusive/gi,
       /(\(?|\[?)Limited Edition(\)?\]?)/gi,
       /- *Limited Edition/gi,
-      /\([0-9]{4}\)/,
     ],
 
     'portuguese': [
@@ -36,17 +41,18 @@ module.exports = function(row, idx, report) {
       /- *Exclusivo/gi,
       /(\(?|\[?)Edicao Limitada(\)?\]?)/gi,
       /- *Edicao Limitada/gi,
-      /\([0-9]{4}\)/,
     ]
   };
 
   // language not supported
   if(!(language in patterns)) { return false; }
 
-  let occurrence = {
+  const occurrence = {
     'rowId': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
   fields.forEach(field => {
@@ -62,20 +68,38 @@ module.exports = function(row, idx, report) {
 
         occurrence.field.push(field);
         occurrence.value.push(row[field]);
+        occurrence.explanation_id.push(defaultExplanationId);
+        occurrence.error_type.push(defaultErrorType);
 
       }
 
-      // tests invalid patterns
-      patterns[language].forEach(regExp => {
+      // year inside parenthesis
+      if(yearPattern.test(value)) {
+
+        occurrence.field.push(field);
+        occurrence.value.push(row[field]);
+        occurrence.explanation_id.push(defaultExplanationId);
+        occurrence.error_type.push('warning');
+
+      }
+
+      for(let i = 0; i < patterns[language].length; i++) {
+
+        // tests invalid patterns
+        const regExp = patterns[language][i];
 
         if(regExp.test(value)) {
 
           occurrence.field.push(field);
           occurrence.value.push(row[field]);
+          occurrence.explanation_id.push(defaultExplanationId);
+          occurrence.error_type.push(defaultErrorType);
+
+          break;
 
         }
 
-      });
+      };
 
     }
 

@@ -2,19 +2,27 @@
 
 module.exports = function(row, idx, report) {
 
-  let removeDiacritics = require('../scripts/remove-diacritics');
+  const removeDiacritics = require('../scripts/remove-diacritics');
 
-  let filterName = 'filter5';
-  let fields = ['orchard_artist', 'release_artists_primary_artist'];
-  let releaseLanguage = row['release_meta_language'].toLowerCase();
+  // retrieves filter description
+  const filterName = 'filter5';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let occurrence = {
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
+
+  const fields = ['orchard_artist', 'release_artists_primary_artist'];
+  const releaseLanguage = row['release_meta_language'].toLowerCase();
+
+  const occurrence = {
     'rowId': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
-  let invalidKeywords = {
+  const invalidKeywords = {
     'english': [
       /Vol(\.? ?[0-9]*)?/gi,
       /Volume(\.? ?[0-9]*)?/gi,
@@ -108,17 +116,19 @@ module.exports = function(row, idx, report) {
         value = value.trim();
         value = removeDiacritics(value);
 
-        let regExps = invalidKeywords[releaseLanguage];
+        const regExps = invalidKeywords[releaseLanguage];
 
         for(let i = 0; i < regExps.length; i++) {
 
-          let regExp = regExps[i];
+          const regExp = regExps[i];
 
           // Invalid Value
           if(regExp.test(value)) {
 
             occurrence.field.push(field);
             occurrence.value.push(row[field]);
+            occurrence.explanation_id.push(defaultExplanationId);
+            occurrence.error_type.push(defaultErrorType);
 
             // Doesn't need to test other regex
             break;

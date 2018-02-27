@@ -4,16 +4,45 @@ const _ = require('lodash');
 const path = require('path');
 const validator = require('is-my-json-valid');
 
-const mocks = require('../../mocks/filter5');
-const filter = require('../../src/filters/filter5');
-const filtersMeta = require('../../src/filters/filters-meta');
+const filterId = 'filter5';
+
+const mocks = require(`../../mocks/${filterId}`);
+
+const filter = require(`../../src/filters/${filterId}`);
+const filterMeta = require('../../src/filters/filters-meta')[filterId];
+
+const defaultErrorType = filterMeta['type'];
+const defaultExplanationId = 'default';
+
 const reportModule = require('../../src/scripts/report-tool');
 
-describe('should test filter 5', () => {
+describe(`should test ${filterId}`, () => {
 
-  let report = new reportModule();
+  const report = new reportModule();
   report.init();
-  report.addFilter('filter5');
+  report.addFilter(filterId);
+
+  it('validates occurrences fields', () => {
+
+    const { invalid } = mocks;
+
+    invalid.forEach((row, idx) => {
+
+      const occurrence = filter(row, idx, report);
+
+      assert.equal(_.isObject(occurrence), true);
+      assert.equal(!_.isEmpty(occurrence.field), true);
+      assert.equal(!_.isEmpty(occurrence.value), true);
+      assert.equal('explanation_id' in occurrence, true);
+      assert.equal('error_type' in occurrence, true);
+      assert.equal(occurrence.value.length, occurrence.field.length);
+      assert.equal(occurrence.value.length, occurrence.explanation_id.length);
+      assert.equal(occurrence.value.length, occurrence.error_type.length);
+
+    });
+
+  });
+
 
   it('should report - invalid keywords occur on artists fields', () => {
 
@@ -21,67 +50,79 @@ describe('should test filter 5', () => {
 
     invalid.forEach((row, idx) => {
 
-      let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(!_.isEmpty(occurrence.field), true);
-      assert.equal(!_.isEmpty(occurrence.value), true);
+      const occurrence = filter(row, idx, report);
 
       switch(occurrence.rowId) {
 
         case 0:
-          assert.include(occurrence.field, 'release_artists_primary_artist');
-          assert.include(occurrence.value, 'Yoga');
+          assert.deepEqual(occurrence.field, ['release_artists_primary_artist']);
+          assert.deepEqual(occurrence.value, ['Yoga']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 1:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.field, 'release_artists_primary_artist');
-          assert.include(occurrence.value, 'Yoga');
-          assert.include(occurrence.value, 'Christmas');
+          assert.deepEqual(occurrence.field, ['orchard_artist','release_artists_primary_artist']);
+          assert.deepEqual(occurrence.value, ['Christmas','Yoga']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
 
           break;
 
         case 2:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Top Hits');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Top Hits']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 3:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Chorus');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Chorus']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 4:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Orchestra');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Orchestra']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 5:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Singer');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Singer']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 6:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Meditation');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Meditation']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 7:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Baby');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Baby']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 8:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Workout');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Workout']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
@@ -98,7 +139,7 @@ describe('should test filter 5', () => {
 
     valid.forEach((row, idx) => {
 
-      let occurrence = filter(row, idx, report);
+      const occurrence = filter(row, idx, report);
       assert.equal(occurrence, false);
 
     });
@@ -111,67 +152,79 @@ describe('should test filter 5', () => {
 
     invalidPortuguese.forEach((row, idx) => {
 
-      let occurrence = filter(row, idx, report);
-
-      assert.equal(_.isObject(occurrence), true);
-      assert.equal(!_.isEmpty(occurrence.field), true);
-      assert.equal(!_.isEmpty(occurrence.value), true);
+      const occurrence = filter(row, idx, report);
 
       switch(occurrence.rowId) {
 
         case 0:
-          assert.include(occurrence.field, 'release_artists_primary_artist');
-          assert.include(occurrence.value, 'Yoga');
+          assert.deepEqual(occurrence.field, ['release_artists_primary_artist']);
+          assert.deepEqual(occurrence.value, ['Yoga']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 1:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.field, 'release_artists_primary_artist');
-          assert.include(occurrence.value, 'Yoga');
-          assert.include(occurrence.value, 'Natal');
+          assert.deepEqual(occurrence.field, ['orchard_artist', 'release_artists_primary_artist']);
+          assert.deepEqual(occurrence.value, ['Natal', 'Yoga']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
 
           break;
 
         case 2:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Melhores Hits');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Melhores Hits']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 3:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Coral');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Coral']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 4:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Orquestra');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Orquestra']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 5:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Cantor');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Cantor']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 6:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Meditação');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Meditação']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 7:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Cantora');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Cantora']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
         case 8:
-          assert.include(occurrence.field, 'orchard_artist');
-          assert.include(occurrence.value, 'Malhação');
+          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.value, ['Malhação']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
           break;
 
@@ -188,7 +241,7 @@ describe('should test filter 5', () => {
 
     validPortuguese.forEach((row, idx) => {
 
-      let occurrence = filter(row, idx, report);
+      const occurrence = filter(row, idx, report);
       assert.equal(occurrence, false);
 
     });
@@ -202,7 +255,7 @@ describe('should test filter 5', () => {
 
     invalidLanguage.forEach((row, idx) => {
 
-      let occurrence = filter(row, idx, report);
+      const occurrence = filter(row, idx, report);
       assert.equal(occurrence, false);
 
     });

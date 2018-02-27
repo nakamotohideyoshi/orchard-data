@@ -1,20 +1,24 @@
-// Composer as artist
+// OST abbreviation
 
 module.exports = function(row, idx, report) {
 
-  let removeDiacritics = require('../scripts/remove-diacritics');
-  let parenthesesModule = require('../scripts/parentheses-module');
+  const removeDiacritics = require('../scripts/remove-diacritics');
+  const parenthesesModule = require('../scripts/parentheses-module');
 
-  let filterName = 'filter9';
+  const filterName = 'filter9';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let field = 'release_name';
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
+
+  const field = 'release_name';
   let value = row[field];
   value = removeDiacritics(value).trim().toLowerCase();
 
   if(!value) { return false; }
 
   // No parentheses expression or parentheses are not balanced
-  let parensStr = parenthesesModule.stripParentheses(value);
+  const parensStr = parenthesesModule.stripParentheses(value);
   if(parensStr.length === 0 || !parenthesesModule.parenthesesAreBalanced(parensStr)) { return false; }
 
   // language defaults to english if not specified on tsv file
@@ -25,13 +29,13 @@ module.exports = function(row, idx, report) {
   let genre = row['genre'] || row['subgenre'];
   genre = removeDiacritics(genre).trim().toLowerCase();
 
-  let invalidGenres = ['original score', 'soundtrack', 'musicals',
+  const invalidGenres = ['original score', 'soundtrack', 'musicals',
                        'musical', 'video game', 'tv soundtrack'];
 
   // nothing to be tested or genre is not soundtrack or not related to score
   if(!genre || invalidGenres.indexOf(genre) === -1) { return false; }
 
-  let patterns = {
+  const patterns = {
     'english': /O\,?\.?S\,?\.?T\,?\.?/gi,
 
     //TODO: research portuguese keywords
@@ -41,20 +45,24 @@ module.exports = function(row, idx, report) {
   // language not supported
   if(!(language in patterns)) { return false; }
 
-  let occurrence = {
+  const occurrence = {
     'rowId': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
   // retrieves value inside parentheses
-  let parenthesesValue = parenthesesModule.getTextInBetween(value);
+  const parenthesesValue = parenthesesModule.getTextInBetween(value);
 
   // if it's a match, pushes occurrence
   if(patterns[language].test(parenthesesValue)) {
 
     occurrence.field.push(field);
     occurrence.value.push(row[field]);
+    occurrence.explanation_id.push(defaultExplanationId);
+    occurrence.error_type.push(defaultErrorType);
 
   }
 

@@ -6,24 +6,37 @@ module.exports = {
     'userExplanation': `"Various Artists" can't be used at the track level.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Artist Errors: Various Artists on Track Levels / vice versa`,
+      'abbreviation': 'Various artists abbreviation found'
+    }
   },
+
   'filter2': {
     'orchardDescription': `Artist name cannot include any additional info (Like their instrument, etc)`,
     'programmerDescription': `2.4. Additional Information. The artist name must not include any additional information, such as role, date, instrument, former band, website, and so on." Incorrect: 'Joe Satriani (Guitarist)', 'Johann Sebastian Bach (1685-1750).`,
     'userExplanation': `The artist name must not include any additional information, such as role, date, instrument, former band, website, and so on.`,
     'category': 'iTunes',
     'type': 'warning',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Artist name cannot include any additional info (Like their instrument, etc)`,
+    }
   },
+
   'filter3': {
     'orchardDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
     'programmerDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
     'userExplanation': `Release name must not be generic (e.g., 00s Best Hits)`,
     'category': 'risk',
     'type': 'warning',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Release name must not be generic (e.g., 00s Best Hits)`,
+    }
   },
+
   'filter4': {
     'orchardDescription': `Artist Name formatting (cannot be Last, First)`,
     'programmerDescription': `Terminate test if there is no comma in artist name (e.g., The Beatles)
@@ -40,8 +53,12 @@ module.exports = {
     'userExplanation': `An artist name must not be in "Last, First" format.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Artist Name formatting (cannot be Last, First)`,
+    }
   },
+
   'filter5': {
     'orchardDescription': `Artists names must not be generic (e.g., 00s Best Hits)`,
     'programmerDescription': `It is a warning if "Release Artist(s)-Primary Artist(s)" contains any of the following: Yoga, Workout, Meditation, Baby, Christmas, Top Hits, Chorus, Orchestra, Singer, or Cast`,
@@ -49,8 +66,12 @@ module.exports = {
     `,
     'category': 'iTunes',
     'type': 'warning',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Artists names must not be generic (e.g., 00s Best Hits)`,
+    }
   },
+
   'filter6': {
     'orchardDescription': `Composer cannot be listed as primary artist`,
     'programmerDescription': `Let release artist = both "Orchard Artist" and
@@ -69,8 +90,15 @@ module.exports = {
     'userExplanation': `The composer cannot be listed as primary artist. Refer to iTunes style guide 2.3, 4.4 or 24.4`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'dataset'
+    'basis': 'dataset',
+    'explanations': {
+      'default': `Composer cannot be listed as primary artist`,
+      'notClassical': `Composer is listed as primary artist and genre is not classical`,
+      'multipleComposers': `Artist cannot be listed as composer if there are multiple composers at track level`,
+      'soundtrack': `If genre is soundtrack and there is only one composer at track level, Orchard Artist and Release Artist(s)-Primary Artist(s) must be the composer`,
+    }
   },
+
   'filter7': {
     'orchardDescription': `Track/Album versions that aren’t allowed`,
     'programmerDescription': `
@@ -95,8 +123,12 @@ module.exports = {
     'userExplanation': `This type of content version (in parens) is not permitted.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `This type of content version (in parens) is not permitted.`,
+    }
   },
+
   'filter8': {
     'orchardDescription': `Soundtracks and scores must include version information in the album title, enclosed by parentheses or brackets`,
     'programmerDescription': `
@@ -119,8 +151,12 @@ module.exports = {
     'userExplanation': `Soundtracks and scores must include version information in the album title.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Soundtracks and scores must include version information in the album title, enclosed by parentheses or brackets`,
+    }
   },
+
   'filter9': {
     'orchardDescription': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version`,
     'programmerDescription': `
@@ -141,7 +177,10 @@ module.exports = {
     'userExplanation': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version for scores, movies, TV, musicals, or video games.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version`,
+    }
   },
   'filter10': {
     'orchardDescription': `Titles including release dates, album name, track number, additional info (producers, single, etc), search terms, artist info`,
