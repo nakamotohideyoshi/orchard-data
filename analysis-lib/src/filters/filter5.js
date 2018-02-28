@@ -15,7 +15,7 @@ module.exports = function(row, idx, report) {
   const releaseLanguage = row['release_meta_language'].toLowerCase();
 
   const occurrence = {
-    'rowId': idx,
+    'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],

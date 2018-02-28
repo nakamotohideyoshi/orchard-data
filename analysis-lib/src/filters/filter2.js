@@ -97,7 +97,7 @@ module.exports = function(row, idx, report) {
   const parenthesisRegExp = /(\(.*\))|\(|\)/g;
 
   const occurrence = {
-    'rowId': idx,
+    'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],

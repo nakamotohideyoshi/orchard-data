@@ -71,7 +71,7 @@ describe(`should test ${filterId}`, () => {
 
         case 2:
           assert.deepEqual(occurrence.field, ['release_artists_remixer']);
-          assert.deepEqual(occurrence.value, ['Doe, john']);
+          assert.deepEqual(occurrence.value, ['Doe, John']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
@@ -79,7 +79,7 @@ describe(`should test ${filterId}`, () => {
 
         case 3:
           assert.deepEqual(occurrence.field, ['release_artists_composer']);
-          assert.deepEqual(occurrence.value, ['Doe, john']);
+          assert.deepEqual(occurrence.value, ['Doe, John']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
@@ -87,7 +87,7 @@ describe(`should test ${filterId}`, () => {
 
         case 4:
           assert.deepEqual(occurrence.field, ['release_artists_conductor']);
-          assert.deepEqual(occurrence.value, ['Doe, john']);
+          assert.deepEqual(occurrence.value, ['Doe, John']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
 
