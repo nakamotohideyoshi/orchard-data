@@ -165,19 +165,19 @@ describe(`should test ${filterId}`, () => {
 
   it('should report - names are translated', () => {
 
-    const mock = mocks['trackErrors'];
+    const mock = mocks['translatedName'];
 
     mock.forEach((row, idx) => {
 
       const occurrence = filter(row, idx, report);
 
-      switch(occurrence.row_id) {
+      switch(idx) {
 
         case 0:
-          assert.deepEqual(occurrence.field, ['track_artist_conductor']);
-          assert.deepEqual(occurrence.value, ['Joe Satriani โจอี้ บอย']);
-          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
-          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+          assert.deepEqual(occurrence.field, ['release_artists_featuring',            'track_artist_conductor']);
+          assert.deepEqual(occurrence.value, ['Joe Satriani Guitarist', 'Joe Satriani โจอี้ บอย']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
 
           break;
 
@@ -215,14 +215,6 @@ describe(`should test ${filterId}`, () => {
 
         case 5:
           assert.deepEqual(occurrence.field, ['track_artist_conductor']);
-          assert.deepEqual(occurrence.value, ['Joe Satriani 여러 아티스트 ']);
-          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
-          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
-
-          break;
-
-        case 6:
-          assert.deepEqual(occurrence.field, ['track_artist_conductor']);
           assert.deepEqual(occurrence.value, ['Joe Satriani Разные исполнители']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -246,10 +238,10 @@ describe(`should test ${filterId}`, () => {
       switch(occurrence.row_id) {
 
         case 0:
-          assert.deepdeepEqual(occurrence.field, ['release_artists_featuring','release_artists_remixer']);
-          assert.deepdeepEqual(occurrence.value, ['Joe Satriani (Guitarist)','Joe Satriani (Guitarist)']);
-          assert.deepdeepEqual(occurrence.explanation_id, [defaultExplanationId,defaultExplanationId]);
-          assert.deepdeepEqual(occurrence.error_type, [defaultErrorType,defaultErrorType]);
+          assert.deepEqual(occurrence.field, ['release_artists_featuring','release_artists_remixer']);
+          assert.deepEqual(occurrence.value, ['Joe Satriani (Guitarist)','Joe Satriani (Guitarist)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId,defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType,defaultErrorType]);
 
           break;
 
@@ -278,7 +270,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 1:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_primary_artist']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Pianos)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -286,7 +278,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 2:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_featuring']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Drummer)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -294,7 +286,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 3:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_remixer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Guitars)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -302,7 +294,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 4:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_composer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Pianist)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -310,7 +302,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 5:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_conductor']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Vocalist)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -318,7 +310,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 6:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_remixer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Bass)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -326,7 +318,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 7:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_composer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Vocals)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -334,7 +326,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 8:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_conductor']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Keyboard)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -374,7 +366,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 2:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_primary_artist']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Piano)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -382,7 +374,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 3:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_featuring']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Baterista)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -390,7 +382,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 4:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_remixer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Guitarra)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -398,7 +390,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 5:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_composer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Pianista)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -406,7 +398,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 6:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_conductor']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Vocalistas)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -414,7 +406,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 7:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_remixer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Baixo)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -422,7 +414,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 8:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_composer']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Baixista)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);
@@ -430,7 +422,7 @@ describe(`should test ${filterId}`, () => {
           break;
 
         case 9:
-          assert.deepEqual(occurrence.field, ['orchard_artist']);
+          assert.deepEqual(occurrence.field, ['release_artists_conductor']);
           assert.deepEqual(occurrence.value, ['Joe Satriani (Teclado)']);
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
           assert.deepEqual(occurrence.error_type, [defaultErrorType]);

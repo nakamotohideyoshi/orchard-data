@@ -182,6 +182,7 @@ module.exports = {
       'default': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version`,
     }
   },
+
   'filter10': {
     'orchardDescription': `Titles including release dates, album name, track number, additional info (producers, single, etc), search terms, artist info`,
     'programmerDescription': `
@@ -208,6 +209,34 @@ module.exports = {
     'userExplanation': `Titles may not include release dates, track number, additional info (producers, single, etc), search terms, or artist info.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row'
+    'basis': 'row',
+    'explanations': {
+      'default': `Titles may not include release dates, track number, additional info (producers, single, etc), search terms, or artist info.`,
+    }
+  },
+
+  'filter11': {
+    'orchardDescription': `feat. and with must be properly formatted`,
+    'programmerDescription': `
+
+      If "Track Artist - Featuring" or "Release Artist - Featuring" are both empty, there is no error.
+      Extract any strings in the input fields in parens or square brackets with no text afterward. If there are no matching pairs or there is text after the pair, there is no error.
+      Split on word separators. If the first word is:
+
+      "feat." or "with" - case sensitive, there is no error.
+      a case-insensitive match for: with, featuring, feat (no terminating '.'), w/
+      the Spanish translation of "featuring" or "with"
+      the Brazilian Portuguese translation of "featuring" or "with"
+
+      report error.
+
+    `,
+    'userExplanation': `Formatting of "feat." and "with" must be lower case, in English, and in parentheses or brackets. See iTunes Store Music Style Guide 5.3.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `Formatting of "feat." and "with" must be lower case, in English, and in parentheses or brackets. See iTunes Store Music Style Guide 5.3.`,
+    }
   },
 };

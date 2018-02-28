@@ -1,4 +1,4 @@
-// Composer as artist
+// Additional information
 
 module.exports = function(row, idx, report) {
 
@@ -48,7 +48,7 @@ module.exports = function(row, idx, report) {
   if(!(language in patterns)) { return false; }
 
   const occurrence = {
-    'rowId': idx,
+    'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],
