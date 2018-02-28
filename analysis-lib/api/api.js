@@ -23,6 +23,7 @@ let filtersMeta = analysisLibModule.filtersMeta;
 router.get('/dataset/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
+  res.type('text/tab-separated-values');
 
   dbInterface.fetchTsvDataset(datasetId)
     .then(rows => res.send(rows));
@@ -152,6 +153,7 @@ router.get('/field-by-field/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let datasetSize = 0;
+  res.type('text/tab-separated-values');
 
   dbInterface
     .getDatasetSize(datasetId)
@@ -217,6 +219,7 @@ router.get('/field-by-field/:category/:datasetId.tsv', (req, res) => {
   let datasetId = req.params.datasetId ;
   let category = req.params.category ;
   let datasetSize = 0;
+  res.type('text/tab-separated-values');
 
   dbInterface
     .getDatasetSize(datasetId)
@@ -282,6 +285,7 @@ router.get('/row-by-row/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let datasetSize = 0;
+  res.type('text/tab-separated-values');
 
   dbInterface
     .getDatasetSize(datasetId)
@@ -344,6 +348,7 @@ router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
   let datasetId = req.params.datasetId ;
   let category = req.params.category ;
   let datasetSize = 0;
+  res.type('text/tab-separated-values');
 
   dbInterface
     .getDatasetSize(datasetId)
@@ -405,6 +410,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
 router.get('/error-by-error/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
+  res.type('text/tab-separated-values');
 
   dbInterface.fetchFieldByFieldReport(datasetId)
     .then(report => {
@@ -472,6 +478,7 @@ router.get('/error-by-error/:category/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   let category = req.params.category ;
+  res.type('text/tab-separated-values');
 
   dbInterface.fetchFieldByFieldReport(datasetId, category)
     .then(report => {
