@@ -2,21 +2,37 @@
 
 module.exports = function(row, idx, report) {
 
+  const removeDiacritics = require('../scripts/remove-diacritics');
+
   // retrieves filter description
-  let filterName = 'filter2';
-  let removeDiacritics = require('../scripts/remove-diacritics');
+  const filterName = 'filter2';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let releaseLanguage = row['release_meta_language'].trim().toLowerCase();
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
 
-  let fieldsRegExp = [
-    /^orchard_artist$/i,
-    /^(release_artist(s)?)(\_[A-Z]*)*$/i,
-    /^(track_artist(s)?)(\_[A-Z]*)*$/i,
+  const releaseLanguage = row['release_meta_language'].trim().toLowerCase();
+
+  const fields = [
+    'orchard_artist',
+    'release_artists_primary_artist',
+    'release_artists_featuring',
+    'release_artists_remixer',
+    'release_artists_composer',
+    'release_artists_orchestra',
+    'release_artists_ensemble',
+    'release_artists_conductor',
+    'track_artist',
+    'track_artist_featuring',
+    'track_artist_remixer',
+    'track_artist_composer',
+    'track_artist_orchestra',
+    'track_artist_ensemble',
+    'track_artist_conductor',
   ];
 
   // Common instruments RegExp
-  let instrumentsRegExp = {
-
+  const instrumentsRegExp = {
     'piano': {
       'english':      /(pian)(o|ist)?(s)?/i,
       'portuguese':   /(pian)(o|ista)?(s)?/i,
@@ -52,12 +68,10 @@ module.exports = function(row, idx, report) {
       'portuguese':   /(baix)(o|ista)?(s)?/i,
       'spanish':      /(baj)(o|ista)?(s)?/i
     },
-
   };
 
   // Non Latin languages unicode ranges
-  let languagesRegExp = {
-
+  const languagesRegExp = {
     'japanese': /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/,
     'chinese':  /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/,
     'hebrew':   /[\u0590-\u05FF]/,
@@ -65,14 +79,13 @@ module.exports = function(row, idx, report) {
     'greek':    /[\u0370-\u03FF]/,
     'russian':  /[\u0400-\u04FF]/,
     'thai':     /[\u0E00-\u0E7F]/
-
   };
 
   // Years only
-  let yearsRegExp = /^([12][0-9]{3})?\-?\/?([12][0-9]{3})?$/;
+  const yearsRegExp = /^([12][0-9]{3})?\-?\/?([12][0-9]{3})?$/;
 
   // Does not check valid dates, just the digits
-  let dateRegExp = [
+  const dateRegExp = [
     // dd/mm/YY
     /^[0-3]?[0-9].(([0-3]?[0-9])|(Jan|Mar|May|Jul|Aug|Oct|Dec)).(?:[0-9]{2})?[0-9]{2}$/i,
     // mm/dd/YY
@@ -81,90 +94,83 @@ module.exports = function(row, idx, report) {
     /^(?:[0-9]{2})?[0-9]{2}.(([0-3]?[0-9])|(Jan|Mar|May|Jul|Aug|Oct|Dec)).[0-3]?[0-9]$/
   ];
 
-  let parenthesisRegExp = /(\(.*\))|\(|\)/g;
+  const parenthesisRegExp = /(\(.*\))|\(|\)/g;
 
-  let occurrence = {
+  const occurrence = {
     'rowId': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
-  // If field is related to 'track artists'
-  Object.keys(row).forEach(field => {
+  fields.forEach(field => {
 
-    // forEach does not allow the use of break/continue
-    fieldsRegExp.forEach(fieldRegExp => {
+    let value = row[field];
 
-      // Field should be tested
-      if(fieldRegExp.test(field)) {
+    // Only tests if value is non-null
+    if(value) {
 
-        let value = row[field];
+      // Removes trailling whitespaces and diacritics
+      value = value.trim();
+      value = removeDiacritics(value);
 
-        // Only tests if value is non-null
-        if(value) {
+      // Start Tests
+      let match = false;
 
-          // Removes trailling whitespaces and diacritics
-          value = value.trim();
-          value = removeDiacritics(value);
+      // Test parenthesis
+      if(parenthesisRegExp.test(value)) { match = true; }
 
-          // Start Tests
-          let match = false;
+      // Test years
+      if(!match && yearsRegExp.test(value)) { match = true; }
 
-          // Test parenthesis
-          if(parenthesisRegExp.test(value)) { match = true; }
+      // Test for any date
+      if(!match) { dateRegExp.forEach(type => match = type.test(value)); }
 
-          // Test years
-          if(!match && yearsRegExp.test(value)) { match = true; }
+      // Test common instruments / roles
+      if(!match) {
 
-          // Test for any date
-          if(!match) { dateRegExp.forEach(type => match = type.test(value)); }
+        Object.keys(instrumentsRegExp).forEach(instrumentId => {
 
-          // Test common instruments / roles
-          if(!match) {
+          const instrument = instrumentsRegExp[instrumentId];
 
-            Object.keys(instrumentsRegExp).forEach(instrumentId => {
+          Object.keys(instrument).forEach(language => {
 
-              let instrument = instrumentsRegExp[instrumentId];
+            const instrumentRegExp = instrument[language];
+            if(instrumentRegExp.test(value)) { match = true; }
 
-              Object.keys(instrument).forEach(language => {
-
-                let instrumentRegExp = instrument[language];
-                if(instrumentRegExp.test(value)) { match = true; }
-
-              });
-            });
-
-          }
-
-          // Checks for translations
-          if(!match) {
-
-            Object.keys(languagesRegExp).forEach(language => {
-
-              // looks for translations
-              if(language !== releaseLanguage) {
-
-                if(languagesRegExp[language].test(value)) { match = true };
-
-              }
-
-            });
-
-          }
-
-          if(match) {
-
-            // Check for instrument / role
-            occurrence.field.push(field);
-            occurrence.value.push(row[field]);
-
-          }
-
-        }
+          });
+        });
 
       }
 
-    });
+      // Checks for translations
+      if(!match) {
+
+        Object.keys(languagesRegExp).forEach(language => {
+
+          // looks for translations
+          if(language !== releaseLanguage) {
+
+            if(languagesRegExp[language].test(value)) { match = true };
+
+          }
+
+        });
+
+      }
+
+      if(match) {
+
+        // Check for instrument / role
+        occurrence.field.push(field);
+        occurrence.value.push(row[field]);
+        occurrence.explanation_id.push(defaultExplanationId);
+        occurrence.error_type.push(defaultErrorType);
+
+      }
+
+    }
 
   });
 
