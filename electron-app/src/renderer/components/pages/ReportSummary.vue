@@ -23,10 +23,7 @@ include _mixins
                                         .report-summary__col
                                             .report-summary__head risk analysis
                                             .report-summary__text(:class="{'report-summary__text--red': status === 2}") Errors Per Row
-                                        .report-summary__label.report-summary__label--red
-                                          span(v-if="status === 1") Success
-                                          span(v-if="status === 2") Fail
-                                          span(v-if="status === 3") IN PROGRESS
+                                        report-summary-label(:status="status")
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{ time }}
@@ -60,7 +57,7 @@ include _mixins
                                                 span View the test criteria scores
                                         .report__view
                                             .report__view-title What is the sum of problems in each row?
-                                            router-link(:to="'/RowByRowReport'").report__view-link
+                                            router-link(:to="`/RowByRowReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
                                                 span View the input row scores
                                         .report__view
@@ -113,12 +110,14 @@ import {
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 
 export default {
   name: 'ReportSummary',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    ReportSummaryLabel
   },
   data () {
     return {
