@@ -44,33 +44,27 @@ module.exports = function(row, idx, report) {
     if(value) {
 
       value = removeDiacritics(value).trim().toLowerCase();
-      const parentheses = parenthesesModule.stripParentheses(value);
 
-      // matching parentheses
-      if(parenthesesModule.parenthesesAreBalanced(parentheses)) {
+      const lastChar = value[value.length - 1];
 
-        const lastChar = value[value.length - 1];
+      // checks if last char is parentheses
+      if(closeTokens.indexOf(lastChar) !== -1) {
 
-        // checks if last char is parentheses
-        if(closeTokens.indexOf(lastChar) !== -1) {
+        // Get values in parentheses
+        const parenthesesValue = parenthesesModule.getTextInBetween(value);
 
-          // Get values in parentheses
-          const parenthesesValue = parenthesesModule.getTextInBetween(value);
+        for(let i = 0; i < invalidStrings.length; i++) {
 
-          for(let i = 0; i < invalidStrings.length; i++) {
+          const regExp = invalidStrings[i];
 
-            const regExp = invalidStrings[i];
+          // Invalid string detected
+          if(regExp.test(parenthesesValue)) {
 
-            // Invalid string detected
-            if(regExp.test(parenthesesValue)) {
-
-              occurrence.field.push(field);
-              occurrence.value.push(row[field]);
-              occurrence.explanation_id.push(defaultExplanationId);
-              occurrence.error_type.push(defaultErrorType);
-              break;
-
-            }
+            occurrence.field.push(field);
+            occurrence.value.push(row[field]);
+            occurrence.explanation_id.push(defaultExplanationId);
+            occurrence.error_type.push(defaultErrorType);
+            break;
 
           }
 

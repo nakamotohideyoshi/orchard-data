@@ -292,4 +292,55 @@ describe(`should test ${filterId}`, () => {
 
   });
 
+  // multiple parentheses with invalid values
+  it('should not report - unmatched parentheses', () => {
+
+    const mock = mocks['unmatchedValidSingle'];
+
+    mock.forEach((row, idx) => {
+
+      const occurrence = filter(row, idx, report);
+      assert.equal(occurrence, false);
+
+    });
+
+  });
+  // multiple parentheses with invalid values
+  it('should not report - multiple unmatched parentheses', () => {
+
+    const mock = mocks['unmatchedValid'];
+
+    mock.forEach((row, idx) => {
+
+      const occurrence = filter(row, idx, report);
+      assert.equal(occurrence, false);
+
+    });
+
+  });
+
+  // multiple parentheses with invalid values
+  it('should report - multiple unmatched parentheses with invalid value', () => {
+
+    const mock = mocks['unmatchedInvalid'];
+
+    mock.forEach((row, idx) => {
+
+      const occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence.field, ['release_name']);
+
+      switch(idx) {
+
+        case 0:
+          assert.deepEqual(occurrence.value, ['this should fail (Album version) no information]']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
+
+      }
+
+    });
+
+  });
+
 });

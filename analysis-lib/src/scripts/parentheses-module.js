@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
 
   'stripParentheses':function(string) {
@@ -48,7 +50,7 @@ module.exports = {
     let parenthesesRegExp = /(\(|\{|\[)([^)]+)(\)|\]|\})/g;
     let match = string.match(parenthesesRegExp);
 
-    if(match) { return match[0]; }
+    if(match) { return match; }
     else return '';
 
   },
