@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import sinon from 'sinon'
 import moment from 'moment'
 import ReportSummary from '@/components/pages/ReportSummary'
+import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import {
   SUBMISSION
   /* Stubbing to pass lint, will work on it later
@@ -89,7 +90,6 @@ describe('ReportSummary.vue', () => {
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .apple-tab.is-active')
     const tab = wrapper.contains('.report-container.apple-tab.is-active')
 
-    expect(label.text().trim()).to.equal('Success')
     expect(time.text().trim()).to.equal(parsedTime.trim())
     expect(tabButton).to.equal(true)
     expect(tab).to.equal(true)
@@ -107,12 +107,15 @@ describe('ReportSummary.vue', () => {
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active')
     const tab = wrapper.contains('.report-container.custom-tab.is-active')
 
-    expect(label.text().trim()).to.equal('Success')
     expect(time.text().trim()).to.equal(parsedTime.trim())
     expect(fileName.text().trim()).to.equal(item.source.split('/')[2])
     expect(tabButton).to.equal(true)
     expect(tab).to.equal(true)
     expect(actions.fetchDataset.calledOnce).to.equal(true)
+  })
+
+  it('should have a `ReportSummaryLabel` component', () => {
+      expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
   })
 
   // TODO: Write test for the following cases:

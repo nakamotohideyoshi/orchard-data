@@ -8,8 +8,17 @@ const routerView = {
     render: h => h('div'),
 };
 
+const routerLink = {
+    name: 'router-link',
+    // can't use arrow function, otherwise the wrong context is set
+    render: function (h) {
+        return h('a', {}, this.$slots.default)
+    }
+};
+
 // register mock components
 Vue.component('router-view', routerView);
+Vue.component('router-link', routerLink);
 // TODO: Find a better way to register a dinamically rendered component
 // to prevent avoid (bad) karma warnings
 // Vue.component('router-link', ¿?¿?¿?);
