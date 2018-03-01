@@ -20,7 +20,7 @@ include _mixins
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head risk analysis
-                                            .report-summary__text.report-summary__text--red Errors Per Row
+                                            .report-summary__text.report-summary__text--red Count Per Error
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch
