@@ -19,7 +19,7 @@ include _mixins
                                     // summary
                                     .report-summary
                                         .report-summary__col
-                                            .report-summary__head risk analysis
+                                            .report-summary__head {{ active_report_category }}
                                             .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
@@ -150,6 +150,7 @@ include _mixins
 <script>
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ErrorByErrorReport',
@@ -157,6 +158,11 @@ export default {
     AppHeader,
     AppFooter
   },
+
+    computed: {
+        ...mapState(['active_report_category'])
+    },
+
   methods: {
   }
 }

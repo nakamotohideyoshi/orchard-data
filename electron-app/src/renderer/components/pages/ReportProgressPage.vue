@@ -17,9 +17,9 @@ include _mixins
                         
                                 .p-box.report
                                     .report__tabs.report__tabs--disabled(js-scrollbar)
-                                        a(href="#").report__tab.is-active Overall Risk Assessment
-                                        a(href="#").report__tab Apple & Itunes Guidelines
-                                        a(href="#").report__tab Custom Parameters
+                                        a(href="#").report__tab.is-active {{ categoryOverallText }}
+                                        a(href="#").report__tab {{ ITUNES_CATEGORY }}
+                                        a(href="#").report__tab {{ CUSTOM_CATEGORY }}
                                     
                                     // report blank
                                     .report-blank
@@ -35,6 +35,11 @@ include _mixins
 <script>
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import {
+    CUSTOM_CATEGORY,
+    ITUNES_CATEGORY,
+    OVERALL_CATEGORY
+} from '@/constants/report-category'
 
 export default {
   name: 'report-progress-page',
@@ -42,6 +47,15 @@ export default {
     AppHeader,
     AppFooter
   },
+
+  data () {
+      return {
+          categoryOverallText: OVERALL_CATEGORY,
+          categoryItunesText: ITUNES_CATEGORY,
+          categoryCustomText: CUSTOM_CATEGORY,
+      }
+  },
+
   methods: {
   }
 }
