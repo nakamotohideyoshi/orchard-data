@@ -19,9 +19,6 @@ include _mixins
                                 .icon.icon-arrow-back
                                 span back to report
                             .report-summary__col
-                                .report-summary__head batch id
-                                .report-summary__text {{id}}
-                            .report-summary__col
                                 .report-summary__head batch
                                 .report-summary__text(v-if="datasetMeta.length>0") {{moment(datasetMeta[0].time).format('MM-DD-YYYY. HH:mm')}}
                                     a(href="../../../../tests/data/test.tsv" download).report-summary__text
