@@ -11,11 +11,6 @@ include _mixins
                         .p-container__wrapper
                             .container.container--smaller
 
-                                // page back
-                                router-link(:to="'/submissions'").page-back
-                                    .icon.icon-arrow-back
-                                    span Report Summary
-
                                 // report box
                                 .p-box.report
                                     // Summary
