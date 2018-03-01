@@ -41,10 +41,6 @@ include _mixins
                                                 td {{data.criteria}}
                                                 td {{getFilter(data.criteria)}}
 
-                                // more btn
-                                .p-container__more
-                                    a(href="#" js-load-more).btn.btn-more
-                                        span Load more
                                 modal(name="hello-world" height="auto" @before-open="beforeOpen").modal
                                     button.close-button(v-on:click="hide()")
                                         +icon('ico-close')

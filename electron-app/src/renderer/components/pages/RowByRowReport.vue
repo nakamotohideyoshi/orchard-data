@@ -141,9 +141,6 @@ include _mixins
                                                 td 0
                                                 td 25
                                                 td Warning
-                                .p-container__more
-                                    a(href="#" js-load-more).btn.btn-more
-                                        span Load more
 
                 //- include components/_modal
         block footer

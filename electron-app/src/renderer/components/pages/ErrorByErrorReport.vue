@@ -145,11 +145,6 @@ include _mixins
                                                 td run, guns, jewels, rap
                                                 td 001
 
-                                // more btn
-                                .p-container__more
-                                    a(href="#" js-load-more).btn.btn-more
-                                        span Load more
-
                 //- include components/_modal
         block footer
             AppFooter
