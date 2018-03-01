@@ -10,7 +10,7 @@ const filter = 'filter' + argv['filter'];
 const reportModule = require('../src/scripts/report-tool');
 const report = new reportModule();
 report.init();
-report.addFilter('filter7');
+report.addFilter(filter);
 
 const mocks = require(`../mocks/${filter}`);
 const mock = mocks[argv['sample']];
