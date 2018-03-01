@@ -103,7 +103,7 @@ router.get('/run-filter/:filterId/:datasetId', (req, res) => {
     .then(() => report.calcBatchResultsReport())
     .then(() => dbInterface.getDatasetSize(datasetId))
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => {
@@ -158,7 +158,7 @@ router.get('/field-by-field/:datasetId.tsv', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
@@ -194,7 +194,7 @@ router.get('/field-by-field/:datasetId', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
@@ -224,7 +224,7 @@ router.get('/field-by-field/:category/:datasetId.tsv', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
@@ -261,7 +261,7 @@ router.get('/field-by-field/:category/:datasetId', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
@@ -290,7 +290,7 @@ router.get('/row-by-row/:datasetId.tsv', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
@@ -323,7 +323,7 @@ router.get('/row-by-row/:datasetId', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId))
@@ -353,7 +353,7 @@ router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))
@@ -387,7 +387,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
   dbInterface
     .getDatasetSize(datasetId)
     .then(result => {
-      datasetSize = result[0]['COUNT(*)'];
+      datasetSize = result;
       return Promise.resolve(datasetSize);
     })
     .then(() => dbInterface.fetchFieldByFieldReport(datasetId, category))

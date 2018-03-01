@@ -155,6 +155,10 @@ module.exports = {
         }
       },
 
+      'tsv_logs_table': {
+        'name': 'tsv_logs_table'
+      },
+
       'dataset_meta': {
         'name': 'dataset_meta'
       },

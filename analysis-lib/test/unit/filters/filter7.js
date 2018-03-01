@@ -6,14 +6,14 @@ const validator = require('is-my-json-valid');
 
 const filterId = 'filter7';
 
-const mocks = require(`../../mocks/${filterId}`);
-const filter = require(`../../src/filters/${filterId}`);
-const filterMeta = require('../../src/filters/filters-meta')[filterId];
+const mocks = require(`../../../mocks/filters/${filterId}`);
+const filter = require(`../../../src/filters/${filterId}`);
+const filterMeta = require('../../../src/filters/filters-meta')[filterId];
 
 const defaultErrorType = filterMeta['type'];
 const defaultExplanationId = 'default';
 
-const reportModule = require('../../src/scripts/report-tool');
+const reportModule = require('../../../src/scripts/report-tool');
 
 describe(`should test ${filterId}`, () => {
 
