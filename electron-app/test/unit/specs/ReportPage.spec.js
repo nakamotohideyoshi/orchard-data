@@ -118,6 +118,16 @@ describe('ReportSummary.vue', () => {
       expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
   })
 
+  it('should have proper text for tabs', () => {
+      const overall = wrapper.find('.report__tab.overall-tab ')[0]
+      const itunes = wrapper.find('.report__tab.apple-tab ')[0]
+      const custom = wrapper.find('.report__tab.custom-tab ')[0]
+
+      expect(overall.text().trim()).to.equal('Overall Risk Assessment')
+      expect(itunes.text().trim()).to.equal('iTunes Style Guide')
+      expect(custom.text().trim()).to.equal('Custom Parameters')
+  })
+
   // TODO: Write test for the following cases:
   //       * Failure on upload
   //       * Malformed data in uploaded file
