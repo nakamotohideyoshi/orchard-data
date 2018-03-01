@@ -4,159 +4,162 @@ const _ = require('lodash');
 const path = require('path');
 const validator = require('is-my-json-valid');
 
-const mocks = require('../../mocks/filter9');
-const filter = require('../../src/filters/filter9');
+const filterId = 'filter9';
 
-const filtersMeta = require('../../src/filters/filters-meta');
+const mocks = require(`../../mocks/${filterId}`);
+
+const filter = require(`../../src/filters/${filterId}`);
+const filterMeta = require('../../src/filters/filters-meta')[filterId];
+
+const defaultErrorType = filterMeta['type'];
+const defaultExplanationId = 'default';
+
 const reportModule = require('../../src/scripts/report-tool');
 
-describe('should test filter 9', () => {
+describe(`should test ${filterId}`, () => {
 
   let report = new reportModule();
   report.init();
-  report.addFilter('filter9');
+  report.addFilter(filterId);
+
+  it('validates occurrences fields', () => {
+
+    const mock = mocks['invalid'];
+
+    mock.forEach((row, idx) => {
+
+      let occurrence = filter(row, idx, report);
+
+      assert.equal(_.isObject(occurrence), true);
+      assert.equal(!_.isEmpty(occurrence.field), true);
+      assert.equal(!_.isEmpty(occurrence.value), true);
+      assert.equal('explanation_id' in occurrence, true);
+      assert.equal('error_type' in occurrence, true);
+      assert.equal(occurrence.value.length, occurrence.field.length);
+      assert.equal(occurrence.value.length, occurrence.explanation_id.length);
+      assert.equal(occurrence.value.length, occurrence.error_type.length);
+
+    });
+
+  });
 
   // Valid
   it('should not report - flagged type does not occur', () => {
 
-    try {
+    const mock = mocks['valid'];
 
-      const mock = mocks['valid'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      let occurrence = filter(row, idx, report);
 
-        let occurrence = filter(row, idx, report);
+      switch(idx) {
 
-        switch(idx) {
+        case 0:
+          assert.equal(occurrence, false);
+        break;
 
-          case 0:
-            assert.equal(occurrence, false);
-            break;
+      }
 
-        }
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // Valid
   it('should not report - flagged type occurs but genre is valid', () => {
 
-    try {
+    const mock = mocks['validGenre'];
 
-      const mock = mocks['validGenre'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      let occurrence = filter(row, idx, report);
 
-        let occurrence = filter(row, idx, report);
+      switch(idx) {
 
-        switch(idx) {
+        case 0:
+          assert.equal(occurrence, false);
+        break;
 
-          case 0:
-            assert.equal(occurrence, false);
-            break;
+      }
 
-        }
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // Invalid value inside brackets
   it('should report - flagged type occurs separated by periods', () => {
 
-    try {
+    const mock = mocks['invalidPeriod'];
 
-      const mock = mocks['invalidPeriod'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      let occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence.field, ['release_name']);
 
-        let occurrence = filter(row, idx, report);
+      switch(idx) {
 
-        // same number of fields and values
-        assert.equal(!_.isEmpty(occurrence.field), true);
-        assert.equal(!_.isEmpty(occurrence.value), true);
-        assert.equal(occurrence.field.length, occurrence.value.length);
+        case 0:
+          assert.deepEqual(occurrence.value, ['Space Jam (O.S.T.)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        // Only field being tested
-        assert.equal(occurrence.field[0], 'release_name');
+      }
 
-        switch(idx) {
-
-          case 0:
-            assert.equal(occurrence.value, 'Space Jam (O.S.T.)');
-            break;
-
-        }
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // invalidScore
   it('should report - flagged type occurs on flagged genres', () => {
 
-    try {
+    const mock = mocks['invalid'];
 
-      const mock = mocks['invalid'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      let occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence.field, ['release_name']);
 
-        let occurrence = filter(row, idx, report);
+      switch(occurrence.rowId) {
 
-        // same number of fields and values
-        assert.equal(!_.isEmpty(occurrence.field), true);
-        assert.equal(!_.isEmpty(occurrence.value), true);
-        assert.equal(occurrence.field.length, occurrence.value.length);
+        case 0:
+          assert.deepEqual(occurrence.value, ['Space Jam (OST)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        // Only field being tested
-        assert.equal(occurrence.field[0], 'release_name');
+        case 1:
+          assert.deepEqual(occurrence.value, ['Space Jam (OST)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        switch(occurrence.rowId) {
+        case 2:
+          assert.deepEqual(occurrence.value, ['Space Jam (OST)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 0:
-            assert.equal(occurrence.value[0], 'Space Jam (OST)');
-            break;
+        case 3:
+          assert.deepEqual(occurrence.value, ['Space Jam (OST)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 1:
-            assert.equal(occurrence.value[0], 'Space Jam (OST)');
-            break;
+        case 4:
+          assert.deepEqual(occurrence.value, ['Space Jam (OST)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 2:
-            assert.equal(occurrence.value[0], 'Space Jam (OST)');
-            break;
+        case 5:
+          assert.deepEqual(occurrence.value, ['Space Jam (OST)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 3:
-            assert.equal(occurrence.value[0], 'Space Jam (OST)');
-            break;
+      }
 
-          case 4:
-            assert.equal(occurrence.value[0], 'Space Jam (OST)');
-            break;
-
-          case 5:
-            assert.equal(occurrence.value[0], 'Space Jam (OST)');
-            break;
-
-        }
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 

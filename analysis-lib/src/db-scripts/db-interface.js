@@ -28,66 +28,78 @@ module.exports = function() {
     console.log("\n***** Saving TSV *****\n");
 
     // The table to add the TSV Files
-    let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
-    let fields_dict = orchardTable['columns_dict'];
+    const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
+    const fields_dict = orchardTable['columns_dict'];
     let tsvFile;
+    const warnings = [];
 
-    let dbPromise = readTsv(inputPath)
+    const dbPromise = readTsv(inputPath)
       .then(file => tsvFile = file)
       .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.INPROGRESS))
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
 
         // Raw Fields
-        let tsvFields = Object.keys(tsvFile[0]);
-        let numberOfFields = tsvFields.length;
+        const tsvFields = Object.keys(tsvFile[0]);
+        const numberOfFields = tsvFields.length;
 
         // Filters are maped to datavase columns
-        let fields = ['dataset_id'];
-        Object.keys(tsvFile[0]).forEach(key => fields.push(fields_dict[key]));
+        const fields = ['dataset_id'];
 
-        // Checks if TSV has missing or extra fields
-        console.log("***** Checking Number of Fields *****\n");
-        if(numberOfFields !== 52) {
+        Object.keys(tsvFile[0]).forEach(key => {
 
-          console.log("Error when trying to upload TSV\n");
+          if(key in fields_dict) { fields.push(fields_dict[key]); }
+          else { warnings.push(`Field "${key}" does not exist on ${orchardTable.name}'s columns_dict`); }
 
-          return Promise.reject({
-            "thrower": "saveTsvIntoDB",
-            "row_id": -1,
-            "error": new Error(`Invalid number of fields: ${numberOfFields}`)
-          });
+        });
 
-        }
+        /* We'll let this commented for now. TSV files can have extra fields
+         *
+          // Checks if TSV has missing or extra fields
+          console.log("***** Checking Number of Fields *****\n");
+          if(numberOfFields !== 52) {
 
-        // Checks if some field is undefined
-        console.log("***** Checking for undefined fields *****\n");
-        for(let i = 0; i < fields.length; i++) {
-
-          let field = fields[i];
-
-          if(typeof(field) === 'undefined') {
+            console.log("Error when trying to upload TSV\n");
 
             return Promise.reject({
               "thrower": "saveTsvIntoDB",
               "row_id": -1,
-              "error": new Error(`Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`)
+              "error": new Error(`Invalid number of fields: ${numberOfFields}`)
             });
 
           }
 
-        }
+          // Checks if some field is undefined
+          console.log("***** Checking for undefined fields *****\n");
+          for(let i = 0; i < fields.length; i++) {
+
+            let field = fields[i];
+
+            if(typeof(field) === 'undefined') {
+
+              return Promise.reject({
+                "thrower": "saveTsvIntoDB",
+                "row_id": -1,
+                "error": new Error(`Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`)
+              });
+
+            }
+
+          }
+        */
 
         // If it has made this far, then it's ok
         console.log("***** Reading TSV File *****\n");
 
         return Promise.map(tsvFile, (row, idx) => {
 
-          let values = [datasetId];
-          Object.keys(row).forEach(key => values.push(row[key]));
+          const values = [datasetId];
+          tsvFields.forEach(key => {
+            if(key in fields_dict){ values.push(row[key]) }
+          });
 
-          let placeholders = values.map((val) => '(?)').join(',');
-          let stmt = `INSERT INTO ${orchardTable.name}(${fields}) VALUES (${placeholders})`;
+          const placeholders = values.map((val) => '(?)').join(',');
+          const stmt = `INSERT INTO ${orchardTable.name}(${fields}) VALUES (${placeholders})`;
 
           return db.run(stmt, values)
             .then((result) => {
@@ -107,7 +119,17 @@ module.exports = function() {
 
       })
       .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.OK))
-      .then(() => console.log("***** Finished *****"));
+      .then(() => {
+        console.log("***** Finished *****");
+        if(warnings.length > 0) {
+
+          warnings.length === 1 ?
+            console.log(`***** 1 warning: *****`) :
+            console.log(`***** ${warnings.length} warnings: *****`);
+
+          warnings.forEach(warning => console.log(warning));
+        }
+      });
 
     return dbPromise;
 

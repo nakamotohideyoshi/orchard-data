@@ -2,13 +2,18 @@
 
 module.exports = function(row, idx, report) {
 
-  let removeDiacritics = require('../scripts/remove-diacritics');
-  let parenthesesModule = require('../scripts/parentheses-module');
+  const removeDiacritics = require('../scripts/remove-diacritics');
+  const parenthesesModule = require('../scripts/parentheses-module');
 
-  let filterName = 'filter7';
-  let fields = ['release_name', 'track_name'];
+  const filterName = 'filter7';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let invalidStrings = [
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
+
+  const fields = ['release_name', 'track_name'];
+
+  const invalidStrings = [
     /Album Version/gi,
     /Original Version/gi,
     /Previously Unreleased/gi,
@@ -20,14 +25,16 @@ module.exports = function(row, idx, report) {
     /Mastered for iTunes/gi
   ];
 
-  let occurrence = {
-    'rowId': idx,
+  const occurrence = {
+    'row_id': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
-  let openTokens = "({[";
-  let closeTokens = ")]}";
+  const openTokens = "({[";
+  const closeTokens = ")]}";
 
   fields.forEach(field => {
 
@@ -37,28 +44,30 @@ module.exports = function(row, idx, report) {
     if(value) {
 
       value = removeDiacritics(value).trim().toLowerCase();
-      let parentheses = parenthesesModule.stripParentheses(value);
+      const parentheses = parenthesesModule.stripParentheses(value);
 
       // matching parentheses
       if(parenthesesModule.parenthesesAreBalanced(parentheses)) {
 
-        let lastChar = value[value.length - 1];
+        const lastChar = value[value.length - 1];
 
         // checks if last char is parentheses
         if(closeTokens.indexOf(lastChar) !== -1) {
 
           // Get values in parentheses
-          let parenthesesValue = parenthesesModule.getTextInBetween(value);
+          const parenthesesValue = parenthesesModule.getTextInBetween(value);
 
           for(let i = 0; i < invalidStrings.length; i++) {
 
-            let regExp = invalidStrings[i];
+            const regExp = invalidStrings[i];
 
             // Invalid string detected
             if(regExp.test(parenthesesValue)) {
 
               occurrence.field.push(field);
               occurrence.value.push(row[field]);
+              occurrence.explanation_id.push(defaultExplanationId);
+              occurrence.error_type.push(defaultErrorType);
               break;
 
             }

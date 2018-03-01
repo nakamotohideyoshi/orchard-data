@@ -4,268 +4,291 @@ const _ = require('lodash');
 const path = require('path');
 const validator = require('is-my-json-valid');
 
-const mocks = require('../../mocks/filter7');
-const filter = require('../../src/filters/filter7');
+const filterId = 'filter7';
 
-const filtersMeta = require('../../src/filters/filters-meta');
+const mocks = require(`../../mocks/${filterId}`);
+const filter = require(`../../src/filters/${filterId}`);
+const filterMeta = require('../../src/filters/filters-meta')[filterId];
+
+const defaultErrorType = filterMeta['type'];
+const defaultExplanationId = 'default';
+
 const reportModule = require('../../src/scripts/report-tool');
 
-describe('should test filter 7', () => {
+describe(`should test ${filterId}`, () => {
 
-  let report = new reportModule();
+  const report = new reportModule();
   report.init();
-  report.addFilter('filter7');
+  report.addFilter(filterId);
+
+  it('validates occurrences fields', () => {
+
+    const mock = mocks['invalidRelease'];
+
+    mock.forEach((row, idx) => {
+
+      const occurrence = filter(row, idx, report);
+
+      assert.deepEqual(_.isObject(occurrence), true);
+      assert.deepEqual(!_.isEmpty(occurrence.field), true);
+      assert.deepEqual(!_.isEmpty(occurrence.value), true);
+      assert.deepEqual('explanation_id' in occurrence, true);
+      assert.deepEqual('error_type' in occurrence, true);
+      assert.deepEqual(occurrence.value.length, occurrence.field.length);
+      assert.deepEqual(occurrence.value.length, occurrence.explanation_id.length);
+      assert.deepEqual(occurrence.value.length, occurrence.error_type.length);
+
+    });
+
+  });
 
   // name after parentheses
   it('should not report - value after parenthesis', () => {
 
-    try {
+    const mock = mocks['nameAfterParenthesis'];
+    const occurrence = filter(mock[0], 0, report);
 
-      const mock = mocks['nameAfterParenthesis'];
-      let occurrence = filter(mock[0], 0, report);
+    mock.forEach((row, idx) => {
 
-      assert.equal(occurrence, false);
+      const occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence, false);
 
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // invalid releases
   it('should report - invalid strings occur on release names', () => {
 
-    try {
+    const mock = mocks['invalidRelease'];
 
-      const mock = mocks['invalidRelease'];
-      let occurrences = [];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => occurrences.push(filter(mock[0], 0, report)));
+      const occurrence = filter(row, idx, report);
 
-      assert.equal(_.isObject(occurrences), true);
+      switch(idx) {
 
-      occurrences.forEach(occurrence => {
+        case 0:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Album Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        // same number of fields and values
-        assert.equal(!_.isEmpty(occurrence.field), true);
-        assert.equal(!_.isEmpty(occurrence.value), true);
-        assert.equal(occurrence.field.length, occurrence.value.length);
+        case 1:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Original Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        assert.equal(occurrence.field[0], 'release_name');
+        case 2:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Previously Unreleased)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        switch(occurrence.rowId) {
+        case 3:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Reissue)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 0:
-            assert.equal(occurrence.value[0], 'This Should Fail (Album Version)');
-            break;
+        case 4:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Original Mix)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 1:
-            assert.equal(occurrence.value[0], 'This Should Fail (Original Version)');
-            break;
+        case 5:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (iTunes LP Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 2:
-            assert.equal(occurrence.value[0], 'This Should Fail (Previously Unreleased)');
-            break;
+        case 6:
+          assert.deepEqual(occurrence.field, ['release_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Clean Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 3:
-            assert.equal(occurrence.value[0], 'This Should Fail (Reissue)');
-            break;
+        case 7:
+          assert.deepEqual(occurrence.field, ['release_name', 'track_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Explicit Version)', 'This Should Fail (Album Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
+        break;
 
-          case 4:
-            assert.equal(occurrence.value[0], 'This Should Fail (Original Mix)');
-            break;
+        case 8:
+          assert.deepEqual(occurrence.field, ['release_name', 'track_name']);
+          assert.deepEqual(occurrence.value, ['This Should Fail (Mastered for iTunes)', 'This Should Fail (Original Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
+        break;
 
-          case 5:
-            assert.equal(occurrence.value[0], 'This Should Fail (iTunes LP Version)');
-            break;
+      }
 
-          case 6:
-            assert.equal(occurrence.value[0], 'This Should Fail (Clean Version)');
-            break;
-
-          case 7:
-            assert.equal(occurrence.value[0], 'This Should Fail (Explicit Version)');
-            break;
-
-          case 8:
-            assert.equal(occurrence.value[0], 'This Should Fail (Mastered for iTunes)');
-            break;
-
-        }
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // invalid tracks
   it('should report - invalid strings occur on track names', () => {
 
-    try {
+    const mock = mocks['invalidTracks'];
 
-      const mock = mocks['invalidTracks'];
-      let occurrences = [];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => occurrences.push(filter(mock[0], 0, report)));
+      const occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence.field, ['track_name']);
 
-      assert.equal(_.isObject(occurrences), true);
+      switch(occurrence.rowId) {
 
-      occurrences.forEach(occurrence => {
+        case 0:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Album Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        // same number of fields and values
-        assert.equal(!_.isEmpty(occurrence.field), true);
-        assert.equal(!_.isEmpty(occurrence.value), true);
-        assert.equal(occurrence.field.length, occurrence.value.length);
+        case 1:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Original Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        assert.equal(occurrence.field[0], 'track_name');
+        case 2:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Previously Unreleased)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        switch(occurrence.rowId) {
+        case 3:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Reissue)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 0:
-            assert.equal(occurrence.value[0], 'This Should Fail (Album Version)');
-            break;
+        case 4:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Original Mix)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 1:
-            assert.equal(occurrence.value[0], 'This Should Fail (Original Version)');
-            break;
+        case 5:
+          assert.deepEqual(occurrence.value, ['This Should Fail (iTunes LP Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 2:
-            assert.equal(occurrence.value[0], 'This Should Fail (Previously Unreleased)');
-            break;
+        case 6:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Clean Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 3:
-            assert.equal(occurrence.value[0], 'This Should Fail (Reissue)');
-            break;
+        case 7:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Explicit Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 4:
-            assert.equal(occurrence.value[0], 'This Should Fail (Original Mix)');
-            break;
+        case 8:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Mastered for iTunes)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 5:
-            assert.equal(occurrence.value[0], 'This Should Fail (iTunes LP Version)');
-            break;
+      }
 
-          case 6:
-            assert.equal(occurrence.value[0], 'This Should Fail (Clean Version)');
-            break;
-
-          case 7:
-            assert.equal(occurrence.value[0], 'This Should Fail (Explicit Version)');
-            break;
-
-          case 8:
-            assert.equal(occurrence.value[0], 'This Should Fail (Mastered for iTunes)');
-            break;
-
-        }
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // multiple errors on row
   it('should report - invalid strings occur on release and track names', () => {
 
-    try {
+    const mock = mocks['multipleErrors'];
 
-      const mock = mocks['multipleErrors'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      const occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence.field, ['release_name','track_name']);
 
-        occurrence = filter(row, idx, report);
+      switch(idx) {
 
-        assert.equal(_.isObject(occurrence), true);
+        case 0:
+          assert.deepEqual(occurrence.value,
+            ["This Should Fail (Album Version)","This Should Fail (Previously Unreleased)"]);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
+          break;
 
-        // same number of fields and values
-        assert.equal(!_.isEmpty(occurrence.field), true);
-        assert.equal(!_.isEmpty(occurrence.value), true);
-        assert.equal(occurrence.field.length, occurrence.value.length);
+        case 1:
+          assert.deepEqual(occurrence.value,
+            ["This Should Fail (Explicit Version)","This Should Fail (Album Version)"]);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
+          break;
 
-        assert.deepEqual(occurrence.field, ['release_name','track_name']);
+        case 2:
+          assert.deepEqual(occurrence.value,
+            ["This Should Fail (Mastered for iTunes)","This Should Fail (Original Version)"]);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType]);
+          break;
 
-        switch(idx) {
+      }
 
-          case 0:
-            assert.deepEqual(occurrence.value,
-              ["This Should Fail (Album Version)","This Should Fail (Previously Unreleased)"]);
-            break;
-
-          case 1:
-            assert.deepEqual(occurrence.value,
-              ["This Should Fail (Explicit Version)","This Should Fail (Album Version)"]);
-            break;
-
-          case 2:
-            assert.deepEqual(occurrence.value,
-              ["This Should Fail (Mastered for iTunes)","This Should Fail (Original Version)"]);
-
-        }
-
-      });
-
-    }
-    catch(err) { throw err; }
+    });
 
   });
 
   // multiple parenthesis
   it(`should report - multiple parentheses occur on a field with invalid values`, () => {
 
-    try {
+    const mock = mocks['multipleParentheses'];
 
-      const mock = mocks['multipleParentheses'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      const occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence.field, ['release_name']);
 
-        occurrence = filter(row, idx, report);
+      switch(idx) {
 
-        assert.equal(occurrence.field, 'release_name');
+        case 0:
+          assert.deepEqual(occurrence.value, ['This Should Fail (Album Version) [Original Version]']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-        switch(idx) {
+        case 1:
+          assert.deepEqual(occurrence.value, ['This Should Fail [Original Version] (Album Version)']);
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
+          assert.deepEqual(occurrence.error_type, [defaultErrorType]);
+        break;
 
-          case 0:
-            assert.equal(occurrence.value, 'This Should Fail (Album Version) [Original Version]');
-            break;
+      }
 
-          case 1:
-            assert.equal(occurrence.value, 'This Should Fail [Original Version] (Album Version)');
-            break;
-
-        }
-
-      });
-
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 
   // multiple parentheses with invalid values
   it('should not report - multiple parentheses occur on a field with valid values', () => {
 
-    try {
+    const mock = mocks['multipleParentheses2'];
 
-      const mock = mocks['multipleParentheses2'];
+    mock.forEach((row, idx) => {
 
-      mock.forEach((row, idx) => {
+      const occurrence = filter(row, idx, report);
+      assert.deepEqual(occurrence, false);
 
-        occurrence = filter(row, idx, report);
-        assert.equal(occurrence, false);
-
-      });
-
-    }
-
-    catch(err) { throw err; }
+    });
 
   });
 

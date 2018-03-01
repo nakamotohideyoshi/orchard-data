@@ -26,7 +26,11 @@ IO.readTsv(inputPath)
     file.forEach(row => {
 
       let parsedRow = {};
-      Object.keys(row).forEach(key => parsedRow[fieldsDict[key]] = row[key]);
+
+      Object.keys(row).forEach(key => {
+        if(key in fieldsDict) { parsedRow[fieldsDict[key]] = row[key]; }
+      });
+
       parsedFile.push(parsedRow);
 
     });

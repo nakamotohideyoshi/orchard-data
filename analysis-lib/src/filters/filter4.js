@@ -2,13 +2,18 @@
 
 module.exports = function(row, idx, report) {
 
+  const removeDiacritics = require('../scripts/remove-diacritics');
+
   // retrieves filter description
-  let filterName = 'filter4';
-  let removeDiacritics = require('../scripts/remove-diacritics');
+  const filterName = 'filter4';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let releaseLanguage = row['release_meta_language'].trim().toLowerCase();
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
 
-  let fields = [
+  const releaseLanguage = row['release_meta_language'].trim().toLowerCase();
+
+  const fields = [
     'release_artists_primary_artist',
     'release_artists_featuring',
     'release_artists_remixer',
@@ -21,10 +26,12 @@ module.exports = function(row, idx, report) {
     'track_artist_conductor'
   ];
 
-  let occurrence = {
-    'rowId': idx,
+  const occurrence = {
+    'row_id': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
   // If field is related to 'track artists'
@@ -43,13 +50,13 @@ module.exports = function(row, idx, report) {
         value = removeDiacritics(value);
 
         // No Commas
-        if(value.split(",").length === 1) { return; }
+        if(value.split(",").length === 1) { return false; }
 
         // More than one comma
-        if(value.split(",").length > 2) { return; }
+        if(value.split(",").length > 2) { return false; }
 
         // More than three words
-        if(value.split(" ").length > 2) { return; }
+        if(value.split(" ").length > 2) { return false; }
 
         // Test Valid words
         if(releaseLanguage === 'english') {
@@ -69,6 +76,8 @@ module.exports = function(row, idx, report) {
         // if value has made it this far, report as an occurrence
         occurrence.field.push(field);
         occurrence.value.push(row[field]);
+        occurrence.explanation_id.push(defaultExplanationId);
+        occurrence.error_type.push(defaultErrorType);
 
       }
 

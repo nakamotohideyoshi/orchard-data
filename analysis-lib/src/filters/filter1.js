@@ -2,30 +2,37 @@
 
 module.exports = function(row, idx, report) {
 
-  // retrieves filter description
-  let filterName = 'filter1';
-  let removeDiacritics = require('../scripts/remove-diacritics');
+  const removeDiacritics = require('../scripts/remove-diacritics');
 
-  let fields = ['track_artist', 'track_artist_featuring'];
-  let language = row['release_meta_language'].trim().toLowerCase();
+  // retrieves filter description
+  const filterName = 'filter1';
+  const filterMeta = require('./filters-meta')[filterName];
+
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
+
+  const fields = ['track_artist', 'track_artist_featuring'];
+  const language = row['release_meta_language'].trim().toLowerCase();
 
   // Captures invalid field values
-  let invalidStrings = {
+  const invalidStrings = {
     'abbreviations':          /^v\/?\.?a\.?$/i,
-    'english':                /^(vario)u?(s)(\,?\.? ?(artist)s?)?$/i,
-    'portuguese':             /^(varios)(\-?\,?\.? ?(interpretes)?)?$/i,
-    'spanish':                /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i
+    'english':                [/^(vario)u?(s)(\,?\.? ?(artist)s?)?$/i],
+    'portuguese':             [/^(varios)(\-?\,?\.? ?(interpretes)?)?$/i,
+                               /^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i],
+    'spanish':                [/^(varios)(\-?\,?\.? ?(artista)(s)?)?$/i]
   };
 
   // language not supported
   if(!(language in invalidStrings)) { return false; }
 
-  let occurrence = {
-    'rowId': idx,
+  const occurrence = {
+    'row_id': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
-
 
   // If field is related to 'track artists'
   fields.forEach(field => {
@@ -35,18 +42,40 @@ module.exports = function(row, idx, report) {
     // Only tests if value is non-null
     if(value) {
 
-      let langRegExp = invalidStrings[language];
-      let abbrRegExp = invalidStrings["abbreviations"];
+      const langRegexes = invalidStrings[language];
+      const abbrRegExp = invalidStrings["abbreviations"];
 
       // Removes diacritics and removes trimming whitespaces
       value = value.trim().toLowerCase();
       value = removeDiacritics(value);
 
-      // error condition is met
-      if((langRegExp && langRegExp.test(value)) || (abbrRegExp && abbrRegExp.test(value))) {
+      // Abbreviation found
+      if(abbrRegExp.test(value)) {
 
         occurrence.field.push(field);
         occurrence.value.push(row[field]);
+        occurrence.explanation_id.push('abbreviation');
+        occurrence.error_type.push(defaultErrorType);
+
+      }
+
+      for(let i = 0; i < langRegexes.length; i++) {
+
+        const langRegExp = langRegexes[i];
+
+        // error condition is met
+        if(langRegExp.test(value)) {
+
+          occurrence.field.push(field);
+          occurrence.value.push(row[field]);
+          occurrence.explanation_id.push(defaultExplanationId);
+          occurrence.error_type.push(defaultErrorType);
+
+          // regexes are different. if there is a match, there's no need
+          // to test others
+          break;
+
+        }
 
       }
 

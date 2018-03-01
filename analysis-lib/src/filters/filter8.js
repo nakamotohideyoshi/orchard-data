@@ -1,13 +1,17 @@
-// Composer as artist
+// filter: Soundtracks and scores must include version information in the album title
 
 module.exports = function(row, idx, report) {
 
-  let removeDiacritics = require('../scripts/remove-diacritics');
-  let parenthesesModule = require('../scripts/parentheses-module');
+  const removeDiacritics = require('../scripts/remove-diacritics');
+  const parenthesesModule = require('../scripts/parentheses-module');
 
-  let filterName = 'filter8';
+  const filterName = 'filter8';
+  const filterMeta = require('./filters-meta')[filterName];
 
-  let field = 'release_name';
+  const defaultErrorType = filterMeta['type'];
+  const defaultExplanationId = 'default';
+
+  const field = 'release_name';
   let value = row[field];
   value = removeDiacritics(value).trim().toLowerCase();
 
@@ -24,7 +28,7 @@ module.exports = function(row, idx, report) {
   // nothing to be tested or genre is not soundtrack or not related to score
   if(!genre || (genre !== 'soundtrack' && !/Score/gi.test(genre))) { return false; }
 
-  let patterns = {
+  const patterns = {
     'english': [
       /Soundtrack/gi,
       /Original Score/gi,
@@ -41,26 +45,30 @@ module.exports = function(row, idx, report) {
   // language not supported
   if(!language in patterns) { return false; }
 
-  let occurrence = {
-    'rowId': idx,
+  const occurrence = {
+    'row_id': idx,
     'field': [],
-    'value': []
+    'value': [],
+    'explanation_id': [],
+    'error_type': [],
   };
 
-  let parensStr = parenthesesModule.stripParentheses(value);
+  const parensStr = parenthesesModule.stripParentheses(value);
 
   // No parentheses on release name or parentheses are not normalized
   if(parensStr.length === 0 || !parenthesesModule.parenthesesAreBalanced(parensStr)) {
 
     occurrence.field.push(field);
     occurrence.value.push(row[field]);
+    occurrence.explanation_id.push(defaultExplanationId);
+    occurrence.error_type.push(defaultErrorType);
 
   }
 
   else {
 
     // retrieves value inside parentheses
-    let parenthesesValue = parenthesesModule.getTextInBetween(value);
+    const parenthesesValue = parenthesesModule.getTextInBetween(value);
 
     // tests each regex
     let match = false;
@@ -75,6 +83,8 @@ module.exports = function(row, idx, report) {
 
       occurrence.field.push(field);
       occurrence.value.push(row[field]);
+      occurrence.explanation_id.push(defaultExplanationId);
+      occurrence.error_type.push(defaultErrorType);
 
     }
 

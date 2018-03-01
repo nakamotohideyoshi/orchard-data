@@ -51,22 +51,26 @@ module.exports = function() {
     let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     let filterOccurrences = this.filters[filter]['occurs_on'];
-    let rowId = occurrence['rowId'];
+    let rowId = occurrence['row_id'];
     let rowOccurrence = filterOccurrences[rowId];
 
     // Creates object to hold occurrences for given rowId
     if(!rowOccurrence) {
 
       rowOccurrence = {
-        'rowId': rowId,
+        'row_id': rowId,
         'fields': [],
-        'values': []
+        'values': [],
+        'explanations_ids': [],
+        'error_types': [],
       };
 
     }
 
     rowOccurrence['fields'] = rowOccurrence['fields'].concat(occurrence['field']);
     rowOccurrence['values'] = rowOccurrence['values'].concat(occurrence['value']);
+    rowOccurrence['explanations_ids'] = rowOccurrence['explanations_ids'].concat(occurrence['explanation_id']);
+    rowOccurrence['error_types'] = rowOccurrence['error_types'].concat(occurrence['error_type']);
 
     filterOccurrences[rowId] = rowOccurrence;
 
@@ -220,9 +224,11 @@ module.exports = function() {
       let values = {
         'dataset_id': this.datasetId,
         'criteria_id': filter,
-        'test_data_row_id': occurrence['rowId'],
+        'test_data_row_id': occurrence['row_id'],
         'test_data_field_ids': JSON.stringify(occurrence['fields']),
         'test_data_field_values': JSON.stringify(occurrence['values']),
+        'test_data_field_explanations_ids': JSON.stringify(occurrence['explanations_ids']),
+        'test_data_field_error_types': JSON.stringify(occurrence['error_types']),
       };
 
       this.FBFReport.push(values);
@@ -254,7 +260,7 @@ module.exports = function() {
     return new Promise((resolve, reject) => {
 
       Object.keys(this['filters']).forEach(filter => this.calcFieldByFieldReport(filter));
-      resolve(this);
+      resolve(this.FBFReport);
 
     },
     (err) => reject(err));
