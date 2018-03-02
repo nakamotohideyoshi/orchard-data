@@ -133,6 +133,30 @@ export default {
       loading: SUBMISSIONS_REQUEST,
       item: SUBMISSION
     })
+  },
+  methods: {
+    showOverallRistk: function () {
+      this.overallRiskFlag = true
+      this.appleTabFlag = false
+      this.customFlag = false
+    },
+    showAppleTab: function () {
+      this.appleTabFlag = true
+      this.overallRiskFlag = false
+      this.customFlag = false
+    },
+    showCustom: function () {
+      this.customFlag = true
+      this.overallRiskFlag = false
+      this.appleTabFlag = false
+    }
+  },
+  created() {
+    if (this.item.status === 3) {
+      this.showCustom()
+    } else {
+      this.showAppleTab()
+    }
   }
 }
 </script>
