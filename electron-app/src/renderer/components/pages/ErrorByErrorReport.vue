@@ -69,7 +69,7 @@ export default {
         }),
         items() {
             const items = this.$store.getters[SUBMISSION_ERRORS]
-
+            // This can be easily extended with a directive, leaving like this for now
             if (this.sort.count === 'desc') {
                 return _.sortBy(items, ['count']).reverse()
             } else {
@@ -79,6 +79,11 @@ export default {
     },
     async created() {
         await this.fetchErrors(this.$route.params.id)
+    },
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.$store.commit(SUBMISSION_ERRORS, [])
+        })
     }
 }
 </script>
