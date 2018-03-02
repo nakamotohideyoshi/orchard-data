@@ -19,15 +19,16 @@ include _mixins
                                             .report-summary__head risk analysis
                                             .report-summary__text(:class="{'report-summary__text--red': status === 2}") Report Summary
                                         report-summary-label(:status="status")
+
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{ time }}
 
                                     // tabs
                                     .report__tabs.report__tabs--left(js-scrollbar)
-                                        button.overall-tab(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab Overall Risk Assessment
-                                        button.apple-tab(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab Apple & Itunes Guidelines
-                                        button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab Custom Parameters
+                                        button.overall-tab(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab {{ categoryOverallText }}
+                                        button.apple-tab(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab {{ categoryItunesText }}
+                                        button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab {{ categoryCustomText }}
 
 
                                     // summary
@@ -96,12 +97,18 @@ include _mixins
 
 <script>
 import moment from 'moment'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
 } from '@/constants/types'
+
+import {
+    CUSTOM_CATEGORY,
+    ITUNES_CATEGORY,
+    OVERALL_CATEGORY
+} from '@/constants/report-category'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
@@ -116,6 +123,9 @@ export default {
   },
   data () {
     return {
+      categoryOverallText: OVERALL_CATEGORY,
+      categoryItunesText: ITUNES_CATEGORY,
+      categoryCustomText: CUSTOM_CATEGORY,
       overallRiskFlag: false,
       appleTabFlag: true,
       customFlag: false,
@@ -169,17 +179,22 @@ export default {
     })
   },
   methods: {
+    ...mapMutations({setReportCategory: 'SET_ACTIVE_CATEGORY'}),
+
     showOverallRistk: function () {
+      this.setReportCategory(OVERALL_CATEGORY)
       this.overallRiskFlag = true
       this.appleTabFlag = false
       this.customFlag = false
     },
     showAppleTab: function () {
+        this.setReportCategory(ITUNES_CATEGORY)
       this.appleTabFlag = true
       this.overallRiskFlag = false
       this.customFlag = false
     },
     showCustom: function () {
+        this.setReportCategory(CUSTOM_CATEGORY)
       this.customFlag = true
       this.overallRiskFlag = false
       this.appleTabFlag = false
@@ -187,6 +202,7 @@ export default {
   },
   props: ['id'],
   async created () {
+    this.showAppleTab()
     await this.$store.dispatch('fetchDataset', this.id)
 
     if (this.status === 3) {
