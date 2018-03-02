@@ -4,7 +4,7 @@ include ../pages/_mixins
 .report-summary
     .report-summary__col
         .report-summary__head {{ category }}
-        .report-summary__text(:class="{'report-summary__text--red': status === 2}") {{ label }}
+        .report-summary__text(:class="{'report-summary__text--red': status === 2}") {{ title }}
     report-summary-label(:status="status")
     .report-summary__col
         .report-summary__head Batch ID
@@ -46,7 +46,7 @@ export default {
             type: String,
             required: true
         },
-        label: {
+        title: {
             type: String,
             required: true
         }
