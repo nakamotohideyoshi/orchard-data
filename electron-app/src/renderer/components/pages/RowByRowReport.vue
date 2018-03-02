@@ -6,14 +6,12 @@ div
         thead
             tr
                 td #
-                td Row ID
                 td Count of Errors
                 td Count of Warnings
                 td Overall Status
 
         tbody
             tr.p-table__status-warn(v-for="result in results")
-                td #
                 td {{ result.rowID }}
                 td {{ result.errors }}
                 td {{ result.warnings }}

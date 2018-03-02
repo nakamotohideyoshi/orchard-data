@@ -65,7 +65,6 @@ export default {
     const { id } = this.$route.params
 
     if (id) {
-      this.fetchDataset(id) // We need to remove this
       this.fetchFields(id)
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
