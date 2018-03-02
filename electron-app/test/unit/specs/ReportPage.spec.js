@@ -54,6 +54,11 @@ describe('ReportSummary.vue', () => {
     })
   })
 
+  it('should have the correct page title', () => {
+    const label = wrapper.find('.report-summary__text')[0]
+
+    expect(label.text().trim()).to.equal('Report Summary')
+  })
   it('should render correct function', () => {
     expect(typeof wrapper.methods().showOverallRistk).to.equal('function')
     expect(typeof wrapper.methods().showAppleTab).to.equal('function')

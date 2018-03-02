@@ -22,7 +22,7 @@ include _mixins
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head risk analysis
-                                            .report-summary__text(:class="{'report-summary__text--red': status === 2}") Errors Per Row
+                                            .report-summary__text(:class="{'report-summary__text--red': status === 2}") Report Summary
                                         report-summary-label(:status="status")
                                         .report-summary__col
                                             .report-summary__head batch
