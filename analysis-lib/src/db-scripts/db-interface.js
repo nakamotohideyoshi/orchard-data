@@ -25,8 +25,6 @@ module.exports = function() {
   // Loads TSV File into DATABASE
   this.saveTsvIntoDB = function(inputPath, datasetId) {
 
-    console.log("\n***** Saving TSV *****\n");
-
     // The table to add the TSV Files
     const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
     const fields_dict = orchardTable['columns_dict'];
@@ -35,7 +33,6 @@ module.exports = function() {
 
     const dbPromise = readTsv(inputPath)
       .then(file => tsvFile = file)
-      .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.INPROGRESS))
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
 
@@ -88,9 +85,6 @@ module.exports = function() {
           }
         */
 
-        // If it has made this far, then it's ok
-        console.log("***** Reading TSV File *****\n");
-
         return Promise.map(tsvFile, (row, idx) => {
 
           const values = [datasetId];
@@ -103,14 +97,15 @@ module.exports = function() {
 
           return db.run(stmt, values)
             .then((result) => {
-              return Promise.resolve(this.dbStatus.OK);
+              return Promise.resolve("OK");
             },
             (err) => {
 
               return Promise.reject({
                 "thrower": "saveTsvIntoDB",
                 "row_id": idx,
-                "error": new Error(err)
+                "error": new Error(err),
+                "status": 'ERROR'
               });
 
             });
@@ -118,18 +113,7 @@ module.exports = function() {
         });
 
       })
-      .then(() => this.updateDatasetStatus(datasetId, this.dbStatus.OK))
-      .then(() => {
-        console.log("***** Finished *****");
-        if(warnings.length > 0) {
-
-          warnings.length === 1 ?
-            console.log(`***** 1 warning: *****`) :
-            console.log(`***** ${warnings.length} warnings: *****`);
-
-          warnings.forEach(warning => console.log(warning));
-        }
-      });
+      .then(() => Promise.resolve({ 'status': 'OK', 'warnings': warnings }));
 
     return dbPromise;
 
@@ -146,7 +130,7 @@ module.exports = function() {
       .then(db => {
 
         let fields = ['dataset_id', 'row_id', 'message'];
-        let values = [datasetId, error['row_id'] || -1, error['message'].toString()];
+        let values = [datasetId, error['row_id'], error['message'].toString()];
 
         let placeholders = values.map((val) => '(?)').join(',');
         let stmt = `INSERT INTO ${logsTable.name}(${fields}) VALUES (${placeholders})`;
@@ -163,10 +147,7 @@ module.exports = function() {
           });
 
       })
-      .then(result => {
-        console.log(`logIntoErrorDB returned status ${result}: ${this.dbStatus[result]}`);
-        console.log("Log Completed");
-      });
+      .then(() => Promise.resolve({ 'status': 'OK' }));
 
     return dbPromise;
 
@@ -179,7 +160,8 @@ module.exports = function() {
 
     let dbPromise = Promise.resolve()
       .then(() => sqlite.open(this.dbPath, { Promise }))
-      .then(db => db.all(`SELECT COUNT(*) FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`));
+      .then(db => db.all(`SELECT COUNT(*) FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`))
+      .then(result => Promise.resolve(result[0]['COUNT(*)']));
 
     return dbPromise;
 
@@ -200,7 +182,7 @@ module.exports = function() {
           SET status = ${status}
           WHERE rowId = ${datasetId}
         `)
-        .then(result => { return Promise.resolve(result); },
+        .then(result => { return Promise.resolve({'status': 'OK', 'datasetStatus': status}); },
         (err) => {
           return Promise.reject({
             "error": err,
