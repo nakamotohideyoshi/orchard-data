@@ -39,9 +39,6 @@ export default {
 
             return 'N/A'
         },
-        goBack () {
-            this.$router.go(-1)
-        },
         // TODO: Create sort directive
         toggleSort(name) {
             const { sort } = this;
