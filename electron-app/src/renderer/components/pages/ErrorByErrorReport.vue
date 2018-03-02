@@ -23,9 +23,6 @@ include _mixins
                                             .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
-                                            .report-summary__head batch id
-                                            .report-summary__text 1020
-                                        .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text Monday June 12th 2017 11:00AM PST
                                         .report-summary__col

@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// Containers
-import Container from '../components/Container'
-
 // Components -> Pages
 // import LandingPage from '../components/pages/LandingPage'
 import SubmissionsPage from '../components/pages/SubmissionsPage'
@@ -21,11 +18,7 @@ if (process.env.BABEL_ENV !== 'test') Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/',
-      name: 'app',
-      component: Container
-    },
-    {
+      alias: '/',
       path: '/submissions',
       name: 'SubmissionsPage',
       component: SubmissionsPage
@@ -52,7 +45,7 @@ const router = new Router({
       component: FieldByFieldReport
     },
     {
-      path: '/RowByRowReport',
+      path: '/RowByRowReport/:id',
       name: 'RowByRowReport',
       component: RowByRowReport
     },
