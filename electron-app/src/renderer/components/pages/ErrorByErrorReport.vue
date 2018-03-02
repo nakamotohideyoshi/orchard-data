@@ -63,7 +63,6 @@ export default {
     },
     computed: {
         ...mapGetters({
-            items: SUBMISSION_ERRORS,
             loading: SUBMISSIONS_REQUEST,
             error: SUBMISSIONS_FAILURE,
             filters: FILTERS_META,
