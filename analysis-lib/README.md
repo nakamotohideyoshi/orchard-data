@@ -27,6 +27,8 @@ npm run dev
 URL: '/dataset/:datasetId.tsv'<br />
 Method: 'GET'<br />
 <br />
+
+@args: datasetId => numeric id of dataset to be retrieved
 @return: Array => An array containing a TSV dataset
 
 # Create new dataset and run filters
@@ -35,17 +37,34 @@ URL: '/dataset' <br />
 Method: 'POST' <br />
 Content-Type: 'application/json' <br />
 <br />
+
 @args JSON => the data to be saved into the dataset\_meta table <br />
 @return: JSON => an object containing a key 'dataset-id', which
 represents the ID of the recently saved dataset-meta.
+
+# Run single filter
+
+URL: '/run-filter/:filterId/:datasetId' <br />
+Method: 'GET' <br />
+<br />
+
+@args: filterId  => numeric id of the filter to be applied
+@args: datasetId => numeric id of dataset to be retrieved
+
+@return: TSV =>  A tsv string of the field by field report for filter with :filterId
+on dataset :datasetId
 
 # Fetch Field by Field Report in TSV format
 
 URL:  '/field-by-field/:datasetId.tsv'<br />
 URL2: '/field-by-field/:category/:datasetId.tsv'<br />
 Method: 'GET'<br />
-
 <br />
+
+@args: datasetId => numeric id of dataset to be retrieved
+@args: category => the category under which the report should be generated.
+Can be risk or iTunes. Default: iTunes.
+
 @return: TSV => A TSV string of the FBF Report of the specified dataset.
 
 # Fetch Single Field by Field Report
@@ -55,6 +74,11 @@ URL: '/field-by-field/:category/:datasetId'<br />
 Method: 'GET'<br />
 
 <br />
+
+@args: datasetId => numeric id of dataset to be retrieved
+@args: category => the category under which the report should be generated.
+Can be risk or iTunes. Default: iTunes.
+
 @return: Array => An array containing records from field\_by\_field\_reports table
 with dataset\_id = :datasetId.
 
@@ -72,8 +96,12 @@ field\_by\_field\_reports table.
 URL: '/row-by-row/:datasetId'<br />
 URL: '/row-by-row/:category/:datasetId'<br />
 Method: 'GET'<br />
-
 <br />
+
+@args: datasetId => numeric id of dataset to be retrieved
+@args: category => the category under which the report should be generated.
+Can be risk or iTunes. Default: iTunes.
+
 @return: JSON => A JSON containing row-by-row reports of specified dataset
 
 # Fetch Row by Row Aggregate in TSV format
@@ -81,8 +109,12 @@ Method: 'GET'<br />
 URL: '/row-by-row/:datasetId.tsv'<br />
 URL: '/row-by-row/:category/:datasetId.tsv'<br />
 Method: 'GET'<br />
-
 <br />
+
+@args: datasetId => numeric id of dataset to be retrieved
+@args: category => the category under which the report should be generated.
+Can be risk or iTunes. Default: iTunes.
+
 @return: TSV => A TSV string containing row-by-row reports of specified dataset
 
 # Fetch Report Summaries
@@ -98,8 +130,10 @@ batch\_results\_reports table.
 
 URL: '/report-summary/:datasetId'<br />
 Method: 'GET'<br />
-
 <br />
+
+@args: datasetId => numeric id of dataset to be retrieved
+
 @return: Array => An array containing records (if any) from batch\_results\_reports table with dataset\_id = :datasetId.
 
 # Fetch Dataset Meta
@@ -107,6 +141,9 @@ Method: 'GET'<br />
 URL: '/dataset-meta/:rowId'<br />
 Method: 'GET'<br />
 <br />
+
+@args: rowId => numeric id of the row to be retrieved
+
 @return: Array => An array containing records from dataset\_meta table with rowId = 'rowId'
 
 # Fetch Dataset Meta Table
@@ -114,7 +151,17 @@ Method: 'GET'<br />
 URL: '/dataset-meta-all'<br />
 Method: 'GET'<br />
 <br />
+
 @return: Array => An array with all records from dataset\_meta
+
+# Fetch Filters Metadata
+
+URL: '/config'<br />
+Method: 'GET'<br />
+<br />
+
+@return: JSON => An object containing metadata for all implemented filters, such
+as descriptions and explanations.
 
 ### CLI
 
@@ -132,6 +179,18 @@ Examples:
 
 From input file: `npm run gen-error-report -- --input=<input\_file>`
 From STDIN: `STDIN | xargs -0 npm run gen-error-report`
+
+Examples:
+
+`curl http://localhost:3000/field-by-field/1.tsv | xargs -0 npm run gen-error-report`
+`cat ./reports1.tsv | xargs -0 npm run gen-error-report`
+
+## Run single filter
+
+`npm run run-filter -- --filter=<filter\_id> --sample=<sample\_id>`
+
+@input filter\_id: the numeric id of the filter to be run
+@input sample\_id: the id of the mock to be used. This id should be one of the available on ./mocks/filter<filter\_id>.js file.
 
 Examples:
 
