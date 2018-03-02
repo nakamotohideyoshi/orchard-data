@@ -34,7 +34,7 @@ export default {
             default: 0,
         },
         time: {
-            type: [String, Date, Number],
+            type: [String, Number],
             required: true,
         },
         id: {
@@ -53,7 +53,7 @@ export default {
     },
     computed: {
          date() {
-             return moment(this.time).format('MM-DD-YYYY. HH:mm')
+             return moment(this.time).format('dddd MMM Do YYYY HH:mmA')
          }
     }
 }
