@@ -19,7 +19,11 @@ include _mixins
                                 // report box
                                 .p-box.report
                                     // Summary
-                                    report-summary-header(v-if="item" :time="item.time" :id="item.rowid" :status="item.status")
+                                    report-summary-header(
+                                      v-if="item"
+                                      :time="item.time"
+                                      :id="item.rowid"
+                                      :status="item.status")
 
                                     router-view
         block footer
@@ -53,6 +57,15 @@ export default {
   },
   async created () {
     await this.$store.dispatch('fetchDataset', this.$route.params.id)
+  },
+  // TODO: Update header title and CSV link on change
+  beforeRouteEnter(to, from, next) {
+    console.log(to, from, 'enter')
+    next()
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log(to, from, 'update')
+    next()
   }
 }
 </script>

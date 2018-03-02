@@ -41,8 +41,6 @@ export default {
   components: {
     AppHeader,
     AppFooter
-  },
-  methods: {
   }
 }
 </script>
