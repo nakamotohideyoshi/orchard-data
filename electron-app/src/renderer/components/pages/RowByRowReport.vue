@@ -52,10 +52,6 @@
                                                     td {{ result.warnings }}
                                                     td {{ overallStatusMap[result.grade] }}
 
-                                    .p-container__more
-                                        a(href="#" js-load-more).btn.btn-more
-                                            span Load more
-
                     //- include components/_modal
             block footer
                 AppFooter
@@ -66,17 +62,15 @@
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 import ReportSummaryLabel from '@/components/ReportSummaryLabel'
-
-import axios from 'axios'
 import moment from 'moment'
-
-import { API_URL } from '@/constants/config'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 import {
     SUBMISSION,
     SUBMISSIONS_REQUEST,
     SUBMISSIONS_FAILURE,
-    ACTIVE_REPORT_CATEGORY
+    ACTIVE_REPORT_CATEGORY,
+    ROW_BY_ROW_REPORT,
+    DATE_FORMAT
 } from '@/constants/types'
 
 export default {
@@ -89,7 +83,6 @@ export default {
 
     data () {
         return {
-            results: [],
             overallStatusMap: {
                 PASS: 'Success',
                 ERROR: 'Error',
@@ -106,29 +99,32 @@ export default {
         }),
 
         ...mapState([ACTIVE_REPORT_CATEGORY]),
+        ...mapState({
+            results: state => state.Reports[ROW_BY_ROW_REPORT]
+        }),
 
         batchId () {
             return this.$route.params.id
         },
 
         formattedDate () {
-            return moment(this.item.time).format('MM-DD-YYYY. HH:mm')
-        },
+            return moment(this.item.time).format(DATE_FORMAT)
+        }
     },
-
 
     created () {
         this.fetchReport()
     },
 
     methods: {
+        ...mapActions(['fetchRowByRowReport']),
 
         /**
          * Fetch the report results based on the `batchId`
          * @returns {Promise<void>}
          */
         async fetchReport () {
-            this.results = (await axios.get(`${API_URL}row-by-row/${this.batchId}`)).data
+            await this.fetchRowByRowReport({batchId: this.batchId})
         },
 
         goBack () {

@@ -50,7 +50,7 @@ const router = new Router({
       component: RowByRowReport
     },
     {
-      path: '/ErrorByErrorReport',
+      path: '/ErrorByErrorReport/:id',
       name: 'ErrorByErrorReport',
       component: ErrorByErrorReport
     },

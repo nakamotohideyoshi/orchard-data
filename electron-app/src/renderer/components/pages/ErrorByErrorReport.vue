@@ -21,10 +21,13 @@ include _mixins
                                         .report-summary__col
                                             .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
                                             .report-summary__text.report-summary__text--red Errors Per Row
-                                        .report-summary__label.report-summary__label--red failed
+                                        report-summary-label(:status="item.status")
+                                        .report-summary__col
+                                            .report-summary__head batch id
+                                            .report-summary__text {{ batchId }}
                                         .report-summary__col
                                             .report-summary__head batch
-                                            .report-summary__text Monday June 12th 2017 11:00AM PST
+                                            .report-summary__text {{ formattedDate }}
                                         .report-summary__col
                                             .report-summary__head download
                                             a(href="#").report-summary__text
@@ -41,106 +44,11 @@ include _mixins
                                                 td Count
 
                                         tbody
-                                            tr(js-modal data-mfp-src='#modal-1')
+                                            tr.p-table__status-warn(v-for="result in results")
                                                 td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 21412323
-                                                td trap, house, deep
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td dance, pop, blues
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 002
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td blacklist keywords: run, guns, jewels, rap
-                                                td 002
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 21412323
-                                                td trap, house, deep
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td blacklist keywords: run, guns, jewels, rap
-                                                td 002
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
+                                                td {{ result.criteriaId }}
+                                                td {{ result.description }}
+                                                td {{ result.count }}
 
                 //- include components/_modal
         block footer
@@ -148,23 +56,55 @@ include _mixins
 </template>
 
 <script>
+import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-import { mapState } from 'vuex'
-import {ACTIVE_REPORT_CATEGORY} from '@/constants/types'
+import moment from 'moment'
+import { mapState, mapActions, mapGetters } from 'vuex'
+import {
+    ACTIVE_REPORT_CATEGORY,
+    ERROR_BY_ERROR_REPORT,
+    SUBMISSIONS_FAILURE,
+    SUBMISSIONS_REQUEST,
+    SUBMISSION,
+    DATE_FORMAT
+} from '@/constants/types'
 
 export default {
   name: 'ErrorByErrorReport',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    ReportSummaryLabel
   },
 
   computed: {
-    ...mapState([ACTIVE_REPORT_CATEGORY])
+    ...mapGetters({
+      error: SUBMISSIONS_FAILURE,
+      loading: SUBMISSIONS_REQUEST,
+      item: SUBMISSION
+    }),
+    ...mapState([ACTIVE_REPORT_CATEGORY]),
+    ...mapState({
+        results: state => state.Reports[ERROR_BY_ERROR_REPORT]
+    }),
+    batchId () {
+      return this.$route.params.id
+    },
+
+    formattedDate () {
+      return moment(this.item.time).format(DATE_FORMAT)
+    }
   },
 
+  created () {
+      this.fetchReport()
+  },
   methods: {
+      ...mapActions(['fetchErrorByErrorReport']),
+      async fetchReport () {
+          await this.fetchErrorByErrorReport({batchId: this.batchId})
+      },
       goBack () {
           this.$router.go(-1)
       }
