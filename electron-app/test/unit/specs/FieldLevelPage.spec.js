@@ -67,6 +67,11 @@ describe('FieldByFieldReport.vue', () => {
     expect(typeof wrapper.methods().fetchFields).to.equal('function')
   })
 
+  it('should have the correct report title', () => {
+      const label = wrapper.find('.report-summary__text')[0]
+
+      expect(label.text().trim()).to.equal('Every Error')
+  })
   it('should verify vuex actions were executed on init', () => {
     wrapper = shallow(FieldByFieldReport, {
       router,

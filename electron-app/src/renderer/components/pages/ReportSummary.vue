@@ -11,17 +11,13 @@ include _mixins
                         .p-container__wrapper
                             .container.container--smaller
 
-                                // page back
-                                router-link(:to="'/submissions'").page-back
-                                    .icon.icon-arrow-back
-                                    span Report Summary
-
                                 // report box
                                 .p-box.report
                                     // Summary
                                     .report-summary
-
-                                        .report-summary__label.report-summary__label--red
+                                        .report-summary__col
+                                            .report-summary__head risk analysis
+                                            .report-summary__text(:class="{'report-summary__text--red': status === 2}") Report Summary
                                         report-summary-label(:status="status")
 
                                         .report-summary__col

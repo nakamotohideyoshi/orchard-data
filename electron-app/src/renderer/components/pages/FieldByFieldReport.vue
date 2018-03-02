@@ -11,7 +11,7 @@ include _mixins
                         .p-container__wrapper
                             .container.container--smaller
 
-                                router-link(:to="'/submissions'").page-back
+                                a(href="", @click.prevent="goBack").page-back
                                     .icon.icon-arrow-back
                                     span Report Summary
 
@@ -121,6 +121,11 @@ export default {
     }
   },
   methods: {
+
+    goBack () {
+      this.$router.go(-1)
+    },
+
     show (data) {
       this.detailData = data
       this.$modal.show('hello-world')
