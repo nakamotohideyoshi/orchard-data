@@ -11,7 +11,7 @@
                             .p-container__wrapper
                                 .container.container--smaller
 
-                                    router-link(:to="'/submissions'").page-back
+                                    a(href="", @click.prevent="goBack").page-back
                                         .icon.icon-arrow-back
                                         span Report Summary
 
@@ -125,6 +125,10 @@ export default {
          */
         async fetchReport () {
             this.results = (await axios.get(`${API_URL}row-by-row/${this.batchId}`)).data
+        },
+
+        goBack () {
+            this.$router.go(-1)
         }
     }
 }
