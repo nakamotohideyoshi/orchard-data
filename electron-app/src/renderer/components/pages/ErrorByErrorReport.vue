@@ -5,14 +5,12 @@ table.p-table.p-table--full(js-stacktable)
     thead
         tr
             td #
-            td Criteria ID and Link
-            td Short Explanation
+            td Explanation
             td Count
 
     tbody
         tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
             td {{ i + 1 }}
-            td {{ item.criteriaId }}
             td {{ getFilter(item.criteriaId) }}
             td {{ item.count }}
 </template>
