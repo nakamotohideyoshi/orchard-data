@@ -3,12 +3,9 @@ include ../pages/_mixins
 // Summary
 .report-summary
     .report-summary__col
-        .report-summary__head risk analysis
-        .report-summary__text(:class="{'report-summary__text--red': status === 2}") Errors Per Row
-    .report-summary__label.report-summary__label--red
-        span(v-if="status === 1") Success
-        span(v-if="status === 2") Fail
-        span(v-if="status === 3") IN PROGRESS
+        .report-summary__head {{ category }}
+        .report-summary__text(:class="{'report-summary__text--red': status === 2}") {{ label }}
+    report-summary-label(:status="status")
     .report-summary__col
         .report-summary__head Batch ID
         .report-summary__text {{ id }}
@@ -23,9 +20,13 @@ include ../pages/_mixins
 
 <script>
 import moment from 'moment'
+import ReportSummaryLabel from '@/components/sections/ReportSummaryLabel'
 
 export default {
     name: 'report-summary-header',
+    components: {
+        ReportSummaryLabel
+    },
     props: {
         status: {
             type: Number,
@@ -40,6 +41,14 @@ export default {
             type: [String, Number],
             required: true,
             default: 0
+        },
+        category: {
+            type: String,
+            required: true
+        },
+        label: {
+            type: String,
+            required: true
         }
     },
     computed: {
