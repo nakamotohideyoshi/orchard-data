@@ -11,6 +11,11 @@ include _mixins
                         .p-container__wrapper
                             .container.container--smaller
 
+                                // page back
+                                a(href="", @click.prevent="goBack" v-if="canGoBack").page-back
+                                    .icon.icon-arrow-back
+                                    span Report Summary
+
                                 // report box
                                 .p-box.report
                                     // Summary
@@ -18,9 +23,11 @@ include _mixins
                                       v-if="item"
                                       :time="item.time"
                                       :id="item.rowid"
-                                      :status="item.status")
+                                      :status="item.status"
+                                      :title="title"
+                                      :category="category")
 
-                                    router-view
+                                    router-view(v-if="item")
         block footer
             AppFooter
 </template>
@@ -43,6 +50,13 @@ export default {
     AppHeader,
     AppFooter
   },
+  data() {
+      return {
+        title: '',
+        category: '',
+        canGoBack: false
+      }
+  },
   computed: {
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,
@@ -50,16 +64,38 @@ export default {
       item: SUBMISSION
     })
   },
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    },
+    setTitles(name) {
+      this.category = 'Risk Analysis'
+
+      switch(name) {
+        case 'row-by-row':
+            this.title = 'Errors Per Row'
+            this.canGoBack = true
+        break;
+        case 'field-by-field':
+            this.title = 'Every Row'
+            this.canGoBack = true
+        break;
+        case 'error-by-error':
+            this.title = 'Count Per Row'
+            this.canGoBack = true
+        break;
+        default:
+            this.title = 'Report Summary'
+            this.canGoBack = false
+      }
+    } 
+  },
   async created () {
     await this.$store.dispatch('fetchDataset', this.$route.params.id)
-  },
-  // TODO: Update header title and CSV link on change
-  beforeRouteEnter(to, from, next) {
-    console.log(to, from, 'enter')
-    next()
+    this.setTitles(this.$route.name)
   },
   beforeRouteUpdate(to, from, next) {
-    console.log(to, from, 'update')
+    this.setTitles(to.name)
     next()
   }
 }
