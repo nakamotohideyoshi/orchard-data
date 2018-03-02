@@ -1,10 +1,10 @@
 <template lang="pug">
 include _mixins
 div
-    table.p-table.p-table--subm(js-stacktable)
+    table.p-table.p-table--full(js-stacktable)
         thead
             tr
-                td Row ID
+                td #
                 td Test Data Row ID
                 td Description
         tbody
