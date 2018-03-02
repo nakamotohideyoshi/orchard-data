@@ -6,6 +6,7 @@ import Router from 'vue-router'
 import SubmissionsPage from '../components/pages/SubmissionsPage'
 import NewBatchPage from '../components/pages/NewBatchPage'
 import ReportSummary from '../components/pages/ReportSummary'
+import ReportHome from '../components/pages/ReportHome'
 import ReportProgressPage from '../components/pages/ReportProgressPage'
 import FieldByFieldReport from '../components/pages/FieldByFieldReport'
 import RowByRowReport from '../components/pages/RowByRowReport'
@@ -30,9 +31,31 @@ const router = new Router({
     },
     {
       path: '/report/:id',
-      name: 'report',
-      component: ReportSummary,
-      props: true
+      component: ReportSummary,// Better name this component
+      // TODO: We may create a subdirectory for the subpages or put them
+      // in the sections one, TBD
+      children: [
+        {
+          path: '/',
+          name: 'report',
+          component: ReportHome
+        },
+        {
+          path: 'error-by-error',
+          name: 'error-by-error',
+          component: ErrorByErrorReport
+        },
+        {
+          path: 'row-by-row',
+          name: 'row-by-row',
+          component: RowByRowReport
+        },
+        {
+          path: 'field-by-field',
+          name: 'field-by-field',
+          component: FieldByFieldReport
+        },
+      ]
     },
     {
       path: '/report-progress',
@@ -40,25 +63,9 @@ const router = new Router({
       component: ReportProgressPage
     },
     {
-      path: '/FieldByFieldReport/:id',
-      name: 'FieldByFieldReport',
-      component: FieldByFieldReport
-    },
-    {
-      path: '/RowByRowReport/:id',
-      name: 'RowByRowReport',
-      component: RowByRowReport
-    },
-    {
-      path: '/ErrorByErrorReport',
-      name: 'ErrorByErrorReport',
-      component: ErrorByErrorReport
-    },
-    {
       path: '/csv/:id',
       name: 'csv',
-      component: CsvPage,
-      props: true
+      component: CsvPage
     },
     {
       path: '*',
