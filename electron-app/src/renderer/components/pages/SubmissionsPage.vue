@@ -37,9 +37,6 @@
                                                     span(v-if="data.status === 3") In Progress
                                             td {{new Date(data.time).toString().slice(0, -14)}}
 
-                                .p-container__more
-                                    a(href="#" js-load-more).btn.btn-more
-                                        span Load more
         block footer
             AppFooter
 </template>
