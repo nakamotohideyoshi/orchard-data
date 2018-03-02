@@ -1,167 +1,59 @@
 <template lang="pug">
 include _mixins
-#barba-wrapper
-    .page(class=outClass)
-        block header
-            AppHeader
-        .page__content
-            block content
-                .p-container
-                    .container
-                        .p-container__wrapper
-                            .container.container--smaller
+// table
+table.p-table.p-table--full(js-stacktable)
+    thead
+        tr
+            td #
+            td Criteria ID and Link
+            td Short Explanation
+            td Count
 
-                                a(href="", @click.prevent="goBack").page-back
-                                    .icon.icon-arrow-back
-                                    span Report Summary
-
-                                .p-box.report
-                                    // summary
-                                    .report-summary
-                                        .report-summary__col
-                                            .report-summary__head risk analysis
-                                            .report-summary__text.report-summary__text--red Count Per Error
-                                        .report-summary__label.report-summary__label--red failed
-                                        .report-summary__col
-                                            .report-summary__head batch
-                                            .report-summary__text Monday June 12th 2017 11:00AM PST
-                                        .report-summary__col
-                                            .report-summary__head download
-                                            a(href="#").report-summary__text
-                                                +icon('ico-download')
-
-
-                                    // table
-                                    table.p-table.p-table--full(js-stacktable)
-                                        thead
-                                            tr
-                                                td #
-                                                td Criteria ID and Link
-                                                td Short Explanation
-                                                td Count
-
-                                        tbody
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 21412323
-                                                td trap, house, deep
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td dance, pop, blues
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 002
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td blacklist keywords: run, guns, jewels, rap
-                                                td 002
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 21412323
-                                                td trap, house, deep
-                                                td 001
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234124
-                                                td electrohouse
-                                                td 004
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td blacklist keywords: run, guns, jewels, rap
-                                                td 002
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1234567
-                                                td Keyword blacklist match: run, guns, jewels, rap
-                                                td 003
-                                            tr(js-modal data-mfp-src='#modal-1')
-                                                td #
-                                                td 1274821
-                                                td run, guns, jewels, rap
-                                                td 001
-
-                //- include components/_modal
-        block footer
-            AppFooter
+    tbody
+        tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
+            td {{ i + 1 }}
+            td {{ item.criteriaId }}
+            td {{ getFilter(item.criteriaId) }}
+            td {{ item.count }}
 </template>
 
 <script>
-import AppHeader from './Header.vue'
-import AppFooter from './Footer.vue'
+import { mapGetters, mapActions } from 'vuex'
+import {
+    SUBMISSION_ERRORS,
+    SUBMISSIONS_REQUEST,
+    SUBMISSIONS_FAILURE,
+    FILTERS_META
+} from '@/constants/types'
 
 export default {
-  name: 'ErrorByErrorReport',
-  components: {
-    AppHeader,
-    AppFooter
-  },
-  methods: {
-      goBack () {
-          this.$router.go(-1)
-      }
-  }
+    name: 'ErrorByErrorReport',
+    methods: {
+        ...mapActions([
+            'fetchErrors'
+        ]),
+        getFilter (id) {
+            if (this.filters && this.filters[id] && this.filters[id].userExplanation) {
+                return this.filters[id].userExplanation
+            }
+
+            return 'N/A'
+        },
+        goBack () {
+            this.$router.go(-1)
+        }
+    },
+    computed: {
+        ...mapGetters({
+            items: SUBMISSION_ERRORS,
+            loading: SUBMISSIONS_REQUEST,
+            error: SUBMISSIONS_FAILURE,
+            filters: FILTERS_META,
+        })
+    },
+    async created() {
+        await this.fetchErrors(this.$route.params.id)
+    }
 }
 </script>
 

@@ -1,70 +1,33 @@
 <template lang="pug">
-    include _mixins
-    #barba-wrapper
-        .page(class=outClass)
-            block header
-                AppHeader
-            .page__content
-                block content
-                    .p-container
-                        .container
-                            .p-container__wrapper
-                                .container.container--smaller
+include _mixins
+// table
+div
+    table.p-table.p-table--full(js-stacktable)
+        thead
+            tr
+                td #
+                td Row ID
+                td Count of Errors
+                td Count of Warnings
+                td Overall Status
 
-                                    a(href="", @click.prevent="goBack").page-back
-                                        .icon.icon-arrow-back
-                                        span Report Summary
-
-                                    .p-box.report
-                                        // summary
-                                        .report-summary
-                                            .report-summary__col
-                                                .report-summary__head risk analysis
-                                                .report-summary__text.report-summary__text--red Errors Per Row
-                                            report-summary-label(:status="item.status")
-                                            .report-summary__col
-                                                .report-summary__head batch id
-                                                .report-summary__text {{ batchId }}
-                                            .report-summary__col
-                                                .report-summary__head batch
-                                                .report-summary__text {{ formattedDate }}
-                                            .report-summary__col
-                                                .report-summary__head download
-                                                a(href="#").report-summary__text
-                                                    +icon('ico-download')
+        tbody
+            tr.p-table__status-warn(v-for="result in results")
+                td #
+                td {{ result.rowID }}
+                td {{ result.errors }}
+                td {{ result.warnings }}
+                td {{ overallStatusMap[result.grade] }}
 
 
-                                        // table
-                                        table.p-table.p-table--full(js-stacktable)
-                                            thead
-                                                tr
-                                                    td #
-                                                    td Row ID
-                                                    td Count of Errors
-                                                    td Count of Warnings
-                                                    td Overall Status
-
-                                            tbody
-                                                tr.p-table__status-warn(v-for="result in results")
-                                                    td #
-                                                    td {{ result.rowID }}
-                                                    td {{ result.errors }}
-                                                    td {{ result.warnings }}
-                                                    td {{ overallStatusMap[result.grade] }}
-
-                                    .p-container__more
-                                        a(href="#" js-load-more).btn.btn-more
-                                            span Load more
-
-                    //- include components/_modal
-            block footer
-                AppFooter
+    .p-container__more
+        a(href="#" js-load-more).btn.btn-more
+            span Load more
 </template>
 
 <script>
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 
 import axios from 'axios'
 import moment from 'moment'
@@ -81,8 +44,7 @@ export default {
     name: 'RowByRowReport',
     components: {
         AppHeader,
-        AppFooter,
-        ReportSummaryLabel
+        AppFooter
     },
 
     data () {
