@@ -1,5 +1,4 @@
 <template lang="pug">
-<<<<<<< HEAD
     include _mixins
     #barba-wrapper
         .page(class=outClass)
@@ -72,7 +71,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 import { API_URL } from '@/constants/config'
-import { mapGetters, mapSTate } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import {
     SUBMISSION,
     SUBMISSIONS_REQUEST,
