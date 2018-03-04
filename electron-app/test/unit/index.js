@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VModal from 'vue-js-modal'
 Vue.config.devtools = false
 Vue.config.productionTip = false
 
@@ -15,6 +16,9 @@ const routerLink = {
         return h('a', {}, this.$slots.default)
     }
 };
+
+// register global modal component, similar to what is being done in `src/renderer/main.js`
+Vue.use(VModal)
 
 // register mock components
 Vue.component('router-view', routerView);
