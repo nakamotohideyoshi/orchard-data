@@ -19,7 +19,7 @@ include _mixins
                                     // summary
                                     .report-summary
                                         .report-summary__col
-                                            .report-summary__head {{ active_report_category }}
+                                            .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
                                             .report-summary__text.report-summary__text--red Every Error
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
@@ -72,7 +72,8 @@ import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META
+  FILTERS_META,
+  ACTIVE_REPORT_CATEGORY
 } from '@/constants/types'
 
 export default {
@@ -88,7 +89,7 @@ export default {
       items: FIELDS,
       filters: FILTERS_META
     }),
-    ...mapState(['active_report_category']),
+    ...mapState([ACTIVE_REPORT_CATEGORY]),
     batchDate () {
       let date = new Date()
 

@@ -101,7 +101,8 @@ import { mapGetters, mapMutations } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
-  SUBMISSIONS_FAILURE
+  SUBMISSIONS_FAILURE,
+  SET_ACTIVE_CATEGORY
 } from '@/constants/types'
 
 import {
@@ -179,7 +180,7 @@ export default {
     })
   },
   methods: {
-    ...mapMutations({setReportCategory: 'SET_ACTIVE_CATEGORY'}),
+    ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
 
     showOverallRistk: function () {
       this.setReportCategory(OVERALL_CATEGORY)
@@ -188,7 +189,7 @@ export default {
       this.customFlag = false
     },
     showAppleTab: function () {
-        this.setReportCategory(ITUNES_CATEGORY)
+      this.setReportCategory(ITUNES_CATEGORY)
       this.appleTabFlag = true
       this.overallRiskFlag = false
       this.customFlag = false

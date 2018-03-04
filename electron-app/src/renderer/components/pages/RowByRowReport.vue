@@ -19,7 +19,7 @@
                                         // summary
                                         .report-summary
                                             .report-summary__col
-                                                .report-summary__head {{ active_report_category }}
+                                                .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
                                                 .report-summary__text.report-summary__text--red Errors Per Row
                                             report-summary-label(:status="item.status")
                                             .report-summary__col
@@ -75,7 +75,8 @@ import { mapGetters, mapState } from 'vuex'
 import {
     SUBMISSION,
     SUBMISSIONS_REQUEST,
-    SUBMISSIONS_FAILURE
+    SUBMISSIONS_FAILURE,
+    ACTIVE_REPORT_CATEGORY
 } from '@/constants/types'
 
 export default {
@@ -104,7 +105,7 @@ export default {
             item: SUBMISSION
         }),
 
-        ...mapState(['active_report_category']),
+        ...mapState([ACTIVE_REPORT_CATEGORY]),
 
         batchId () {
             return this.$route.params.id
