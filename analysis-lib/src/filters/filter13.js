@@ -1,6 +1,6 @@
 // filter: Part and Volume should be abbreviated to Pt. and Vol.
 
-module.exports = function(row, idx, report) {
+module.exports = function(row, idx) {
   'use strict';
 
   const removeDiacritics = require('../scripts/remove-diacritics');

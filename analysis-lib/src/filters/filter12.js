@@ -1,6 +1,6 @@
 // filter: formatting of "featuring"
 
-module.exports = function(row, idx, report) {
+module.exports = function(row, idx) {
   'use strict';
 
   const removeDiacritics = require('../scripts/remove-diacritics');

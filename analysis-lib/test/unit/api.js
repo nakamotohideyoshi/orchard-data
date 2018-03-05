@@ -1,42 +1,215 @@
+'use strict';
+
 const assert = require('chai').assert;
-const sinon = require('sinon');
-const _ = require('lodash');
-const path = require('path');
-const validator = require('is-my-json-valid');
+const expect = require('chai').expect;
+
+const chaiHttp = require('chai-http');
+const chai = require('chai').use(chaiHttp);
+const request = chai.request;
 
 const filtersMeta = require('../../src/filters/filters-meta');
 const reportModule = require('../../src/scripts/report-tool');
 const reportUtils = require('../../src/scripts/utils');
 
-const mocks = require('../../mocks/reports/reports');
+const mocks = require('../../mocks/api/api');
 
-describe('should test report tool', () => {
+const dbInterface = require('../../src/db-scripts/db-interface');
+const dbInfo = require('../../src/db-scripts/db-info');
+const { DATABASE } = require('../../src/scripts/constants');
 
-  let report;
-  let filter;
+describe('should test API', function() {
 
-  beforeEach(() => {
+  this.timeout(10000);
 
-    report = new reportModule();
-    report.init(1);
+  let _interface;
+  let _datasetId;
+  const server = 'http://localhost:3000';
 
-    filter = 'filter1';
-    report.addFilter(filter);
+  before((done) => {
 
-  });
+    _interface = new dbInterface();
+    _interface.init();
 
-  it('should test add filter', () => {
-
-    let filterDesc = filtersMeta[filter];
-
-    let obj = {};
-    obj[filter] = { 'occurs_on': {} };
-
-    Object.keys(filterDesc).forEach(key => obj[filter][key] = filterDesc[key]);
-    assert.deepEqual(report.filters[filter], obj[filter]);
+    _interface.saveTsvIntoDB(mocks['getDataset']['tsvFile'])
+      .then(() => done());
 
   });
 
+  it('should test dataset/:datasetId - returns a dataset', (done) => {
+
+    request(server)
+      .get('/dataset/1')
+      .end((err, res) => {
+
+        const dataset = mocks['getDataset']['dataset'].sort((a,b) => a['track_no'] - b['track_no']);
+        const response = JSON.parse(res.text).sort((a,b) => a['track_no'] - b['track_no']);
+
+        expect(res).to.have.status(200);
+
+        response.forEach((row, idx) => expect(row).to.be.an('object').that.include(dataset[idx]));
+        done();
+
+      });
+
+  });
+
+  it('should test dataset/:datasetId - returns an empty array', (done) => {
+
+    request(server)
+      .get('/dataset/-1')
+      .end((err, res) => {
+
+        const response = JSON.parse(res.text);
+        expect(response).to.an('array').that.is.empty;
+
+        expect(res).to.have.status(200);
+
+        done();
+
+      });
+
+  });
+
+  it('should test get /dataset - saves a tsv and run filters', (done) => {
+
+    const metadata = mocks['saveAndRun']['metadata'];
+    const success = mocks['saveAndRun']['success'];
+
+    request(server)
+      .post('/dataset')
+      .send(metadata)
+      .end((err, res) => {
+
+        const response = JSON.parse(res.text);
+        _datasetId = response.datasetId;
+
+        expect(res).to.have.status(201);
+        expect(response.status).to.be.equal(success.status);
+        expect(response.datasetId).to.be.a('number');
+
+        done();
+
+      });
+
+  });
+
+  it('should test get /dataset - invalid tsv file: internal server error', (done) => {
+
+    const metadata = mocks['saveAndRun']['tsvError'];
+
+    request(server)
+      .post('/dataset')
+      .send(metadata)
+      .end((err, res) => {
+
+        const response = JSON.parse(res.text);
+
+        expect(response).to.be.an('object');
+        expect(response.title).to.be.not.empty;
+        expect(response.detail).to.be.not.empty;
+        expect(res).to.have.status(500);
+
+        done();
+
+      });
+
+  });
+
+  it('should test generated field by field report', (done) => {
+
+    const FBFReport = mocks['fieldByField']['fieldByField'];
+
+    request(server)
+      .get(`/field-by-field/${_datasetId}`)
+      .end((err, res) => {
+
+        const response = JSON.parse(res.text).sort(function(a, b) {
+          return b.criteria - a.criteria || b.fields[0]['name'] - a.fields[0]['name'] || b.fields[0]['value'] - a.fields[0]['value']
+        });
+
+        console.log(response);
+        expect(res).to.have.status(200);
+
+        response.forEach((occurrence, idx) => {
+
+          expect(occurrence.criteria).to.be.equal(FBFReport[idx].criteria);
+          expect(occurrence.fields).to.be.deep.equal(FBFReport[idx].fields);
+          expect(occurrence.values).to.be.deep.equal(FBFReport[idx].values);
+
+        });
+
+        done();
+
+      });
+
+  });
+
+  it('should return empty field by field report', (done) => {
+
+    request(server)
+      .get(`/field-by-field/-1`)
+      .end((err, res) => {
+
+        const response = JSON.parse(res.text);
+        expect(res).to.have.status(200);
+
+        expect(response).to.be.empty;
+        done();
+
+      });
+
+  });
+        // expect(response).to.be.an('object');
+        // expect(response.title).to.be.not.empty;
+        // expect(response.detail).to.be.not.empty;
+
+  /*
+  it('should test generated field by field report tsv', (done) => {
+
+    const FBFReport = mocks['fieldByField']['fieldByFieldTsv'];
+
+    request(server)
+      .get(`/field-by-field/${_datasetId}.tsv`)
+      .end((err, res) => {
+
+        const response = res.text;
+        expect(res.headers['content-type']).to.be.equal('text/tab-separated-values; charset=utf-8');
+        expect(response).to.be.equal(FBFReport);
+        expect().to.have.status(200);
+        done();
+
+      });
+
+  });
+  */
+
+  /*
+  it('should test get /dataset - saves a tsv and run filters', (done) => {
+
+    const metadata = mocks['saveAndRun']['metadata'];
+    const success = mocks['saveAndRun']['success'];
+
+    request(server)
+      .post('/dataset')
+      .send(metadata)
+      .end((err, res) => {
+
+        const response = JSON.parse(res.text);
+        _datasetId = response.datasetId;
+
+        expect(res).to.have.status(200);
+        expect(response.status).to.be.equal(success.status);
+        expect(response.datasetId).to.be.a('number');
+
+        done();
+
+      });
+
+  });
+  */
+
+
+  /*
   it('should test add occurrence', () => {
 
     let occurrences = mocks['field_by_field']['occurrences'];
@@ -265,5 +438,6 @@ describe('should test report tool', () => {
     assert.deepEqual(RBRReportTsv, tsv);
 
   });
+  */
 
 });

@@ -1,6 +1,6 @@
 // Composer as artist
 
-module.exports = function(dataset, report) {
+module.exports = function(dataset) {
 
   const removeDiacritics = require('../scripts/remove-diacritics');
 
@@ -43,45 +43,47 @@ module.exports = function(dataset, report) {
       'error_type': [],
     };
 
-    artistFields.forEach(aField => {
-      composerFields.forEach(cField => {
+    // if fields are not empty
+    if(row['release_artists_composer'] !== "" && row['track_artist_composer'] !== "") {
 
-        const artist = removeDiacritics(row[aField]).trim().toLowerCase();
-        const composer = removeDiacritics(row[cField]).trim().toLowerCase();
+      artistFields.forEach(aField => {
+        composerFields.forEach(cField => {
 
-        // checks if genre is not classical
-        if(artist === composer && genre !== 'classical') {
-          occurrence.field.push([aField, cField]);
-          occurrence.value.push([row[aField], row[cField]]);
-          occurrence.explanation_id.push('notClassical');
-          occurrence.error_type.push(defaultErrorType);
-        }
+          const artist = removeDiacritics(row[aField]).trim().toLowerCase();
+          const composer = removeDiacritics(row[cField]).trim().toLowerCase();
 
-        else if(artist === composer && hasMultipleComposers && genre === 'classical') {
-          occurrence.field.push([aField, cField]);
-          occurrence.value.push([row[aField], row[cField]]);
-          occurrence.explanation_id.push('multipleComposers');
-          occurrence.error_type.push(defaultErrorType);
-        }
+          // checks if genre is not classical
+          if(artist === composer && genre !== 'classical') {
+            occurrence.field.push([aField, cField]);
+            occurrence.value.push([row[aField], row[cField]]);
+            occurrence.explanation_id.push('notClassical');
+            occurrence.error_type.push(defaultErrorType);
+          }
 
-        // checks if artist is different of composer if genre is soundtrack
-        else if(artist !== composer && !hasMultipleComposers && genre === 'soundtrack') {
-          occurrence.field.push([aField, cField]);
-          occurrence.value.push([row[aField], row[cField]]);
-          occurrence.explanation_id.push('soundtrack');
-          occurrence.error_type.push(defaultErrorType);
-        }
+          else if(artist === composer && hasMultipleComposers && genre === 'classical') {
+            occurrence.field.push([aField, cField]);
+            occurrence.value.push([row[aField], row[cField]]);
+            occurrence.explanation_id.push('multipleComposers');
+            occurrence.error_type.push(defaultErrorType);
+          }
 
+          // checks if artist is different of composer if genre is soundtrack
+          else if(artist !== composer && !hasMultipleComposers && genre === 'soundtrack') {
+            occurrence.field.push([aField, cField]);
+            occurrence.value.push([row[aField], row[cField]]);
+            occurrence.explanation_id.push('soundtrack');
+            occurrence.error_type.push(defaultErrorType);
+          }
+
+        });
       });
-    });
 
-    // If there was any occurrences
-    if(occurrence.field.length > 0) { occurrences.push(occurrence); }
+      // If there was any occurrences
+      if(occurrence.field.length > 0) { occurrences.push(occurrence); }
+
+    }
 
   });
-
-  // If anything error occurred, creates report
-  occurrences.forEach(occurrence => report.addOccurrence(filterName, occurrence));
 
   return occurrences;
 

@@ -1,35 +1,37 @@
+'use strict';
+
 module.exports = function(datasetId) {
 
-  let Promise = require('bluebird')
+  const Promise = require('bluebird')
 
   // tools and constants
-  let reportToolModule = require('./report-tool');
-  let DATABASE = require('./constants').DATABASE;
+  const reportToolModule = require('./report-tool');
+  const DATABASE = require('./constants').DATABASE;
 
   // Filters module
-  let filters = require('../filters/filters-module');
-  let filtersMeta = require('../filters/filters-meta');
+  const filters = require('../filters/filters-module');
+  const filtersMeta = require('../filters/filters-meta');
 
   // DB modules
-  let sqlite = require('sqlite');
-  let dbInfo = require('../db-scripts/db-info');
-  let dbInterfaceModule = require('../db-scripts/db-interface');
+  const sqlite = require('sqlite');
+  const dbInfo = require('../db-scripts/db-info');
+  const dbInterfaceModule = require('../db-scripts/db-interface');
 
   // Initializes report for given tsv file
-  let report = new reportToolModule();
+  const report = new reportToolModule();
   report.init(datasetId);
 
   // Initializes DB interface
-  let dbInterface = new dbInterfaceModule();
+  const dbInterface = new dbInterfaceModule();
   dbInterface.init();
 
   // Main table
-  let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
+  const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
 
   // total no of rows the filter is going to be applied
   let noOfRows = 0;
 
-  let dbPromise = dbInterface.fetchTsvDataset(datasetId)
+  const dbPromise = dbInterface.fetchTsvDataset(datasetId)
     .then(dataset => {
 
       return new Promise((resolve, reject) => {
@@ -38,10 +40,10 @@ module.exports = function(datasetId) {
 
           noOfRows = dataset.length;
 
-          let rowFilters = Object.keys(filtersMeta)
+          const rowFilters = Object.keys(filtersMeta)
             .filter(filterId => filtersMeta[filterId]['basis'] === 'row');
 
-          let datasetFilters = Object.keys(filtersMeta)
+          const datasetFilters = Object.keys(filtersMeta)
             .filter(filterId => filtersMeta[filterId]['basis'] === 'dataset');
 
           rowFilters.forEach(filter => {
@@ -50,7 +52,8 @@ module.exports = function(datasetId) {
             dataset.forEach((row, idx) => {
 
               report.addFilter(filter);
-              filters[filter](row, idx + 1, report);
+              const occurrence = filters[filter](row, idx + 1, report);
+              if(occurrence){ report.addOccurrence(filter, occurrence); }
 
             });
 
@@ -59,7 +62,11 @@ module.exports = function(datasetId) {
           datasetFilters.forEach(filter => {
 
             report.addFilter(filter);
-            filters[filter](dataset, report);
+            const occurrences = filters[filter](dataset);
+
+            occurrences.forEach(occurrence => {
+              if(occurrence){ report.addOccurrence(filter, occurrence); }
+            });
 
           });
 
@@ -67,7 +74,7 @@ module.exports = function(datasetId) {
 
         }
 
-        catch(err) { reject(err); }
+        catch(err) { console.log(err); reject(err); }
 
       });
 
