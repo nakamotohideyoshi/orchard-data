@@ -49,7 +49,8 @@ describe('FieldByFieldReport.vue', () => {
     }
 
     $invalidRoute = {
-      name: 'FieldByFieldReport'
+      name: 'FieldByFieldReport',
+      params: {}
     }
   })
 
@@ -60,11 +61,11 @@ describe('FieldByFieldReport.vue', () => {
       globals: { $route: $validRoute }
     })
 
-    expect(typeof wrapper.methods().show).to.equal('function')
-    expect(typeof wrapper.methods().hide).to.equal('function')
-    expect(typeof wrapper.methods().beforeOpen).to.equal('function')
-    expect(typeof wrapper.methods().getFilter).to.equal('function')
-    expect(typeof wrapper.methods().fetchFields).to.equal('function')
+    expect(typeof wrapper.vm.show).to.equal('function')
+    expect(typeof wrapper.vm.hide).to.equal('function')
+    expect(typeof wrapper.vm.beforeOpen).to.equal('function')
+    expect(typeof wrapper.vm.getFilter).to.equal('function')
+    expect(typeof wrapper.vm.fetchFields).to.equal('function')
   })
 
   it('should have the correct report title', () => {
@@ -89,7 +90,7 @@ describe('FieldByFieldReport.vue', () => {
       store,
       globals: { $route: $invalidRoute }
     })
-    wrapper.update()
+    // wrapper.update()
 
     expect(actions.fetchFields.calledOnce).to.equal(false)
     expect(wrapper.vm.error).to.be.an.instanceof(Object)

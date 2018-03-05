@@ -5,7 +5,8 @@ import moment from 'moment'
 import ReportSummary from '@/components/pages/ReportSummary'
 import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import {
-  SUBMISSION
+  SUBMISSION,
+  SET_ACTIVE_CATEGORY
   /* Stubbing to pass lint, will work on it later
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
@@ -16,6 +17,7 @@ import router from '../../../src/renderer/router'
 describe('ReportSummary.vue', () => {
   let wrapper
   let getters
+  let mutations
   let store
   let actions
   const item = {
@@ -39,13 +41,18 @@ describe('ReportSummary.vue', () => {
       [`${SUBMISSION}`]: () => item
     }
 
+    mutations = {
+      [SET_ACTIVE_CATEGORY]: () => {}
+    }
+
     actions = {
       fetchDataset: sinon.stub()
     }
 
     store = new Vuex.Store({
       getters,
-      actions
+      actions,
+      mutations
     })
 
     wrapper = mount(ReportSummary, {
@@ -60,9 +67,9 @@ describe('ReportSummary.vue', () => {
     expect(label.text().trim()).to.equal('Report Summary')
   })
   it('should render correct function', () => {
-    expect(typeof wrapper.methods().showOverallRistk).to.equal('function')
-    expect(typeof wrapper.methods().showAppleTab).to.equal('function')
-    expect(typeof wrapper.methods().showCustom).to.equal('function')
+    expect(typeof wrapper.vm.showOverallRistk).to.equal('function')
+    expect(typeof wrapper.vm.showAppleTab).to.equal('function')
+    expect(typeof wrapper.vm.showCustom).to.equal('function')
   })
 
   it('should set flags when calling overallRiskFlag method', () => {
@@ -121,6 +128,16 @@ describe('ReportSummary.vue', () => {
 
   it('should have a `ReportSummaryLabel` component', () => {
       expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
+  })
+
+  it('should have proper text for tabs', () => {
+      const overall = wrapper.find('.report__tab.overall-tab ')[0]
+      const itunes = wrapper.find('.report__tab.apple-tab ')[0]
+      const custom = wrapper.find('.report__tab.custom-tab ')[0]
+
+      expect(overall.text().trim()).to.equal('Overall Risk Assessment')
+      expect(itunes.text().trim()).to.equal('iTunes Style Guide')
+      expect(custom.text().trim()).to.equal('Custom Parameters')
   })
 
   // TODO: Write test for the following cases:

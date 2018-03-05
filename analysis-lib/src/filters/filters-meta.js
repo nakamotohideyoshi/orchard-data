@@ -239,4 +239,36 @@ module.exports = {
       'default': `Formatting of "feat." and "with" must be lower case, in English, and in parentheses or brackets. See iTunes Store Music Style Guide 5.3.`,
     }
   },
+
+  'filter12': {
+    'orchardDescription': `"Live" on Release but not Tracks`,
+    'programmerDescription': `
+
+      There is a target string - "Live" in English, ”Ao Vivo” in Portuguese, and
+      “En Vivo” or “En Directo” in Spanish. A match for this string is
+      case-insensitive, delimited by word separators. The language of the
+      dataset and row is ignored - all languages are tested.
+
+      There is version information for a track. It may be in the version field,
+      in a parenthesized expression in the track title, or in square brackets in
+      the track title.
+
+      There is version information for a release in the release name. It may be
+      in a parenthesized expression, or in square brackets, or after a hyphen,
+      or the release name may be exactly "Live."
+
+      If version information for a release does not contain the target string, there is no failure.
+      Otherwise, if version information for a track does not contain the target
+      string, there is a failure.
+
+    `,
+    'userExplanation': `If the album title contains "Live", each track must also.`,
+    'category': 'risk',
+    'type': 'warning',
+    'basis': 'row',
+    'explanations': {
+      'default': `If the album title contains "Live", each track must also.`,
+    }
+  },
+
 };

@@ -38,7 +38,7 @@ describe('App.vue', () => {
   })
 
   it('should verify methods are defined', () => {
-    expect(typeof wrapper.methods().retry).to.equal('function')
+    expect(typeof wrapper.vm.retry).to.equal('function')
   })
 
   it('should render correct App', () => {

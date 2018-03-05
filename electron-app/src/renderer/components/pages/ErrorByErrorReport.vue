@@ -19,8 +19,8 @@ include _mixins
                                     // summary
                                     .report-summary
                                         .report-summary__col
-                                            .report-summary__head risk analysis
-                                            .report-summary__text.report-summary__text--red Count Per Error
+                                            .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
+                                            .report-summary__text.report-summary__text--red Errors Per Row
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
                                             .report-summary__head batch
@@ -150,6 +150,8 @@ include _mixins
 <script>
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import { mapState } from 'vuex'
+import {ACTIVE_REPORT_CATEGORY} from '@/constants/types'
 
 export default {
   name: 'ErrorByErrorReport',
@@ -157,6 +159,11 @@ export default {
     AppHeader,
     AppFooter
   },
+
+  computed: {
+    ...mapState([ACTIVE_REPORT_CATEGORY])
+  },
+
   methods: {
       goBack () {
           this.$router.go(-1)

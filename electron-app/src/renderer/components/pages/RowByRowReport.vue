@@ -19,7 +19,7 @@
                                         // summary
                                         .report-summary
                                             .report-summary__col
-                                                .report-summary__head risk analysis
+                                                .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
                                                 .report-summary__text.report-summary__text--red Errors Per Row
                                             report-summary-label(:status="item.status")
                                             .report-summary__col
@@ -59,6 +59,7 @@
                     //- include components/_modal
             block footer
                 AppFooter
+
 </template>
 
 <script>
@@ -70,11 +71,12 @@ import axios from 'axios'
 import moment from 'moment'
 
 import { API_URL } from '@/constants/config'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import {
     SUBMISSION,
     SUBMISSIONS_REQUEST,
-    SUBMISSIONS_FAILURE
+    SUBMISSIONS_FAILURE,
+    ACTIVE_REPORT_CATEGORY
 } from '@/constants/types'
 
 export default {
@@ -102,6 +104,8 @@ export default {
             loading: SUBMISSIONS_REQUEST,
             item: SUBMISSION
         }),
+
+        ...mapState([ACTIVE_REPORT_CATEGORY]),
 
         batchId () {
             return this.$route.params.id

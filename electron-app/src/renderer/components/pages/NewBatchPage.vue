@@ -124,6 +124,7 @@ export default {
       loading: SUBMISSIONS_REQUEST,
       item: SUBMISSION
     })
+
   },
   methods: {
     countdownArtistList: function (evt) {

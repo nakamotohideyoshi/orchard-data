@@ -19,7 +19,7 @@ include _mixins
                                     // summary
                                     .report-summary
                                         .report-summary__col
-                                            .report-summary__head risk analysis
+                                            .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
                                             .report-summary__text.report-summary__text--red Every Error
                                         .report-summary__label.report-summary__label--red failed
                                         .report-summary__col
@@ -64,7 +64,7 @@ include _mixins
 
 <script>
 import moment from 'moment'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
@@ -72,7 +72,8 @@ import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META
+  FILTERS_META,
+  ACTIVE_REPORT_CATEGORY
 } from '@/constants/types'
 
 export default {
@@ -88,6 +89,7 @@ export default {
       items: FIELDS,
       filters: FILTERS_META
     }),
+    ...mapState([ACTIVE_REPORT_CATEGORY]),
     batchDate () {
       let date = new Date()
 
