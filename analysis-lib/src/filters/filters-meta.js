@@ -271,4 +271,39 @@ module.exports = {
     }
   },
 
+  'filter13': {
+    'orchardDescription': `Part and Volume should be abbreviated to Pt. and Vol.`,
+    'programmerDescription': `
+
+        If the substring ", Part [integer | roman numeral]" exists in a Release
+        Name or Track Title, it is an error.
+
+        If the subtring ", Volume [integer | roman numeral]" exists in a Release
+        Name or Track Title, it is an error.
+
+        If "Pt." or "Vol." matches in a case-insensitive way, but not in a
+        case-sensitive way, it is an error.
+
+        "Pt" and "Vol" without terminating period are errors
+
+    `,
+    'userExplanation': `
+
+      The words Part and Volume must be abbreviated with “Pt.”
+      and “Vol.” See iTunes Style Guide 11.2.
+
+    `,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+
+        The words Part and Volume must be abbreviated with “Pt.”
+        and “Vol.” See iTunes Style Guide 11.2.
+
+      `,
+    }
+  },
+
 };
