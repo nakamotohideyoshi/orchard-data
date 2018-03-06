@@ -18,14 +18,17 @@ const routerLink = {
 };
 
 // register global modal component, similar to what is being done in `src/renderer/main.js`
+const reportSummaryHeader = {
+    name: 'report-summary-header',
+    render: h => h('div')
+}
+
 Vue.use(VModal)
 
 // register mock components
 Vue.component('router-view', routerView);
 Vue.component('router-link', routerLink);
-// TODO: Find a better way to register a dinamically rendered component
-// to prevent avoid (bad) karma warnings
-// Vue.component('router-link', ¿?¿?¿?);
+Vue.component('report-summary-header', reportSummaryHeader);
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)
