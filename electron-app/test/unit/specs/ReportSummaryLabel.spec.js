@@ -1,4 +1,4 @@
-import ReportSummaryLabel from '@/components/ReportSummaryLabel'
+import ReportSummaryLabel from '@/components/sections/ReportSummaryLabel'
 import {shallow} from 'avoriaz'
 
 describe('ReportSummaryLabel.vue', () => {

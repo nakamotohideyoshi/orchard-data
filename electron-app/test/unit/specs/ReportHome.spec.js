@@ -2,8 +2,8 @@ import { mount } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
 import moment from 'moment'
-import ReportSummary from '@/components/pages/ReportSummary'
-import ReportSummaryLabel from '@/components/ReportSummaryLabel'
+import ReportSummary from '@/components/pages/ReportHome'
+
 import {
   SUBMISSION,
   SET_ACTIVE_CATEGORY
@@ -60,12 +60,7 @@ describe('ReportSummary.vue', () => {
       store
     })
   })
-
-  it('should have the correct page title', () => {
-    const label = wrapper.find('.report-summary__text')[0]
-
-    expect(label.text().trim()).to.equal('Report Summary')
-  })
+  
   it('should render correct function', () => {
     expect(typeof wrapper.vm.showOverallRistk).to.equal('function')
     expect(typeof wrapper.vm.showAppleTab).to.equal('function')
@@ -98,14 +93,11 @@ describe('ReportSummary.vue', () => {
 
   it('should render apple tab data from getters', () => {
     const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
-    const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0]
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .apple-tab.is-active')
     const tab = wrapper.contains('.report-container.apple-tab.is-active')
 
-    expect(time.text().trim()).to.equal(parsedTime.trim())
     expect(tabButton).to.equal(true)
     expect(tab).to.equal(true)
-    expect(actions.fetchDataset.calledOnce).to.equal(true)
   })
 
   it('should render custom tab data from getters', () => {
@@ -119,15 +111,9 @@ describe('ReportSummary.vue', () => {
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active')
     const tab = wrapper.contains('.report-container.custom-tab.is-active')
 
-    expect(time.text().trim()).to.equal(parsedTime.trim())
     expect(fileName.text().trim()).to.equal(item.source.split('/')[2])
     expect(tabButton).to.equal(true)
     expect(tab).to.equal(true)
-    expect(actions.fetchDataset.calledOnce).to.equal(true)
-  })
-
-  it('should have a `ReportSummaryLabel` component', () => {
-      expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
   })
 
   it('should have proper text for tabs', () => {
@@ -136,7 +122,7 @@ describe('ReportSummary.vue', () => {
       const custom = wrapper.find('.report__tab.custom-tab ')[0]
 
       expect(overall.text().trim()).to.equal('Overall Risk Assessment')
-      expect(itunes.text().trim()).to.equal('iTunes Style Guide')
+      expect(itunes.text().trim()).to.equal('Apple & Itunes Guidelines')
       expect(custom.text().trim()).to.equal('Custom Parameters')
   })
 

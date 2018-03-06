@@ -1,5 +1,5 @@
 import RowByRowReportPage from '@/components/pages/RowByRowReport'
-import ReportSummaryLabel from '@/components/ReportSummaryLabel'
+import ReportSummaryHeader from '@/components/sections/ReportSummaryHeader'
 import router from '@/router'
 import {shallow} from 'avoriaz'
 import Vuex from 'vuex'
@@ -68,10 +68,5 @@ describe('RowByRowReport.vue', () => {
 
         expect(wrapper.vm.overallStatusMap).to.be.an('object')
     })
-
-    it('should have a `ReportSummaryLabel` component', () => {
-        expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
-    })
-
 
 })

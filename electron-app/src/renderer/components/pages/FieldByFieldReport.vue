@@ -104,8 +104,7 @@ export default {
       return 'N/A'
     },
     ...mapActions([
-      'fetchFields',
-      'fetchDataset'
+      'fetchFields'
     ])
   }
 }
