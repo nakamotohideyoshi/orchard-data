@@ -35,8 +35,7 @@ import { mapGetters, mapState } from 'vuex'
 import {
     SUBMISSION,
     SUBMISSIONS_REQUEST,
-    SUBMISSIONS_FAILURE,
-    ACTIVE_REPORT_CATEGORY
+    SUBMISSIONS_FAILURE
 } from '@/constants/types'
 
 export default {
@@ -63,8 +62,6 @@ export default {
             loading: SUBMISSIONS_REQUEST,
             item: SUBMISSION
         }),
-
-        ...mapState([ACTIVE_REPORT_CATEGORY]),
 
         batchId () {
             return this.$route.params.id

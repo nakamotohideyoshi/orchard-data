@@ -71,12 +71,19 @@ include _mixins
 
 <script>
 import moment from 'moment'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
-  SUBMISSIONS_FAILURE
+  SUBMISSIONS_FAILURE,
+  SET_ACTIVE_CATEGORY
 } from '@/constants/types'
+
+import {
+    CUSTOM_CATEGORY,
+    ITUNES_CATEGORY,
+    OVERALL_CATEGORY
+} from '@/constants/report-category'
 
 export default {
   name: 'dude',
@@ -135,21 +142,26 @@ export default {
     })
   },
   methods: {
+    ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
+
     showOverallRistk: function () {
+      this.setReportCategory(OVERALL_CATEGORY)
       this.overallRiskFlag = true
       this.appleTabFlag = false
       this.customFlag = false
     },
     showAppleTab: function () {
+      this.setReportCategory(ITUNES_CATEGORY)
       this.appleTabFlag = true
       this.overallRiskFlag = false
       this.customFlag = false
     },
     showCustom: function () {
+      this.setReportCategory(CUSTOM_CATEGORY)
       this.customFlag = true
       this.overallRiskFlag = false
       this.appleTabFlag = false
-    }
+    },
   },
   created() {
     if (this.item.status === 3) {

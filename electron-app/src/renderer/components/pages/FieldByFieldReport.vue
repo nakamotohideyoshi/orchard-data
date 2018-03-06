@@ -41,7 +41,6 @@ import {
   FIELDS_REQUEST,
   FIELDS_FAILURE,
   FILTERS_META,
-  ACTIVE_REPORT_CATEGORY,
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
@@ -56,7 +55,6 @@ export default {
       items: FIELDS,
       filters: FILTERS_META
     }),
-    ...mapState([ACTIVE_REPORT_CATEGORY]),
     batchDate () {
       let date = new Date()
 

@@ -16,6 +16,10 @@ export default new Vuex.Store({
     [ACTIVE_REPORT_CATEGORY]: ''
   },
 
+  getters: {
+    [ACTIVE_REPORT_CATEGORY]: (s) => s[ACTIVE_REPORT_CATEGORY]
+  },
+
   mutations: {
     [SET_ACTIVE_CATEGORY] (state, category) {
       state[ACTIVE_REPORT_CATEGORY] = category
