@@ -54,16 +54,7 @@ export default {
       loading: FIELDS_REQUEST,
       items: FIELDS,
       filters: FILTERS_META
-    }),
-    batchDate () {
-      let date = new Date()
-
-      if (this.batchData && this.batchData.batchDate) {
-        date = this.batchData.batchDate
-      }
-
-      return moment(date).format('MM-DD-YYYY. HH:mm')
-    }
+    })
   },
   data () {
     return {
@@ -102,7 +93,8 @@ export default {
       return 'N/A'
     },
     ...mapActions([
-      'fetchFields'
+      'fetchFields',
+      'fetchDataset'
     ])
   }
 }
