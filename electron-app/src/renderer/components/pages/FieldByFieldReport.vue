@@ -21,7 +21,7 @@ include _mixins
                                         .report-summary__col
                                             .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
                                             .report-summary__text.report-summary__text--red Every Error
-                                        .report-summary__label.report-summary__label--red failed
+                                        report-summary-label(:status="item.status")
                                         .report-summary__col
                                             .report-summary__head batch
                                             .report-summary__text {{batchDate}}
@@ -36,7 +36,7 @@ include _mixins
                                                 td Test Data Row ID
                                                 td Description
                                         tbody
-                                            tr(v-for="data in items" v-on:click="show(data)" @before-open="beforeOpen")
+                                            tr(v-for="data in results" v-on:click="show(data)" @before-open="beforeOpen")
                                                 td {{data.id}}
                                                 td {{data.criteria}}
                                                 td {{getFilter(data.criteria)}}
@@ -68,43 +68,42 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
   FILTERS_META,
-  ACTIVE_REPORT_CATEGORY
+  ACTIVE_REPORT_CATEGORY,
+  FIELD_BY_FIELD_REPORT,
+  DATE_FORMAT,
+  SUBMISSION
 } from '@/constants/types'
 
 export default {
   name: 'FieldByFieldReport',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    ReportSummaryLabel
   },
   computed: {
     ...mapGetters({
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
-      items: FIELDS,
-      filters: FILTERS_META
+      filters: FILTERS_META,
+      item: SUBMISSION
     }),
     ...mapState([ACTIVE_REPORT_CATEGORY]),
+    ...mapState({
+      results: state => state.Reports[FIELD_BY_FIELD_REPORT]
+    }),
     batchDate () {
-      let date = new Date()
-
-      if (this.batchData && this.batchData.batchDate) {
-        date = this.batchData.batchDate
-      }
-
-      return moment(date).format('MM-DD-YYYY. HH:mm')
+        return moment(this.item.time).format(DATE_FORMAT)
     }
   },
   data () {
     return {
-      batchData: {
-        batchDate: new Date()
-      },
       detailData: ''
     }
   },
@@ -112,7 +111,7 @@ export default {
     const { id } = this.$route.params
 
     if (id) {
-      this.fetchFields(id)
+      this.fetchFieldByFieldReport({batchId: id})
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
       // is instance of a native type (e.g. Array, Error), let's find a better
@@ -144,9 +143,8 @@ export default {
 
       return ''
     },
-    ...mapActions([
-      'fetchFields'
-    ])
+    ...mapActions(['fetchFieldByFieldReport'])
+
   }
 }
 </script>

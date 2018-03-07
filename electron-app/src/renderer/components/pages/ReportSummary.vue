@@ -32,23 +32,23 @@ include _mixins
 
 
                                     // summary
-                                    .report-container.apple-tab(v-if="appleTabFlag" :class="{ 'is-active': appleTabFlag }")
+                                    .report-container.apple-tab(v-if="appleTabFlag || overallRiskFlag" :class="{ 'is-active': appleTabFlag || overallRiskFlag }")
                                         .report__top
                                             .report__top-col
-                                                .report__top-percent {{(errorPercent * 100).toFixed(2)}} %
+                                                .report__top-percent {{ formattedErrorPercent }}
                                                 .report__top-description Total percent of rows with errors
                                             .report__top-col
                                                 .report__top-stars
-                                                  .success(v-for="data in Math.round((1 - errorPercent) * 5)")
+                                                  .success(v-for="star in goodStarsCount")
                                                     +icon('ico-star-filled')
-                                                  .failed(v-for="data in (5 - Math.round((1 - errorPercent) * 5))")
+                                                  .failed(v-for="star in badStarsCount")
                                                     +icon('ico-star-empty')
                                                 .report__top-description Overall data quality
 
                                         // report view
                                         .report__view
                                             .report__view-title What are the biggest problems with the dataset?
-                                            router-link(:to="'/ErrorByErrorReport'").report__view-link
+                                            router-link(:to="`/ErrorByErrorReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
                                                 span View the test criteria scores
                                         .report__view
@@ -61,7 +61,7 @@ include _mixins
                                             router-link(:to="`/FieldByFieldReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
                                                 span View the field level issues
-                                    .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
+                                    //.report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
                                       .report__view
                                         .report__view-title This page not yet implemented.
                                     .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
@@ -104,6 +104,8 @@ import {
   SUBMISSIONS_FAILURE,
   SET_ACTIVE_CATEGORY
 } from '@/constants/types'
+import {API_URL} from '@/constants/config'
+import axios from 'axios'
 
 import {
     CUSTOM_CATEGORY,
@@ -131,6 +133,7 @@ export default {
       appleTabFlag: true,
       customFlag: false,
       errorPercent: 0,
+      errorScore: 0,
       artistList: '',
       keywordList: '',
       threshold1: '',
@@ -173,6 +176,18 @@ export default {
 
       return ''
     },
+
+    formattedErrorPercent () {
+      return `${(this.errorPercent * 100).toFixed(2)}%`
+    },
+    goodStarsCount () {
+        const MAX_STARS = 5
+        return MAX_STARS - Math.round(this.errorScore)
+
+    },
+    badStarsCount () {
+        return Math.round(this.errorScore)
+    },
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,
       loading: SUBMISSIONS_REQUEST,
@@ -181,6 +196,12 @@ export default {
   },
   methods: {
     ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
+    async fetchReportSummary () {
+      const summary = (await axios.get(`${API_URL}report-summary/${this.id}`)).data
+
+      this.errorPercent = summary[0].error_percent
+      this.errorScore = summary[0].error_score
+    },
 
     showOverallRistk: function () {
       this.setReportCategory(OVERALL_CATEGORY)
@@ -204,6 +225,8 @@ export default {
   props: ['id'],
   async created () {
     this.showAppleTab()
+
+    this.fetchReportSummary()
     await this.$store.dispatch('fetchDataset', this.id)
 
     if (this.status === 3) {
