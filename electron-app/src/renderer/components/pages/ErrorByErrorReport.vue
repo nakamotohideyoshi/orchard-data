@@ -30,7 +30,7 @@ include _mixins
                                             .report-summary__text {{ formattedDate }}
                                         .report-summary__col
                                             .report-summary__head download
-                                            a(href="#").report-summary__text
+                                            a(:href="downloadLink", download).report-summary__text
                                                 +icon('ico-download')
 
 
@@ -80,6 +80,7 @@ export default {
 
   computed: {
     ...mapGetters({
+      downloadLinkFunc: 'errorByErrorDownloadLink',
       error: SUBMISSIONS_FAILURE,
       loading: SUBMISSIONS_REQUEST,
       item: SUBMISSION
@@ -90,6 +91,10 @@ export default {
     }),
     batchId () {
       return this.$route.params.id
+    },
+
+    downloadLink () {
+      return this.downloadLinkFunc(this.batchId)
     },
 
     formattedDate () {

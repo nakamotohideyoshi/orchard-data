@@ -22,6 +22,25 @@ const categoryMap = {
 }
 
 export default {
+    getters: {
+        errorByErrorDownloadLink (state, getters, rootState) {
+            return function (batchId) {
+                return `${API_URL}error-by-error/${categoryMap[rootState.ACTIVE_REPORT_CATEGORY]}/${batchId}.tsv`
+            }
+        },
+
+        rowByRowDownloadLink (state, getters, rootState) {
+            return function (batchId) {
+                return `${API_URL}row-by-row/${categoryMap[rootState.ACTIVE_REPORT_CATEGORY]}/${batchId}.tsv`
+            }
+        },
+
+        fieldByFieldDownloadLink (state, getters, rootState) {
+            return function (batchId) {
+                return `${API_URL}field-by-field/${categoryMap[rootState.ACTIVE_REPORT_CATEGORY]}/${batchId}.tsv`
+            }
+        }
+    },
     state: {
         [ROW_BY_ROW_REPORT]: [],
         [FIELD_BY_FIELD_REPORT]: [],

@@ -22,6 +22,7 @@ describe('FieldByFieldReport.vue', () => {
             // error: () => FIELDS_FAILURE,
             // loading: () => FIELDS_REQUEST,
             // items: () => FIELDS,
+            fieldByFieldDownloadLink: function () { return function () { return 'link' } },
             [SUBMISSION]: () => ({ status: 1, time: 1519789653 }),
             [`${FIELDS}`]: () => [],
             [`${FIELDS_FAILURE}`]: () => ({}),
@@ -52,15 +53,20 @@ describe('FieldByFieldReport.vue', () => {
             name: 'FieldByFieldReport',
             params: {}
         }
-    })
 
-    it('should render correct function', () => {
         wrapper = shallow(FieldByFieldReport, {
             router,
             store,
             globals: { $route: $validRoute }
         })
+    })
 
+    it('should have a computed property called `downloadLink`', () => {
+        expect(wrapper.vm.downloadLink).to.be.a('string')
+        expect(wrapper.vm.downloadLinkFunc).to.be.a('function')
+
+    })
+    it('should render correct function', () => {
         expect(typeof wrapper.vm.show).to.equal('function')
         expect(typeof wrapper.vm.hide).to.equal('function')
         expect(typeof wrapper.vm.beforeOpen).to.equal('function')
@@ -69,41 +75,29 @@ describe('FieldByFieldReport.vue', () => {
     })
 
     it('should have the correct report title', () => {
-        wrapper = shallow(FieldByFieldReport, {
-            router,
-            store,
-            globals: { $route: $validRoute }
-        })
         const label = wrapper.find('.report-summary__title')[0]
 
         expect(label.text().trim()).to.equal('Every Error')
     })
 
     it('should have a `ReportSummaryLabel` component', () => {
-        wrapper = shallow(FieldByFieldReport, {
-            router,
-            store,
-            globals: { $route: $validRoute }
-        })
-
         expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
     })
 
     it('should verify vuex actions were executed on init', () => {
-        wrapper = shallow(FieldByFieldReport, {
-            router,
-            store,
-            globals: { $route: $validRoute }
-        })
         wrapper.update()
 
         expect(actions.fetchFieldByFieldReport.calledOnce).to.equal(true)
     })
 
     it('should execute no vuex actions on init if no id is passed in the $route', async () => {
+        actions = {
+            fetchFieldByFieldReport: sinon.stub()
+        }
         wrapper = shallow(FieldByFieldReport, {
             router,
             store,
+            getters,
             globals: { $route: $invalidRoute }
         })
         // wrapper.update()

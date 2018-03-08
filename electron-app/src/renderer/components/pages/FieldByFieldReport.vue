@@ -27,7 +27,7 @@ include _mixins
                                             .report-summary__text {{batchDate}}
                                         .report-summary__col
                                             .report-summary__head download
-                                            a(href="../../../../tests/data/test.tsv" download).report-summary__text
+                                            a(:href="downloadLink", download).report-summary__text
                                                 +icon('ico-download')
                                     table.p-table.p-table--subm(js-stacktable)
                                         thead
@@ -89,6 +89,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      downloadLinkFunc: 'fieldByFieldDownloadLink',
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
       filters: FILTERS_META,
@@ -100,6 +101,14 @@ export default {
     }),
     batchDate () {
         return moment(this.item.time).format(DATE_FORMAT)
+    },
+
+    batchId () {
+      return this.$route.params.id
+    },
+
+    downloadLink () {
+      return this.downloadLinkFunc(this.batchId)
     }
   },
   data () {
@@ -108,10 +117,9 @@ export default {
     }
   },
   created: function () {
-    const { id } = this.$route.params
 
-    if (id) {
-      this.fetchFieldByFieldReport({batchId: id})
+    if (this.batchId) {
+      this.fetchFieldByFieldReport({batchId: this.batchId})
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
       // is instance of a native type (e.g. Array, Error), let's find a better
