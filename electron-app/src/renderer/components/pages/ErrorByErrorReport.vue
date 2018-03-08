@@ -20,7 +20,7 @@ include _mixins
                                     .report-summary
                                         .report-summary__col
                                             .report-summary__head {{ ACTIVE_REPORT_CATEGORY }}
-                                            .report-summary__text.report-summary__text--red Errors Per Row
+                                            .report-summary__text.report-summary__title.report-summary__text--red Most Common Errors
                                         report-summary-label(:status="item.status")
                                         .report-summary__col
                                             .report-summary__head batch id
