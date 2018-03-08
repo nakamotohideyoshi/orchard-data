@@ -31,61 +31,54 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
 });
 
 // Sava TSV and run test cases
-router.post('/dataset', (req, res) => {
+router.post('/dataset', async(req, res) => {
 
-  let data = req.body;
-  let datasetId;
-  let report;
+  const data = req.body;
 
-  console.log("Running filters");
+  try {
 
-  let dbPromise = dbInterface.saveDatasetMeta(data);
-  dbPromise
-    .then(result => {
-      datasetId = result.lastID;
-      return dbInterface.saveTsvIntoDB(data.source, datasetId);
-    })
-    .then(() => analysisLibModule.runAllFilters(datasetId))
-    .then(rep => {
-      report = rep;
-      return report.calcFieldByFieldReportAll();
-    })
-    .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
-    .then(() => report.calcBatchResultsReport())
-    .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
-    .then(() => console.log("Finished Reports"))
-    .then(() => res.status(201).json({ status: "OK", datasetId: datasetId }))
-    .catch(err => {
+    console.log("\n***** Saving Dataset Metadata *****");
 
-      res.status(500).json({ 'title': err.name, 'detail': err.message });
+    const { datasetId } = await dbInterface.saveDatasetMeta(data);
 
-      /*
-      switch(err.thrower) {
+    console.log("***** Done *****\n");
+    console.log("***** Saving Tsv File *****");
 
-        case 'saveTsvIntoDB':
+    await dbInterface.saveTsvIntoDB(data.source, datasetId);
 
-          let parsedError = {
-            "thrower": err.filename || "db-interface: saveTsvIntoDB",
-            "message": err.error.message,
-            "row_id": err.row_id || -1
-          };
+    console.log("***** Done *****\n");
+    console.log("***** Running all Filters *****");
 
-          // Update status and logs error on a table
-          dbInterface.updateDatasetStatus(datasetId, dbInterface.dbStatus.FAIL)
-            .then(() => dbInterface.logErrorIntoDB(datasetId, parsedError))
-            .then(() => res.status(500).json(parsedError))
-            .catch(err => res.status(500).json(err)); // Let's merge errors (err2 and err)
+    const report = await analysisLibModule.runAllFilters(datasetId);
 
-          break;
+    console.log("***** Done *****\n");
+    console.log("***** Calculating Field by Field Report *****");
 
-        default:
+    await report.calcFieldByFieldReportAll();
 
-          break;
+    console.log("***** Done *****\n");
+    console.log("***** Saving Field By Field Report *****");
 
-      }
-      */
+    await dbInterface.saveFieldByFieldReport(report.FBFReport);
 
-    });
+    console.log("***** Saved *****\n");
+    console.log("***** Calculating Batch Results Report *****");
+
+    await report.calcBatchResultsReport();
+
+    console.log("***** Done *****\n");
+    console.log("***** Saving Batch Results Report *****");
+
+    await dbInterface.saveBatchResultsReport(report.BRReport);
+
+    console.log("***** Done *****\n");
+    console.log("***** FINISHED *****\n")
+
+    res.status(201).json({ status: "OK", datasetId: datasetId })
+
+  }
+
+  catch(err) { res.status(500).json({ 'title': err.name, 'detail': err.message }); }
 
 });
 

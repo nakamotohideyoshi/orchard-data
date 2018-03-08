@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(datasetId) {
+module.exports = async function(datasetId) {
 
   const Promise = require('bluebird')
 
@@ -28,79 +28,56 @@ module.exports = function(datasetId) {
   // Main table
   const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
 
-  // total no of rows the filter is going to be applied
-  let noOfRows = 0;
+  // Loads dataset
+  const dataset = await dbInterface.fetchTsvDataset(datasetId);
+  const noOfRows = dataset.length;
 
-  const dbPromise = dbInterface.fetchTsvDataset(datasetId)
-    .then(dataset => {
+  if(noOfRows === 0) { throw new Error(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`); }
 
-      return new Promise((resolve, reject) => {
+  // stashes no of rows
+  report.saveNoOfRows(noOfRows);
 
-        try {
+  // Filters that can be run on a row basis
+  const rowFilters = Object.keys(filtersMeta)
+    .filter(filterId => filtersMeta[filterId]['basis'] === 'row');
 
-          noOfRows = dataset.length;
+  // Filters that must be run against an entire dataset
+  const datasetFilters = Object.keys(filtersMeta)
+    .filter(filterId => filtersMeta[filterId]['basis'] === 'dataset');
 
-          const rowFilters = Object.keys(filtersMeta)
-            .filter(filterId => filtersMeta[filterId]['basis'] === 'row');
+  // Waits for all filters to finish
+  await new Promise((resolve, reject) => {
 
-          const datasetFilters = Object.keys(filtersMeta)
-            .filter(filterId => filtersMeta[filterId]['basis'] === 'dataset');
+    for(let filter of rowFilters) {
 
-          rowFilters.forEach(filter => {
+      console.log(`Running: ${filter}`)
+      report.addFilter(filter);
 
-            // For each row run filter
-            dataset.forEach((row, idx) => {
+      for(let idx in dataset) {
 
-              report.addFilter(filter);
-              const occurrence = filters[filter](row, idx + 1, report);
-              if(occurrence){ report.addOccurrence(filter, occurrence); }
+        idx = parseInt(idx);
+        const row = dataset[idx];
 
-            });
+        filters[filter](row, idx + 1, report);
+        console.log(report['filters']['filter1'])
 
-          });
+      };
 
-          datasetFilters.forEach(filter => {
+    }
 
-            report.addFilter(filter);
-            const occurrences = filters[filter](dataset);
+    for(let filter of datasetFilters) {
 
-            occurrences.forEach(occurrence => {
-              if(occurrence){ report.addOccurrence(filter, occurrence); }
-            });
+      report.addFilter(filter);
+      filters[filter](dataset, report);
 
-          });
+    };
 
-          resolve();
+    resolve();
 
-        }
+  });
 
-        catch(err) { console.log(err); reject(err); }
+  console.log(report['filters']['filter1'])
 
-      });
-
-    })
-    .then(() => {
-
-      return new Promise((resolve, reject) => {
-
-        if(noOfRows === 0) {
-
-          reject(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`);
-
-        }
-
-        else {
-
-          // Stashes total number of rows for analysis
-          report.saveNoOfRows(noOfRows);
-          resolve(report);
-
-        }
-
-      });
-
-    });
-
-  return dbPromise;
+  return report;
 
 }
