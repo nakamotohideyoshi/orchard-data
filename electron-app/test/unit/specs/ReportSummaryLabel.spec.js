@@ -64,9 +64,7 @@ describe('ReportSummaryLabel.vue', () => {
                 status: -1
             }
         })
-
-        // stubbed out to fix breaking build
-        // expect(wrapper.vm.colorClass).to.be.undefined()
+        expect(wrapper.vm.colorClass).to.be.undefined
         expect(wrapper.text()).to.be.equal('')
     })
 
