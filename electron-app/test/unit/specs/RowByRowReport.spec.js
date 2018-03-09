@@ -25,6 +25,7 @@ describe('RowByRowReport.vue', () => {
             // error: () => SUBMISSIONS_FAILURE,
             // loading: () => SUBMISSIONS_REQUEST,
             // items: () => SUBMISSION,
+            rowByRowDownloadLink: function () { return function () { return 'link' } },
             [`${SUBMISSIONS_FAILURE}`]: () => [],
             [`${SUBMISSIONS_REQUEST}`]: () => ({}),
             [`${SUBMISSION}`]: () => ({status: 1, time: 1519789653})
@@ -59,7 +60,10 @@ describe('RowByRowReport.vue', () => {
             globals: { $route: $validRoute }
         })
     })
-    
+
+    it('should have a computed property called `downloadLink`', () => {
+        expect(wrapper.vm.downloadLink).to.be.a('string')
+    })
     it('should have a computed property called `batchId`', () => {
         expect(wrapper.vm.batchId).to.be.a('number')
     })
