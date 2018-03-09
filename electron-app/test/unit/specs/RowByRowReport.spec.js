@@ -110,4 +110,10 @@ describe('RowByRowReport.vue', () => {
         expect(actions.fetchRowByRowReport.calledOnce).to.equal(false)
     })
 
+    it('should have the proper report title', () => {
+        const title = wrapper.find('.report-summary__title')[0]
+
+        expect(title.text().trim()).to.equal('Errors Per Row')
+    })
+
 })

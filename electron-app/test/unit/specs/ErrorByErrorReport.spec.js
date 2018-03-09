@@ -90,4 +90,10 @@ describe('ErrorByErrorReport.vue', () => {
 
         expect(actions.fetchErrorByErrorReport.calledOnce).to.equal(false)
     })
+
+    it('should have the proper report title', () => {
+        const title = wrapper.find('.report-summary__title')[0]
+
+        expect(title.text().trim()).to.equal('Most Common Errors')
+    })
 })

@@ -74,7 +74,7 @@ describe('FieldByFieldReport.vue', () => {
             store,
             globals: { $route: $validRoute }
         })
-        const label = wrapper.find('.report-summary__text--red')[0]
+        const label = wrapper.find('.report-summary__title')[0]
 
         expect(label.text().trim()).to.equal('Every Error')
     })

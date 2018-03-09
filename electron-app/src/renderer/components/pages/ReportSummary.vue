@@ -50,17 +50,17 @@ include _mixins
                                             .report__view-title What are the biggest problems with the dataset?
                                             router-link(:to="`/ErrorByErrorReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
-                                                span View the test criteria scores
+                                                span View most common errors
                                         .report__view
                                             .report__view-title What is the sum of problems in each row?
                                             router-link(:to="`/RowByRowReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
-                                                span View the input row scores
+                                                span Errors Per Row
                                         .report__view
                                             .report__view-title Which fields in the dataset failed?
                                             router-link(:to="`/FieldByFieldReport/${itemid}`").report__view-link
                                                 +icon('ico-document')
-                                                span View the field level issues
+                                                span View Every Error
                                     //.report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
                                       .report__view
                                         .report__view-title This page not yet implemented.
