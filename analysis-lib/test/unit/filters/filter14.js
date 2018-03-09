@@ -4,7 +4,7 @@ const _ = require('lodash');
 const path = require('path');
 const validator = require('is-my-json-valid');
 
-const filterId = 'filter13';
+const filterId = 'filter14';
 
 const mocks = require(`../../../mocks/filters/${filterId}`);
 
@@ -16,34 +16,56 @@ const defaultExplanationId = 'default';
 
 const reportModule = require('../../../src/scripts/report-tool');
 
-describe(`should test ${filterId}`, () => {
+describe(`should test ${filterId}`, function() {
 
   let report = new reportModule();
   report.init();
   report.addFilter(filterId);
+  this.timeout(10000);
 
-  it('should not report - valid names', () => {
+  it('should not report - valid names', async() => {
 
     const mock = mocks['valid'];
 
-    mock.forEach((row, idx) => {
+    for(let idx in mock) {
 
-      let occurrence = filter(row, idx, report);
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
       assert.equal(occurrence, false);
 
-    });
+    };
 
   });
 
-  it('should report - compound artists name', () => {
+  it('should not report - names not on musicbrainz', async() => {
+
+    const mock = mocks['nameNotOnMusicbrainz'];
+
+    for(let idx in mock) {
+
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
+      assert.equal(occurrence, false);
+
+    };
+
+  });
+
+  it('should report - compound artists name', async() => {
 
     const mock = mocks['invalid'];
 
-    mock.forEach((row, idx) => {
+    for(let idx in mock) {
 
-      let occurrence = filter(row, idx, report);
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
 
-      switch(idx) {
+      switch(occurrence.row_id) {
 
         case 1:
           assert.deepEqual(occurrence.field, ['release_artists_primary_artist', 'track_artist'])
@@ -61,9 +83,8 @@ describe(`should test ${filterId}`, () => {
           break;
 
       }
-      assert.equal(occurrence, false);
 
-    });
+    };
 
   });
 

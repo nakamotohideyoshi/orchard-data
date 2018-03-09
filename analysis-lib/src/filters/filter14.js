@@ -1,37 +1,19 @@
 // filter: Part and Volume should be abbreviated to Pt. and Vol.
+'use strict';
 
-module.exports = function(row, idx, report) {
-  'use strict';
+module.exports = async function(row, idx, report) {
 
-  const removeDiacritics = require('../scripts/remove-diacritics');
+  const mb = require('../scripts/musicbrainz-interface');
+
   const parenthesesModule = require('../scripts/parentheses-module');
 
-  const filterName = 'filter13';
+  const filterName = 'filter14';
   const filterMeta = require('./filters-meta')[filterName];
 
   const defaultErrorType = filterMeta['type'];
   const defaultExplanationId = 'default';
 
-  const fields = ['release_name', 'track_name'];
-
-  const trackName = removeDiacritics(row['track_name']).trim().toLowerCase();
-
-  const patterns = {
-    'valid': [
-      /\bVol\. ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/g,
-      /\bPt\. ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/g,
-    ],
-
-    'invalidAbbreviations': [
-      /\bvol ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
-      /\bpt ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi
-    ],
-
-    'invalidStrings': [
-      /volume ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
-      /part ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
-    ],
-  };
+  const fields = ['release_artists_primary_artist', 'track_artist'];
 
   const occurrence = {
     'row_id': idx,
@@ -41,57 +23,82 @@ module.exports = function(row, idx, report) {
     'error_type': [],
   };
 
-  fields.forEach(field => {
+  const result = await new Promise(async (resolve, reject) => {
 
-    let value = row[field];
+    // new syntax for the awesome async/await keywords!
+    for(let field of fields) {
 
-    if(value) {
+      let value = row[field];
 
-      value = removeDiacritics(value).trim();
-      let error = false;
+      let divisorsCount = 0;
+      let divisor;
 
-      // volume or part followed by a number appears
-      patterns['invalidStrings'].forEach(pattern => {
-        if(value.match(pattern)) { error = true; }
-      });
+      // check for &
+      if(value.match(/\&/g)) {
+        divisor = '&';
+        divisorsCount += value.match(/\&/g).length;
+      }
+      // check for +
+      if(value.match(/\+/g))  {
+        divisor = '+';
+        divisorsCount += value.match(/\+/g).length;
+      }
 
-      // if theres already an error, we don't need to test other cases
-      if(!error) {
+      // check for 'and'
+      if(value.match(/\band\b/gi))  {
+        divisor = 'and';
+        divisorsCount += value.match(/\band\b/gi).length;
+      }
 
-        patterns['invalidAbbreviations'].forEach(invalidAbbr => {
+      // only one occurrence of '&', '+' or 'and'
+      if(value && divisorsCount === 1) {
 
-          // tested for vol or pt
-          if(value.match(invalidAbbr)) {
+        let artists = await mb.searchArtists(value);
 
-            // if this doesn't change, then it's an error
-            error = true;
+        let match = mb.checkForArtistInMB(value, artists);
 
-            // tests for a period after abbreviation
-            patterns['valid'].forEach(validPattern => {
-              if(value.match(validPattern)) { error = false; }
-            });
+        // value not in musicbrainz db
+        if(!match) {
+
+          // splits string by the divisor and check for each occurrence
+          const valueArtists = value.split(divisor);
+
+          // if this doesn't change, then there's an error
+          match = true;
+
+          for(let i = 0; i < valueArtists.length; i++) {
+
+            let artist = valueArtists[i];
+
+            // One of those artists is not in the list
+            if(!mb.checkForArtistInMB(artist, artists)) {
+              match = false;
+              break;
+            };
 
           }
 
-        });
+          // both components were found
+          if(match) {
+
+            occurrence.field.push(field);
+            occurrence.value.push(row[field]);
+            occurrence.explanation_id.push(defaultExplanationId);
+            occurrence.error_type.push(defaultErrorType);
+
+          }
+
+        }
 
       }
 
-      if(error) {
-        occurrence.field.push(field);
-        occurrence.value.push(row[field]);
-        occurrence.explanation_id.push(defaultExplanationId);
-        occurrence.error_type.push(defaultErrorType);
-      }
+    };
 
-    }
+    if(occurrence.field.length === 0) { resolve(false); }
+    else { resolve(occurrence); }
 
   });
 
-  // nothing occurred
-  if(occurrence.field.length === 0) { return false; }
-
-
-  else { return occurrence; }
+  return result;
 
 };
