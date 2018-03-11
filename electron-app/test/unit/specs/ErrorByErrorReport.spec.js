@@ -1,17 +1,12 @@
-import RowByRowReportPage from '@/components/pages/RowByRowReport'
-import ReportSummaryHeader from '@/components/sections/ReportSummaryHeader'
+import ErrorByErrorReportPage from '@/components/pages/ErrorByErrorReport'
+import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import router from '@/router'
-import {shallow} from 'avoriaz'
+import { shallow } from 'avoriaz'
 import sinon from 'sinon'
 import Vuex from 'vuex'
-import {
-    SUBMISSIONS_FAILURE,
-    SUBMISSIONS_REQUEST,
-    SUBMISSION,
-    ROW_BY_ROW_REPORT
-} from '@/constants/types'
+import { SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST, SUBMISSION, ERROR_BY_ERROR_REPORT } from '@/constants/types'
 
-describe('RowByRowReport.vue', () => {
+describe('ErrorByErrorReport.vue', () => {
     let wrapper
     let store
     let getters
@@ -22,30 +17,26 @@ describe('RowByRowReport.vue', () => {
 
     beforeEach(() => {
         getters = {
-            // error: () => SUBMISSIONS_FAILURE,
-            // loading: () => SUBMISSIONS_REQUEST,
-            // items: () => SUBMISSION,
-            rowByRowDownloadLink: function () { return function () { return 'link' } },
+            errorByErrorDownloadLink: function () { return function () { return 'link' } },
             [`${SUBMISSIONS_FAILURE}`]: () => [],
             [`${SUBMISSIONS_REQUEST}`]: () => ({}),
-            [`${SUBMISSION}`]: () => ({status: 1, time: 1519789653})
+            [`${SUBMISSION}`]: () => ({ status: 1, time: 1519789653 })
         }
 
-        state = { Reports: { [ROW_BY_ROW_REPORT]: [] } }
+        state = { Reports: { [ERROR_BY_ERROR_REPORT]: [] } }
 
-        actions = {fetchRowByRowReport: sinon.stub()}
+        actions = { fetchErrorByErrorReport: sinon.stub() }
 
         $validRoute = {
-            name: 'RowByRowReport',
+            name: 'ErrorByErrorReport',
             params: {
                 id: 123
             }
         }
 
         $invalidRoute = {
-            name: 'RowByRowReport',
-            params: {
-            }
+            name: 'ErrorByErrorReport',
+            params: {}
         }
 
         store = new Vuex.Store({
@@ -54,7 +45,7 @@ describe('RowByRowReport.vue', () => {
             actions
         })
 
-        wrapper = shallow(RowByRowReportPage, {
+        wrapper = shallow(ErrorByErrorReportPage, {
             router,
             store,
             globals: { $route: $validRoute }
@@ -84,14 +75,29 @@ describe('RowByRowReport.vue', () => {
         expect(wrapper.vm.results).to.be.an('array')
     })
 
-    it('should have a data property to map status messages', () => {
-        wrapper = shallow(RowByRowReportPage, {
-            router,
-            store,
-            globals: { $route: $validRoute }
-        })
-
-        expect(wrapper.vm.overallStatusMap).to.be.an('object')
+    it('should have a `ReportSummaryLabel` component', () => {
+        expect(wrapper.contains(ReportSummaryLabel)).to.equal(true)
     })
 
+    it('should trigger a vuex actions on init', () => {
+        wrapper.update()
+
+        expect(actions.fetchErrorByErrorReport.calledOnce).to.equal(true)
+    })
+
+    it('should NOT trigger a vuex actions on init if no id is passed in the $route', async () => {
+        wrapper = shallow(ErrorByErrorReportPage, {
+            router,
+            store,
+            globals: { $route: $invalidRoute }
+        })
+
+        expect(actions.fetchErrorByErrorReport.calledOnce).to.equal(false)
+    })
+
+    it('should have the proper report title', () => {
+        const title = wrapper.find('.report-summary__title')[0]
+
+        expect(title.text().trim()).to.equal('Most Common Errors')
+    })
 })

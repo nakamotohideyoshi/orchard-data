@@ -36,6 +36,7 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import {
   FIELDS,
   FIELDS_REQUEST,
@@ -50,6 +51,7 @@ export default {
   name: 'FieldByFieldReport',
   computed: {
     ...mapGetters({
+      downloadLinkFunc: 'fieldByFieldDownloadLink',
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
       items: FIELDS,
@@ -62,9 +64,9 @@ export default {
     }
   },
   created: function () {
-    const { id } = this.$route.params
 
     if (id) {
+      this.fetchDataset(id) // We need to remove this
       this.fetchFields(id)
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object

@@ -41,6 +41,8 @@ import {
   SUBMISSIONS_FAILURE,
   ACTIVE_REPORT_CATEGORY
 } from '@/constants/types'
+import {API_URL} from '@/constants/config'
+import axios from 'axios'
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'

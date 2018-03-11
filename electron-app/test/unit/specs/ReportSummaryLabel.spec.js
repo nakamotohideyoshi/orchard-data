@@ -64,7 +64,6 @@ describe('ReportSummaryLabel.vue', () => {
                 status: -1
             }
         })
-
         expect(wrapper.vm.colorClass).to.be.undefined
         expect(wrapper.text()).to.be.equal('')
     })
