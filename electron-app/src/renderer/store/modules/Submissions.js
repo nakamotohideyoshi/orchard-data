@@ -162,8 +162,7 @@ const actions = {
         }
       })
       .then((res) => {
-        // Still think we should have some
-        commit(FIELDS_REQUEST, false)
+        // TODO: Fix API response to show actual error
         if (res.data[0]) {
           commit(FIELDS, res.data)
         } else {
@@ -171,8 +170,10 @@ const actions = {
         }
       })
       .catch((e) => {
-        commit(FIELDS_REQUEST, false)
         commit(FIELDS_FAILURE, e)
+      })
+      .finally(() => {
+        commit(FIELDS_REQUEST, false)
       })
   },
   fetchErrors ({ commit }, id) {

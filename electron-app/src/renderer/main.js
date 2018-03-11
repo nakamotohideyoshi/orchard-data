@@ -6,8 +6,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 import ReportSummaryHeader from '@/components/sections/ReportSummaryHeader'
+import EmptyState from '@/components/sections/EmptyState'
 
-Vue.use(VModal)
+Vue.use(VModal, { dynamic: true })
 // Vue.use(VModal, { dialog: true })
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
@@ -18,6 +19,7 @@ export const eventHub = new Vue()
 
 // Register global components
 Vue.component('report-summary-header', ReportSummaryHeader)
+Vue.component('empty-state', EmptyState)
 
 /* eslint-disable no-new */
 new Vue({

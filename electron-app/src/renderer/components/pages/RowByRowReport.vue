@@ -2,7 +2,7 @@
 include _mixins
 // table
 div
-    table.p-table.p-table--full(js-stacktable)
+    table.p-table.p-table--full(js-stacktable v-if="results.length")
         thead
             tr
                 td #
@@ -16,11 +16,17 @@ div
                 td {{ result.errors }}
                 td {{ result.warnings }}
                 td {{ overallStatusMap[result.grade] }}
+    
 
-
-    .p-container__more
+    .p-container__more(v-if="results.length")
         a(href="#" js-load-more).btn.btn-more
             span Load more
+
+    empty-state(
+        v-if="!loading && !results.length && error"
+        title="No rows found"
+        :message="error.message"
+    )
 </template>
 
 <script>
@@ -93,7 +99,3 @@ export default {
     }
 }
 </script>
-
-<style lang="sass" scoped>
-    @import "../../assets/styles/app.sass";
-</style>

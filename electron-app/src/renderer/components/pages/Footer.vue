@@ -33,7 +33,3 @@ footer.footer(js-reveal-footer)
 	  }
 	}
 </script>
-
-<style lang="sass" scoped>
-@import "../../assets/styles/app.sass";
-</style>
