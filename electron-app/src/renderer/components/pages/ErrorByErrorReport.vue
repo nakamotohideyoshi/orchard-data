@@ -62,12 +62,12 @@ import AppFooter from './Footer.vue'
 import moment from 'moment'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import {
-    ACTIVE_REPORT_CATEGORY,
-    ERROR_BY_ERROR_REPORT,
-    SUBMISSIONS_FAILURE,
-    SUBMISSIONS_REQUEST,
-    SUBMISSION,
-    DATE_FORMAT
+  ACTIVE_REPORT_CATEGORY,
+  ERROR_BY_ERROR_REPORT,
+  SUBMISSIONS_FAILURE,
+  SUBMISSIONS_REQUEST,
+  SUBMISSION,
+  DATE_FORMAT
 } from '@/constants/types'
 
 export default {
@@ -87,7 +87,7 @@ export default {
     }),
     ...mapState([ACTIVE_REPORT_CATEGORY]),
     ...mapState({
-        results: state => state.Reports[ERROR_BY_ERROR_REPORT]
+      results: state => state.Reports[ERROR_BY_ERROR_REPORT]
     }),
     batchId () {
       return this.$route.params.id
@@ -103,16 +103,16 @@ export default {
   },
 
   created () {
-      this.fetchReport()
+    this.fetchReport()
   },
   methods: {
-      ...mapActions(['fetchErrorByErrorReport']),
-      async fetchReport () {
-          await this.fetchErrorByErrorReport({batchId: this.batchId})
-      },
-      goBack () {
-          this.$router.go(-1)
-      }
+    ...mapActions(['fetchErrorByErrorReport']),
+    async fetchReport () {
+      await this.fetchErrorByErrorReport({batchId: this.batchId})
+    },
+    goBack () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

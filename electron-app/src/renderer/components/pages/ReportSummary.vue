@@ -108,9 +108,9 @@ import {API_URL} from '@/constants/config'
 import axios from 'axios'
 
 import {
-    CUSTOM_CATEGORY,
-    ITUNES_CATEGORY,
-    OVERALL_CATEGORY
+  CUSTOM_CATEGORY,
+  ITUNES_CATEGORY,
+  OVERALL_CATEGORY
 } from '@/constants/report-category'
 
 import AppHeader from './Header.vue'
@@ -181,12 +181,11 @@ export default {
       return `${(this.errorPercent * 100).toFixed(2)}%`
     },
     goodStarsCount () {
-        const MAX_STARS = 5
-        return MAX_STARS - Math.round(this.errorScore)
-
+      const MAX_STARS = 5
+      return MAX_STARS - Math.round(this.errorScore)
     },
     badStarsCount () {
-        return Math.round(this.errorScore)
+      return Math.round(this.errorScore)
     },
     ...mapGetters({
       error: SUBMISSIONS_FAILURE,
@@ -216,7 +215,7 @@ export default {
       this.customFlag = false
     },
     showCustom: function () {
-        this.setReportCategory(CUSTOM_CATEGORY)
+      this.setReportCategory(CUSTOM_CATEGORY)
       this.customFlag = true
       this.overallRiskFlag = false
       this.appleTabFlag = false

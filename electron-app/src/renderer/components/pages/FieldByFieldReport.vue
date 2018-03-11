@@ -70,7 +70,6 @@ import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import {
-  FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
   FILTERS_META,
@@ -100,7 +99,7 @@ export default {
       results: state => state.Reports[FIELD_BY_FIELD_REPORT]
     }),
     batchDate () {
-        return moment(this.item.time).format(DATE_FORMAT)
+      return moment(this.item.time).format(DATE_FORMAT)
     },
 
     batchId () {
@@ -117,7 +116,6 @@ export default {
     }
   },
   created: function () {
-
     if (this.batchId) {
       this.fetchFieldByFieldReport({batchId: this.batchId})
     } else {

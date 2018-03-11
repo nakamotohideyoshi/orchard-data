@@ -3,9 +3,9 @@ import NewBatchPage from '@/components/pages/NewBatchPage'
 import router from '../../../src/renderer/router'
 import Vuex from 'vuex'
 import {
-    SUBMISSION,
-    SUBMISSIONS_REQUEST,
-    SUBMISSIONS_FAILURE
+  SUBMISSION,
+  SUBMISSIONS_REQUEST,
+  SUBMISSIONS_FAILURE
 } from '@/constants/types'
 
 describe('NewBatchPage.vue', () => {
@@ -14,17 +14,17 @@ describe('NewBatchPage.vue', () => {
   let getters
 
   beforeEach(() => {
-      getters = {
-          [SUBMISSIONS_FAILURE]: () => ({ response: { data: { message: 'test' } } }),
-          [SUBMISSIONS_REQUEST]: () => ({}),
-          [SUBMISSION]: () => ({status: 1, time: 1519789653})
-      }
+    getters = {
+      [SUBMISSIONS_FAILURE]: () => ({ response: { data: { message: 'test' } } }),
+      [SUBMISSIONS_REQUEST]: () => ({}),
+      [SUBMISSION]: () => ({status: 1, time: 1519789653})
+    }
 
-      store = new Vuex.Store({
-          getters
-      })
+    store = new Vuex.Store({
+      getters
+    })
 
-      wrapper = shallow(NewBatchPage, {
+    wrapper = shallow(NewBatchPage, {
       router,
       store
     })

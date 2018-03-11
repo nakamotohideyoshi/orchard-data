@@ -36,9 +36,9 @@ include _mixins
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 import {
-    CUSTOM_CATEGORY,
-    ITUNES_CATEGORY,
-    OVERALL_CATEGORY
+  CUSTOM_CATEGORY,
+  ITUNES_CATEGORY,
+  OVERALL_CATEGORY
 } from '@/constants/report-category'
 
 export default {
@@ -49,11 +49,11 @@ export default {
   },
 
   data () {
-      return {
-          categoryOverallText: OVERALL_CATEGORY,
-          categoryItunesText: ITUNES_CATEGORY,
-          categoryCustomText: CUSTOM_CATEGORY,
-      }
+    return {
+      categoryOverallText: OVERALL_CATEGORY,
+      categoryItunesText: ITUNES_CATEGORY,
+      categoryCustomText: CUSTOM_CATEGORY
+    }
   },
 
   methods: {

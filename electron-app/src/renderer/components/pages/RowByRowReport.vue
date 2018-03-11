@@ -65,77 +65,77 @@ import ReportSummaryLabel from '@/components/ReportSummaryLabel'
 import moment from 'moment'
 import { mapGetters, mapState, mapActions } from 'vuex'
 import {
-    SUBMISSION,
-    SUBMISSIONS_REQUEST,
-    SUBMISSIONS_FAILURE,
-    ACTIVE_REPORT_CATEGORY,
-    ROW_BY_ROW_REPORT,
-    DATE_FORMAT
+  SUBMISSION,
+  SUBMISSIONS_REQUEST,
+  SUBMISSIONS_FAILURE,
+  ACTIVE_REPORT_CATEGORY,
+  ROW_BY_ROW_REPORT,
+  DATE_FORMAT
 } from '@/constants/types'
 
 export default {
-    name: 'RowByRowReport',
-    components: {
-        AppHeader,
-        AppFooter,
-        ReportSummaryLabel
+  name: 'RowByRowReport',
+  components: {
+    AppHeader,
+    AppFooter,
+    ReportSummaryLabel
+  },
+
+  data () {
+    return {
+      overallStatusMap: {
+        PASS: 'Success',
+        ERROR: 'Error',
+        WARNING: 'Warning'
+      }
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      downloadLinkFunc: 'rowByRowDownloadLink',
+      error: SUBMISSIONS_FAILURE,
+      loading: SUBMISSIONS_REQUEST,
+      item: SUBMISSION
+    }),
+
+    ...mapState([ACTIVE_REPORT_CATEGORY]),
+    ...mapState({
+      results: state => state.Reports[ROW_BY_ROW_REPORT]
+    }),
+
+    batchId () {
+      return this.$route.params.id
     },
 
-    data () {
-        return {
-            overallStatusMap: {
-                PASS: 'Success',
-                ERROR: 'Error',
-                WARNING: 'Warning'
-            }
-        }
+    downloadLink () {
+      return this.downloadLinkFunc(this.batchId)
     },
 
-    computed: {
-        ...mapGetters({
-            downloadLinkFunc: 'rowByRowDownloadLink',
-            error: SUBMISSIONS_FAILURE,
-            loading: SUBMISSIONS_REQUEST,
-            item: SUBMISSION
-        }),
+    formattedDate () {
+      return moment(this.item.time).format(DATE_FORMAT)
+    }
+  },
 
-        ...mapState([ACTIVE_REPORT_CATEGORY]),
-        ...mapState({
-            results: state => state.Reports[ROW_BY_ROW_REPORT]
-        }),
+  created () {
+    this.fetchReport()
+  },
 
-        batchId () {
-            return this.$route.params.id
-        },
+  methods: {
+    ...mapActions(['fetchRowByRowReport']),
 
-        downloadLink () {
-          return this.downloadLinkFunc(this.batchId)
-        },
-
-        formattedDate () {
-            return moment(this.item.time).format(DATE_FORMAT)
-        }
-    },
-
-    created () {
-        this.fetchReport()
-    },
-
-    methods: {
-        ...mapActions(['fetchRowByRowReport']),
-
-        /**
+    /**
          * Fetch the report results based on the `batchId`
          * @returns {Promise<void>}
          */
-        async fetchReport () {
-            await this.fetchRowByRowReport({batchId: this.batchId})
-        },
+    async fetchReport () {
+      await this.fetchRowByRowReport({batchId: this.batchId})
+    },
 
-        goBack () {
-            this.$router.go(-1)
-        }
+    goBack () {
+      this.$router.go(-1)
     }
+  }
 }
 </script>
 
