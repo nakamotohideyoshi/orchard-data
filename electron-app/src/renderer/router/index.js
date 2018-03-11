@@ -31,7 +31,7 @@ const router = new Router({
     },
     {
       path: '/report/:id',
-      component: ReportSummary,// Better name this component
+      component: ReportSummary, // Better name this component
       // TODO: We may create a subdirectory for the subpages or put them
       // in the sections one, TBD
       children: [
@@ -54,7 +54,7 @@ const router = new Router({
           path: 'field-by-field',
           name: 'field-by-field',
           component: FieldByFieldReport
-        },
+        }
       ]
     },
     {

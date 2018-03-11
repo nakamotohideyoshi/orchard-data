@@ -80,13 +80,13 @@ import {
 } from '@/constants/types'
 
 import {
-    CUSTOM_CATEGORY,
-    ITUNES_CATEGORY,
-    OVERALL_CATEGORY
+  CUSTOM_CATEGORY,
+  ITUNES_CATEGORY,
+  OVERALL_CATEGORY
 } from '@/constants/report-category'
 
 export default {
-  name: 'dude',
+  name: 'report-home',
   data () {
     return {
       overallRiskFlag: false,
@@ -161,9 +161,9 @@ export default {
       this.customFlag = true
       this.overallRiskFlag = false
       this.appleTabFlag = false
-    },
+    }
   },
-  created() {
+  created () {
     if (this.item.status === 3) {
       this.showCustom()
     } else {

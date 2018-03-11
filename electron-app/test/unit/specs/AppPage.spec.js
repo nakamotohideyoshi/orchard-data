@@ -56,7 +56,7 @@ describe('App.vue', () => {
     })
   })
 
-  // TODO: 
+  // TODO:
   //     * Write case for when no config could be fetched
   //     * Write case for when no submissions where found
 })

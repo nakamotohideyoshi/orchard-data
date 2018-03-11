@@ -31,27 +31,18 @@ div
 </template>
 
 <script>
-import moment from 'moment'
-import { mapGetters, mapActions, mapState } from 'vuex'
-
-import AppHeader from './Header.vue'
-import AppFooter from './Footer.vue'
-import ReportSummaryLabel from '@/components/ReportSummaryLabel'
+import { mapGetters, mapActions } from 'vuex'
 import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META,
-  SUBMISSION,
-  SUBMISSIONS_REQUEST,
-  SUBMISSIONS_FAILURE
+  FILTERS_META
 } from '@/constants/types'
 
 export default {
-  name: 'FieldByFieldReport',
+  name: 'field-by-field',
   computed: {
     ...mapGetters({
-      downloadLinkFunc: 'fieldByFieldDownloadLink',
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
       items: FIELDS,
@@ -64,9 +55,9 @@ export default {
     }
   },
   created: function () {
+    const id = this.$route.params.id
 
     if (id) {
-      this.fetchDataset(id) // We need to remove this
       this.fetchFields(id)
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
@@ -88,16 +79,17 @@ export default {
       this.detailData = 'asdasdas'
     },
     getFilter (id) {
-      if (this.filters && this.filters[id] && this.filters[id].userExplanation) {
+      if (
+        this.filters &&
+        this.filters[id] &&
+        this.filters[id].userExplanation
+      ) {
         return this.filters[id].userExplanation
       }
 
       return 'N/A'
     },
-    ...mapActions([
-      'fetchFields',
-      'fetchDataset'
-    ])
+    ...mapActions(['fetchFields', 'fetchDataset'])
   }
 }
 </script>

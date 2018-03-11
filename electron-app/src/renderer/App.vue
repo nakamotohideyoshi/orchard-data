@@ -22,8 +22,8 @@ import {
 export default {
   name: 'app',
   computed: {
-    loaded() {
-      return this.$store.getters[FILTERS_META] && this.$store.getters[SUBMISSIONS_LOADED];
+    loaded () {
+      return this.$store.getters[FILTERS_META] && this.$store.getters[SUBMISSIONS_LOADED]
     },
     ...mapGetters({
       error: CONFIG_FAILURE
