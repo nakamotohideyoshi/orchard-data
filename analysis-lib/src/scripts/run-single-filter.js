@@ -1,94 +1,85 @@
-module.exports = function(datasetId, filter) {
+'use strict';
 
-  let Promise = require('bluebird')
+module.exports = async function(datasetId, filter) {
+
+  const Promise = require('bluebird')
 
   // Tools and constants
-  let reportToolModule = require('./report-tool');
-  let DATABASE = require('./constants').DATABASE;
+  const reportToolModule = require('./report-tool');
+  const DATABASE = require('./constants').DATABASE;
 
   // Filters modules
-  let filters = require('../filters/filters-module');
-  let filtersMeta = require('../filters/filters-meta');
+  const filters = require('../filters/filters-module');
+  const filtersMeta = require('../filters/filters-meta');
 
   // DB modules
-  let sqlite = require('sqlite');
-  let dbInfo = require('../db-scripts/db-info');
-  let dbInterfaceModule = require('../db-scripts/db-interface');
+  const sqlite = require('sqlite');
+  const dbInfo = require('../db-scripts/db-info');
+  const dbInterfaceModule = require('../db-scripts/db-interface');
 
   // Initializes report for given tsv file
-  let report = new reportToolModule();
+  const report = new reportToolModule();
   report.init(datasetId);
 
   // Initializes DB interface
-  let dbInterface = new dbInterfaceModule();
+  const dbInterface = new dbInterfaceModule();
   dbInterface.init();
 
   // Main table
-  let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
+  const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents'];
 
-  // total no of rows the filter is going to be applied
-  let noOfRows = 0;
+  // Loads dataset
+  const dataset = await dbInterface.fetchTsvDataset(datasetId);
+  const noOfRows = dataset.length;
 
-  let dbPromise = dbInterface.fetchTsvDataset(datasetId)
-    .then(dataset => {
+  if(noOfRows === 0) { throw new Error(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`); }
 
-      return new Promise((resolve, reject) => {
+  // stashes no of rows
+  report.saveNoOfRows(noOfRows);
 
-        try {
+  try {
 
-          noOfRows = dataset.length;
+    await new Promise(async(resolve, reject) => {
 
-          // Filter can be applied on a row basis
-          if(filtersMeta[filter]['basis'] === 'row') {
+      try {
 
-            // For each row run filter
-            dataset.forEach((row, idx) => {
+        console.log(`Running: ${filter}`)
+        report.addFilter(filter);
 
-              report.addFilter(filter);
-              filters[filter](row, idx + 1, report);
+        if(filtersMeta[filter]['basis'] === 'row') {
 
-            });
+          for(let idx in dataset) {
 
-          }
+            // console.log(`Row: ${idx}`)
+            idx = parseInt(idx);
+            const row = dataset[idx];
 
-          else if(filtersMeta[filter]['basis'] === 'dataset') {
+            const occurrence = await filters[filter](row, idx + 1);
+            if(occurrence) { report.addOccurrence(filter, occurrence) }
 
-            report.addFilter(filter);
-            filters[filter](dataset, report);
-
-          }
-
-          resolve();
+          };
 
         }
 
-        catch(err) { reject(err); }
+        else if(filtersMeta[filter]['basis'] === 'dataset') {
 
-      });
+          const occurrences = await filters[filter](dataset, report);
+          occurrences.forEach(occurrence => report.addOccurrence(filter, occurrence));
 
-    })
-    .then(() => {
+        };
 
-      return new Promise((resolve, reject) => {
+        resolve();
 
-        if(noOfRows === 0) {
+      }
 
-          reject(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`);
-
-        }
-
-        else {
-
-          // Stashes total number of rows for analysis
-          report.saveNoOfRows(noOfRows);
-          resolve(report);
-
-        }
-
-      });
+      catch(err) { reject(err); }
 
     });
 
-  return dbPromise;
+  }
+
+  catch(err) { throw err; }
+
+  return report;
 
 }

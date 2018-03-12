@@ -83,44 +83,32 @@ router.post('/dataset', async(req, res) => {
 });
 
 // Sava TSV and run test cases
-router.get('/run-filter/:filterId/:datasetId', (req, res) => {
+router.get('/run-filter/:filterId/:datasetId', async(req, res) => {
 
-  let datasetId = req.params.datasetId ;
-  let filterId = "filter" + req.params.filterId;
-  let datasetSize = 0;
-  let report;
+  const datasetId = req.params.datasetId ;
+  const filterId = "filter" + req.params.filterId;
 
-  analysisLibModule.runSingleFilter(datasetId, filterId)
-    .then(rep => {
-      report = rep;
-      return report.calcFieldByFieldReportAll();
-    })
-    .then(() => report.calcBatchResultsReport())
-    .then(() => dbInterface.getDatasetSize(datasetId))
-    .then(result => {
-      datasetSize = result;
-      return Promise.resolve(datasetSize);
-    })
-    .then(() => {
+  try {
 
-      if(report.length === 0) {
+    console.log("\n***** Getting Dataset Size *****");
+    const datasetSize = await dbInterface.getDatasetSize(datasetId);
 
-        res.send(`Empty report for datasetId ${datasetId}.`);
-        return;
+    if(datasetSize === 0) {
+      res.send(`Empty report for datasetId ${datasetId}.`);
+      return;
+    }
 
-      }
+    console.log(`\n***** Running ${filterId} on dataset ${datasetId} *****`)
+    const report = await analysisLibModule.runSingleFilter(datasetId, filterId);
 
-      return new Promise((resolve, reject) => {
+    console.log(`\n***** Calculating Field by Field Report *****`)
+    await report.calcFieldByFieldReportAll();
 
-        try { resolve(utils.fieldByFieldToTsv(report.FBFReport, datasetSize)); }
+    res.send(utils.fieldByFieldToTsv(report.FBFReport, datasetSize));
 
-        catch(err) { reject(err); }
+  }
 
-      });
-
-    })
-    .then(result => res.send(result))
-    .catch(err => res.send(err));
+  catch(err) { res.send(err); }
 
 });
 

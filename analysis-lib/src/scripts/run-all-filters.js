@@ -45,38 +45,51 @@ module.exports = async function(datasetId) {
   const datasetFilters = Object.keys(filtersMeta)
     .filter(filterId => filtersMeta[filterId]['basis'] === 'dataset');
 
-  // Waits for all filters to finish
-  await new Promise((resolve, reject) => {
+  try {
 
-    for(let filter of rowFilters) {
+    // Waits for all filters to finish
+    await new Promise(async (resolve, reject) => {
 
-      console.log(`Running: ${filter}`)
-      report.addFilter(filter);
+      try {
 
-      for(let idx in dataset) {
+        for(let filter of rowFilters) {
 
-        idx = parseInt(idx);
-        const row = dataset[idx];
+          console.log(`Running: ${filter}`)
+          report.addFilter(filter);
 
-        filters[filter](row, idx + 1, report);
-        console.log(report['filters']['filter1'])
+          for(let idx in dataset) {
 
-      };
+            // console.log(`Row: ${idx}`)
+            idx = parseInt(idx);
+            const row = dataset[idx];
 
-    }
+            const occurrence = await filters[filter](row, idx + 1);
+            if(occurrence) { report.addOccurrence(filter, occurrence) }
 
-    for(let filter of datasetFilters) {
+          };
 
-      report.addFilter(filter);
-      filters[filter](dataset, report);
+        }
 
-    };
+        for(let filter of datasetFilters) {
 
-    resolve();
+          report.addFilter(filter);
+          const occurrences = await filters[filter](dataset, report);
 
-  });
+          occurrences.forEach(occurrence => report.addOccurrence(filter, occurrence));
 
-  console.log(report['filters']['filter1'])
+        };
+
+        resolve();
+
+      }
+
+      catch(err) { reject(err); }
+
+    });
+
+  }
+
+  catch(err) { throw err; }
 
   return report;
 
