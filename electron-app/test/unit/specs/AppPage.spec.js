@@ -1,5 +1,6 @@
-import { mount } from 'avoriaz'
+import { shallow } from 'avoriaz'
 import Vuex from 'vuex'
+import Vue from 'vue'
 import sinon from 'sinon'
 import App from '@/App'
 import {
@@ -23,7 +24,8 @@ describe('App.vue', () => {
     }
 
     actions = {
-      getConfig: sinon.stub()
+      getConfig: sinon.stub(),
+      fetchSubmissions: sinon.stub()
     }
 
     store = new Vuex.Store({
@@ -31,7 +33,7 @@ describe('App.vue', () => {
       actions
     })
 
-    wrapper = mount(App, {
+    wrapper = shallow(App, {
       router,
       store
     })
@@ -45,5 +47,16 @@ describe('App.vue', () => {
     expect(wrapper.is('#app')).to.equal(true)
   })
 
-  // TODO: Write case for when no config could be fetched
+  it('should call actions were called from store', () => {
+    wrapper.update()
+
+    Vue.nextTick(() => {
+      expect(actions.getConfig.calledOnce).to.equal(true)
+      expect(actions.fetchSubmissions.calledOnce).to.equal(true)
+    })
+  })
+
+  // TODO:
+  //     * Write case for when no config could be fetched
+  //     * Write case for when no submissions where found
 })
