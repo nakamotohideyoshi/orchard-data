@@ -5,6 +5,7 @@ modal.modal(
     name="field-modal"
     @before-open="beforeOpen"
     @before-close="beforeClose"
+    scrollable
 )
     button.close-button(@click="close")
         +icon('ico-close')
