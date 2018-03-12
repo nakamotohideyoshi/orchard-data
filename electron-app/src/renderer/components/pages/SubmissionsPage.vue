@@ -62,9 +62,6 @@ export default {
       return this.$store.getters[SUBMISSIONS_REQUEST]
     }
   },
-  created () {
-    this.$store.dispatch('fetchSubmissions')
-  },
   components: {
     AppHeader,
     AppFooter
