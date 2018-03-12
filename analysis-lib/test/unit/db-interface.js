@@ -50,7 +50,6 @@ describe('should test database interface utilities', function() {
     request = _interface.saveDatasetMeta(mock);
 
     request.then((r) => {
-      console.log(r);
       assert.equal(_.isObject(r), true);
       assert.equal(!_.isNaN(r.datasetId), true);
       done();

@@ -12,7 +12,7 @@ let runSingleFilter = require('./src/scripts/run-single-filter');
 
 let constants = require('./src/scripts/constants');
 let IO = require('./src/scripts/IO-module');
-let utils = require('./src/scripts/utils');
+let reportUtils = require('./src/scripts/report-utils');
 
 
 // Main scripts
@@ -29,6 +29,6 @@ module.exports = {
   'runSingleFilter': runSingleFilter,
   'constants': constants,
   'IO': IO,
-  'utils': utils
+  'reportUtils': reportUtils
 
 }

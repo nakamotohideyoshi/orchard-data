@@ -1,11 +1,9 @@
 // filter: Part and Volume should be abbreviated to Pt. and Vol.
 'use strict';
 
-module.exports = async function(row, idx, report) {
+module.exports = async function(row, idx) {
 
   const mb = require('../scripts/musicbrainz-interface');
-
-  const parenthesesModule = require('../scripts/parentheses-module');
 
   const filterName = 'filter14';
   const filterMeta = require('./filters-meta')[filterName];

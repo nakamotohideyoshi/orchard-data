@@ -6,7 +6,7 @@ const validator = require('is-my-json-valid');
 
 const filtersMeta = require('../../src/filters/filters-meta');
 const reportModule = require('../../src/scripts/report-tool');
-const reportUtils = require('../../src/scripts/utils');
+const reportUtils = require('../../src/scripts/report-utils');
 
 const mocks = require('../../mocks/reports/reports');
 

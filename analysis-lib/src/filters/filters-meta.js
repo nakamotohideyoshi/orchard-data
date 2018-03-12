@@ -326,19 +326,17 @@ module.exports = {
     }
   },
 
-  'filter15': {
-    'orchardDescription': `Generic Titles (Track 1, Track 2)`,
-    'programmerDescription': `
-
-      It is an error if a track title is "Instrumental", or if it fits the pattern "Track N", where N is an integeger. These are case-insensitive.
-    `,
-    'userExplanation': `Generic track titles such as "Instrumental", or "Track 1" are not accepted.`,
+  'filter16': {
+    'orchardDescription': `Non-standard Capitalization`,
+    'programmerDescription': ``,
+    'userExplanation': `Capitalization must be grammatically correct. Titles must not be in all capitals, all lower case, or random casing. See iTunes Style Guide session 11.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row',
+    'basis': 'dataset',
     'explanations': {
-      'default': `Do not use generic titles, such as Track 1, Track 2, or Instrumental, unless they are the actual titles of the tracks or ringtones. See iTunes Style Guide 3.7`,
+      'default': `Capitalization must be grammatically correct. Titles must not be in all capitals, all lower case, or random casing. See iTunes Style Guide session 11.`,
+      'inconsistent': `Capitalization is inconsistent through the album. Titles should be all sentence case or title case.`,
     }
-  }
+  },
 
 };

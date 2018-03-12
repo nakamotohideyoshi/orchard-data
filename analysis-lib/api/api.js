@@ -11,10 +11,10 @@ console.log("\n***** Initializing Analysis Lib Module API *****\n");
 let dbInterface = new analysisLibModule.DbInterface();
 dbInterface.init();
 
-// Utils
+// reportUtils
 let IO = new analysisLibModule.IO();
 let constants = analysisLibModule.constants;
-let utils = analysisLibModule.utils;
+let reportUtils = analysisLibModule.reportUtils;
 
 // Filters metadata
 let filtersMeta = analysisLibModule.filtersMeta;
@@ -104,7 +104,7 @@ router.get('/run-filter/:filterId/:datasetId', async(req, res) => {
     console.log(`\n***** Calculating Field by Field Report *****`)
     await report.calcFieldByFieldReportAll();
 
-    res.send(utils.fieldByFieldToTsv(report.FBFReport, datasetSize));
+    res.send(reportUtils.fieldByFieldToTsv(report.FBFReport, datasetSize));
 
   }
 
@@ -120,7 +120,7 @@ router.get('/field-by-field-reports', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report)); }
+        try { resolve(reportUtils.parseFieldByFieldReport(report)); }
 
         catch(err) { reject(err); }
 
@@ -156,7 +156,7 @@ router.get('/field-by-field/:datasetId.tsv', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
+        try { resolve(reportUtils.fieldByFieldToTsv(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -185,7 +185,7 @@ router.get('/field-by-field/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
+        try { resolve(reportUtils.parseFieldByFieldReport(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -222,7 +222,7 @@ router.get('/field-by-field/:category/:datasetId.tsv', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
+        try { resolve(reportUtils.fieldByFieldToTsv(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -252,7 +252,7 @@ router.get('/field-by-field/:category/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
+        try { resolve(reportUtils.parseFieldByFieldReport(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -283,8 +283,8 @@ router.get('/row-by-row/:datasetId.tsv', (req, res) => {
 
         try {
 
-          let RBRReport = utils.rowByRow(report, datasetSize);
-          resolve(utils.rowByRowToTsv(RBRReport));
+          let RBRReport = reportUtils.rowByRow(report, datasetSize);
+          resolve(reportUtils.rowByRowToTsv(RBRReport));
 
         }
 
@@ -314,7 +314,7 @@ router.get('/row-by-row/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.rowByRow(report, datasetSize)); }
+        try { resolve(reportUtils.rowByRow(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -346,8 +346,8 @@ router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
 
         try {
 
-          let RBRReport = utils.rowByRow(report, datasetSize);
-          resolve(utils.rowByRowToTsv(RBRReport));
+          let RBRReport = reportUtils.rowByRow(report, datasetSize);
+          resolve(reportUtils.rowByRowToTsv(RBRReport));
 
         }
 
@@ -378,7 +378,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.rowByRow(report, datasetSize)); }
+        try { resolve(reportUtils.rowByRow(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -410,8 +410,8 @@ router.get('/error-by-error/:datasetId.tsv', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report);
-          resolve(utils.errorByErrorToTsv(EBEReport));
+          let EBEReport = reportUtils.errorByError(report);
+          resolve(reportUtils.errorByErrorToTsv(EBEReport));
 
         }
 
@@ -437,7 +437,7 @@ router.get('/error-by-error/:datasetId', (req, res) => {
       }
 
       // Row by Row Aggregation
-      let EBEReport = utils.errorByError(report);
+      let EBEReport = reportUtils.errorByError(report);
       res.status(200).json(EBEReport);
     })
     .catch((e) => {
@@ -467,8 +467,8 @@ router.get('/error-by-error/:category/:datasetId.tsv', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report, category);
-          resolve(utils.errorByErrorToTsv(EBEReport));
+          let EBEReport = reportUtils.errorByError(report, category);
+          resolve(reportUtils.errorByErrorToTsv(EBEReport));
 
         }
 
@@ -501,7 +501,7 @@ router.get('/error-by-error/:category/:datasetId', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report, category);
+          let EBEReport = reportUtils.errorByError(report, category);
           resolve(EBEReport);
 
         }

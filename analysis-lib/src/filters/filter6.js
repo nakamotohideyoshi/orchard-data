@@ -36,7 +36,7 @@ module.exports = function(dataset) {
     genre = removeDiacritics(genre).trim().toLowerCase();
 
     const occurrence = {
-      'row_id': idx,
+      'row_id': idx + 1,
       'field': [],
       'value': [],
       'explanation_id': [],

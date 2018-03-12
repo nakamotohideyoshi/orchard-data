@@ -3,7 +3,7 @@
 module.exports = function(row, idx) {
 
   const removeDiacritics = require('../scripts/remove-diacritics');
-  const parenthesesModule = require('../scripts/parentheses-module');
+  const stringUtils = require('../scripts/string-utils');
 
   const filterName = 'filter7';
   const filterMeta = require('./filters-meta')[filterName];
@@ -51,7 +51,7 @@ module.exports = function(row, idx) {
       if(closeTokens.indexOf(lastChar) !== -1) {
 
         // Get values in parentheses
-        const parenthesesValue = parenthesesModule.getTextInBetween(value);
+        const parenthesesValue = stringUtils.getTextBetweenParentheses(value);
 
         for(let i = 0; i < invalidStrings.length; i++) {
 
