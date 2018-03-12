@@ -1,4 +1,5 @@
 module.exports = {
+
   // Check Various Artists on Track Levels
   'filter1': {
     'orchardDescription': `Artist Errors: Various Artists on Track Levels / vice versa`,
@@ -303,6 +304,25 @@ module.exports = {
         and “Vol.” See iTunes Style Guide 11.2.
 
       `,
+    }
+  },
+
+  'filter14': {
+    'orchardDescription': `Each artist field must only contain one artist name.`,
+    'programmerDescription': `
+
+      If the field does not "&", "+", or "and", there is no error.
+      There is no error if the field contains an artist with a direct match in Musicbrainz or Wikipedia
+      There is no error if the field contains more than one instance of "&", "+", or "and".
+      Split the string on "&", "+", or "and". Search for component as an artist. If both components are found, there is an error.
+
+    `,
+    'userExplanation': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`,
+    'category': 'iTunes',
+    'type': 'warning',
+    'basis': 'row',
+    'explanations': {
+      'default': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`,
     }
   },
 
