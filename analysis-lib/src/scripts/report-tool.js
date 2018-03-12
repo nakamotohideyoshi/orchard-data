@@ -1,4 +1,4 @@
-module.exports = function() {
+function ReportModule() {
 
   let filtersMeta = require('../filters/filters-meta');
   let DATABASE = require('./constants').DATABASE;
@@ -10,18 +10,28 @@ module.exports = function() {
   let dbInterface = new dbInterfaceModule();
   dbInterface.init();
 
-  // Initializes report for a tsv file
+  /**
+   * Initializes report for a tsv file.
+   * @param datasetId
+   */
   this.init = function(datasetId) {
     this.datasetId = datasetId;
     this['filters'] = {};
   };
 
-  // Saves total number of rows for further analysis
+  /**
+   * Saves total number of rows for further analysis.
+   * @param noOfRows
+   */
   this.saveNoOfRows = function(noOfRows) {
     this.noOfRows = noOfRows;
   };
 
-  // Adds a filter to the report. Skips if it already exists
+  /**
+   * Adds a filter to the report. Skips if it already exists.
+   * @param filterName
+   * @returns {number}
+   */
   this.addFilter = function(filterName) {
 
     let filterDesc = filtersMeta[filterName];
@@ -41,9 +51,12 @@ module.exports = function() {
 
   };
 
-  // Adds an occurrence object to a given filterId
-  // An occurrence consists of the rowId, the field and the value
-  // where the error occurred
+  /**
+   * Adds an occurrence object to a given filterId.
+   * An occurrence consists of the rowId, the field and the value where the error occurred.
+   * @param filterId
+   * @param occurrence
+   */
   this.addOccurrence = function(filterId, occurrence) {
 
     // Filter string
@@ -76,7 +89,9 @@ module.exports = function() {
 
   };
 
-  // Prints reports and summaries of all filters
+  /**
+   * Prints reports and summaries of all filters
+   */
   this.printReport = function () {
 
     console.log("---------- Report Summary ----------");
@@ -115,7 +130,10 @@ module.exports = function() {
 
   };
 
-  // Prints reports and summaries of single filter
+  /**
+   * Prints reports and summaries of single filter
+   * @param filterId
+   */
   this.printFilterReport = function(filterId) {
 
     console.log("---------- Report Summary ----------");
@@ -163,7 +181,9 @@ module.exports = function() {
 
   // ---------- Analysis methods ---------- //
 
-  // Calculates dataset metadata for a al filters
+  /**
+   * Calculates dataset metadata for a al filters
+   */
   this.calcBatchResultsReport = function() {
 
     return new Promise((resolve, reject) => {
@@ -202,7 +222,11 @@ module.exports = function() {
 
   };
 
-  // Calculates a field by field report for given filter
+  /**
+   * Calculates a field by field report for given filter
+   * @param filterId
+   * @param verbose
+   */
   this.calcFieldByFieldReport = function(filterId, verbose) {
 
     // If report was already calculated, just returns
@@ -254,7 +278,9 @@ module.exports = function() {
 
   };
 
-  // Calculates a field by field report for all filters
+  /**
+   * Calculates a field by field report for all filters
+   */
   this.calcFieldByFieldReportAll = function() {
 
     return new Promise((resolve, reject) => {
@@ -267,4 +293,6 @@ module.exports = function() {
 
   };
 
-};
+}
+
+module.exports = ReportModule;

@@ -1,6 +1,8 @@
 electron-app/db.sqlite
 electron-app/DB.sqlite
 
+.idea
+
 .DS_Store
 
 electron-app/dist/electron/*
@@ -9,9 +11,7 @@ electron-app/build/*
 !electron-app/build/icons
 electron-app/coverage
 electron-app/node_modules/
-electron-app/test/unit/coverage/
 electron-app/thumbs.db
-<<<<<<< HEAD
 
 npm-debug.log
 npm-debug.log.*
@@ -29,3 +29,5 @@ analysis-lib/yarn.lock
 electron-app/yarn.lock
 electron-app/test/unit/coverage/
 yarn-error.log
+
+.idea
