@@ -1,5 +1,6 @@
 // Setup
-const { spawnSync } = require('child_process');
+const { spawnSync, execSync } = require('child_process');
+const os = require('os');
 const { unlinkSync, existsSync } = require('fs');
 const path = require('path');
 const config = require('config');
@@ -14,6 +15,10 @@ function wipeDB() {
 
 function createDB() {
   // Run create tables in case no tables were found
+  if (os.platform() === "win32") {
+    return execSync(`sqlite3 "${dbPath}" < "${dbScript}"`);
+  }
+
   return spawnSync('sqlite3', [
     dbPath,
     '<',
