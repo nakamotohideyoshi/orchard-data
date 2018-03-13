@@ -44,7 +44,6 @@ export default {
     ...mapGetters({
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
-      items: FIELDS,
       filters: FILTERS_META
     })
   },
