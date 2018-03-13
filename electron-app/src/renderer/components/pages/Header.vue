@@ -50,20 +50,16 @@ include _mixins
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { SUBMISSIONS } from '@/constants/types'
 
 export default {
   computed: {
-    submissions () {
-      return this.$store.getters[SUBMISSIONS]
-    }
+    ...mapGetters({
+      submissions: SUBMISSIONS
+    })
   },
-  name: 'app-header',
-  components: {
-
-  },
-  methods: {
-  }
+  name: 'app-header'
 }
 </script>
 

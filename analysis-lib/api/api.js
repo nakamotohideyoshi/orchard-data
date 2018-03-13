@@ -407,6 +407,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
 });
 
 // Error by Error Aggregation TSV
+// TODO: Merge error-by-error JSON and TSV endpoints
 router.get('/error-by-error/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
@@ -448,28 +449,17 @@ router.get('/error-by-error/:datasetId', (req, res) => {
   dbInterface.fetchFieldByFieldReport(datasetId)
     .then(report => {
 
-      return new Promise((resolve, reject) => {
+      if(report.length === 0) {
+        throw new Error(`Empty report for datasetId ${datasetId}.`);
+      }
 
-        try {
-
-          if(report.length === 0) {
-
-            resolve(`Empty report for datasetId ${datasetId}.`);
-
-          }
-
-          // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report);
-          resolve(EBEReport);
-
-        }
-
-        catch(err) { reject(err); }
-
-      });
-
+      // Row by Row Aggregation
+      let EBEReport = utils.errorByError(report);
+      res.status(200).json(EBEReport);
     })
-    .then(result => res.send(result));
+    .catch((e) => {
+      res.status(400).json({ message: e.message });
+    });
 
 });
 

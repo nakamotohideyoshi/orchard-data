@@ -194,7 +194,6 @@ describe('should test database interface utilities', function() {
       .then(() => interface.getDatasetSize(_id))
       .then(r => {
 
-        console.log(r)
         assert.equal(r, size);
         done();
 

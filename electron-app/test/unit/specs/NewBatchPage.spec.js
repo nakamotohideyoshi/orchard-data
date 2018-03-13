@@ -17,7 +17,7 @@ describe('NewBatchPage.vue', () => {
     getters = {
       [SUBMISSIONS_FAILURE]: () => ({ response: { data: { message: 'test' } } }),
       [SUBMISSIONS_REQUEST]: () => ({}),
-      [SUBMISSION]: () => ({status: 1, time: 1519789653})
+      [SUBMISSION]: () => ({ status: 1, time: 1519789653 })
     }
 
     store = new Vuex.Store({
@@ -47,6 +47,6 @@ describe('NewBatchPage.vue', () => {
       time: 1517239250526,
       various_artists_threshold: 12
     }`
-    wrapper.setMethods({submitForm})
+    wrapper.setMethods({ submitForm })
   })
 })

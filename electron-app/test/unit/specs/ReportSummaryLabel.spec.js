@@ -1,5 +1,5 @@
-import ReportSummaryLabel from '@/components/ReportSummaryLabel'
-import {shallow} from 'avoriaz'
+import ReportSummaryLabel from '@/components/sections/ReportSummaryLabel'
+import { shallow } from 'avoriaz'
 
 describe('ReportSummaryLabel.vue', () => {
   let wrapper
@@ -64,7 +64,7 @@ describe('ReportSummaryLabel.vue', () => {
         status: -1
       }
     })
-    expect(wrapper.vm.colorClass).to.be.equal(undefined)
+    expect(wrapper.vm.colorClass).to.equal(undefined)
     expect(wrapper.text()).to.be.equal('')
   })
 })

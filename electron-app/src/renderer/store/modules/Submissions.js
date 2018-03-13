@@ -2,9 +2,11 @@ import axios from 'axios'
 import {
   SUBMISSIONS,
   SUBMISSION,
+  SUBMISSION_ERRORS,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE,
   SUBMISSIONS_ADD,
+  SUBMISSIONS_LOADED,
   FIELDS,
   FIELDS_FAILURE,
   FIELDS_REQUEST
@@ -16,8 +18,10 @@ import {
 const state = {
   [`${SUBMISSIONS}`]: [],
   [`${SUBMISSION}`]: null,
+  [`${SUBMISSION_ERRORS}`]: [],
   [`${SUBMISSIONS_REQUEST}`]: false,
   [`${SUBMISSIONS_FAILURE}`]: null,
+  [`${SUBMISSIONS_LOADED}`]: false,
   [`${FIELDS}`]: null,
   [`${FIELDS_REQUEST}`]: false,
   [`${FIELDS_FAILURE}`]: null
@@ -26,6 +30,9 @@ const state = {
 const mutations = {
   [`${SUBMISSION}`] (s, data) {
     return Object.assign(s, { [`${SUBMISSION}`]: data })
+  },
+  [`${SUBMISSION_ERRORS}`] (s, data = []) {
+    return Object.assign(s, { [`${SUBMISSION_ERRORS}`]: data })
   },
   [`${SUBMISSIONS}`] (s, items) {
     if (items instanceof Array && items.length) {
@@ -45,6 +52,9 @@ const mutations = {
   },
   [`${SUBMISSIONS_FAILURE}`] (s, error) {
     return Object.assign(s, { [`${SUBMISSIONS_FAILURE}`]: error })
+  },
+  [`${SUBMISSIONS_LOADED}`] (s, status) {
+    return Object.assign(s, { [`${SUBMISSIONS_LOADED}`]: status })
   },
   [`${SUBMISSIONS_ADD}`] (s, newSubmission) {
     return Object.assign(s, {
@@ -83,12 +93,14 @@ const actions = {
         }
       })
       .then((res) => {
-        commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS, res.data)
       })
       .catch((e) => {
-        commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, e)
+      })
+      .finally(() => {
+        commit(SUBMISSIONS_REQUEST, false)
+        commit(SUBMISSIONS_LOADED, true)
       })
   },
   submitDataset ({ commit }, data) {
@@ -162,14 +174,35 @@ const actions = {
         commit(FIELDS_REQUEST, false)
         commit(FIELDS_FAILURE, e)
       })
+  },
+  fetchErrors ({ commit }, id) {
+    commit(SUBMISSIONS_REQUEST, true)
+
+    axios
+      .get(`${API_URL}error-by-error/${id}`, {
+        'headers': {
+          'content-type': 'application/json'
+        }
+      })
+      .then((res) => {
+        commit(SUBMISSION_ERRORS, res.data)
+      })
+      .catch((e) => {
+        commit(SUBMISSIONS_FAILURE, e)
+      })
+      .finally(() => {
+        commit(SUBMISSIONS_REQUEST, false)
+      })
   }
 }
 
 const getters = {
   [`${SUBMISSION}`]: s => s[SUBMISSION],
+  [`${SUBMISSION_ERRORS}`]: s => s[SUBMISSION_ERRORS],
   [`${SUBMISSIONS}`]: s => s[SUBMISSIONS],
   [`${SUBMISSIONS_REQUEST}`]: s => s[SUBMISSIONS_REQUEST],
   [`${SUBMISSIONS_FAILURE}`]: s => s[SUBMISSIONS_FAILURE],
+  [`${SUBMISSIONS_LOADED}`]: s => s[SUBMISSIONS_LOADED],
   [`${FIELDS}`]: s => s[FIELDS],
   [`${FIELDS_REQUEST}`]: s => s[FIELDS_REQUEST],
   [`${FIELDS_FAILURE}`]: s => s[FIELDS_FAILURE]

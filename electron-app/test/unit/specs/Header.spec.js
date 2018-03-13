@@ -18,7 +18,8 @@ describe('Header.vue', () => {
     }
 
     getters = {
-      [`${SUBMISSIONS}`]: () => {}
+      submissions: () => SUBMISSIONS,
+      [`${SUBMISSIONS}`]: () => []
     }
 
     store = new Vuex.Store({

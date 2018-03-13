@@ -14,13 +14,13 @@ include _mixins
                                 router-link(:to="'/submissions'").page-back
                                     .icon.icon-arrow-back
                                     span Submissions
-                        
+
                                 .p-box.report
                                     .report__tabs.report__tabs--disabled(js-scrollbar)
                                         a(href="#").report__tab.is-active {{ categoryOverallText }}
                                         a(href="#").report__tab {{ ITUNES_CATEGORY }}
                                         a(href="#").report__tab {{ CUSTOM_CATEGORY }}
-                                    
+
                                     // report blank
                                     .report-blank
                                         .report-blank__title Your report is being generated
@@ -30,7 +30,7 @@ include _mixins
 
         block footer
             AppFooter
-</template> 
+</template>
 
 <script>
 import AppHeader from './Header.vue'
@@ -56,8 +56,7 @@ export default {
     }
   },
 
-  methods: {
-  }
+  methods: {}
 }
 </script>
 

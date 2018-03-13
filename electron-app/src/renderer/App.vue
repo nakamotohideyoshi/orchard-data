@@ -15,23 +15,28 @@
 import { mapGetters } from 'vuex'
 import {
   FILTERS_META,
+  SUBMISSIONS_LOADED,
   CONFIG_FAILURE
 } from '@/constants/types'
 
 export default {
   name: 'app',
   computed: {
+    loaded () {
+      return this.$store.getters[FILTERS_META] && this.$store.getters[SUBMISSIONS_LOADED]
+    },
     ...mapGetters({
-      loaded: FILTERS_META,
       error: CONFIG_FAILURE
     })
   },
   async created () {
     await this.$store.dispatch('getConfig')
+    await this.$store.dispatch('fetchSubmissions')
   },
   methods: {
     async retry () {
       await this.$store.dispatch('getConfig')
+      await this.$store.dispatch('fetchSubmissions')
     }
   }
 }
