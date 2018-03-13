@@ -164,10 +164,16 @@ export default {
     }
   },
   created () {
+    console.log(this.$route, 'route')
     if (this.item.status === 3) {
       this.showCustom()
     } else {
-      this.showAppleTab()
+      switch(this.$route.name) {
+        case 'report-params':
+          this.showCustom()
+        break
+        default: this.showAppleTab()
+      }
     }
   }
 }
