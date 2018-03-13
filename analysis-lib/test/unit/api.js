@@ -38,7 +38,7 @@ describe('should test API', function() {
   it('should test dataset/:datasetId - returns a dataset', (done) => {
 
     request(server)
-      .get('/dataset/1')
+      .get('/dataset/1.tsv')
       .end((err, res) => {
 
         const dataset = mocks['getDataset']['dataset'].sort((a,b) => a['track_no'] - b['track_no']);
@@ -56,7 +56,7 @@ describe('should test API', function() {
   it('should test dataset/:datasetId - returns an empty array', (done) => {
 
     request(server)
-      .get('/dataset/-1')
+      .get('/dataset/-1.tsv')
       .end((err, res) => {
 
         const response = JSON.parse(res.text);

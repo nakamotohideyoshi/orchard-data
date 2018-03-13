@@ -20,7 +20,7 @@ let utils = analysisLibModule.utils;
 let filtersMeta = analysisLibModule.filtersMeta;
 
 // Fetch a TSV dataset
-router.get('/dataset/:datasetId', (req, res) => {
+router.get('/dataset/:datasetId.tsv', (req, res) => {
 
   let datasetId = req.params.datasetId ;
   res.type('text/tab-separated-values');
