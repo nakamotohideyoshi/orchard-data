@@ -21,12 +21,7 @@ div
 </template>
 
 <script>
-import moment from 'moment'
-import { mapGetters, mapActions, mapState } from 'vuex'
-
-import AppHeader from './Header.vue'
-import AppFooter from './Footer.vue'
-import Modal from '@/components/sections/FieldModal'
+import { mapGetters, mapActions } from 'vuex'
 
 import {
   FIELDS,
