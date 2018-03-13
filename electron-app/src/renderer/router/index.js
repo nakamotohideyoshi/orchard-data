@@ -41,6 +41,11 @@ const router = new Router({
           component: ReportHome
         },
         {
+          path: 'params',
+          name: 'report-params',
+          component: ReportHome
+        },
+        {
           path: 'error-by-error',
           name: 'error-by-error',
           component: ErrorByErrorReport
