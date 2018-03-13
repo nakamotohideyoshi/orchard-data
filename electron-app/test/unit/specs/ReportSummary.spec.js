@@ -1,11 +1,12 @@
-import { shallow, mount } from 'avoriaz'
+import { shallow } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
-import moment from 'moment'
+import _ from 'lodash'
 import ReportSummary from '@/components/pages/ReportSummary'
 import ReportSummaryHeader from '@/components/sections/ReportSummaryHeader'
 import {
-  SUBMISSION
+  SUBMISSION,
+  ACTIVE_REPORT_CATEGORY
   /* Stubbing to pass lint, will work on it later
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE
@@ -19,7 +20,6 @@ describe('ReportSummary.vue', () => {
   let store
   let actions
   let $validRoute
-  let $invalidRoute
   const item = {
     rowid: 1,
     source: '/dir/1-spanish.tsv',
@@ -36,14 +36,15 @@ describe('ReportSummary.vue', () => {
     category: 'Category',
     canGoBack: false
   }
-  const parsedTime = moment(item.time).format('MM-DD-YYYY. HH:mm')
 
   beforeEach(() => {
     getters = {
       error: () => ({}),
       loading: () => false,
       item: () => item,
-      [`${SUBMISSION}`]: () => item
+      [`${SUBMISSION}`]: () => item,
+      category: () => ACTIVE_REPORT_CATEGORY,
+      [ACTIVE_REPORT_CATEGORY]: () => ''
     }
 
     actions = {
@@ -60,10 +61,6 @@ describe('ReportSummary.vue', () => {
       params: {
         id: 1
       }
-    }
-
-    $invalidRoute = {
-      name: 'report'
     }
 
     wrapper = shallow(ReportSummary, {

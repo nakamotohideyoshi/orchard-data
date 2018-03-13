@@ -32,14 +32,11 @@ import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META,
-  SUBMISSION,
-  SUBMISSIONS_REQUEST,
-  SUBMISSIONS_FAILURE
+  FILTERS_META
 } from '@/constants/types'
 
 export default {
-  name: 'FieldByFieldReport',
+  name: 'field-by-field',
   computed: {
     ...mapGetters({
       error: FIELDS_FAILURE,
@@ -54,7 +51,7 @@ export default {
     }
   },
   created: function () {
-    const { id } = this.$route.params
+    const id = this.$route.params.id
 
     if (id) {
       this.fetchFields(id)
@@ -78,16 +75,17 @@ export default {
       this.$modal.hide('field-report-modal')
     },
     getFilter (id) {
-      if (this.filters && this.filters[id] && this.filters[id].userExplanation) {
+      if (
+        this.filters &&
+        this.filters[id] &&
+        this.filters[id].userExplanation
+      ) {
         return this.filters[id].userExplanation
       }
 
       return 'N/A'
     },
-    ...mapActions([
-      'fetchFields',
-      'fetchDataset'
-    ])
+    ...mapActions(['fetchFields', 'fetchDataset'])
   }
 }
 </script>

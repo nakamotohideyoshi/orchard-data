@@ -101,7 +101,7 @@ const actions = {
       .finally(() => {
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_LOADED, true)
-      });
+      })
   },
   submitDataset ({ commit }, data) {
     commit(SUBMISSIONS_REQUEST, true)
@@ -193,8 +193,8 @@ const actions = {
       })
       .finally(() => {
         commit(SUBMISSIONS_REQUEST, false)
-      });
-  },
+      })
+  }
 }
 
 const getters = {

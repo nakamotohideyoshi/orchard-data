@@ -1,7 +1,6 @@
 import { mount } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
-import moment from 'moment'
 import ReportSummary from '@/components/pages/ReportHome'
 
 import {
@@ -31,7 +30,6 @@ describe('ReportSummary.vue', () => {
     status: 1,
     time: 1518462941917
   }
-  const parsedTime = moment(item.time).format('MM-DD-YYYY. HH:mm')
 
   beforeEach(() => {
     getters = {
@@ -42,7 +40,7 @@ describe('ReportSummary.vue', () => {
     }
 
     mutations = {
-      [SET_ACTIVE_CATEGORY]: () => {}
+      [SET_ACTIVE_CATEGORY]: () => { }
     }
 
     actions = {
@@ -60,7 +58,7 @@ describe('ReportSummary.vue', () => {
       store
     })
   })
-  
+
   it('should render correct function', () => {
     expect(typeof wrapper.vm.showOverallRistk).to.equal('function')
     expect(typeof wrapper.vm.showAppleTab).to.equal('function')
@@ -92,7 +90,6 @@ describe('ReportSummary.vue', () => {
   })
 
   it('should render apple tab data from getters', () => {
-    const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .apple-tab.is-active')
     const tab = wrapper.contains('.report-container.apple-tab.is-active')
 
@@ -105,8 +102,6 @@ describe('ReportSummary.vue', () => {
     wrapper.vm.showCustom()
     wrapper.update()
 
-    const label = wrapper.find('.report-summary__label.report-summary__label--red span')[0]
-    const time = wrapper.find('.report-summary .report-summary__col:last-child .report-summary__text')[0]
     const fileName = wrapper.find('.report-container.custom-tab .report__view-link span')[0]
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active')
     const tab = wrapper.contains('.report-container.custom-tab.is-active')
@@ -117,13 +112,13 @@ describe('ReportSummary.vue', () => {
   })
 
   it('should have proper text for tabs', () => {
-      const overall = wrapper.find('.report__tab.overall-tab ')[0]
-      const itunes = wrapper.find('.report__tab.apple-tab ')[0]
-      const custom = wrapper.find('.report__tab.custom-tab ')[0]
+    const overall = wrapper.find('.report__tab.overall-tab ')[0]
+    const itunes = wrapper.find('.report__tab.apple-tab ')[0]
+    const custom = wrapper.find('.report__tab.custom-tab ')[0]
 
-      expect(overall.text().trim()).to.equal('Overall Risk Assessment')
-      expect(itunes.text().trim()).to.equal('Apple & Itunes Guidelines')
-      expect(custom.text().trim()).to.equal('Custom Parameters')
+    expect(overall.text().trim()).to.equal('Overall Risk Assessment')
+    expect(itunes.text().trim()).to.equal('Apple & Itunes Guidelines')
+    expect(custom.text().trim()).to.equal('Custom Parameters')
   })
 
   // TODO: Write test for the following cases:

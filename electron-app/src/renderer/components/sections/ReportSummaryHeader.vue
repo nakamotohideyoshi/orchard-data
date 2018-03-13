@@ -12,10 +12,9 @@ include ../pages/_mixins
     .report-summary__col
         .report-summary__head Date
         .report-summary__text {{ date }}
-    .report-summary__col
+    .report-summary__col(v-if="!root")
         .report-summary__head download
-        a(href="#").report-summary__text
-            +icon('ico-download')
+        <slot name="download-link"></slot>
 </template>
 
 <script>
@@ -23,39 +22,44 @@ import moment from 'moment'
 import ReportSummaryLabel from '@/components/sections/ReportSummaryLabel'
 
 export default {
-    name: 'report-summary-header',
-    components: {
-        ReportSummaryLabel
+  name: 'report-summary-header',
+  components: {
+    ReportSummaryLabel
+  },
+  props: {
+    status: {
+      type: Number,
+      required: true,
+      default: 0
     },
-    props: {
-        status: {
-            type: Number,
-            required: true,
-            default: 0,
-        },
-        time: {
-            type: [String, Number],
-            required: true,
-        },
-        id: {
-            type: [String, Number],
-            required: true,
-            default: 0
-        },
-        category: {
-            type: String,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        }
+    time: {
+      type: [String, Number],
+      required: true
     },
-    computed: {
-         date() {
-             return moment(this.time).format('dddd MMM Do YYYY HH:mmA')
-         }
+    id: {
+      type: [String, Number],
+      required: true,
+      default: 0
+    },
+    category: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    root: {
+      type: Boolean,
+      required: true,
+      default: true
     }
+  },
+  computed: {
+    date () {
+      return moment(this.time).format('dddd MMM Do YYYY HH:mmA')
+    }
+  }
 }
 </script>
 <style lang="sass" scoped>
