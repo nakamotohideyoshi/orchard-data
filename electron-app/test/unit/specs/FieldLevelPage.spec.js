@@ -63,18 +63,10 @@ describe('FieldByFieldReport.vue', () => {
 
     expect(typeof wrapper.vm.show).to.equal('function')
     expect(typeof wrapper.vm.hide).to.equal('function')
-    expect(typeof wrapper.vm.beforeOpen).to.equal('function')
     expect(typeof wrapper.vm.getFilter).to.equal('function')
     expect(typeof wrapper.vm.fetchFields).to.equal('function')
   })
 
-  /*
-  it('should have the correct report title', () => {
-      const label = wrapper.find('.report-summary .report-summary__text')[0]
-
-      expect(label.text().trim()).to.equal('Every Error')
-  })
-  */
   it('should verify vuex actions were executed on init', () => {
     wrapper = shallow(FieldByFieldReport, {
       router,
@@ -92,7 +84,6 @@ describe('FieldByFieldReport.vue', () => {
       store,
       globals: { $route: $invalidRoute }
     })
-    // wrapper.update()
 
     expect(actions.fetchFields.calledOnce).to.equal(false)
     expect(wrapper.vm.error).to.be.an.instanceof(Object)
