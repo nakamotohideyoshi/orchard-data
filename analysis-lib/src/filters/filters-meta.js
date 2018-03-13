@@ -325,5 +325,19 @@ module.exports = {
       'default': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`,
     }
   },
+  'filter15': {
+    'orchardDescription': `Generic Titles (Track 1, Track 2)`,
+    'programmerDescription': `
+
+      It is an error if a track title is "Instrumental", or if it fits the pattern "Track N", where N is an integeger. These are case-insensitive.
+    `,
+    'userExplanation': `Generic track titles such as "Instrumental", or "Track 1" are not accepted.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `Do not use generic titles, such as Track 1, Track 2, or Instrumental, unless they are the actual titles of the tracks or ringtones. See iTunes Style Guide 3.7`,
+    }
+  }
 
 };
