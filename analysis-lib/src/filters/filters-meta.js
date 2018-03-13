@@ -306,36 +306,6 @@ module.exports = {
     }
   },
 
-  'filter17': {
-    'orchardDescription': `Genres that don't exist in iTunes.`,
-    'programmerDescription': `
-        Let the list of acceptable genres be from the "GENRE AS SHOWN ON THE STORE" column (which is text) or the
-        "GENRE CODE FOR METADATA" column (which is computer friendly) in the document "iTunes Package Music
-        Specification Addendum: Music, Music Video, and Ringtone Genre Codes" at
-        https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls,
-        from any Path under "Music", excluding paths under "Music Videos" and "Ringtones."
-
-        It is an error if the value in the genre field is not a case-insensitive match for a value in the
-        acceptable genres.
-
-        It is an error if the value in the sub-genre field is not a case-insensitive match for a value in the
-        acceptable genres.
-    `,
-    'userExplanation': `
-      Genres must exist in the (non-web content) "iTunes Package Music Specification Addendum: Music, Music Video,and
-      Ringtone Genre Codes" at https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls
-    `,
-    'category': 'iTunes',
-    'type': 'error',
-    'basis': 'row',
-    'explanations': {
-      'default': `
-        Genres must not be egregiously misclassified (for example, Hip Hop/Rap in place of Children’s Music).
-        See iTunes Style Guide 12.1.
-      `,
-    }
-  },
-
   'filter14': {
     'orchardDescription': `Each artist field must only contain one artist name.`,
     'programmerDescription': `
@@ -410,4 +380,25 @@ module.exports = {
     }
   },
 
+  'filter18': {
+    'orchardDescription': `Explicit Flagging`,
+    'programmerDescription': `
+      It is an error if the following terms occur (with a case-insensitive match) in a release name or track title:
+      "(Explicit)", "(Clean)".
+
+      Let a track be marked as clean, explicit, or "clean-or-unknown" according to the value of the
+      "Explicit (No/Yes/Clean)" field. The match is case-insensitive. If the value is "No" or blank, it
+      is considered "clean-or-unknown."
+
+      It is an error if there is a track flagged clean and there is not an identical track marked explicit.
+      The identical version would have the same release name, track title, and track artist, but not the same isrc.
+    `,
+    'userExplanation': `A clean track must have a corresponding explicit track.`,
+    'category': 'iTunes',
+    'type': 'warning',
+    'basis': 'row',
+    'explanations': {
+      'default': `A clean track must have a corresponding explicit track.`,
+    }
+  }
 };
