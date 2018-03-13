@@ -2,7 +2,7 @@
 
 cd analysis-lib
 npm install || exit
-yarn run test:unit || exit
+yarn run dev & sleep 2; yarn run test:unit || exit
 
 cd ../electron-app
 npm install || exit
