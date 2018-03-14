@@ -23,20 +23,25 @@ module.exports = {
     for(let i = 0; i < report.length; i++) {
 
       const occurrence = report[i];
+      let errors = [];
 
       if(category && filtersMeta[occurrence['criteria_id']]['category'].toLowerCase() !== category) { continue; }
 
-      if(occurrence['test_data_field_error_types']) {
-        occurrence['test_data_field_error_types'].forEach(error => {
-
-          // pluralize
-          if(error[error.length - 1] !== 's') { error += "s"; }
-
-          // increments error type
-          RBRReport[occurrence['test_data_row_id']][error] += 1;
-
-        });
+      if (typeof occurrence['test_data_field_error_types'] === 'string') {
+        errors = JSON.parse(occurrence['test_data_field_error_types']);
+      } else if (occurrence['test_data_field_error_types'] instanceof Array) {
+        errors = occurrence['test_data_field_error_types'];
       }
+
+      errors.forEach(error => {
+
+        // pluralize
+        if(error[error.length - 1] !== 's') { error += "s"; }
+
+        // increments error type
+        RBRReport[occurrence['test_data_row_id']][error] += 1;
+
+      });
 
 
       if(RBRReport[occurrence['test_data_row_id']]['errors'] > 0) {
