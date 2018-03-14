@@ -400,5 +400,28 @@ module.exports = {
     'explanations': {
       'default': `A clean track must have a corresponding explicit track.`,
     }
+  },
+
+  'filter_albums_with_vs_and_meets': {
+    'orchardDescription': `Albums with vs. and meets - artists must be listed separately as primary`,
+    'programmerDescription': `
+      - Does the release name contain “Meets” or “vs.”? If not, there is no error.
+      - Is it a collection of different songs remixed by a single DJ? If not, there is no error.
+      - Is the mixing DJ listed at the album level and identified as Primary with the Remixer role? If not, there is an error.
+      - Are the original artists (whose songs are being remixed) listed at the track level identified as Primary? If not, there is an error.
+      - Are the original artists listed at the album level? If so, there is an error.
+    `,
+    'userExplanation': `Albums with vs. and meets - see iTunes Style Guide 6.3.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+        From iTunes Style Guide 6.3 : Remixes. When “Meets” or “vs.” is used to describe an album that is a collection
+        of different songs remixed by a single DJ, the mixing DJ must be listed at the album level and identified as
+        Primary with the Remixer role. The original artists (whose songs are being remixed) must be listed at the track
+        level and identified as Primary. The original artists must not be listed at the album level.
+      `,
+    }
   }
 };
