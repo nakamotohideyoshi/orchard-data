@@ -167,10 +167,10 @@ export default {
     if (this.item.status === 3) {
       this.showCustom()
     } else {
-      switch(this.$route.name) {
+      switch (this.$route.name) {
         case 'report-params':
           this.showCustom()
-        break
+          break
         default: this.showAppleTab()
       }
     }

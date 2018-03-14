@@ -1,7 +1,7 @@
-import Vue from 'vue'
 import FieldModal from '@/components/sections/FieldModal'
 import { mount } from 'avoriaz'
 import Vuex from 'vuex'
+import _ from 'lodash'
 import { FILTERS_META } from '@/constants/types'
 import router from '../../../src/renderer/router'
 
