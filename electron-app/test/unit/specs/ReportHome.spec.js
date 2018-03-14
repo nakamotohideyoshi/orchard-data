@@ -19,6 +19,7 @@ describe('ReportSummary.vue', () => {
   let mutations
   let store
   let actions
+  let $validRoute
   const item = {
     rowid: 1,
     source: '/dir/1-spanish.tsv',
@@ -53,9 +54,17 @@ describe('ReportSummary.vue', () => {
       mutations
     })
 
+    $validRoute = {
+      name: 'report-home',
+      params: {
+        id: 1
+      }
+    }
+
     wrapper = mount(ReportSummary, {
       router,
-      store
+      store,
+      globals: { $route: $validRoute }
     })
   })
 

@@ -164,7 +164,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route, 'route')
     if (this.item.status === 3) {
       this.showCustom()
     } else {

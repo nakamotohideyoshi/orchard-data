@@ -19,8 +19,8 @@ describe('App.vue', () => {
     getters = {
       error: () => FILTERS_META,
       loaded: () => CONFIG_FAILURE,
-      [`${FILTERS_META}`]: () => [],
-      [`${CONFIG_FAILURE}`]: () => ({})
+      [FILTERS_META]: () => [],
+      [CONFIG_FAILURE]: () => ({})
     }
 
     actions = {

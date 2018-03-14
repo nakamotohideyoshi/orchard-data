@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     show (data) {
-      console.log(data, 'data', this.$modal)
+      // console.log(data, 'data', this.$modal)
       this.$modal.show('field-modal', {
         ...data,
         rowid: this.$route.params.id

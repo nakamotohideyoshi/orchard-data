@@ -28,7 +28,7 @@ const emptyState = {
   render: h => h('div')
 }
 
-Vue.use(VModal)
+Vue.use(VModal, { dynamic: true })
 
 // register mock components
 Vue.component('router-view', routerView);
