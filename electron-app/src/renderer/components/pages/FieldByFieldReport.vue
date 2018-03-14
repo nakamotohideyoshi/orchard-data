@@ -24,6 +24,7 @@ div
 import { mapGetters, mapActions } from 'vuex'
 
 import {
+  FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
   FILTERS_META
@@ -35,6 +36,7 @@ export default {
     ...mapGetters({
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
+      items: FIELDS,
       filters: FILTERS_META
     })
   },

@@ -70,9 +70,10 @@ export default {
     formattedDate () {
       return moment(this.item.time).format(DATE_FORMAT)
     },
+
     batchId () {
       return this.$route.params.id
-    },
+    }
   },
 
   created () {
@@ -86,7 +87,6 @@ export default {
      * @returns {Promise<void>}
      */
     async fetchReport () {
-      console.log(this.batchId, 'batch id')
       await this.fetchRowByRowReport({ batchId: this.batchId })
     },
     goBack () {

@@ -26,15 +26,18 @@ module.exports = {
 
       if(category && filtersMeta[occurrence['criteria_id']]['category'].toLowerCase() !== category) { continue; }
 
-      JSON.parse(occurrence['test_data_field_error_types']).forEach(error => {
+      if(occurrence['test_data_field_error_types']) {
+        occurrence['test_data_field_error_types'].forEach(error => {
 
-        // pluralize
-        if(error[error.length - 1] !== 's') { error += "s"; }
+          // pluralize
+          if(error[error.length - 1] !== 's') { error += "s"; }
 
-        // increments error type
-        RBRReport[occurrence['test_data_row_id']][error] += 1;
+          // increments error type
+          RBRReport[occurrence['test_data_row_id']][error] += 1;
 
-      });
+        });
+      }
+
 
       if(RBRReport[occurrence['test_data_row_id']]['errors'] > 0) {
 

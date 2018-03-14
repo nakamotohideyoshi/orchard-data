@@ -20,7 +20,7 @@ modal.modal(
     .description VALUE: {{field.value}}
   .btn-group
     router-link(:to="`/csv/${item.rowid}`").btn.btn-view-detail View Row
-    button(v-on:click="showParams()").btn.btn-view-detail View Test Paramters
+    button(v-on:click="showParams()").btn.btn-view-detail View Test Parameters
 </template>
 
 <script>
