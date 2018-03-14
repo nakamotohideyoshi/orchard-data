@@ -16,7 +16,7 @@ div
                 td {{ result.errors }}
                 td {{ result.warnings }}
                 td {{ overallStatusMap[result.grade] }}
-    
+
 
     .p-container__more(v-if="results.length")
         a(href="#" js-load-more).btn.btn-more
@@ -69,7 +69,10 @@ export default {
 
     formattedDate () {
       return moment(this.item.time).format(DATE_FORMAT)
-    }
+    },
+    batchId () {
+      return this.$route.params.id
+    },
   },
 
   created () {
@@ -78,12 +81,12 @@ export default {
 
   methods: {
     ...mapActions(['fetchRowByRowReport']),
-
     /**
      * Fetch the report results based on the `batchId`
      * @returns {Promise<void>}
      */
     async fetchReport () {
+      console.log(this.batchId, 'batch id')
       await this.fetchRowByRowReport({ batchId: this.batchId })
     },
     goBack () {
