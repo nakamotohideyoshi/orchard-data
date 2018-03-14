@@ -85,8 +85,6 @@ describe('should test API', function() {
           const response = JSON.parse(res.text);
           _datasetId = response.datasetId;
 
-          console.log(response);
-
           expect(res).to.have.status(201);
           expect(response.status).to.be.equal(success.status);
           expect(response.datasetId).to.be.a('number');
