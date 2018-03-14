@@ -1,19 +1,25 @@
 <template lang="pug">
 include _mixins
-// table
-table.p-table.p-table--full(js-stacktable)
-    thead
-        tr
-            td #
-            td Explanation
-            td
-                a(@click.prevent="toggleSort('count')" href="#") Count
+.report-summary__container
+    // table
+    table.p-table.p-table--full(js-stacktable v-if="items.length")
+        thead
+            tr
+                td #
+                td Explanation
+                td
+                    a(@click.prevent="toggleSort('count')" href="#") Count
 
-    tbody
-        tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
-            td {{ i + 1 }}
-            td {{ getFilter(item.criteriaId) }}
-            td {{ item.count }}
+        tbody
+            tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
+                td {{ i + 1 }}
+                td {{ getFilter(item.criteriaId) }}
+                td {{ item.count }}
+    empty-state(
+        v-if="!loading && !items.length && error"
+        title="No errors found"
+        :message="error.message"
+    )
 </template>
 
 <script>
@@ -96,10 +102,6 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-@import "../../assets/styles/app.sass";
-</style>
 
 <style scoped>
 a:hover {

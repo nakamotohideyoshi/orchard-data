@@ -37,7 +37,6 @@ export default {
     },
 
     fieldByFieldDownloadLink (state, getters, rootState) {
-      console.log(state, rootState, 'root state')
       return function (batchId) {
         return `${API_URL}field-by-field/${categoryMap[rootState.ACTIVE_REPORT_CATEGORY]}/${batchId}.tsv`
       }

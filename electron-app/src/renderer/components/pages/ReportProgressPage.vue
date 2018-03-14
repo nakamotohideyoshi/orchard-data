@@ -59,7 +59,3 @@ export default {
   methods: {}
 }
 </script>
-
-<style lang="sass" scoped>
-@import "../../assets/styles/app.sass";
-</style>

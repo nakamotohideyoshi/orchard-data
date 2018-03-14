@@ -16,69 +16,69 @@ import {
 } from '@/constants/config'
 
 const state = {
-  [`${SUBMISSIONS}`]: [],
-  [`${SUBMISSION}`]: null,
-  [`${SUBMISSION_ERRORS}`]: [],
-  [`${SUBMISSIONS_REQUEST}`]: false,
-  [`${SUBMISSIONS_FAILURE}`]: null,
-  [`${SUBMISSIONS_LOADED}`]: false,
-  [`${FIELDS}`]: null,
-  [`${FIELDS_REQUEST}`]: false,
-  [`${FIELDS_FAILURE}`]: null
+  [SUBMISSIONS]: [],
+  [SUBMISSION]: null,
+  [SUBMISSION_ERRORS]: [],
+  [SUBMISSIONS_REQUEST]: false,
+  [SUBMISSIONS_FAILURE]: null,
+  [SUBMISSIONS_LOADED]: false,
+  [FIELDS]: null,
+  [FIELDS_REQUEST]: false,
+  [FIELDS_FAILURE]: null
 }
 
 const mutations = {
-  [`${SUBMISSION}`] (s, data) {
-    return Object.assign(s, { [`${SUBMISSION}`]: data })
+  [SUBMISSION] (s, data) {
+    return Object.assign(s, { [SUBMISSION]: data })
   },
-  [`${SUBMISSION_ERRORS}`] (s, data = []) {
-    return Object.assign(s, { [`${SUBMISSION_ERRORS}`]: data })
+  [SUBMISSION_ERRORS] (s, data = []) {
+    return Object.assign(s, { [SUBMISSION_ERRORS]: data })
   },
-  [`${SUBMISSIONS}`] (s, items) {
+  [SUBMISSIONS] (s, items) {
     if (items instanceof Array && items.length) {
-      return Object.assign(s, { [`${SUBMISSIONS}`]: items })
+      return Object.assign(s, { [SUBMISSIONS]: items })
     }
 
-    return Object.assign(s, { [`${SUBMISSIONS}`]: [] })
+    return Object.assign(s, { [SUBMISSIONS]: [] })
   },
-  [`${SUBMISSIONS_REQUEST}`] (s, status) {
+  [SUBMISSIONS_REQUEST] (s, status) {
     let finalStatus = false
 
     if (status) {
       finalStatus = true
     }
 
-    return Object.assign(s, { [`${SUBMISSIONS_REQUEST}`]: finalStatus })
+    return Object.assign(s, { [SUBMISSIONS_REQUEST]: finalStatus })
   },
-  [`${SUBMISSIONS_FAILURE}`] (s, error) {
-    return Object.assign(s, { [`${SUBMISSIONS_FAILURE}`]: error })
+  [SUBMISSIONS_FAILURE] (s, error) {
+    return Object.assign(s, { [SUBMISSIONS_FAILURE]: error })
   },
-  [`${SUBMISSIONS_LOADED}`] (s, status) {
-    return Object.assign(s, { [`${SUBMISSIONS_LOADED}`]: status })
+  [SUBMISSIONS_LOADED] (s, status) {
+    return Object.assign(s, { [SUBMISSIONS_LOADED]: status })
   },
-  [`${SUBMISSIONS_ADD}`] (s, newSubmission) {
+  [SUBMISSIONS_ADD] (s, newSubmission) {
     return Object.assign(s, {
-      [`${SUBMISSIONS}`]: s[SUBMISSIONS].concat(newSubmission)
+      [SUBMISSIONS]: s[SUBMISSIONS].concat(newSubmission)
     })
   },
-  [`${FIELDS}`] (s, item) {
+  [FIELDS] (s, item) {
     if (item instanceof Object) {
-      return Object.assign(s, { [`${FIELDS}`]: item })
+      return Object.assign(s, { [FIELDS]: item })
     }
 
-    return Object.assign(s, { [`${FIELDS}`]: {} })
+    return Object.assign(s, { [FIELDS]: {} })
   },
-  [`${FIELDS_REQUEST}`] (s, status) {
+  [FIELDS_REQUEST] (s, status) {
     let finalStatus = false
 
     if (status) {
       finalStatus = true
     }
 
-    return Object.assign(s, { [`${FIELDS_REQUEST}`]: finalStatus })
+    return Object.assign(s, { [FIELDS_REQUEST]: finalStatus })
   },
-  [`${FIELDS_FAILURE}`] (s, error) {
-    return Object.assign(s, { [`${FIELDS_FAILURE}`]: error })
+  [FIELDS_FAILURE] (s, error) {
+    return Object.assign(s, { [FIELDS_FAILURE]: error })
   }
 }
 
@@ -162,8 +162,7 @@ const actions = {
         }
       })
       .then((res) => {
-        // Still think we should have some
-        commit(FIELDS_REQUEST, false)
+        // TODO: Fix API response to show actual error
         if (res.data[0]) {
           commit(FIELDS, res.data)
         } else {
@@ -171,8 +170,10 @@ const actions = {
         }
       })
       .catch((e) => {
-        commit(FIELDS_REQUEST, false)
         commit(FIELDS_FAILURE, e)
+      })
+      .finally(() => {
+        commit(FIELDS_REQUEST, false)
       })
   },
   fetchErrors ({ commit }, id) {
@@ -197,15 +198,15 @@ const actions = {
 }
 
 const getters = {
-  [`${SUBMISSION}`]: s => s[SUBMISSION],
-  [`${SUBMISSION_ERRORS}`]: s => s[SUBMISSION_ERRORS],
-  [`${SUBMISSIONS}`]: s => s[SUBMISSIONS],
-  [`${SUBMISSIONS_REQUEST}`]: s => s[SUBMISSIONS_REQUEST],
-  [`${SUBMISSIONS_FAILURE}`]: s => s[SUBMISSIONS_FAILURE],
-  [`${SUBMISSIONS_LOADED}`]: s => s[SUBMISSIONS_LOADED],
-  [`${FIELDS}`]: s => s[FIELDS],
-  [`${FIELDS_REQUEST}`]: s => s[FIELDS_REQUEST],
-  [`${FIELDS_FAILURE}`]: s => s[FIELDS_FAILURE]
+  [SUBMISSION]: s => s[SUBMISSION],
+  [SUBMISSION_ERRORS]: s => s[SUBMISSION_ERRORS],
+  [SUBMISSIONS]: s => s[SUBMISSIONS],
+  [SUBMISSIONS_REQUEST]: s => s[SUBMISSIONS_REQUEST],
+  [SUBMISSIONS_FAILURE]: s => s[SUBMISSIONS_FAILURE],
+  [SUBMISSIONS_LOADED]: s => s[SUBMISSIONS_LOADED],
+  [FIELDS]: s => s[FIELDS],
+  [FIELDS_REQUEST]: s => s[FIELDS_REQUEST],
+  [FIELDS_FAILURE]: s => s[FIELDS_FAILURE]
 }
 
 export default {

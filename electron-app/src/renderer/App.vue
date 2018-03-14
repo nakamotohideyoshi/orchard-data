@@ -8,11 +8,13 @@
        <button class="btn btn-primary" type="button" @click="retry">Retry</button>
        <p>ERROR: {{ error.message }}</p>
      </div>
+     <field-modal />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import FieldModal from '@/components/sections/FieldModal'
 import {
   FILTERS_META,
   SUBMISSIONS_LOADED,
@@ -21,6 +23,9 @@ import {
 
 export default {
   name: 'app',
+  components: {
+    FieldModal
+  },
   computed: {
     loaded () {
       return this.$store.getters[FILTERS_META] && this.$store.getters[SUBMISSIONS_LOADED]
@@ -45,6 +50,10 @@ export default {
 <style>
 @import "./assets/styles/custom.scss";
 </style>
+<style lang="sass">
+@import "./assets/styles/app.sass";
+</style>
+
 
 <style scoped>
 .container {

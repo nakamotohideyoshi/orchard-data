@@ -167,11 +167,13 @@ export default {
     if (this.item.status === 3) {
       this.showCustom()
     } else {
-      this.showAppleTab()
+      switch (this.$route.name) {
+        case 'report-params':
+          this.showCustom()
+          break
+        default: this.showAppleTab()
+      }
     }
   }
 }
 </script>
-<style lang="sass" scoped>
-@import "../../assets/styles/app.sass";
-</style>

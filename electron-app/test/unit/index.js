@@ -23,12 +23,18 @@ const reportSummaryHeader = {
     render: h => h('div')
 }
 
-Vue.use(VModal)
+const emptyState = {
+  name: 'empty-state',
+  render: h => h('div')
+}
+
+Vue.use(VModal, { dynamic: true })
 
 // register mock components
 Vue.component('router-view', routerView);
 Vue.component('router-link', routerLink);
 Vue.component('report-summary-header', reportSummaryHeader);
+Vue.component('empty-state', emptyState);
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)

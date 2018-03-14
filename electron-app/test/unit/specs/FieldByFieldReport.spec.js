@@ -2,7 +2,7 @@ import { shallow } from 'avoriaz'
 import Vuex from 'vuex'
 import sinon from 'sinon'
 import FieldByFieldReport from '@/components/pages/FieldByFieldReport'
-import { FIELDS, FIELDS_FAILURE, FILTERS_META, FIELD_BY_FIELD_REPORT, SUBMISSION } from '@/constants/types'
+import { FIELDS, FIELDS_FAILURE, FILTERS_META, FIELD_BY_FIELD_REPORT, FIELDS_REQUEST, SUBMISSION } from '@/constants/types'
 import module from '../../../src/renderer/store/modules/Submissions'
 import router from '../../../src/renderer/router'
 
@@ -19,9 +19,10 @@ describe('FieldByFieldReport.vue', () => {
   beforeEach(() => {
     getters = {
       [SUBMISSION]: () => ({ status: 1, time: 1519789653 }),
-      [`${FIELDS}`]: () => [],
-      [`${FIELDS_FAILURE}`]: () => ({}),
-      [`${FILTERS_META}`]: () => ({})
+      [FIELDS]: () => [],
+      [FIELDS_FAILURE]: () => ({}),
+      [FILTERS_META]: () => ({}),
+      [FIELDS_REQUEST]: () => false
     }
 
     actions = {
@@ -60,7 +61,6 @@ describe('FieldByFieldReport.vue', () => {
   it('should render correct function', () => {
     expect(typeof wrapper.vm.show).to.equal('function')
     expect(typeof wrapper.vm.hide).to.equal('function')
-    expect(typeof wrapper.vm.beforeOpen).to.equal('function')
     expect(typeof wrapper.vm.getFilter).to.equal('function')
     // expect(typeof wrapper.vm.fetchFieldByFieldReport).to.equal('function')
   })

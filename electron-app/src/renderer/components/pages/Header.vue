@@ -62,7 +62,3 @@ export default {
   name: 'app-header'
 }
 </script>
-
-<style lang="sass" scoped>
-@import "../../assets/styles/app.sass";
-</style>

@@ -1,37 +1,28 @@
 <template lang="pug">
 include _mixins
 div
-    table.p-table.p-table--full(js-stacktable)
+    table.p-table.p-table--full(js-stacktable v-if="items.length")
         thead
             tr
                 td #
                 td Test Data Row ID
                 td Description
         tbody
-            tr(v-for="data in items" v-on:click="show(data)" @before-open="beforeOpen")
+            tr(v-for="data in items" @click="show(data)")
                 td {{data.id}}
                 td {{data.criteria}}
                 td {{getFilter(data.criteria)}}
 
-    modal(name="hello-world" height="auto" @before-open="beforeOpen").modal
-        button.close-button(v-on:click="hide()")
-            +icon('ico-close')
-        label Description
-        .description this is test
-        label Row Id in field-by-field report
-        .description {{detailData.rowid}}
-        label Row id in Dataset
-        .description {{detailData.dataset_id}}
-        label Data fields
-        .description {{detailData.test_data_field_ids}}
-        .description {{detailData.test_data_field_values}}
-        .btn-group
-          router-link(:to="`/csv/${detailData.dataset_id}`").btn.btn-view-detail View Row
-          button(v-on:click="showParams()").btn.btn-view-detail View Test Paramters
+    empty-state(
+        v-if="!loading && !items.length && error"
+        title="No fields found"
+        :message="error.message"
+    )
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 import {
   FIELDS_REQUEST,
   FIELDS_FAILURE,
@@ -67,14 +58,14 @@ export default {
   },
   methods: {
     show (data) {
-      this.detailData = data
-      this.$modal.show('hello-world')
+      // console.log(data, 'data', this.$modal)
+      this.$modal.show('field-modal', {
+        ...data,
+        rowid: this.$route.params.id
+      })
     },
     hide () {
-      this.$modal.hide('hello-world')
-    },
-    beforeOpen (/* event */) {
-      this.detailData = 'asdasdas'
+      this.$modal.hide('field-report-modal')
     },
     getFilter (id) {
       if (
@@ -91,7 +82,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-@import "../../assets/styles/app.sass";
-</style>

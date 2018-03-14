@@ -2,7 +2,7 @@
 include _mixins
 // table
 div
-    table.p-table.p-table--full(js-stacktable)
+    table.p-table.p-table--full(js-stacktable v-if="results.length")
         thead
             tr
                 td #
@@ -18,9 +18,15 @@ div
                 td {{ overallStatusMap[result.grade] }}
 
 
-    .p-container__more
+    .p-container__more(v-if="results.length")
         a(href="#" js-load-more).btn.btn-more
             span Load more
+
+    empty-state(
+        v-if="!loading && !results.length && error"
+        title="No rows found"
+        :message="error.message"
+    )
 </template>
 
 <script>
@@ -63,7 +69,10 @@ export default {
 
     formattedDate () {
       return moment(this.item.time).format(DATE_FORMAT)
-    }
+    },
+    batchId () {
+      return this.$route.params.id
+    },
   },
 
   created () {
@@ -72,12 +81,12 @@ export default {
 
   methods: {
     ...mapActions(['fetchRowByRowReport']),
-
     /**
      * Fetch the report results based on the `batchId`
      * @returns {Promise<void>}
      */
     async fetchReport () {
+      console.log(this.batchId, 'batch id')
       await this.fetchRowByRowReport({ batchId: this.batchId })
     },
     goBack () {
@@ -86,7 +95,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-    @import "../../assets/styles/app.sass";
-</style>
