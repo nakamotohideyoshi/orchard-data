@@ -51,10 +51,7 @@ describe('should test database interface utilities', function() {
 
     request.then((r) => {
       assert.equal(_.isObject(r), true);
-      assert.equal(_.isObject(r.stmt), true);
-      assert.equal(!_.isEmpty(r.stmt), true);
-      assert.equal(r.stmt.changes, 1);
-      assert.equal(r.stmt.lastID, 1);
+      assert.equal(!_.isNaN(r.datasetId), true);
       done();
     });
   });

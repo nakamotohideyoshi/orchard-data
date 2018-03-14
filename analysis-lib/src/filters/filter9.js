@@ -3,7 +3,7 @@
 module.exports = function(row, idx) {
 
   const removeDiacritics = require('../scripts/remove-diacritics');
-  const parenthesesModule = require('../scripts/parentheses-module');
+  const stringUtils = require('../scripts/string-utils');
 
   const filterName = 'filter9';
   const filterMeta = require('./filters-meta')[filterName];
@@ -18,8 +18,8 @@ module.exports = function(row, idx) {
   if(!value) { return false; }
 
   // No parentheses expression or parentheses are not balanced
-  const parensStr = parenthesesModule.stripParentheses(value);
-  if(parensStr.length === 0 || !parenthesesModule.parenthesesAreBalanced(parensStr)) { return false; }
+  const parensStr = stringUtils.stripParentheses(value);
+  if(parensStr.length === 0 || !stringUtils.parenthesesAreBalanced(parensStr)) { return false; }
 
   // language defaults to english if not specified on tsv file
   let language = removeDiacritics(row['release_meta_language']).trim().toLowerCase();
@@ -54,7 +54,7 @@ module.exports = function(row, idx) {
   };
 
   // retrieves value inside parentheses
-  const parenthesesValue = parenthesesModule.getTextInBetween(value);
+  const parenthesesValue = stringUtils.getTextBetweenParentheses(value);
 
   // if it's a match, pushes occurrence
   if(patterns[language].test(parenthesesValue)) {

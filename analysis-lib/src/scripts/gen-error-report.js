@@ -3,7 +3,7 @@ let argv = require('minimist')(process.argv.splice(2));
 
 let dbInterfaceModule = require('../db-scripts/db-interface');
 let IOModule = require('./IO-module');
-let utils = require('./utils');
+let reportUtils = require('./report-utils');
 
 let input = argv['input'];
 let category = argv['category'];
@@ -50,8 +50,8 @@ try {
     let datasetSize = report[0]['datasetSize'] || 0;
     let parsedReport = parseReport(report);
 
-    let EBRReport = utils.errorByError(parsedReport, category);
-    console.log(utils.errorByErrorToTsv(EBRReport));
+    let EBRReport = reportUtils.errorByError(parsedReport, category);
+    console.log(reportUtils.errorByErrorToTsv(EBRReport));
 
   }
 
@@ -72,8 +72,8 @@ try {
             }
 
             let parsedReport = parseReport(FBFReport);
-            let EBEReport = utils.errorByError(parsedReport, category);
-            resolve(utils.errorByErrorToTsv(EBEReport));
+            let EBEReport = reportUtils.errorByError(parsedReport, category);
+            resolve(reportUtils.errorByErrorToTsv(EBEReport));
 
           }
 

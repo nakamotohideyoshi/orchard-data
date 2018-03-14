@@ -216,16 +216,7 @@ module.exports = function() {
           let stmt = `INSERT INTO ${datasetMetaTable.name} (${fields}) VALUES (${placeholders})`;
 
           return db.run(stmt, values)
-            .then((result) => {
-                console.log(`Rows inserted: ${result.changes} with ID: ${result.lastID}`);
-
-                return result;
-              },
-              (err) => {
-                console.log('ERROR:', err);
-                return err;
-              }
-            );
+            .then(result => ({ 'datasetId': result.lastID }), (err) => err);
 
         });
 

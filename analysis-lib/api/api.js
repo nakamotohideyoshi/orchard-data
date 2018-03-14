@@ -11,10 +11,10 @@ console.log("\n***** Initializing Analysis Lib Module API *****\n");
 let dbInterface = new analysisLibModule.DbInterface();
 dbInterface.init();
 
-// Utils
+// reportUtils
 let IO = new analysisLibModule.IO();
 let constants = analysisLibModule.constants;
-let utils = analysisLibModule.utils;
+let reportUtils = analysisLibModule.reportUtils;
 
 // Filters metadata
 let filtersMeta = analysisLibModule.filtersMeta;
@@ -31,103 +31,84 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
 });
 
 // Sava TSV and run test cases
-router.post('/dataset', (req, res) => {
+router.post('/dataset', async(req, res) => {
 
-  let data = req.body;
-  let datasetId;
-  let report;
+  const data = req.body;
 
-  console.log("Running filters");
+  try {
 
-  let dbPromise = dbInterface.saveDatasetMeta(data);
-  dbPromise
-    .then(result => {
-      datasetId = result.lastID;
-      return dbInterface.saveTsvIntoDB(data.source, datasetId);
-    })
-    .then(() => analysisLibModule.runAllFilters(datasetId))
-    .then(rep => {
-      report = rep;
-      return report.calcFieldByFieldReportAll();
-    })
-    .then(rep => dbInterface.saveFieldByFieldReport(report.FBFReport))
-    .then(() => report.calcBatchResultsReport())
-    .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
-    .then(() => console.log("Finished Reports"))
-    .then(() => res.status(201).json({ status: "OK", datasetId: datasetId }))
-    .catch(err => {
+    console.log("\n***** Saving Dataset Metadata *****");
 
-      res.status(500).json({ 'title': err.name, 'detail': err.message });
+    const { datasetId } = await dbInterface.saveDatasetMeta(data);
 
-      /*
-      switch(err.thrower) {
+    console.log("***** Done *****\n");
+    console.log("***** Saving Tsv File *****");
 
-        case 'saveTsvIntoDB':
+    await dbInterface.saveTsvIntoDB(data.source, datasetId);
 
-          let parsedError = {
-            "thrower": err.filename || "db-interface: saveTsvIntoDB",
-            "message": err.error.message,
-            "row_id": err.row_id || -1
-          };
+    console.log("***** Done *****\n");
+    console.log("***** Running all Filters *****");
 
-          // Update status and logs error on a table
-          dbInterface.updateDatasetStatus(datasetId, dbInterface.dbStatus.FAIL)
-            .then(() => dbInterface.logErrorIntoDB(datasetId, parsedError))
-            .then(() => res.status(500).json(parsedError))
-            .catch(err => res.status(500).json(err)); // Let's merge errors (err2 and err)
+    const report = await analysisLibModule.runAllFilters(datasetId);
 
-          break;
+    console.log("***** Done *****\n");
+    console.log("***** Calculating Field by Field Report *****");
 
-        default:
+    await report.calcFieldByFieldReportAll();
 
-          break;
+    console.log("***** Done *****\n");
+    console.log("***** Saving Field By Field Report *****");
 
-      }
-      */
+    await dbInterface.saveFieldByFieldReport(report.FBFReport);
 
-    });
+    console.log("***** Saved *****\n");
+    console.log("***** Calculating Batch Results Report *****");
+
+    await report.calcBatchResultsReport();
+
+    console.log("***** Done *****\n");
+    console.log("***** Saving Batch Results Report *****");
+
+    await dbInterface.saveBatchResultsReport(report.BRReport);
+
+    console.log("***** Done *****\n");
+    console.log("***** FINISHED *****\n")
+
+    res.status(201).json({ status: "OK", datasetId: datasetId })
+
+  }
+
+  catch(err) { res.status(500).json({ 'title': err.name, 'detail': err.message }); }
 
 });
 
 // Sava TSV and run test cases
-router.get('/run-filter/:filterId/:datasetId', (req, res) => {
+router.get('/run-filter/:filterId/:datasetId', async(req, res) => {
 
-  let datasetId = req.params.datasetId ;
-  let filterId = "filter" + req.params.filterId;
-  let datasetSize = 0;
-  let report;
+  const datasetId = req.params.datasetId ;
+  const filterId = "filter" + req.params.filterId;
 
-  analysisLibModule.runSingleFilter(datasetId, filterId)
-    .then(rep => {
-      report = rep;
-      return report.calcFieldByFieldReportAll();
-    })
-    .then(() => report.calcBatchResultsReport())
-    .then(() => dbInterface.getDatasetSize(datasetId))
-    .then(result => {
-      datasetSize = result;
-      return Promise.resolve(datasetSize);
-    })
-    .then(() => {
+  try {
 
-      if(report.length === 0) {
+    console.log("\n***** Getting Dataset Size *****");
+    const datasetSize = await dbInterface.getDatasetSize(datasetId);
 
-        res.send(`Empty report for datasetId ${datasetId}.`);
-        return;
+    if(datasetSize === 0) {
+      res.send(`Empty report for datasetId ${datasetId}.`);
+      return;
+    }
 
-      }
+    console.log(`\n***** Running ${filterId} on dataset ${datasetId} *****`)
+    const report = await analysisLibModule.runSingleFilter(datasetId, filterId);
 
-      return new Promise((resolve, reject) => {
+    console.log(`\n***** Calculating Field by Field Report *****`)
+    await report.calcFieldByFieldReportAll();
 
-        try { resolve(utils.fieldByFieldToTsv(report.FBFReport, datasetSize)); }
+    res.send(reportUtils.fieldByFieldToTsv(report.FBFReport, datasetSize));
 
-        catch(err) { reject(err); }
+  }
 
-      });
-
-    })
-    .then(result => res.send(result))
-    .catch(err => res.send(err));
+  catch(err) { res.send(err); }
 
 });
 
@@ -139,7 +120,7 @@ router.get('/field-by-field-reports', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report)); }
+        try { resolve(reportUtils.parseFieldByFieldReport(report)); }
 
         catch(err) { reject(err); }
 
@@ -175,7 +156,7 @@ router.get('/field-by-field/:datasetId.tsv', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
+        try { resolve(reportUtils.fieldByFieldToTsv(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -204,7 +185,7 @@ router.get('/field-by-field/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
+        try { resolve(reportUtils.parseFieldByFieldReport(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -241,7 +222,7 @@ router.get('/field-by-field/:category/:datasetId.tsv', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.fieldByFieldToTsv(report, datasetSize)); }
+        try { resolve(reportUtils.fieldByFieldToTsv(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -271,7 +252,7 @@ router.get('/field-by-field/:category/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.parseFieldByFieldReport(report, datasetSize)); }
+        try { resolve(reportUtils.parseFieldByFieldReport(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -302,8 +283,8 @@ router.get('/row-by-row/:datasetId.tsv', (req, res) => {
 
         try {
 
-          let RBRReport = utils.rowByRow(report, datasetSize);
-          resolve(utils.rowByRowToTsv(RBRReport));
+          let RBRReport = reportUtils.rowByRow(report, datasetSize);
+          resolve(reportUtils.rowByRowToTsv(RBRReport));
 
         }
 
@@ -333,7 +314,7 @@ router.get('/row-by-row/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.rowByRow(report, datasetSize)); }
+        try { resolve(reportUtils.rowByRow(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -365,8 +346,8 @@ router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
 
         try {
 
-          let RBRReport = utils.rowByRow(report, datasetSize);
-          resolve(utils.rowByRowToTsv(RBRReport));
+          let RBRReport = reportUtils.rowByRow(report, datasetSize);
+          resolve(reportUtils.rowByRowToTsv(RBRReport));
 
         }
 
@@ -397,7 +378,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
 
       return new Promise((resolve, reject) => {
 
-        try { resolve(utils.rowByRow(report, datasetSize)); }
+        try { resolve(reportUtils.rowByRow(report, datasetSize)); }
 
         catch(err) { reject(err); }
 
@@ -429,8 +410,8 @@ router.get('/error-by-error/:datasetId.tsv', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report);
-          resolve(utils.errorByErrorToTsv(EBEReport));
+          let EBEReport = reportUtils.errorByError(report);
+          resolve(reportUtils.errorByErrorToTsv(EBEReport));
 
         }
 
@@ -456,7 +437,7 @@ router.get('/error-by-error/:datasetId', (req, res) => {
       }
 
       // Row by Row Aggregation
-      let EBEReport = utils.errorByError(report);
+      let EBEReport = reportUtils.errorByError(report);
       res.status(200).json(EBEReport);
     })
     .catch((e) => {
@@ -486,8 +467,8 @@ router.get('/error-by-error/:category/:datasetId.tsv', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report, category);
-          resolve(utils.errorByErrorToTsv(EBEReport));
+          let EBEReport = reportUtils.errorByError(report, category);
+          resolve(reportUtils.errorByErrorToTsv(EBEReport));
 
         }
 
@@ -520,7 +501,7 @@ router.get('/error-by-error/:category/:datasetId', (req, res) => {
           }
 
           // Row by Row Aggregation
-          let EBEReport = utils.errorByError(report, category);
+          let EBEReport = reportUtils.errorByError(report, category);
           resolve(EBEReport);
 
         }

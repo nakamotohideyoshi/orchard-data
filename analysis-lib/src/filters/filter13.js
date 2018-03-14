@@ -4,7 +4,7 @@ module.exports = function(row, idx) {
   'use strict';
 
   const removeDiacritics = require('../scripts/remove-diacritics');
-  const parenthesesModule = require('../scripts/parentheses-module');
+  const stringUtils = require('../scripts/string-utils');
 
   const filterName = 'filter13';
   const filterMeta = require('./filters-meta')[filterName];

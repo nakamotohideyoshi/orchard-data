@@ -9,7 +9,7 @@ const request = chai.request;
 
 const filtersMeta = require('../../src/filters/filters-meta');
 const reportModule = require('../../src/scripts/report-tool');
-const reportUtils = require('../../src/scripts/utils');
+const reportUtils = require('../../src/scripts/report-utils');
 
 const mocks = require('../../mocks/api/api');
 
@@ -80,14 +80,19 @@ describe('should test API', function() {
       .send(metadata)
       .end((err, res) => {
 
-        const response = JSON.parse(res.text);
-        _datasetId = response.datasetId;
+        try
+        {
+          const response = JSON.parse(res.text);
+          _datasetId = response.datasetId;
 
-        expect(res).to.have.status(201);
-        expect(response.status).to.be.equal(success.status);
-        expect(response.datasetId).to.be.a('number');
+          expect(res).to.have.status(201);
+          expect(response.status).to.be.equal(success.status);
+          expect(response.datasetId).to.be.a('number');
 
-        done();
+          done();
+        }
+
+        catch(err) { console.log(err); }
 
       });
 

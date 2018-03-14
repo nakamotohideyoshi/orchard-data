@@ -3,7 +3,7 @@
 module.exports = function(row, idx) {
 
   const removeDiacritics = require('../scripts/remove-diacritics');
-  const parenthesesModule = require('../scripts/parentheses-module');
+  const stringUtils = require('../scripts/string-utils');
 
   const filterName = 'filter8';
   const filterMeta = require('./filters-meta')[filterName];
@@ -53,10 +53,10 @@ module.exports = function(row, idx) {
     'error_type': [],
   };
 
-  const parensStr = parenthesesModule.stripParentheses(value);
+  const parensStr = stringUtils.stripParentheses(value);
 
   // No parentheses on release name or parentheses are not normalized
-  if(parensStr.length === 0 || !parenthesesModule.parenthesesAreBalanced(parensStr)) {
+  if(parensStr.length === 0 || !stringUtils.parenthesesAreBalanced(parensStr)) {
 
     occurrence.field.push(field);
     occurrence.value.push(row[field]);
@@ -68,7 +68,7 @@ module.exports = function(row, idx) {
   else {
 
     // retrieves value inside parentheses
-    const parenthesesValue = parenthesesModule.getTextInBetween(value);
+    const parenthesesValue = stringUtils.getTextBetweenParentheses(value);
 
     // tests each regex
     let match = false;

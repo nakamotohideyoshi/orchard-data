@@ -4,7 +4,7 @@ module.exports = function(row, idx) {
   'use strict';
 
   const removeDiacritics = require('../scripts/remove-diacritics');
-  const parenthesesModule = require('../scripts/parentheses-module');
+  const stringUtils = require('../scripts/string-utils');
 
   const filterName = 'filter12';
   const filterMeta = require('./filters-meta')[filterName];
@@ -56,8 +56,8 @@ module.exports = function(row, idx) {
     'error_type': [],
   };
 
-  let releaseParens = parenthesesModule.getTextInBetween(releaseName);
-  let trackParens = parenthesesModule.getTextInBetween(trackName);
+  let releaseParens = stringUtils.getTextBetweenParentheses(releaseName);
+  let trackParens = stringUtils.getTextBetweenParentheses(trackName);
 
   const languages = Object.keys(patterns);
 

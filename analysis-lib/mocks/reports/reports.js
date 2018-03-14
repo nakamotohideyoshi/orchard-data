@@ -121,55 +121,55 @@ module.exports = {
         'dataset_id': 1,
         'criteria_id': 'filter1',
         'test_data_row_id': 1,
-        'test_data_field_ids': JSON.stringify(['release_name']),
-        'test_data_field_values': JSON.stringify(['A value']),
-        'test_data_field_explanations_ids': JSON.stringify([-1]),
-        'test_data_field_error_types': JSON.stringify(['error'])
+        'test_data_field_ids': ['release_name'],
+        'test_data_field_values': ['A value'],
+        'test_data_field_explanations_ids': [-1],
+        'test_data_field_error_types': ['error']
       },
       {
         'dataset_id': 1,
         'criteria_id': 'filter1',
         'test_data_row_id': 2,
-        'test_data_field_ids': JSON.stringify(['track_name']),
-        'test_data_field_values': JSON.stringify(['Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1]),
-        'test_data_field_error_types': JSON.stringify(['warning'])
+        'test_data_field_ids': ['track_name'],
+        'test_data_field_values': ['Another value'],
+        'test_data_field_explanations_ids': [1],
+        'test_data_field_error_types': ['warning']
       },
       {
         'dataset_id': 1,
         'criteria_id': 'filter1',
         'test_data_row_id': 3,
-        'test_data_field_ids': JSON.stringify(['release_name', 'track_name']),
-        'test_data_field_values': JSON.stringify(['A value', 'Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1, -1]),
-        'test_data_field_error_types': JSON.stringify(['warning', 'error'])
+        'test_data_field_ids': ['release_name', 'track_name'],
+        'test_data_field_values': ['A value', 'Another value'],
+        'test_data_field_explanations_ids': [1, -1],
+        'test_data_field_error_types': ['warning', 'error']
       },
       {
         'dataset_id': 1,
         'criteria_id': 'filter2',
         'test_data_row_id': 1,
-        'test_data_field_ids': JSON.stringify(['release_name']),
-        'test_data_field_values': JSON.stringify(['A value']),
-        'test_data_field_explanations_ids': JSON.stringify([-1]),
-        'test_data_field_error_types': JSON.stringify(['error'])
+        'test_data_field_ids': ['release_name'],
+        'test_data_field_values': ['A value'],
+        'test_data_field_explanations_ids': [-1],
+        'test_data_field_error_types': ['error']
       },
       {
         'dataset_id': 1,
         'criteria_id': 'filter2',
         'test_data_row_id': 2,
-        'test_data_field_ids': JSON.stringify(['track_name']),
-        'test_data_field_values': JSON.stringify(['Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1]),
-        'test_data_field_error_types': JSON.stringify(['error'])
+        'test_data_field_ids': ['track_name'],
+        'test_data_field_values': ['Another value'],
+        'test_data_field_explanations_ids': [1],
+        'test_data_field_error_types': ['error']
       },
       {
         'dataset_id': 1,
         'criteria_id': 'filter2',
         'test_data_row_id': 3,
-        'test_data_field_ids': JSON.stringify(['release_name', 'track_name']),
-        'test_data_field_values': JSON.stringify(['A value', 'Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1, -1]),
-        'test_data_field_error_types': JSON.stringify(['warning', 'error'])
+        'test_data_field_ids': ['release_name', 'track_name'],
+        'test_data_field_values': ['A value', 'Another value'],
+        'test_data_field_explanations_ids': [1, -1],
+        'test_data_field_error_types': ['warning', 'error']
       }
     ],
 
