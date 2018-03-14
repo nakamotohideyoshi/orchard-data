@@ -26,7 +26,7 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
   res.type('text/tab-separated-values');
 
   dbInterface.fetchTsvDataset(datasetId)
-    .then(rows => res.send(rows));
+    .then(rows => res.status(200).send(rows));
 
 });
 
@@ -54,9 +54,12 @@ router.post('/dataset', (req, res) => {
     .then(() => report.calcBatchResultsReport())
     .then(rep => dbInterface.saveBatchResultsReport(report.BRReport))
     .then(() => console.log("Finished Reports"))
-    .then(() => res.status(200).json({ status: "OK", datasetId: datasetId }))
+    .then(() => res.status(201).json({ status: "OK", datasetId: datasetId }))
     .catch(err => {
 
+      res.status(500).json({ 'title': err.name, 'detail': err.message });
+
+      /*
       switch(err.thrower) {
 
         case 'saveTsvIntoDB':
@@ -70,18 +73,17 @@ router.post('/dataset', (req, res) => {
           // Update status and logs error on a table
           dbInterface.updateDatasetStatus(datasetId, dbInterface.dbStatus.FAIL)
             .then(() => dbInterface.logErrorIntoDB(datasetId, parsedError))
-            .then(() => res.status(400).json(parsedError))
-            .catch(err2 => res.status(500).json(err)); // Let's merge errors (err2 and err)
+            .then(() => res.status(500).json(parsedError))
+            .catch(err => res.status(500).json(err)); // Let's merge errors (err2 and err)
 
           break;
 
         default:
 
-          res.status(400).json({ message: err.message });
-
           break;
 
       }
+      */
 
     });
 
@@ -246,8 +248,8 @@ router.get('/field-by-field/:category/:datasetId.tsv', (req, res) => {
       });
 
     })
-    .then(result => res.send(result))
-    .catch(err => res.send(err));
+    .then(result => res.status(200).send(result))
+    .catch(err => res.status(500).json({ title: err.name, detail: err.message }));
 
 });
 

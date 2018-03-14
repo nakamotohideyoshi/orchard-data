@@ -1,6 +1,6 @@
 // Generic Artist Names
 
-module.exports = function(row, idx, report) {
+module.exports = function(row, idx) {
 
   const removeDiacritics = require('../scripts/remove-diacritics');
 
@@ -144,12 +144,7 @@ module.exports = function(row, idx, report) {
   });
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){
-
-    report.addOccurrence(filterName, occurrence);
-    return occurrence;
-
-  }
+  if(occurrence.field.length > 0){ return occurrence; }
 
   else { return false; }
 

@@ -6,8 +6,9 @@ const validator = require('is-my-json-valid');
 
 const filtersMeta = require('../../src/filters/filters-meta');
 const reportModule = require('../../src/scripts/report-tool');
+const reportUtils = require('../../src/scripts/utils');
 
-const mocks = require('../../mocks/reports/field-by-field-report');
+const mocks = require('../../mocks/reports/reports');
 
 describe('should test report tool', () => {
 
@@ -38,7 +39,7 @@ describe('should test report tool', () => {
 
   it('should test add occurrence', () => {
 
-    let occurrences = mocks['occurrences'];
+    let occurrences = mocks['field_by_field']['occurrences'];
 
     let occurrence_report = {};
 
@@ -88,16 +89,180 @@ describe('should test report tool', () => {
   it('should test field by field report', () => {
 
     // Adds occurrences
-    mocks['occurrences'].forEach(occurrence => report.addOccurrence(filter, occurrence));
+    mocks['field_by_field']['occurrences'].forEach(occurrence => report.addOccurrence(filter, occurrence));
 
     report.calcFieldByFieldReportAll()
       .then(FBFReport => {
 
-        let report = mocks['field_by_field_report'];
-
+        let report = mocks['field_by_field']['field_by_field_report'];
         assert.deepEqual(report, FBFReport);
 
       });
+
+  });
+
+  it('should test error by error report tsv', () => {
+
+    const FBFReport = mocks['error_by_error']['field_by_field_report'];
+    const EBEReportMock = [];
+
+    Object.keys(filtersMeta).forEach(filterId => {
+
+      const filter = filtersMeta[filterId];
+
+      const obj = {
+        'count': 0,
+        'criteriaId': filterId,
+        'description': filtersMeta[filterId]['userExplanation']
+      };
+
+      if(filterId === 'filter1' || filterId === 'filter2') { obj['count'] = 3; }
+
+      EBEReportMock.push(obj);
+
+    });
+
+    EBEReportMock.sort((a,b) => b['count'] - a['count']);
+
+    const headers = ['count', 'criteriaId', 'description'];
+    let tsv = headers.join('\t');
+    tsv += '\n';
+
+    EBEReportMock.forEach(occurrence => {
+
+      const values = Object.keys(occurrence).map(key => occurrence[key]);
+
+      tsv += values.join('\t');
+      tsv += '\n';
+
+    });
+
+    const EBEReport = reportUtils.errorByError(FBFReport);
+    const EBEReportTsv = reportUtils.errorByErrorToTsv(EBEReport);
+
+    assert.deepEqual(EBEReportTsv, tsv);
+
+  });
+
+  it('should test row by row report', () => {
+
+    const FBFReport = mocks['row_by_row']['field_by_field_report'];
+    let RBRReportMock = [];
+    const datasetSize = 5;
+
+    for(let i = 1; i <= datasetSize; i++) {
+
+      const obj = {
+        'rowID': i,
+        'errors': 0,
+        'warnings': 0,
+        'grade': 'PASS'
+      };
+
+      switch(i) {
+
+        case 1:
+          obj['errors'] = 2;
+          obj['grade'] = 'ERROR';
+          break;
+
+        case 2:
+          obj['errors'] = 1;
+          obj['warnings'] = 1;
+          obj['grade'] = 'ERROR';
+          break;
+
+        case 3:
+          obj['errors'] = 2;
+          obj['warnings'] = 2;
+          obj['grade'] = 'ERROR';
+          break;
+
+      }
+
+      RBRReportMock.push(obj);
+
+    }
+
+    RBRReportMock = RBRReportMock.sort((a, b) => {
+
+      let a_Problems = a['errors'] + a['warnings'];
+      let b_Problems = b['errors'] + b['warnings'];
+
+      return b_Problems - a_Problems || b['errors'] - a['errors'];
+
+    });
+
+    const RBRReport = reportUtils.rowByRow(FBFReport, datasetSize);
+    assert.deepEqual(RBRReport, RBRReportMock);
+
+  });
+
+  it('should test row by row report tsv', () => {
+
+    const FBFReport = mocks['row_by_row']['field_by_field_report'];
+    let RBRReportMock = [];
+    const datasetSize = 5;
+
+    for(let i = 1; i <= datasetSize; i++) {
+
+      const obj = {
+        'rowID': i,
+        'errors': 0,
+        'warnings': 0,
+        'grade': 'PASS'
+      };
+
+      switch(i) {
+
+        case 1:
+          obj['errors'] = 2;
+          obj['grade'] = 'ERROR';
+          break;
+
+        case 2:
+          obj['errors'] = 1;
+          obj['warnings'] = 1;
+          obj['grade'] = 'ERROR';
+          break;
+
+        case 3:
+          obj['errors'] = 2;
+          obj['warnings'] = 2;
+          obj['grade'] = 'ERROR';
+          break;
+
+      }
+
+      RBRReportMock.push(obj);
+
+    }
+
+    RBRReportMock = RBRReportMock.sort((a, b) => {
+
+      let a_Problems = a['errors'] + a['warnings'];
+      let b_Problems = b['errors'] + b['warnings'];
+
+      return b_Problems - a_Problems || b['errors'] - a['errors'];
+
+    });
+
+    const headers = ['rowId', 'errors', 'warnings', 'grade'];
+    let tsv = headers.join('\t');
+    tsv += '\n';
+
+    RBRReportMock.forEach(occurrence => {
+
+      const values = Object.keys(occurrence).map(key => occurrence[key]);
+
+      tsv += values.join('\t');
+      tsv += '\n';
+
+    });
+
+    const RBRReport = reportUtils.rowByRow(FBFReport, datasetSize);
+    const RBRReportTsv = reportUtils.rowByRowToTsv(RBRReport);
+    assert.deepEqual(RBRReportTsv, tsv);
 
   });
 
