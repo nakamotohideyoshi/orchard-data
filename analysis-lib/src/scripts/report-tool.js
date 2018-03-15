@@ -60,10 +60,10 @@ function ReportModule() {
   this.addOccurrence = function(filterId, occurrence) {
 
     // Filter string
-    let filterRegex = /(filter)[0-9]+/i;
-    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    // let filterRegex = /(filter)[0-9]+/i;
+    // let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
-    let filterOccurrences = this.filters[filter]['occurs_on'];
+    let filterOccurrences = this.filters[filterId]['occurs_on'];
     let rowId = occurrence['row_id'];
     let rowOccurrence = filterOccurrences[rowId];
 
@@ -147,14 +147,14 @@ function ReportModule() {
     console.log("\n");
 
     // Filter string
-    let filterRegex = /(filter)[0-9]+/i;
-    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    // let filterRegex = /(filter)[0-9]+/i;
+    // let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     try {
 
-      Object.keys(this.filters[filter]).forEach(key => {
+      Object.keys(this.filters[filterId]).forEach(key => {
 
-        let value = this.filters[filter][key];
+        let value = this.filters[filterId][key];
 
         if(typeof(value) === 'object') {
           console.log(`${key}: ${Object.keys(value)}`);
@@ -234,20 +234,20 @@ function ReportModule() {
 
     // if(this.FBFReport.length > 0) { return; }
 
-    let filterRegex = /(filter)[0-9]+/i;
-    let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
+    // let filterRegex = /(filter)[0-9]+/i;
+    // let filter = filterRegex.test(filterId) ? filterId : `filter${filterId}`;
 
     console.log("\n");
-    console.log(`---------- Calculating Field by Field Report - ${filter} ----------`);
+    console.log(`---------- Calculating Field by Field Report - ${filterId} ----------`);
     console.log("\n");
 
-    Object.keys(this.filters[filter]['occurs_on']).forEach(rowId => {
+    Object.keys(this.filters[filterId]['occurs_on']).forEach(rowId => {
 
-      let occurrence = this.filters[filter]['occurs_on'][rowId];
+      let occurrence = this.filters[filterId]['occurs_on'][rowId];
 
       let values = {
         'dataset_id': this.datasetId,
-        'criteria_id': filter,
+        'criteria_id': filterId,
         'test_data_row_id': occurrence['row_id'],
         'test_data_field_ids': JSON.stringify(occurrence['fields']),
         'test_data_field_values': JSON.stringify(occurrence['values']),
