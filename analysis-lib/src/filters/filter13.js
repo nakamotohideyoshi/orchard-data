@@ -14,7 +14,7 @@ module.exports = function(row, idx) {
 
   const fields = ['release_name', 'track_name'];
 
-  const trackName = removeDiacritics(row['track_name']).trim().toLowerCase();
+  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : '';
 
   const patterns = {
     'valid': [

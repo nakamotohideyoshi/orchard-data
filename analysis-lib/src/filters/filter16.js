@@ -74,7 +74,12 @@ module.exports = function(dataset) {
   const occurrences = [];
 
   // here we assume the album has only one release language
-  const language = dataset[0]['release_meta_language'].trim().toLowerCase();
+  let language = dataset[0]['release_meta_language'];
+  language = language ? language.trim().toLowerCase() : 'english';
+
+  // language not supported
+  if(!(language in stopWords)) { return false; }
+
   stopWords = stopWords[language];
 
   // keeps track of the last case found

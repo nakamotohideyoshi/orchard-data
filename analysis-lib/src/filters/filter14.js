@@ -28,6 +28,8 @@ module.exports = async function(row, idx) {
 
       let value = row[field];
 
+      if(!value) { break; }
+
       let divisorsCount = 0;
       let divisor;
 
