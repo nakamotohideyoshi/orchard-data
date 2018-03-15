@@ -1,6 +1,6 @@
 'use strict';
 
-const filterMeta = require('./filters-meta').filter_albums_with_vs_and_meets;
+const filterMeta = require('./filters-meta').albumswithvsandmeets;
 
 const defaultErrorType = filterMeta['type'];
 const defaultExplanationId = 'default';
