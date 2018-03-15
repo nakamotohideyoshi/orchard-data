@@ -11,7 +11,7 @@ module.exports = function(row, idx) {
   const defaultErrorType = filterMeta['type'];
   const defaultExplanationId = 'default';
 
-  const releaseLanguage = row['release_meta_language'].trim().toLowerCase();
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : '';
 
   const fields = [
     'orchard_artist',

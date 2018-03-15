@@ -22,7 +22,7 @@ module.exports = function(dataset) {
   // Checks for multiple composers on track level
   dataset.forEach(row => {
 
-    const trackComposer = removeDiacritics(row['track_artist_composer']).trim().toLowerCase();
+    const trackComposer = row['track_artist_composer'] ? removeDiacritics(row['track_artist_composer']).trim().toLowerCase() : '';
 
     if(lastTrackComposer && (lastTrackComposer !== trackComposer)) { hasMultipleComposers = true; }
     lastTrackComposer = trackComposer;
@@ -33,7 +33,7 @@ module.exports = function(dataset) {
   dataset.forEach((row, idx) => {
 
     let genre = row['genre'] || row['sub_genre'];
-    genre = removeDiacritics(genre).trim().toLowerCase();
+    genre = genre ? removeDiacritics(genre).trim().toLowerCase() : '';
 
     const occurrence = {
       'row_id': idx + 1,
@@ -49,8 +49,8 @@ module.exports = function(dataset) {
       artistFields.forEach(aField => {
         composerFields.forEach(cField => {
 
-          const artist = removeDiacritics(row[aField]).trim().toLowerCase();
-          const composer = removeDiacritics(row[cField]).trim().toLowerCase();
+          const artist = row[aField] ? removeDiacritics(row[aField]).trim().toLowerCase() : '';
+          const composer = row[cField] ? removeDiacritics(row[cField]).trim().toLowerCase() : '';
 
           // checks if genre is not classical
           if(artist === composer && genre !== 'classical') {

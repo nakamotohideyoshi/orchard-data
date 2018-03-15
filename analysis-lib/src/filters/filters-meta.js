@@ -1,5 +1,4 @@
 module.exports = {
-
   // Check Various Artists on Track Levels
   'filter1': {
     'orchardDescription': `Artist Errors: Various Artists on Track Levels / vice versa`,
@@ -307,6 +306,36 @@ module.exports = {
     }
   },
 
+  'filter17': {
+    'orchardDescription': `Genres that don't exist in iTunes.`,
+    'programmerDescription': `
+        Let the list of acceptable genres be from the "GENRE AS SHOWN ON THE STORE" column (which is text) or the
+        "GENRE CODE FOR METADATA" column (which is computer friendly) in the document "iTunes Package Music
+        Specification Addendum: Music, Music Video, and Ringtone Genre Codes" at
+        https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls,
+        from any Path under "Music", excluding paths under "Music Videos" and "Ringtones."
+
+        It is an error if the value in the genre field is not a case-insensitive match for a value in the
+        acceptable genres.
+
+        It is an error if the value in the sub-genre field is not a case-insensitive match for a value in the
+        acceptable genres.
+    `,
+    'userExplanation': `
+      Genres must exist in the (non-web content) "iTunes Package Music Specification Addendum: Music, Music Video,and
+      Ringtone Genre Codes" at https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls
+    `,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+        Genres must not be egregiously misclassified (for example, Hip Hop/Rap in place of Children’s Music).
+        See iTunes Style Guide 12.1.
+      `,
+    }
+  },
+
   'filter14': {
     'orchardDescription': `Each artist field must only contain one artist name.`,
     'programmerDescription': `
@@ -348,6 +377,36 @@ module.exports = {
     'explanations': {
       'default': `Capitalization must be grammatically correct. Titles must not be in all capitals, all lower case, or random casing. See iTunes Style Guide session 11.`,
       'inconsistent': `Capitalization is inconsistent through the album. Titles should be all sentence case or title case.`,
+    }
+  },
+
+  'filter17': {
+    'orchardDescription': `Genres that don't exist in iTunes.`,
+    'programmerDescription': `
+        Let the list of acceptable genres be from the "GENRE AS SHOWN ON THE STORE" column (which is text) or the
+        "GENRE CODE FOR METADATA" column (which is computer friendly) in the document "iTunes Package Music
+        Specification Addendum: Music, Music Video, and Ringtone Genre Codes" at
+        https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls,
+        from any Path under "Music", excluding paths under "Music Videos" and "Ringtones."
+
+        It is an error if the value in the genre field is not a case-insensitive match for a value in the
+        acceptable genres.
+
+        It is an error if the value in the sub-genre field is not a case-insensitive match for a value in the
+        acceptable genres.
+    `,
+    'userExplanation': `
+      Genres must exist in the (non-web content) "iTunes Package Music Specification Addendum: Music, Music Video,and
+      Ringtone Genre Codes" at https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls
+    `,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+        Genres must not be egregiously misclassified (for example, Hip Hop/Rap in place of Children’s Music).
+        See iTunes Style Guide 12.1.
+      `,
     }
   },
 

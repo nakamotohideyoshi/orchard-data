@@ -12,11 +12,11 @@ module.exports = function(row, idx) {
   const defaultErrorType = filterMeta['type'];
   const defaultExplanationId = 'default';
 
-  const releaseName = removeDiacritics(row['release_name']).trim().toLowerCase();
-  const releaseVersion = removeDiacritics(row['release_version']).trim().toLowerCase();
+  const releaseName = row['release_name'] ? removeDiacritics(row['release_name']).trim().toLowerCase() : '';
+  const releaseVersion = row['release_version'] ? removeDiacritics(row['release_version']).trim().toLowerCase() : '';
 
-  const trackName = removeDiacritics(row['track_name']).trim().toLowerCase();
-  const trackVersion = removeDiacritics(row['version']).trim().toLowerCase();
+  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : '';
+  const trackVersion = row['version'] ? removeDiacritics(row['version']).trim().toLowerCase() : '';
 
   const patterns = {
     'english': [

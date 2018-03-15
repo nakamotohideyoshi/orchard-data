@@ -72,6 +72,7 @@ module.exports = async function(datasetId) {
 
         for(let filter of datasetFilters) {
 
+          console.log(`Running: ${filter}`)
           report.addFilter(filter);
           const occurrences = await filters[filter](dataset, report);
 
