@@ -12,7 +12,7 @@ module.exports = function(row, idx) {
   const defaultExplanationId = 'default';
 
   const fields = ['orchard_artist', 'release_artists_primary_artist'];
-  const releaseLanguage = row['release_meta_language'].toLowerCase();
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].toLowerCase() : '';
 
   const occurrence = {
     'row_id': idx,

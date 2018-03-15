@@ -12,7 +12,7 @@ module.exports = function(row, idx) {
 
   const field = 'release_name'
   const releaseName = row[field]
-  const releaseLanguage = row['release_meta_language'].trim().toLowerCase();
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : '';
 
   const occurrence = {
     'row_id': idx,

@@ -78,7 +78,7 @@ router.post('/dataset', async(req, res) => {
 
   }
 
-  catch(err) { res.status(500).json({ 'title': err.name, 'detail': err.message }); }
+  catch(err) { console.log(err); res.status(500).json({ 'title': err.name, 'detail': err.message }); }
 
 });
 

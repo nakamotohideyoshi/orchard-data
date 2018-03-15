@@ -13,7 +13,7 @@ module.exports = function(row, idx) {
 
   const field = 'release_name';
   let value = row[field];
-  value = removeDiacritics(value).trim().toLowerCase();
+  value = value ? removeDiacritics(value).trim().toLowerCase() : '';
 
   if(!value) { return false; }
 
@@ -22,12 +22,12 @@ module.exports = function(row, idx) {
   if(parensStr.length === 0 || !stringUtils.parenthesesAreBalanced(parensStr)) { return false; }
 
   // language defaults to english if not specified on tsv file
-  let language = removeDiacritics(row['release_meta_language']).trim().toLowerCase();
+  let language = row['release_meta_language'] ? removeDiacritics(row['release_meta_language']).trim().toLowerCase() : '';
   language = language || 'english';
 
   // retrieves genre
   let genre = row['genre'] || row['subgenre'];
-  genre = removeDiacritics(genre).trim().toLowerCase();
+  genre = genre ? removeDiacritics(genre).trim().toLowerCase() : '';
 
   const invalidGenres = ['original score', 'soundtrack', 'musicals',
                        'musical', 'video game', 'tv soundtrack'];

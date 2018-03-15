@@ -11,8 +11,8 @@ module.exports = function(row, idx, report) {
   const defaultErrorType = filterMeta['type'];
   const defaultExplanationId = 'default';
 
-  const releaseLanguage = row['release_meta_language'].trim().toLowerCase();
-  const trackName = removeDiacritics(row['track_name']).trim().toLowerCase();
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english';
+  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : '';
 
   const patterns = {
     'english': [
@@ -50,7 +50,7 @@ module.exports = function(row, idx, report) {
 
       isInvalid = true;
       break;
-      
+
     }
 
   }
@@ -69,5 +69,5 @@ module.exports = function(row, idx, report) {
     return false;
 
   }
-  
+
 };
