@@ -4,10 +4,10 @@ const it = require('mocha').it;
 
 const ReportModule = require('../../../src/scripts/report-tool');
 
-const filterId = 'filter_albums_with_vs_and_meets';
-const mocks = require(`../../../mocks/filters/filter_albums_with_vs_and_meets`);
-const filter = require(`../../../src/filters/filter_albums_with_vs_and_meets`);
-const filterMeta = require('../../../src/filters/filters-meta').filter_albums_with_vs_and_meets;
+const filterId = 'albumswithvsandmeets';
+const mocks = require(`../../../mocks/filters/${filterId}`);
+const filter = require(`../../../src/filters/${filterId}`);
+const filterMeta = require('../../../src/filters/filters-meta')[filterId];
 
 const defaultErrorType = filterMeta.type;
 const defaultExplanationId = 'default';

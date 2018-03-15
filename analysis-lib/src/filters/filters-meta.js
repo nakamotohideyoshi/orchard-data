@@ -402,7 +402,7 @@ module.exports = {
     }
   },
 
-  'filter_albums_with_vs_and_meets': {
+  'albumswithvsandmeets': {
     'orchardDescription': `Albums with vs. and meets - artists must be listed separately as primary`,
     'programmerDescription': `
       - Does the release name contain “Meets” or “vs.”? If not, there is no error.
