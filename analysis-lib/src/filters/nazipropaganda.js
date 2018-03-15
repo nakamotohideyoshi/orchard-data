@@ -89,16 +89,18 @@ module.exports = function (row, index) {
   // - Reichskriegsflagge
 
   fieldsToCheck.forEach((field) => {
-    naziKeywords.forEach((naziKeyword) => {
-      let fieldContainsNaziKeyword = (row[field].toLowerCase().indexOf(naziKeyword) > -1);
+    if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
+      naziKeywords.forEach((naziKeyword) => {
+        let fieldContainsNaziKeyword = (row[field].toLowerCase().indexOf(naziKeyword) > -1);
 
-      if (fieldContainsNaziKeyword) {
-        occurrence.field.push(field);
-        occurrence.value.push(row[field]);
-        occurrence.explanation_id.push(defaultExplanationId);
-        occurrence.error_type.push(defaultErrorType);
-      }
-    });
+        if (fieldContainsNaziKeyword) {
+          occurrence.field.push(field);
+          occurrence.value.push(row[field]);
+          occurrence.explanation_id.push(defaultExplanationId);
+          occurrence.error_type.push(defaultErrorType);
+        }
+      });
+    }
   });
 
   return occurrence.field.length === 0 ? false : occurrence;
