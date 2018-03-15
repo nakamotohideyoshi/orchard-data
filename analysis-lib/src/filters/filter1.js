@@ -12,7 +12,9 @@ module.exports = function(row, idx) {
   const defaultExplanationId = 'default';
 
   const fields = ['track_artist', 'track_artist_featuring'];
-  const language = row['release_meta_language'].trim().toLowerCase();
+
+  let language = row['release_meta_language']
+  language = language ? language.trim().toLowerCase() : '';
 
   // Captures invalid field values
   const invalidStrings = {

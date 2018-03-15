@@ -13,17 +13,17 @@ module.exports = function(row, idx) {
 
   const field = 'release_name';
   let value = row[field];
-  value = removeDiacritics(value).trim().toLowerCase();
+  value = value ? removeDiacritics(value).trim().toLowerCase() : '';
 
   if(!value) { return false; }
 
   // language defaults to english if not specified on tsv file
-  let language = removeDiacritics(row['release_meta_language']).trim().toLowerCase();
-  language = language || 'english';
+  let language = row['release_meta_language'] ? removeDiacritics(row['release_meta_language']).trim().toLowerCase() : '';
+  language = language || '';
 
   // retrieves genre
   let genre = row['genre'] || row['subgenre'];
-  genre = removeDiacritics(genre).trim().toLowerCase();
+  genre = genre ? removeDiacritics(genre).trim().toLowerCase() : '';
 
   // nothing to be tested or genre is not soundtrack or not related to score
   if(!genre || (genre !== 'soundtrack' && !/Score/gi.test(genre))) { return false; }

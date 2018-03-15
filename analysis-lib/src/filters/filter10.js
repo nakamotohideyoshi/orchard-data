@@ -14,11 +14,11 @@ module.exports = function(row, idx) {
   const fields = ['track_name', 'release_name'];
   let trackArtist = row['track_artist'];
 
-  trackArtist = removeDiacritics(trackArtist).trim().toLowerCase();
+  trackArtist = trackArtist ? removeDiacritics(trackArtist).trim().toLowerCase() : '';
 
   // language defaults to english if not specified on tsv file
-  let language = removeDiacritics(row['release_meta_language']).trim().toLowerCase();
-  language = language || 'english';
+  let language = row['release_meta_language'] ? removeDiacritics(row['release_meta_language']).trim().toLowerCase() : '';
+  language = language || '';
 
   const yearPattern = /\([0-9]{4}\)/;
 
