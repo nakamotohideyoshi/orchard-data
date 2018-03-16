@@ -22,21 +22,21 @@ const fieldsToCheck = [
 ];
 
 const naziKeywords = [
-  'Hakenkreuz',
-  'Parteiadler',
-  'Thule Society',
-  'Ku Klux Klan',
-  'Wolfsangel',
-  'Celtic cross',
-  'Solar cross',
-  'Thule Society',
-  'Othala rune',
-  'Sturmabteilung',
-  'Sig runes',
-  'Totenkopf',
-  'Kampfgeschwader 54',
-  'Reichsadler',
-  'Reichskriegsflagge'
+  'hakenkreuz',
+  'parteiadler',
+  'thule society',
+  'ku klux klan',
+  'wolfsangel',
+  'celtic cross',
+  'solar cross',
+  'thule society',
+  'othala rune',
+  'sturmabteilung',
+  'sig runes',
+  'totenkopf',
+  'kampfgeschwader 54',
+  'reichsadler',
+  'reichskriegsflagge'
 ];
 
 /**
