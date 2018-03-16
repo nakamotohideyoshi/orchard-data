@@ -21,7 +21,7 @@ module.exports = {
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `Artist name cannot include any additional info (Like their instrument, etc)`,
+      'default': `Artist name cannot include any additional info (Like their instrument, etc)`
     }
   },
 
@@ -33,7 +33,7 @@ module.exports = {
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `Release name must not be generic (e.g., 00s Best Hits)`,
+      'default': `Release name must not be generic (e.g., 00s Best Hits)`
     }
   },
 
@@ -55,7 +55,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `Artist Name formatting (cannot be Last, First)`,
+      'default': `Artist Name formatting (cannot be Last, First)`
     }
   },
 
@@ -68,7 +68,7 @@ module.exports = {
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `Artists names must not be generic (e.g., 00s Best Hits)`,
+      'default': `Artists names must not be generic (e.g., 00s Best Hits)`
     }
   },
 
@@ -95,7 +95,7 @@ module.exports = {
       'default': `Composer cannot be listed as primary artist`,
       'notClassical': `Composer is listed as primary artist and genre is not classical`,
       'multipleComposers': `Artist cannot be listed as composer if there are multiple composers at track level`,
-      'soundtrack': `If genre is soundtrack and there is only one composer at track level, Orchard Artist and Release Artist(s)-Primary Artist(s) must be the composer`,
+      'soundtrack': `If genre is soundtrack and there is only one composer at track level, Orchard Artist and Release Artist(s)-Primary Artist(s) must be the composer`
     }
   },
 
@@ -125,7 +125,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `This type of content version (in parens) is not permitted.`,
+      'default': `This type of content version (in parens) is not permitted.`
     }
   },
 
@@ -153,7 +153,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `Soundtracks and scores must include version information in the album title, enclosed by parentheses or brackets`,
+      'default': `Soundtracks and scores must include version information in the album title, enclosed by parentheses or brackets`
     }
   },
 
@@ -179,7 +179,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version`,
+      'default': `The abbreviation for Original Soundtrack (O.S.T.) should not be used as an album or song title version`
     }
   },
 
@@ -211,7 +211,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `Titles may not include release dates, track number, additional info (producers, single, etc), search terms, or artist info.`,
+      'default': `Titles may not include release dates, track number, additional info (producers, single, etc), search terms, or artist info.`
     }
   },
 
@@ -236,7 +236,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `Formatting of "feat." and "with" must be lower case, in English, and in parentheses or brackets. See iTunes Store Music Style Guide 5.3.`,
+      'default': `Formatting of "feat." and "with" must be lower case, in English, and in parentheses or brackets. See iTunes Store Music Style Guide 5.3.`
     }
   },
 
@@ -267,7 +267,7 @@ module.exports = {
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `If the album title contains "Live", each track must also.`,
+      'default': `If the album title contains "Live", each track must also.`
     }
   },
 
@@ -302,7 +302,7 @@ module.exports = {
         The words Part and Volume must be abbreviated with “Pt.”
         and “Vol.” See iTunes Style Guide 11.2.
 
-      `,
+      `
     }
   },
 
@@ -321,7 +321,7 @@ module.exports = {
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`,
+      'default': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`
     }
   },
 
@@ -333,7 +333,7 @@ module.exports = {
     'type': 'error',
     'basis': 'row',
     'explanations': {
-      'default': `Generic track titles such as "Instrumental", or "Track 1" are not accepted.`,
+      'default': `Generic track titles such as "Instrumental", or "Track 1" are not accepted.`
     }
   },
 
@@ -346,7 +346,7 @@ module.exports = {
     'basis': 'dataset',
     'explanations': {
       'default': `Capitalization must be grammatically correct. Titles must not be in all capitals, all lower case, or random casing. See iTunes Style Guide session 11.`,
-      'inconsistent': `Capitalization is inconsistent through the album. Titles should be all sentence case or title case.`,
+      'inconsistent': `Capitalization is inconsistent through the album. Titles should be all sentence case or title case.`
     }
   },
 
@@ -376,7 +376,7 @@ module.exports = {
       'default': `
         Genres must not be egregiously misclassified (for example, Hip Hop/Rap in place of Children’s Music).
         See iTunes Style Guide 12.1.
-      `,
+      `
     }
   },
 
@@ -398,7 +398,7 @@ module.exports = {
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `A clean track must have a corresponding explicit track.`,
+      'default': `A clean track must have a corresponding explicit track.`
     }
   },
 
@@ -421,7 +421,7 @@ module.exports = {
         of different songs remixed by a single DJ, the mixing DJ must be listed at the album level and identified as
         Primary with the Remixer role. The original artists (whose songs are being remixed) must be listed at the track
         level and identified as Primary. The original artists must not be listed at the album level.
-      `,
+      `
     }
   },
 
@@ -443,9 +443,9 @@ module.exports = {
       - Track Artist
       - Track Artist(s) - Featuring(s)
       - Track Artist(s) - Remixer(s)
-      
+
       Let the nazi keyword list be the following terms:
-      
+
       - Hakenkreuz
       - Parteiadler
       - Thule Society
@@ -471,10 +471,10 @@ module.exports = {
         From iTunes Style Guide 1.13: Nazi Propaganda. Content must not depict Nazi symbolism as restricted by the
         Strafgesetzbuch section 86a if the content is cleared for sale in Germany (DE), Austria (AT), Switzerland (CH),
         or any other country that restricts Nazi propaganda.
-        
+
         If content violating this rule is submitted three times, your entire catalogue will be suspended in DE, AT, CH,
         and any other applicable country for up to six months. Content will be hidden using the reason: Refusal.
-      `,
+      `
     }
-  },
-};
+  }
+}
