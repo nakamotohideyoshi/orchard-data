@@ -477,4 +477,25 @@ module.exports = {
       `,
     }
   },
+
+  'correctlanguagesetatalbumlevel': {
+    'orchardDescription': `Correct language set at album level (language should match the language of the metadata, not the audio)`,
+    'programmerDescription': `
+
+      Perform language detection on the release name. Compare that value to the release meta language. It is an error if they do not match.
+    `,
+    'userExplanation': `The value of the meta should match the language of the metadata, not the audio`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+
+        The appropriate language must be set in the metadata at the album level. Language codes should match the language of the metadata, not the audio. See iTunes Style Guide 1.5
+        The appropriate audio language must be set in the metadata at track level. Language code(s) should match the language spoken or sung in the audio. Non-linguistic content should be flagged ‘zxx'. See iTunes Style Guide 1.6
+        To ensure that accents and capitalizations appear correctly on the iTunes Store and Apple Music, the appropriate language must be set in the metadata. See iTunes Style Guide 11
+        
+      `,
+    }
+  },
 };
