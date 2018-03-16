@@ -1,26 +1,25 @@
 // Generic Artist Names
 
-module.exports = function(row, idx) {
-
-  const removeDiacritics = require('../scripts/remove-diacritics');
+module.exports = function (row, idx) {
+  const removeDiacritics = require('../scripts/remove-diacritics')
 
   // retrieves filter description
-  const filterName = 'filter5';
-  const filterMeta = require('./filters-meta')[filterName];
+  const filterName = 'filter5'
+  const filterMeta = require('./filters-meta')[filterName]
 
-  const defaultErrorType = filterMeta['type'];
-  const defaultExplanationId = 'default';
+  const defaultErrorType = filterMeta['type']
+  const defaultExplanationId = 'default'
 
-  const fields = ['orchard_artist', 'release_artists_primary_artist'];
-  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].toLowerCase() : '';
+  const fields = ['orchard_artist', 'release_artists_primary_artist']
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].toLowerCase() : ''
 
   const occurrence = {
     'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],
-    'error_type': [],
-  };
+    'error_type': []
+  }
 
   const invalidKeywords = {
     'english': [
@@ -57,7 +56,7 @@ module.exports = function(row, idx) {
       /Singer(s)?/gi,
       /Chorus/gi,
       /Orchestra/gi,
-      /Cast/gi,
+      /Cast/gi
     ],
     'portuguese': [
       /Vol(\.? ?[0-9]*)?/gi,
@@ -94,58 +93,45 @@ module.exports = function(row, idx) {
       /Orquestra/gi,
       /Grupo/gi,
       /Coral/gi,
-      /Coro/gi,
-    ],
-  };
+      /Coro/gi
+    ]
+  }
 
   // Language not supported
-  if(!(releaseLanguage in invalidKeywords)) { return false; }
+  if (!(releaseLanguage in invalidKeywords)) { return false }
 
   // If field is related to 'track artists'
   Object.keys(row).forEach(field => {
-
     // Field should be tested
-    if(fields.indexOf(field) !== -1) {
-
-      let value = row[field];
+    if (fields.indexOf(field) !== -1) {
+      let value = row[field]
 
       // Only tests if value is non-null
-      if(value) {
-
+      if (value) {
         // Removes trailling whitespaces and diacritics
-        value = value.trim();
-        value = removeDiacritics(value);
+        value = value.trim()
+        value = removeDiacritics(value)
 
-        const regExps = invalidKeywords[releaseLanguage];
+        const regExps = invalidKeywords[releaseLanguage]
 
-        for(let i = 0; i < regExps.length; i++) {
-
-          const regExp = regExps[i];
+        for (let i = 0; i < regExps.length; i++) {
+          const regExp = regExps[i]
 
           // Invalid Value
-          if(regExp.test(value)) {
-
-            occurrence.field.push(field);
-            occurrence.value.push(row[field]);
-            occurrence.explanation_id.push(defaultExplanationId);
-            occurrence.error_type.push(defaultErrorType);
+          if (regExp.test(value)) {
+            occurrence.field.push(field)
+            occurrence.value.push(row[field])
+            occurrence.explanation_id.push(defaultExplanationId)
+            occurrence.error_type.push(defaultErrorType)
 
             // Doesn't need to test other regex
-            break;
-
+            break
           }
-
         }
-
       }
-
     }
-
-  });
+  })
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){ return occurrence; }
-
-  else { return false; }
-
-};
+  if (occurrence.field.length > 0) { return occurrence } else { return false }
+}

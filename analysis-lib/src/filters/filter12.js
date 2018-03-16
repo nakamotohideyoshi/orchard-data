@@ -1,22 +1,22 @@
 // filter: formatting of "featuring"
 
-module.exports = function(row, idx) {
-  'use strict';
+module.exports = function (row, idx) {
+  'use strict'
 
-  const removeDiacritics = require('../scripts/remove-diacritics');
-  const stringUtils = require('../scripts/string-utils');
+  const removeDiacritics = require('../scripts/remove-diacritics')
+  const stringUtils = require('../scripts/string-utils')
 
-  const filterName = 'filter12';
-  const filterMeta = require('./filters-meta')[filterName];
+  const filterName = 'filter12'
+  const filterMeta = require('./filters-meta')[filterName]
 
-  const defaultErrorType = filterMeta['type'];
-  const defaultExplanationId = 'default';
+  const defaultErrorType = filterMeta['type']
+  const defaultExplanationId = 'default'
 
-  const releaseName = row['release_name'] ? removeDiacritics(row['release_name']).trim().toLowerCase() : '';
-  const releaseVersion = row['release_version'] ? removeDiacritics(row['release_version']).trim().toLowerCase() : '';
+  const releaseName = row['release_name'] ? removeDiacritics(row['release_name']).trim().toLowerCase() : ''
+  const releaseVersion = row['release_version'] ? removeDiacritics(row['release_version']).trim().toLowerCase() : ''
 
-  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : '';
-  const trackVersion = row['version'] ? removeDiacritics(row['version']).trim().toLowerCase() : '';
+  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : ''
+  const trackVersion = row['version'] ? removeDiacritics(row['version']).trim().toLowerCase() : ''
 
   const patterns = {
     'english': [
@@ -30,8 +30,8 @@ module.exports = function(row, idx) {
     'spanish': [
       /(\ben vivo\b)/,
       /(\ben directo\b)/
-    ],
-  };
+    ]
+  }
 
   const exactPatterns = {
     'english': [
@@ -45,117 +45,99 @@ module.exports = function(row, idx) {
     'spanish': [
       /(^en vivo$)/,
       /(^en directo$)/
-    ],
-  };
+    ]
+  }
 
   const occurrence = {
     'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],
-    'error_type': [],
-  };
+    'error_type': []
+  }
 
-  let releaseParens = stringUtils.getTextBetweenParentheses(releaseName);
-  let trackParens = stringUtils.getTextBetweenParentheses(trackName);
+  let releaseParens = stringUtils.getTextBetweenParentheses(releaseName)
+  let trackParens = stringUtils.getTextBetweenParentheses(trackName)
 
-  const languages = Object.keys(patterns);
+  const languages = Object.keys(patterns)
 
   // tests if release is live
-  let releaseIsLive = false;
+  let releaseIsLive = false
 
-  for(let i = 0; i < languages.length; i++) {
+  for (let i = 0; i < languages.length; i++) {
+    const langPatterns = patterns[languages[i]]
+    const exactLangPatterns = exactPatterns[languages[i]]
 
-    const langPatterns = patterns[languages[i]];
-    const exactLangPatterns = exactPatterns[languages[i]];
-
-    for(let k = 0; k < langPatterns.length; k++) {
-
-      let regExp = exactLangPatterns[k];
+    for (let k = 0; k < langPatterns.length; k++) {
+      let regExp = exactLangPatterns[k]
 
       // if release name begins or ends with "live -" or "- live"
-      let split = releaseName.split("-");
-      if(regExp.test(split[0]) || regExp.test(split[1])) { releaseIsLive = true; }
-      if(releaseIsLive) { break; }
+      let split = releaseName.split('-')
+      if (regExp.test(split[0]) || regExp.test(split[1])) { releaseIsLive = true }
+      if (releaseIsLive) { break }
 
       // If release name has only one word and it's live, or if version is live
-      regExp = langPatterns[k];
-      split = releaseName.split(" ");
+      regExp = langPatterns[k]
+      split = releaseName.split(' ')
 
-      if((split.length === 1 && regExp.test(split[0])) || regExp.test(releaseVersion)) { releaseIsLive = true; }
-      if(releaseIsLive) { break; }
-
+      if ((split.length === 1 && regExp.test(split[0])) || regExp.test(releaseVersion)) { releaseIsLive = true }
+      if (releaseIsLive) { break }
 
       // value inside parens is target string
-      if(regExp.test(releaseParens)) {
-
-        releaseIsLive = true;
-        break;
-
+      if (regExp.test(releaseParens)) {
+        releaseIsLive = true
+        break
       }
-
     }
 
     // does not need to test other languages
-    if(releaseIsLive) { break; }
-
+    if (releaseIsLive) { break }
   }
 
   // Release is definetely not live. So we don't need to proceed further
-  if(!releaseIsLive) { return false; }
+  if (!releaseIsLive) { return false }
 
   // Test tracks
-  let trackIsLive = false;
+  let trackIsLive = false
 
-  for(let i = 0; i < languages.length; i++) {
+  for (let i = 0; i < languages.length; i++) {
+    const langPatterns = patterns[languages[i]]
+    const exactLangPatterns = exactPatterns[languages[i]]
 
-    const langPatterns = patterns[languages[i]];
-    const exactLangPatterns = exactPatterns[languages[i]];
-
-    for(let k = 0; k < langPatterns.length; k++) {
-
-      let regExp = exactLangPatterns[k];
+    for (let k = 0; k < langPatterns.length; k++) {
+      let regExp = exactLangPatterns[k]
 
       // if track name begins or ends with "live -" or "- live"
-      let split = trackName.split("-");
-      if(regExp.test(split[0]) || regExp.test(split[1])) { trackIsLive = true; }
-      if(trackIsLive) { break; }
+      let split = trackName.split('-')
+      if (regExp.test(split[0]) || regExp.test(split[1])) { trackIsLive = true }
+      if (trackIsLive) { break }
 
       // tests for patterns inside strings boundaries
-      regExp = langPatterns[k];
+      regExp = langPatterns[k]
 
-      if(regExp.test(trackVersion)) { trackIsLive = true; }
-      if(trackIsLive) { break; }
+      if (regExp.test(trackVersion)) { trackIsLive = true }
+      if (trackIsLive) { break }
 
       // value inside parens is target string
-      if(regExp.test(trackParens)) {
-
-        trackIsLive = true;
-        break;
-
+      if (regExp.test(trackParens)) {
+        trackIsLive = true
+        break
       }
-
     }
 
     // does not need to test other languages
-    if(trackIsLive) { break; }
-
+    if (trackIsLive) { break }
   }
 
   // finally
-  if(trackIsLive) { return false; }
+  if (trackIsLive) { return false } else {
+    const field = 'track_name'
 
-  else {
+    occurrence.field.push(field)
+    occurrence.value.push(row[field])
+    occurrence.explanation_id.push(defaultExplanationId)
+    occurrence.error_type.push(defaultErrorType)
 
-    const field = 'track_name';
-
-    occurrence.field.push(field);
-    occurrence.value.push(row[field]);
-    occurrence.explanation_id.push(defaultExplanationId);
-    occurrence.error_type.push(defaultErrorType);
-
-    return occurrence;
-
+    return occurrence
   }
-
-};
+}
