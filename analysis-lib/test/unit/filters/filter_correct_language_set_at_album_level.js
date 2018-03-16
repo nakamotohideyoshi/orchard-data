@@ -1,4 +1,10 @@
 const assert = require('chai').assert;
+
+const sinon = require('sinon');
+const _ = require('lodash');
+const path = require('path');
+const validator = require('is-my-json-valid');
+
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 
@@ -19,47 +25,66 @@ describe(`should test ${filterId}`, function() {
   let report = new reportModule();
   report.init();
   report.addFilter(filterId);
+  this.timeout(10000);
 
-  it('should pass: Match The Language - English', () => {
+  it('should pass: Match The Language - English', async() => {
 
     const mock = mocks['validEnglish'];
 
-    mock.forEach((row, idx) => {
-      let occurrence = filter(row, idx, report);
+    for(let idx in mock) {
+
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
       assert.equal(occurrence, false);
-    });
+
+    };
 
   });
 
-  it('should pass: Match The Language - Portuguese', () => {
+  it('should pass: Match The Language - Portuguese', async() => {
 
     const mock = mocks['validPortuguese'];
 
-    mock.forEach((row, idx) => {
-      let occurrence = filter(row, idx, report);
+    for(let idx in mock) {
+
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
       assert.equal(occurrence, false);
-    });
+
+    };
 
   });
 
-  it('should pass: Match The Language - Spanish', () => {
+  it('should pass: Match The Language - Spanish', async() => {
 
     const mock = mocks['validSpanish'];
 
-    mock.forEach((row, idx) => {
-      let occurrence = filter(row, idx, report);
+    for(let idx in mock) {
+
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
       assert.equal(occurrence, false);
-    });
+
+    };
 
   });
 
-  it('should fail: No Match The Language - English', () => {
+  it('should fail: No Match The Language - English', async() => {
 
     const mock = mocks['invalidEnglish'];
 
-    mock.forEach((row, idx) => {
-      let occurrence = filter(row, idx, report);
-      switch(idx) {
+    for(let idx in mock) {
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
+      switch(occurrence.row_id) {
       case 0:
         assert.deepEqual(occurrence.field, ['release_name']);
         assert.deepEqual(occurrence.value, ['Te quiero mucho']);
@@ -67,17 +92,21 @@ describe(`should test ${filterId}`, function() {
         assert.deepEqual(occurrence.error_type, [defaultErrorType]);
         break;
       }
-    });
+    };
 
   });
 
-  it('should fail: No Match The Language - Portuguese', () => {
+  it('should fail: No Match The Language - Portuguese', async() => {
 
     const mock = mocks['invalidPortuguese'];
 
-    mock.forEach((row, idx) => {
-      let occurrence = filter(row, idx, report);
-      switch(idx) {
+    for(let idx in mock) {
+
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
+      switch(occurrence.row_id) {
       case 0:
         assert.deepEqual(occurrence.field, ['release_name']);
         assert.deepEqual(occurrence.value, ['I Love You So Much']);
@@ -85,26 +114,30 @@ describe(`should test ${filterId}`, function() {
         assert.deepEqual(occurrence.error_type, [defaultErrorType]);
         break;
       }
-    });
+    };
 
   });
 
-  it('should fail: No Match The Language - Spanish', () => {
+  it('should fail: No Match The Language - Spanish', async() => {
 
     const mock = mocks['invalidSpanish'];
 
-    mock.forEach((row, idx) => {
-      let occurrence = filter(row, idx, report);
-      switch(idx) {
+    for(let idx in mock) {
+
+      idx = parseInt(idx);
+      const row = mock[idx];
+      const occurrence = await filter(row, idx + 1, report);
+
+      switch(occurrence.row_id) {
       case 0:
         assert.deepEqual(occurrence.field, ['release_name']);
-        assert.deepEqual(occurrence.value, ['Eu te amo muito']);
+        assert.deepEqual(occurrence.value, ['This is some English text']);
         assert.deepEqual(occurrence.explanation_id, [defaultExplanationId]);
         assert.deepEqual(occurrence.error_type, [defaultErrorType]);
         break;
       }
-    });
+    }
 
-  }); 
+  });
   
 });
