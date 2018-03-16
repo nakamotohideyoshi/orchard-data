@@ -1,5 +1,5 @@
 module.exports = {
-  failForHavingKeywordInFieldReleaseName: {
+  failForHavingKeywordInFieldReleaseName: [{
     "release_name": "Tender Hooks Hakenkreuz",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -31,8 +31,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldOrchardArtist: {
+  }],
+  failForHavingKeywordInFieldOrchardArtist: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods Hakenkreuz",
@@ -64,8 +64,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldArtistUrl: {
+  }],
+  failForHavingKeywordInFieldArtistUrl: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -98,8 +98,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldReleaseArtistPrimaryArtist: {
+  }],
+  failForHavingKeywordInFieldReleaseArtistPrimaryArtist: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -131,8 +131,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldReleaseArtistFeaturing: {
+  }],
+  failForHavingKeywordInFieldReleaseArtistFeaturing: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -165,8 +165,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldReleaseArtistRemixer: {
+  }],
+  failForHavingKeywordInFieldReleaseArtistRemixer: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -199,8 +199,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldImprint: {
+  }],
+  failForHavingKeywordInFieldImprint: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -232,8 +232,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldGenre: {
+  }],
+  failForHavingKeywordInFieldGenre: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -265,8 +265,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldSubGenre: {
+  }],
+  failForHavingKeywordInFieldSubGenre: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -298,8 +298,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldTrackName: {
+  }],
+  failForHavingKeywordInFieldTrackName: [{
     "release_name": "Tender Hooks",
     "release_meta_language": "English",
     "orchard_artist": "Gay and Terry Woods",
@@ -331,8 +331,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldTrackArtist: {
+  }],
+  failForHavingKeywordInFieldTrackArtist: [{
     "release_name": "Telephone Free Landslide Victory",
     "release_meta_language": "English",
     "orchard_artist": "Camper Van Beethoven",
@@ -364,8 +364,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldTrackArtistFeaturing: {
+  }],
+  failForHavingKeywordInFieldTrackArtistFeaturing: [{
     "release_name": "Telephone Free Landslide Victory",
     "release_meta_language": "English",
     "orchard_artist": "Camper Van Beethoven",
@@ -398,8 +398,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  failForHavingKeywordInFieldTrackArtistRemixer: {
+  }],
+  failForHavingKeywordInFieldTrackArtistRemixer: [{
     "release_name": "Telephone Free Landslide Victory",
     "release_meta_language": "English",
     "orchard_artist": "Camper Van Beethoven",
@@ -432,8 +432,8 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  },
-  passForHavingNoKeywords: {
+  }],
+  passForHavingNoKeywords: [{
     "release_name": "Telephone Free Landslide Victory",
     "release_meta_language": "English",
     "orchard_artist": "Camper Van Beethoven",
@@ -465,5 +465,5 @@ module.exports = {
     "songwriters": "0",
     "only_include_exclude": "Only Include",
     "territories": "DZ|AO|BJ|BW|BF|BI|CM|CV|CF|TD|KM|CG|CD|CI|DJ|EG|GQ|ER|ET|GA|GM|GH|GN|GW|KE|LS|LR|LY|MG|MW|ML|MU|MR|MA|MZ|NA|NE|NG|RW|ST|SN|SL|SC|SO|ZA|SZ|SD|TZ|TG|TN|UG|ZM|EH|ZW|AQ|BV|TF|HM|GS|AF|AZ|BH|BD|BT|IO|BN|KH|CN|CX|CC|HK|CC|IN|ID|IR|IQ|JP|JO|KW|LA|LB|MO|MY|MV|MN|MM|NP|KP|OM|PK|PS|PH|QA|SA|SG|KR|LK|SY|TW|TH|TL|AE|VN|YE|AX|AL|AD|AM|AT|BY|BE|BA|BG|HR|CY|CZ|DK|EE|FO|FI|FR|GE|DE|GL|GI|GR|GG|VA|HU|IS|IE|IM|IL|IT|JE|KZ|KG|LV|LI|LT|LU|MK|MT|YT|MD|MC|NL|NO|PL|PT|RE|RO|RU|SH|SM|CS|SK|SI|ES|SJ|SE|CH|TJ|TR|TM|UA|GB|UZ|AI|AG|AW|BS|BZ|BB|BM|CA|KY|CR|CU|DM|DO|SV|GD|GP|HT|GT|HN|JM|MQ|MX|UM|MS|NI|AN|PA|PR|KN|LC|PM|VC|TT|TC|US|VG|VI|AS|AU|CK|FJ|PF|GU|KI|MH|FM|NR|NC|NZ|NU|NF|MP|PW|PG|PN|WS|SB|TK|TO|VU|TV|WF|AR|BO|BR|CL|CO|EC|FK|GF|GY|PY|PE|SR|UY|VE"
-  }
+  }]
 };
