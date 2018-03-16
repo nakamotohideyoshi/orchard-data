@@ -1,32 +1,31 @@
 // filter: Soundtracks and scores must include version information in the album title
 
-module.exports = function(row, idx) {
+module.exports = function (row, idx) {
+  const removeDiacritics = require('../scripts/remove-diacritics')
+  const stringUtils = require('../scripts/string-utils')
 
-  const removeDiacritics = require('../scripts/remove-diacritics');
-  const stringUtils = require('../scripts/string-utils');
+  const filterName = 'filter8'
+  const filterMeta = require('./filters-meta')[filterName]
 
-  const filterName = 'filter8';
-  const filterMeta = require('./filters-meta')[filterName];
+  const defaultErrorType = filterMeta['type']
+  const defaultExplanationId = 'default'
 
-  const defaultErrorType = filterMeta['type'];
-  const defaultExplanationId = 'default';
+  const field = 'release_name'
+  let value = row[field]
+  value = value ? removeDiacritics(value).trim().toLowerCase() : ''
 
-  const field = 'release_name';
-  let value = row[field];
-  value = value ? removeDiacritics(value).trim().toLowerCase() : '';
-
-  if(!value) { return false; }
+  if (!value) { return false }
 
   // language defaults to english if not specified on tsv file
-  let language = row['release_meta_language'] ? removeDiacritics(row['release_meta_language']).trim().toLowerCase() : '';
-  language = language || '';
+  let language = row['release_meta_language'] ? removeDiacritics(row['release_meta_language']).trim().toLowerCase() : ''
+  language = language || ''
 
   // retrieves genre
-  let genre = row['genre'] || row['subgenre'];
-  genre = genre ? removeDiacritics(genre).trim().toLowerCase() : '';
+  let genre = row['genre'] || row['subgenre']
+  genre = genre ? removeDiacritics(genre).trim().toLowerCase() : ''
 
   // nothing to be tested or genre is not soundtrack or not related to score
-  if(!genre || (genre !== 'soundtrack' && !/Score/gi.test(genre))) { return false; }
+  if (!genre || (genre !== 'soundtrack' && !/Score/gi.test(genre))) { return false }
 
   const patterns = {
     'english': [
@@ -38,61 +37,48 @@ module.exports = function(row, idx) {
       /Music From/gi
     ],
 
-    //TODO: research portuguese keywords
+    // TODO: research portuguese keywords
     'portuguese': []
-  };
+  }
 
   // language not supported
-  if(!language in patterns) { return false; }
+  if (!(language in patterns)) { return false }
 
   const occurrence = {
     'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],
-    'error_type': [],
-  };
-
-  const parensStr = stringUtils.stripParentheses(value);
-
-  // No parentheses on release name or parentheses are not normalized
-  if(parensStr.length === 0 || !stringUtils.parenthesesAreBalanced(parensStr)) {
-
-    occurrence.field.push(field);
-    occurrence.value.push(row[field]);
-    occurrence.explanation_id.push(defaultExplanationId);
-    occurrence.error_type.push(defaultErrorType);
-
+    'error_type': []
   }
 
-  else {
+  const parensStr = stringUtils.stripParentheses(value)
 
+  // No parentheses on release name or parentheses are not normalized
+  if (parensStr.length === 0 || !stringUtils.parenthesesAreBalanced(parensStr)) {
+    occurrence.field.push(field)
+    occurrence.value.push(row[field])
+    occurrence.explanation_id.push(defaultExplanationId)
+    occurrence.error_type.push(defaultErrorType)
+  } else {
     // retrieves value inside parentheses
-    const parenthesesValue = stringUtils.getTextBetweenParentheses(value);
+    const parenthesesValue = stringUtils.getTextBetweenParentheses(value)
 
     // tests each regex
-    let match = false;
+    let match = false
     patterns[language].forEach(regExp => {
-
-      if(regExp.test(parenthesesValue)) { match = true; }
-
-    });
+      if (regExp.test(parenthesesValue)) { match = true }
+    })
 
     // if required values were not found, reports occurrence
-    if(!match) {
-
-      occurrence.field.push(field);
-      occurrence.value.push(row[field]);
-      occurrence.explanation_id.push(defaultExplanationId);
-      occurrence.error_type.push(defaultErrorType);
-
+    if (!match) {
+      occurrence.field.push(field)
+      occurrence.value.push(row[field])
+      occurrence.explanation_id.push(defaultExplanationId)
+      occurrence.error_type.push(defaultErrorType)
     }
-
   }
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0) { return occurrence; }
-
-  else { return false; }
-
-};
+  if (occurrence.field.length > 0) { return occurrence } else { return false }
+}

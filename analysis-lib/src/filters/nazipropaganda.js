@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-const filterMeta = require('./filters-meta').nazipropaganda;
+const filterMeta = require('./filters-meta').nazipropaganda
 
-const defaultErrorType = filterMeta['type'];
-const defaultExplanationId = 'default';
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
 
 const fieldsToCheck = [
   'release_name',
@@ -19,7 +19,7 @@ const fieldsToCheck = [
   'track_artist',
   'track_artist_featuring',
   'track_artist_remixer'
-];
+]
 
 const naziKeywords = [
   'hakenkreuz',
@@ -37,7 +37,7 @@ const naziKeywords = [
   'kampfgeschwader 54',
   'reichsadler',
   'reichskriegsflagge'
-];
+]
 
 /**
  * Filter: Albums with vs. and meets - artists must be listed separately as primary.
@@ -51,8 +51,8 @@ module.exports = function (row, index) {
     'field': [],
     'value': [],
     'explanation_id': [],
-    'error_type': [],
-  };
+    'error_type': []
+  }
 
   // Rule: It is an error if any word from the nazi keyword list occurs in the list of input fields below:
   //
@@ -91,17 +91,17 @@ module.exports = function (row, index) {
   fieldsToCheck.forEach((field) => {
     if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
       naziKeywords.forEach((naziKeyword) => {
-        let fieldContainsNaziKeyword = (row[field].toLowerCase().indexOf(naziKeyword) > -1);
+        let fieldContainsNaziKeyword = (row[field].toLowerCase().indexOf(naziKeyword) > -1)
 
         if (fieldContainsNaziKeyword) {
-          occurrence.field.push(field);
-          occurrence.value.push(row[field]);
-          occurrence.explanation_id.push(defaultExplanationId);
-          occurrence.error_type.push(defaultErrorType);
+          occurrence.field.push(field)
+          occurrence.value.push(row[field])
+          occurrence.explanation_id.push(defaultExplanationId)
+          occurrence.error_type.push(defaultErrorType)
         }
-      });
+      })
     }
-  });
+  })
 
-  return occurrence.field.length === 0 ? false : occurrence;
-};
+  return occurrence.field.length === 0 ? false : occurrence
+}
