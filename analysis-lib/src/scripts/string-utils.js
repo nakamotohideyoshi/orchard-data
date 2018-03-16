@@ -1,68 +1,59 @@
-'use strict';
+'use strict'
 
 const stringUtils = {
 
-  'stripParentheses':function(string) {
-
-    let tokens = '{}()[]';
-    let parentheses = [];
+  'stripParentheses': function (string) {
+    let tokens = '{}()[]'
+    let parentheses = []
 
     string.split('').forEach(_char => {
+      if (tokens.indexOf(_char) !== -1) { parentheses.push(_char) };
+    })
 
-      if(tokens.indexOf(_char) !== -1) { parentheses.push(_char); };
-
-    });
-
-    return parentheses.join("");
-
+    return parentheses.join('')
   },
 
-  'parenthesesAreBalanced': function(string) {
+  'parenthesesAreBalanced': function (string) {
+    let parentheses = '[]{}()'
+    let stack = []
+    let i
+    let character
+    let bracePosition
 
-    let parentheses = "[]{}()";
-    let stack = [];
-    let i;
-    let character;
-    let bracePosition;
+    for (i = 0; i < string.length; i++) {
+      character = string[i]
+      bracePosition = parentheses.indexOf(character)
 
-    for(i = 0; character = string[i]; i++) {
-
-      bracePosition = parentheses.indexOf(character);
-
-      if(bracePosition === -1) { continue; }
-
-      if(bracePosition % 2 === 0) { stack.push(bracePosition + 1); }// push next expected brace position
-
-      else {
-
-        if(stack.pop() !== bracePosition) { return false; }
-
+      if (bracePosition === -1) {
+        continue
       }
 
+      if (bracePosition % 2 === 0) {
+        // push next expected brace position
+        stack.push(bracePosition + 1)
+      } else if (stack.pop() !== bracePosition) {
+        return false
+      }
     }
 
-    return stack.length === 0;
-
+    return stack.length === 0
   },
 
-  'getTextBetweenParentheses': function(string) {
+  'getTextBetweenParentheses': function (string) {
+    let parenthesesRegExp = /(\(|\{|\[)([^)]+)(\)|\]|\})/g
+    let match = string.match(parenthesesRegExp)
 
-    let parenthesesRegExp = /(\(|\{|\[)([^)]+)(\)|\]|\})/g;
-    let match = string.match(parenthesesRegExp);
-
-    if(match) { return match; }
-    else return '';
-
+    if (match) { return match } else return ''
   },
 
-  'stringToTitleCase': function(string) {
-    return string.replace(/\w\S*/g, function(txt) {
-      return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
-    });
+  'stringToTitleCase': function (string) {
+    return string.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
+    })
   },
 
-  'capitalize': function(string){
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  'capitalize': function (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
   },
 
   'stopWords': {
@@ -75,21 +66,17 @@ const stringUtils = {
 
   },
 
-  'isSentenceCase': function(sentence) {
-
-    const _sentence = sentence.toLowerCase();
-    const sentenceCase = stringUtils.capitalize(_sentence);
-    return sentenceCase === sentence;
-
+  'isSentenceCase': function (sentence) {
+    const _sentence = sentence.toLowerCase()
+    const sentenceCase = stringUtils.capitalize(_sentence)
+    return sentenceCase === sentence
   },
 
-  'isTitleCase': function(sentence) {
-
-    const titleCase = stringUtils.stringToTitleCase(sentence);
-    return titleCase === sentence;
-
+  'isTitleCase': function (sentence) {
+    const titleCase = stringUtils.stringToTitleCase(sentence)
+    return titleCase === sentence
   }
 
-};
+}
 
-module.exports = stringUtils;
+module.exports = stringUtils

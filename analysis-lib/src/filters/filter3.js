@@ -1,26 +1,25 @@
 // Generic Release Titles
 
-module.exports = function(row, idx) {
+module.exports = function (row, idx) {
+  const removeDiacritics = require('../scripts/remove-diacritics')
 
-  const removeDiacritics = require('../scripts/remove-diacritics');
+  const filterName = 'filter3'
+  const filterMeta = require('./filters-meta')[filterName]
 
-  const filterName = 'filter3';
-  const filterMeta = require('./filters-meta')[filterName];
-
-  const defaultErrorType = filterMeta['type'];
-  const defaultExplanationId = 'default';
+  const defaultErrorType = filterMeta['type']
+  const defaultExplanationId = 'default'
 
   const field = 'release_name'
   const releaseName = row[field]
-  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : '';
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : ''
 
   const occurrence = {
     'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],
-    'error_type': [],
-  };
+    'error_type': []
+  }
 
   const invalidKeywords = {
     'english': [
@@ -52,7 +51,7 @@ module.exports = function(row, idx) {
       /Spooky/gi,
       /Christmas/gi,
       /Valentines/gi,
-      /St(\.)? ?Patrick('s)?/gi,
+      /St(\.)? ?Patrick('s)?/gi
     ],
     'portuguese': [
       /Vol(\.? ?[0-9]*)?/gi,
@@ -86,49 +85,42 @@ module.exports = function(row, idx) {
       /Halloween/gi,
       /Natal/gi,
       /Namorados/gi,
-      /St(\.)? ?Patrick/gi,
-    ],
-  };
+      /St(\.)? ?Patrick/gi
+    ]
+  }
 
   // Language not supported
-  if(!(releaseLanguage in invalidKeywords)) { return false; }
+  if (!(releaseLanguage in invalidKeywords)) { return false }
 
   // forEach does not allow the use of break/continue
-  let value = releaseName;
+  let value = releaseName
 
   // Only tests if value is non-null
-  if(value) {
-
+  if (value) {
     // Removes trailling whitespaces and diacritics
-    value = value.trim();
-    value = removeDiacritics(value);
+    value = value.trim()
+    value = removeDiacritics(value)
 
-    const regExps = invalidKeywords[releaseLanguage];
+    const regExps = invalidKeywords[releaseLanguage]
 
-    for(let i = 0; i < regExps.length; i++) {
-
-      const regExp = regExps[i];
+    for (let i = 0; i < regExps.length; i++) {
+      const regExp = regExps[i]
 
       // Invalid Value
-      if(regExp.test(value)) {
-
-        occurrence.field.push(field);
-        occurrence.value.push(row[field]);
-        occurrence.explanation_id.push(defaultExplanationId);
-        occurrence.error_type.push(defaultErrorType);
+      if (regExp.test(value)) {
+        occurrence.field.push(field)
+        occurrence.value.push(row[field])
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
 
         // Doesn't need to test other regex
-        break;
-
+        break
       }
-
     }
-
   };
 
   // If anything error occurred, creates report
-  if(occurrence.field.length > 0){ return occurrence; }
+  if (occurrence.field.length > 0) { return occurrence }
 
-  return false;
-
-};
+  return false
+}

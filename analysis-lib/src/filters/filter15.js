@@ -1,73 +1,64 @@
 // filter: Generic titles( Cannot be Instrument or Track N )
 
-module.exports = function(row, idx, report) {
-  'use strict';
+module.exports = function (row, idx) {
+  'use strict'
 
-  const removeDiacritics = require('../scripts/remove-diacritics');
+  const removeDiacritics = require('../scripts/remove-diacritics')
 
-  const filterName = 'filter15';
-  const filterMeta = require('./filters-meta')[filterName];
+  const filterName = 'filter15'
+  const filterMeta = require('./filters-meta')[filterName]
 
-  const defaultErrorType = filterMeta['type'];
-  const defaultExplanationId = 'default';
+  const defaultErrorType = filterMeta['type']
+  const defaultExplanationId = 'default'
 
-  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english';
-  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : '';
+  const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english'
+  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : ''
 
   const patterns = {
     'english': [
       /(^instrumental$)/gi,
-      /(^track [0-9]{1,}$)/gi,
+      /(^track [0-9]{1,}$)/gi
     ],
 
     'portuguese': [
       /(^instrumental$)/gi,
-      /(^faixa [0-9]{1,}$)/gi,
+      /(^faixa [0-9]{1,}$)/gi
     ],
 
     'spanish': [
       /(^instrumental$)/gi,
-      /(^pista [0-9]{1,}$)/gi,
-    ],
-  };
+      /(^pista [0-9]{1,}$)/gi
+    ]
+  }
 
   const occurrence = {
     'row_id': idx,
     'field': [],
     'value': [],
     'explanation_id': [],
-    'error_type': [],
-  };
+    'error_type': []
+  }
 
-  let isInvalid = false;
-  const langPatterns = patterns[releaseLanguage];
+  let isInvalid = false
+  const langPatterns = patterns[releaseLanguage]
 
-  for (let i = 0; i < langPatterns.length; i ++) {
+  for (let i = 0; i < langPatterns.length; i++) {
+    let regExp = langPatterns[i]
 
-    let regExp = langPatterns[i];
-
-    if(trackName.match(regExp)) {
-
-      isInvalid = true;
-      break;
-
+    if (trackName.match(regExp)) {
+      isInvalid = true
+      break
     }
-
   }
   if (isInvalid) {
+    const field = 'track_name'
+    occurrence.field.push(field)
+    occurrence.value.push(row[field])
+    occurrence.explanation_id.push(defaultExplanationId)
+    occurrence.error_type.push(defaultErrorType)
 
-    const field = 'track_name';
-    occurrence.field.push(field);
-    occurrence.value.push(row[field]);
-    occurrence.explanation_id.push(defaultExplanationId);
-    occurrence.error_type.push(defaultErrorType);
-
-    return occurrence;
-
+    return occurrence
   } else {
-
-    return false;
-
+    return false
   }
-
-};
+}
