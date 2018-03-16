@@ -5,14 +5,14 @@ include _mixins
     table.p-table.p-table--full(js-stacktable v-if="items.length")
         thead
             tr
-                td #
+                td Dataset Row ID.
                 td Explanation
                 td
                     a(@click.prevent="toggleSort('count')" href="#") Count
 
         tbody
             tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
-                td {{ i + 1 }}
+                td {{ item.criteriaId }}
                 td {{ getFilter(item.criteriaId) }}
                 td {{ item.count }}
     empty-state(
@@ -23,20 +23,21 @@ include _mixins
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 import _ from 'lodash'
 import {
   SUBMISSION_ERRORS,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE,
   FILTERS_META,
-  ERROR_BY_ERROR_REPORT_FAILURE
+  ERROR_BY_ERROR_REPORT_FAILURE,
+  ERROR_BY_ERROR_REPORT
 } from '@/constants/types'
 
 export default {
   name: 'error-by-error',
   methods: {
-    ...mapActions(['fetchErrors']),
+    ...mapActions(['fetchErrors', 'fetchErrorByErrorReport']),
     getFilter (id) {
       if (
         this.filters &&
@@ -71,13 +72,16 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      results: state => state.Reports[ERROR_BY_ERROR_REPORT]
+    }),
     ...mapGetters({
       loading: SUBMISSIONS_REQUEST,
       error: SUBMISSIONS_FAILURE,
       filters: FILTERS_META
     }),
     items () {
-      const items = this.$store.getters[SUBMISSION_ERRORS]
+      const items = this.results
       // This can be easily extended with a directive, leaving like this for now
       if (this.sort.count === 'desc') {
         return _.sortBy(items, ['count']).reverse()
@@ -90,7 +94,7 @@ export default {
     const id = this.$route.params.id
 
     if (id) {
-      this.fetchErrors(id)
+      this.fetchErrorByErrorReport({batchId: id})
     } else {
       this.$store.commit(ERROR_BY_ERROR_REPORT_FAILURE, new Error('No dataset ID defined'))
     }
