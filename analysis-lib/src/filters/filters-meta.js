@@ -423,5 +423,58 @@ module.exports = {
         level and identified as Primary. The original artists must not be listed at the album level.
       `,
     }
-  }
+  },
+
+  'nazipropaganda': {
+    'orchardDescription': `Content problems: Nazi propaganda`,
+    'programmerDescription': `
+      It is an error if any word from the nazi keyword list occurs in the list of input fields below:
+
+      - Release Name
+      - Orchard Artist
+      - Artist URL
+      - Release Artist(s)-Primary Artist(s)
+      - Release Artist(s)-Featuring(s)
+      - Release Artist(s)-Remixer(s)
+      - Imprint
+      - Genre
+      - Sub-genre
+      - Track Name
+      - Track Artist
+      - Track Artist(s) - Featuring(s)
+      - Track Artist(s) - Remixer(s)
+      
+      Let the nazi keyword list be the following terms:
+      
+      - Hakenkreuz
+      - Parteiadler
+      - Thule Society
+      - Ku Klux Klan
+      - Wolfsangel
+      - Celtic cross
+      - Solar cross
+      - Thule Society
+      - Othala rune
+      - Sturmabteilung
+      - Sig runes
+      - Totenkopf
+      - Kampfgeschwader 54
+      - Reichsadler
+      - Reichskriegsflagge
+    `,
+    'userExplanation': `Nazi keywords are an error`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+        From iTunes Style Guide 1.13: Nazi Propaganda. Content must not depict Nazi symbolism as restricted by the
+        Strafgesetzbuch section 86a if the content is cleared for sale in Germany (DE), Austria (AT), Switzerland (CH),
+        or any other country that restricts Nazi propaganda.
+        
+        If content violating this rule is submitted three times, your entire catalogue will be suspended in DE, AT, CH,
+        and any other applicable country for up to six months. Content will be hidden using the reason: Refusal.
+      `,
+    }
+  },
 };
