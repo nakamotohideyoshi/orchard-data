@@ -279,7 +279,7 @@ module.exports = {
     "format": "Full Length",
     "imprint": "Cooking Vinyl",
     "genre": "Folk",
-    "sub_genre": "Folk",
+    "sub_genre": "Hakenkreuz",
     "copyright_information": "1978 Cooking Vinyl",
     "manufacturers_upc": "711297201925",
     "label_catalog_number": "GUMBOCD019",
