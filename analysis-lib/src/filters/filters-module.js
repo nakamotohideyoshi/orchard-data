@@ -18,6 +18,7 @@ var filter17 = require("./filter17");
 var filter18 = require("./filter18");
 var albumswithvsandmeets = require('./albumswithvsandmeets');
 var correctlanguagesetatalbumlevel = require("./correctlanguagesetatalbumlevel");
+var nazipropaganda = require("./nazipropaganda");
 
 module.exports = {
   'filter1': filter1,
@@ -39,5 +40,6 @@ module.exports = {
   'filter17': filter17,
   'filter18': filter18,
   'albumswithvsandmeets': albumswithvsandmeets,
+  'nazipropaganda': nazipropaganda,
   'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel,
 };
