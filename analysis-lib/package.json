@@ -14,8 +14,8 @@
     "gen-error-report": "node ./src/scripts/gen-error-report",
     "tsv-to-json": "node ./dev-scripts/tsv-to-json",
     "run-filter": "node ./dev-scripts/run-filter",
-    "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter src test",
-    "lint:fix": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter --fix src test",
+    "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter api mocks src test",
+    "lint:fix": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter --fix api mocks src test",
     "postinstall": "npm run lint:fix"
   },
   "private": true,
