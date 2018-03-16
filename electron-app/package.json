@@ -60,6 +60,8 @@
   "dependencies": {
     "avoriaz": "^6.3.0",
     "axios": "^0.16.1",
+    "file2html": "^0.1.9",
+    "file2html-dsv": "^0.4.0",
     "moment": "^2.20.1",
     "node-pre-gyp": "^0.6.39",
     "sinon": "^4.3.0",

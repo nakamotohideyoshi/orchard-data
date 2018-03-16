@@ -12,6 +12,7 @@ import FieldByFieldReport from '../components/pages/FieldByFieldReport'
 import RowByRowReport from '../components/pages/RowByRowReport'
 import ErrorByErrorReport from '../components/pages/ErrorByErrorReport'
 import CsvPage from '../components/pages/CsvPage'
+import TSVPage from '../components/pages/TSVPage'
 
 // Enable router override on test environment
 if (process.env.BABEL_ENV !== 'test') Vue.use(Router)
@@ -71,6 +72,11 @@ const router = new Router({
       path: '/csv/:id',
       name: 'csv',
       component: CsvPage
+    },
+    {
+      path: '/tsv/:id',
+      name: 'tsv',
+      component: TSVPage
     },
     {
       path: '*',
