@@ -1,33 +1,34 @@
 <template lang="pug">
 include _mixins
 div
-    table.p-table.p-table--full(js-stacktable v-if="items.length")
+    table.p-table.p-table--full(js-stacktable v-if="results.length")
         thead
             tr
-                td #
+                td Row Id
                 td Test Data Row ID
                 td Description
         tbody
-            tr(v-for="data in items" @click="show(data)")
+            tr(v-for="data in results" @click="show(data)")
                 td {{data.id}}
                 td {{data.criteria}}
                 td {{getFilter(data.criteria)}}
 
     empty-state(
-        v-if="!loading && !items.length && error"
+        v-if="!loading && !results.length && error"
         title="No fields found"
         :message="error.message"
     )
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import {
   FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META
+  FILTERS_META,
+  FIELD_BY_FIELD_REPORT
 } from '@/constants/types'
 
 export default {
@@ -38,6 +39,9 @@ export default {
       loading: FIELDS_REQUEST,
       items: FIELDS,
       filters: FILTERS_META
+    }),
+    ...mapState({
+      results: state => state.Reports[FIELD_BY_FIELD_REPORT]
     })
   },
   data () {
@@ -49,7 +53,7 @@ export default {
     const id = this.$route.params.id
 
     if (id) {
-      this.fetchFields(id)
+      this.fetchFieldByFieldReport({batchId: id})
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
       // is instance of a native type (e.g. Array, Error), let's find a better
@@ -80,7 +84,7 @@ export default {
 
       return 'N/A'
     },
-    ...mapActions(['fetchFields', 'fetchDataset'])
+    ...mapActions(['fetchFields', 'fetchFieldByFieldReport', 'fetchDataset'])
   }
 }
 </script>
