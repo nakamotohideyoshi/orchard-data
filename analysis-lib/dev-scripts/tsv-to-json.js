@@ -9,7 +9,7 @@ let dbInfo = analysisLibModule.dbInfo[DATABASE].tables;
 let table = 'orchard_dataset_contents';
 
 let inputDir = ['.', 'data-tests', 'input-files'];
-let filter = 'filter' + argv['filter'];
+let filter = argv['filter'];
 let inputFile = argv['input'] || 'test.tsv';
 
 let inputPath = inputDir.concat(filter).concat(inputFile).join('/');
