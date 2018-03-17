@@ -497,5 +497,22 @@ module.exports = {
 
       `
     }
+  },
+
+  'duplicatesthreshold': {
+    'orchardDescription': `Low diversity of tracks across catalog: what percentage (and how many) tracks within a respect catalog have matching ISRC code(s) shall be determined.`,
+    'programmerDescription': `
+      - If the threshold parameter passed in the REST call is a floating point, that is fine.
+      - Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the total number of tracks. 
+      - Let exceeded be true if the duplicates ratio is equal to or greater than the value selected by the user
+      - The REST API for the report summary should be extended to carry the duplicates ratio, the gross number of duplicates, and the exceeded flag.
+    `,
+    'userExplanation': `Duplicate ISRC.`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'dataset',
+    'explanations': {
+      'default': `Duplicate ISRC.`
+    }
   }
 }
