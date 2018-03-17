@@ -3,43 +3,17 @@ include _mixins
 // tabs
 .report-home
     .report__tabs.report__tabs--left(js-scrollbar)
-        button.overall-tab(v-on:click='showOverallRistk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab Overall Risk Assessment
-        button.apple-tab(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab Apple & Itunes Guidelines
-        button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab Custom Parameters
+        button.overall-tab(v-on:click='showOverallRisk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab {{categoryOverallText}}
+        button.apple-tab(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab {{categoryItunesText}}
+        button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab {{categoryCustomText}}
 
     // summary
     .report-container.apple-tab(v-if="appleTabFlag" :class="{ 'is-active': appleTabFlag }")
-        .report__top
-            .report__top-col
-                .report__top-percent {{(errorPercent * 100).toFixed(2)}} %
-                .report__top-description Total percent of rows with errors
-            .report__top-col
-                .report__top-stars
-                    .success(v-for="data in Math.round((1 - errorPercent) * 5)")
-                    +icon('ico-star-filled')
-                    .failed(v-for="data in (5 - Math.round((1 - errorPercent) * 5))")
-                    +icon('ico-star-empty')
-                .report__top-description Overall data quality
-
-        // report view
-        .report__view
-            .report__view-title What are the biggest problems with the dataset?
-            router-link(:to="'error-by-error'" append).report__view-link
-                +icon('ico-document')
-                span View the test criteria scores
-        .report__view
-            .report__view-title What is the sum of problems in each row?
-            router-link(:to="'row-by-row'" append).report__view-link
-                +icon('ico-document')
-                span View the input row scores
-        .report__view
-            .report__view-title Which fields in the dataset failed?
-            router-link(:to="'field-by-field'" append).report__view-link
-                +icon('ico-document')
-                span View the field level issues
+        report-summary-quality(:report-summary="summaryData")
+        report-links
     .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
-        .report__view
-        .report__view-title This page not yet implemented.
+        report-summary-quality(:report-summary="summaryData")
+        report-links
     .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
         // group
         router-link(:to="`/csv/${itemid}`").report__view-link
@@ -71,12 +45,14 @@ include _mixins
 
 <script>
 import moment from 'moment'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions, mapState } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE,
-  SET_ACTIVE_CATEGORY
+  SET_ACTIVE_CATEGORY,
+  REPORT_SUMMARY,
+  ACTIVE_REPORT_CATEGORY
 } from '@/constants/types'
 
 import {
@@ -85,14 +61,19 @@ import {
   OVERALL_CATEGORY
 } from '@/constants/report-category'
 
+import ReportLinks from '@/components/sections/ReportLinks'
+import ReportSummaryQuality from '@/components/sections/ReportSummaryQuality'
+
 export default {
   name: 'report-home',
   data () {
     return {
+      categoryOverallText: OVERALL_CATEGORY,
+      categoryItunesText: ITUNES_CATEGORY,
+      categoryCustomText: CUSTOM_CATEGORY,
       overallRiskFlag: false,
       appleTabFlag: true,
       customFlag: false,
-      errorPercent: 0,
       artistList: '',
       keywordList: '',
       threshold1: '',
@@ -101,6 +82,9 @@ export default {
     }
   },
   computed: {
+    batchId () {
+      return this.$route.params.id
+    },
     fileName () {
       if (this.item && this.item.source) {
         const splitted = this.item.source.split('/')
@@ -135,16 +119,33 @@ export default {
 
       return ''
     },
+    ...mapState({
+      summaryData: state => state.Reports[REPORT_SUMMARY]
+    }),
     ...mapGetters({
+      category: ACTIVE_REPORT_CATEGORY,
       error: SUBMISSIONS_FAILURE,
       loading: SUBMISSIONS_REQUEST,
       item: SUBMISSION
     })
   },
   methods: {
+    ...mapActions(['fetchSummary']),
     ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
 
-    showOverallRistk: function () {
+    setInitialCategory () {
+      if (this.category === OVERALL_CATEGORY) {
+        this.showOverallRisk()
+      } else if (this.category === ITUNES_CATEGORY) {
+        this.showAppleTab()
+      } else if (this.category === CUSTOM_CATEGORY) {
+        this.showCustom()
+      } else {
+        this.showAppleTab()
+      }
+    },
+
+    showOverallRisk: function () {
       this.setReportCategory(OVERALL_CATEGORY)
       this.overallRiskFlag = true
       this.appleTabFlag = false
@@ -164,16 +165,16 @@ export default {
     }
   },
   created () {
+    this.fetchSummary({batchId: this.batchId})
     if (this.item.status === 3) {
       this.showCustom()
     } else {
-      switch (this.$route.name) {
-        case 'report-params':
-          this.showCustom()
-          break
-        default: this.showAppleTab()
-      }
+      this.setInitialCategory()
     }
+  },
+  components: {
+    ReportLinks,
+    ReportSummaryQuality
   }
 }
 </script>
