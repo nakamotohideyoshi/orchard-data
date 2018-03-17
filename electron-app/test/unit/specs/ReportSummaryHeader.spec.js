@@ -55,13 +55,11 @@ describe('ReportSummaryHeader.vue', () => {
 
     const category = wrapper.find('.report-summary .report-summary__col:nth-child(1) .report-summary__head')[0]
     const title = wrapper.find('.report-summary .report-summary__col:nth-child(1) .report-summary__text')[0]
-    const id = wrapper.find('.report-summary .report-summary__col:nth-child(2) .report-summary__text')[0]
-    const date = wrapper.find('.report-summary .report-summary__col:nth-child(3) .report-summary__text')[0]
+    const date = wrapper.find('.report-summary .report-summary__col:nth-child(2) .report-summary__text')[0]
 
     expect(typeof wrapper.vm.date).to.equal('string')
     expect(category.text().trim()).to.equal(data.category)
     expect(title.text().trim()).to.equal(data.title)
-    expect(parseInt(id.text().trim(), 10)).to.equal(data.id)
     expect(date.text().trim()).to.equal(parsedNow)
   })
 })

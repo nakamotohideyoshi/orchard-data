@@ -25,18 +25,17 @@ describe('ReportSummaryLabel.vue', () => {
     expect(wrapper.vm.colorClass).to.be.a('string')
   })
 
-  it('should set proper values for error Success status', () => {
+  it('should set proper values for Success status', () => {
     wrapper = shallow(ReportSummaryLabel, {
       propsData: {
         status: 1
       }
     })
 
-    expect(wrapper.vm.colorClass).to.be.equal('report-summary__label--green')
-    expect(wrapper.text()).to.be.equal('Success')
+    expect(wrapper.vm.colorClass).to.be.equal('report-summary__label--hidden')
   })
 
-  it('should set proper values for error Fail status', () => {
+  it('should set proper values for Fail status', () => {
     wrapper = shallow(ReportSummaryLabel, {
       propsData: {
         status: 2
@@ -47,7 +46,7 @@ describe('ReportSummaryLabel.vue', () => {
     expect(wrapper.text()).to.be.equal('Fail')
   })
 
-  it('should set proper values for error In Progress status', () => {
+  it('should set proper values for In Progress status', () => {
     wrapper = shallow(ReportSummaryLabel, {
       propsData: {
         status: 3
