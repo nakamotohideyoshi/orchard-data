@@ -19,6 +19,7 @@ var filter18 = require('./filter18')
 var albumswithvsandmeets = require('./albumswithvsandmeets')
 var correctlanguagesetatalbumlevel = require('./correctlanguagesetatalbumlevel')
 var nazipropaganda = require('./nazipropaganda')
+var trackcountthreshold = require('./trackcountthreshold')
 
 module.exports = {
   'filter1': filter1,
@@ -41,5 +42,6 @@ module.exports = {
   'filter18': filter18,
   'albumswithvsandmeets': albumswithvsandmeets,
   'nazipropaganda': nazipropaganda,
-  'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel
+  'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel,
+  'trackcountthreshold': trackcountthreshold
 }
