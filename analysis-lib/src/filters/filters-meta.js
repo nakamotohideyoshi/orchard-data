@@ -495,7 +495,7 @@ module.exports = {
         The appropriate audio language must be set in the metadata at track level. Language code(s) should match the language spoken or sung in the audio. Non-linguistic content should be flagged ‘zxx'. See iTunes Style Guide 1.6
         To ensure that accents and capitalizations appear correctly on the iTunes Store and Apple Music, the appropriate language must be set in the metadata. See iTunes Style Guide 11
 
-      `,
+      `
     }
-  },
-};
+  }
+}
