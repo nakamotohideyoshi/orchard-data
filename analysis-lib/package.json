@@ -5,8 +5,8 @@
   "author": "",
   "scripts": {
     "dev": "nodemon api/main.js",
-    "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
-    "test:unit:keep_db": "NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
+    "test:unit": "npm run lint:fix && NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
+    "test:unit:keep_db": "npm run lint:fix && NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
     "load-and-run": "node ./dev-scripts/load-and-run",
     "update-status": "node ./dev-scripts/update-status",
     "clear-tables": "node ./dev-scripts/clear-dev-tables",
@@ -14,8 +14,8 @@
     "gen-error-report": "node ./src/scripts/gen-error-report",
     "tsv-to-json": "node ./dev-scripts/tsv-to-json",
     "run-filter": "node ./dev-scripts/run-filter",
-    "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter src test",
-    "lint:fix": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter --fix src test",
+    "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter ./",
+    "lint:fix": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter --fix ./",
     "postinstall": "npm run lint:fix"
   },
   "private": true,

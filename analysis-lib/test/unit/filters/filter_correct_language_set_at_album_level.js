@@ -1,10 +1,5 @@
 const assert = require('chai').assert
 
-const sinon = require('sinon')
-const _ = require('lodash')
-const path = require('path')
-const validator = require('is-my-json-valid')
-
 const describe = require('mocha').describe
 const it = require('mocha').it
 
