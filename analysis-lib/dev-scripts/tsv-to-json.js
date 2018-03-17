@@ -14,8 +14,8 @@ let inputFile = argv['input'] || 'test.tsv'
 
 let inputPath = inputDir.concat(filter).concat(inputFile).join('/')
 
-if (!argv['filter']) { throw Error('\n ***** No filter specified. *****\n"') }
-if (!argv['input']) { console.log('\n ***** No file specified. Using test.tsv *****\n"') }
+if (!argv['filter']) { throw Error('\n ***** No filter specified. *****\n') }
+if (!argv['input']) { console.log('\n ***** No file specified. Using test.tsv *****\n') }
 
 let parsedFile = []
 let fieldsDict = dbInfo[table].columns_dict
@@ -36,4 +36,6 @@ IO.readTsv(inputPath)
     console.log(inputPath)
     console.log(err)
   })
-  .finally(() => fs.writeFile(`mocks/raw_${filter}.json`, JSON.stringify(parsedFile), 'utf8'))
+  .finally(() => {
+    fs.writeFileSync(`mocks/raw_${filter}.json`, JSON.stringify(parsedFile), 'utf8');
+  })
