@@ -7,9 +7,6 @@ include ../pages/_mixins
         .report-summary__text(:class="{'report-summary__text--red': status === 2}") {{ title }}
     report-summary-label(:status="status")
     .report-summary__col
-        .report-summary__head Batch ID
-        .report-summary__text {{ id }}
-    .report-summary__col
         .report-summary__head Date
         .report-summary__text {{ date }}
     .report-summary__col(v-if="!root")
