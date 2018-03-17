@@ -2,9 +2,7 @@
 
 module.exports = async function (row, idx) {
   'use strict'
-  const removeDiacritics = require('../scripts/remove-diacritics')
-
-  var languageDetector = new (require('languagedetect'))()
+  let languageDetector = new (require('languagedetect'))()
 
   const filterName = 'correctlanguagesetatalbumlevel'
   const filterMeta = require('./filters-meta')[filterName]
@@ -23,7 +21,7 @@ module.exports = async function (row, idx) {
     'error_type': []
   }
 
-  const result = await new Promise(async (resolve, reject) => {
+  const result = await new Promise(async (resolve) => {
     // If field is related to 'release_meta_language'
     for (let field of fields) {
       // temp to store best match language
