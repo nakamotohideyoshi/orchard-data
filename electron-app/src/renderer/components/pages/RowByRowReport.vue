@@ -5,7 +5,7 @@ div
     table.p-table.p-table--full(js-stacktable v-if="results.length")
         thead
             tr
-                td #
+                td Row ID
                 td Count of Errors
                 td Count of Warnings
                 td Overall Status
