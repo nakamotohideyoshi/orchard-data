@@ -39,7 +39,7 @@ include _mixins
                 span View the field level issues
     .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
         .report__view
-        .report__view-title This page not yet implemented.
+        .report__view-title This page not yet implemented...
     .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
         // group
         router-link(:to="`/csv/${itemid}`").report__view-link
