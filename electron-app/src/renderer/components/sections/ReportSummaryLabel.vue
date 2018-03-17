@@ -1,6 +1,5 @@
 <template lang="pug">
 .report-summary__label(:class="colorClass")
-    span(v-if="status === 1") Success
     span(v-if="status === 2") Fail
     span(v-if="status === 3") In Progress
 </template>
@@ -28,7 +27,7 @@ export default {
   computed: {
     colorClass () {
       const map = {
-        1: 'report-summary__label--green',
+        1: 'report-summary__label--hidden',
         2: 'report-summary__label--red',
         3: 'report-summary__label--yellow'
       }
@@ -38,3 +37,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+    .report-summary__label--hidden {
+        display: none;
+    }
+</style>
