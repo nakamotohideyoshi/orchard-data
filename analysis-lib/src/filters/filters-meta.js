@@ -518,4 +518,4 @@ module.exports = {
       `
     }
   }
-};
+}
