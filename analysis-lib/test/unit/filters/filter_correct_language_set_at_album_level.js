@@ -1,10 +1,5 @@
 const assert = require('chai').assert
 
-const sinon = require('sinon')
-const _ = require('lodash')
-const path = require('path')
-const validator = require('is-my-json-valid')
-
 const describe = require('mocha').describe
 const it = require('mocha').it
 
@@ -18,10 +13,10 @@ const filterMeta = require('../../../src/filters/filters-meta')[filterId]
 const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
 
-const reportModule = require('../../../src/scripts/report-tool')
+const ReportModule = require('../../../src/scripts/report-tool')
 
 describe(`should test ${filterId}`, function () {
-  let report = new reportModule()
+  let report = new ReportModule()
   report.init()
   report.addFilter(filterId)
   this.timeout(10000)
