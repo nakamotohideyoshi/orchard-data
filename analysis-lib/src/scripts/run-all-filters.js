@@ -28,6 +28,7 @@ module.exports = async function (datasetId) {
 
   // Loads dataset
   const dataset = await dbInterface.fetchTsvDataset(datasetId)
+  const metadata = await dbInterface.fetchDatasetMetaRow(datasetId)
   const noOfRows = dataset.length
 
   if (noOfRows === 0) { throw new Error(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`) }
@@ -56,7 +57,7 @@ module.exports = async function (datasetId) {
             idx = parseInt(idx)
             const row = dataset[idx]
 
-            const occurrence = await filters[filter](row, idx + 1)
+            const occurrence = await filters[filter](row, idx + 1, metadata)
             if (occurrence) { report.addOccurrence(filter, occurrence) }
           };
         }
