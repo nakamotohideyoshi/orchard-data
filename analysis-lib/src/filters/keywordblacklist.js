@@ -20,43 +20,45 @@ module.exports = async function (row, idx, metadata) {
     'explanation_id': [],
     'error_type': []
   }
+  if (metadata['keyword_blacklist']) {
+    // keywordblkacklist spilt with ' '
+    const blacklistkeywords = metadata['keyword_blacklist'].trim().toLowerCase().split(' ')
 
-  // keywordblkacklist spilt with ' '
-  const blacklistkeywords = metadata['keyword_blacklist'].trim().toLowerCase().split(' ')
-  
-  const result = await new Promise(async (resolve, reject) => {
-    let isblacklistMatch = false
+    const result = await new Promise(async (resolve, reject) => {
+      let isblacklistMatch = false
 
-    for (let field of fields) {
-      const value = row[field] ? removeDiacritics(row[field]).trim().toLowerCase() : ''
+      for (let field of fields) {
+        const value = row[field] ? removeDiacritics(row[field]).trim().toLowerCase() : ''
 
-      // check for keyword_blacklist
-      blacklistkeywords.forEach(blacklistkeyword => {
-        // regex pattern
-        const pattern = new RegExp(blacklistkeyword, 'g')
+        // check for keyword_blacklist
+        blacklistkeywords.forEach(blacklistkeyword => {
+          // regex pattern
+          const pattern = new RegExp(blacklistkeyword, 'g')
 
-        // if matched with blacklist
-        if (value.match(pattern)) {
-          isblacklistMatch = true
+          // if matched with blacklist
+          if (value.match(pattern)) {
+            isblacklistMatch = true
+          }
+        })
+
+        // keyword matched with blacklist were found
+        if (isblacklistMatch) {
+          occurrence.field.push(field)
+          occurrence.value.push(row[field])
+          occurrence.explanation_id.push(defaultExplanationId)
+          occurrence.error_type.push(defaultErrorType)
+          break
         }
-      })
-
-      // keyword matched with blacklist were found
-      if (isblacklistMatch) {
-        occurrence.field.push(field)
-        occurrence.value.push(row[field])
-        occurrence.explanation_id.push(defaultExplanationId)
-        occurrence.error_type.push(defaultErrorType)
-        break
       }
-    }
 
-    if (isblacklistMatch) {
-      resolve(occurrence)
-    } else {
-      resolve(false)
-    }
-  })
-
-  return result
+      if (isblacklistMatch) {
+        resolve(occurrence)
+      } else {
+        resolve(false)
+      }
+    })
+    return result
+  } else {
+    return false
+  }
 }
