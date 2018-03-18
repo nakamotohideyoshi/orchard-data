@@ -1,22 +1,21 @@
-const argv = require('minimist')(process.argv.splice(2));
+const argv = require('minimist')(process.argv.splice(2))
 
-if(!argv['filter']) { throw Error('No filter specified'); }
-if(!argv['sample']) { throw Error('No sample specified'); }
+if (!argv['filter']) { throw Error('No filter specified') }
+if (!argv['sample']) { throw Error('No sample specified') }
 
-const filtersMeta = require('../src/filters/filters-meta');
-const filtersModule = require('../src/filters/filters-module');
-const filter = 'filter' + argv['filter'];
+const filtersModule = require('../src/filters/filters-module')
+const filter = 'filter' + argv['filter']
 
-const reportModule = require('../src/scripts/report-tool');
-const report = new reportModule();
-report.init();
-report.addFilter(filter);
+const ReportModule = require('../src/scripts/report-tool')
+const report = new ReportModule()
+report.init()
+report.addFilter(filter)
 
-const mocks = require(`../mocks/${filter}`);
-const mock = mocks[argv['sample']];
+const mocks = require(`../mocks/${filter}`)
+const mock = mocks[argv['sample']]
 
-let _report = [];
+let _report = []
 
-mock.forEach((row, idx) => _report.push(filtersModule[filter](row, idx, report)));
+mock.forEach((row, idx) => _report.push(filtersModule[filter](row, idx, report)))
 
-console.log(_report);
+console.log(_report)

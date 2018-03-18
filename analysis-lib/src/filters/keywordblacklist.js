@@ -24,7 +24,7 @@ module.exports = async function (row, idx, metadata) {
     // keywordblkacklist spilt with ' '
     const blacklistkeywords = metadata['keyword_blacklist'].trim().toLowerCase().split(' ')
 
-    const result = await new Promise(async (resolve, reject) => {
+    const result = await new Promise(async (resolve) => {
       let isblacklistMatch = false
 
       for (let field of fields) {

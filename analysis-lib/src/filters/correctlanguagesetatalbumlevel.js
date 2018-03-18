@@ -2,9 +2,7 @@
 
 module.exports = async function (row, idx) {
   'use strict'
-  const removeDiacritics = require('../scripts/remove-diacritics')
-
-  var languageDetector = new (require('languagedetect'))()
+  let languageDetector = new (require('languagedetect'))()
 
   const filterName = 'correctlanguagesetatalbumlevel'
   const filterMeta = require('./filters-meta')[filterName]
