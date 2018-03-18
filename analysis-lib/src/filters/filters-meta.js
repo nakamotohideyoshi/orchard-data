@@ -495,7 +495,27 @@ module.exports = {
         The appropriate audio language must be set in the metadata at track level. Language code(s) should match the language spoken or sung in the audio. Non-linguistic content should be flagged ‘zxx'. See iTunes Style Guide 1.6
         To ensure that accents and capitalizations appear correctly on the iTunes Store and Apple Music, the appropriate language must be set in the metadata. See iTunes Style Guide 11
 
-      `,
+      `
     }
   },
+
+  'keywordblacklist': {
+    'orchardDescription': `keyword blacklist`,
+    'programmerDescription': `
+
+      - It is an error if any word from the keyword list occurs in the list of input fields below
+      - The keyword list is supplied by the user as a parameter when creating the dataset
+      - The keyword match is case-insensitive
+    `,
+    'userExplanation': `Keyword blacklist match`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+
+        Keyword blacklist match
+      `
+    }
+  }
 };
