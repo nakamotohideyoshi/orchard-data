@@ -29,7 +29,7 @@ module.exports = function (dataset, duplicatesThreshold) {
 
   // Rule: Let exceeded be true if the duplicates ratio is equal to or greater than the value selected by the user
 
-  let exceeded = (duplicatesRatio > duplicatesThreshold)
+  let exceeded = (duplicatesRatio >= duplicatesThreshold)
 
   // Rule: The REST API for the report summary should be extended to carry the duplicates ratio, the gross number
   // of duplicates, and the exceeded flag.
