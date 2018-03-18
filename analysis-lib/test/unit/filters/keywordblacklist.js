@@ -38,8 +38,7 @@ describe(`should test ${filterId}`, function () {
     }
   })
 
-  it('should fail: test case-inSensitive search for (ABCD)', async() => {
-
+  it('should fail: test case-inSensitive search for (ABCD)', async () => {
     const mock = mocks['caseInSensitiveSearch']['dataset']
     const metadata = mocks['caseInSensitiveSearch']['metadata']
 
