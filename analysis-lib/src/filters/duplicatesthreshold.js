@@ -6,10 +6,16 @@
  * @returns {{duplicatesRatio: number, numberOfDuplicates: number, exceeded: boolean}}
  */
 module.exports = function (dataset, duplicatesThreshold) {
+  // Convert duplicatesThreshold into fraction (percentage) by dividing it by 100.
+
+  duplicatesThreshold /= 100
+
   // Rule: Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the
   // total number of tracks.
 
   let alreadyRegisteredISRCList = []
+
+  let duplicatedISRC = []
 
   let numberOfDuplicates = 0
 
@@ -18,7 +24,12 @@ module.exports = function (dataset, duplicatesThreshold) {
   dataset.forEach((row) => {
     if (row.hasOwnProperty('isrc') && row['isrc'].length > 0) {
       if (alreadyRegisteredISRCList.indexOf(row['isrc']) > -1) {
-        numberOfDuplicates++
+        if (duplicatedISRC.indexOf(row['isrc']) === -1) {
+          duplicatedISRC.push(row['isrc'])
+          numberOfDuplicates += 2
+        } else {
+          numberOfDuplicates++
+        }
       } else {
         alreadyRegisteredISRCList.push(row['isrc'])
       }
