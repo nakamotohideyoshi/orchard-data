@@ -31,6 +31,7 @@ include _mixins
                                         :href="downloadLink"
                                         download
                                         slot="download-link"
+                                        @click.prevent="openTSV"
                                       ).report-summary__text
                                         +icon('ico-download')
 
@@ -41,6 +42,7 @@ include _mixins
 
 <script>
 import { mapGetters } from 'vuex'
+import { remote } from 'electron'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
@@ -50,6 +52,8 @@ import {
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
+
+const { BrowserWindow } = remote
 
 export default {
   name: 'ReportSummary',
@@ -61,7 +65,8 @@ export default {
     return {
       title: '',
       downloadLink: '',
-      canGoBack: false
+      canGoBack: false,
+      win: null
     }
   },
   computed: {
@@ -103,6 +108,22 @@ export default {
           this.title = 'Report Summary'
           this.canGoBack = false
       }
+    },
+    openTSV () {
+      const { batchId } = this
+      const winURL = process.env.NODE_ENV === 'development'
+        ? `http://localhost:9080/#tsv/${batchId}`
+        : `file://${__dirname}/index.html/#tsv/${batchId}`
+
+      this.win = new BrowserWindow({
+        title: `Dataset TSV (${batchId})`,
+        show: false
+      })
+      this.win.on('closed', () => {
+        this.win = null
+      })
+      this.win.loadURL(winURL)
+      this.win.show()
     }
   },
   async created () {
