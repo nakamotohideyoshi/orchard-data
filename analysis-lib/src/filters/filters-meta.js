@@ -499,6 +499,44 @@ module.exports = {
     }
   },
 
+  'nonmusicalcontent': {
+    'orchardDescription': `Clearly non-musical content`,
+    'programmerDescription': `
+      It is an error if the genre or sub-genre is in the "non-musical content list", case-insensitive
+
+      The genre can match either the human-friendly genre name ("Stories") or the computer-friendly one ("STORIES-00").
+
+      Let the non-musical content list be:
+
+      - Anime                ANIME-00
+      - Stories              STORIES-00
+      - Comedy               COMEDY-00
+      - Novelty              NOVELTY-00
+      - Standup Comedy       STANDUP-COMEDY-00
+      - Disney               DISNEY-00
+      - Enka                 ENKA-00
+      - Fitness & Workout    FITNESS-WORKOUT-00
+      - Inspirational        INSPIRATIONAL-00
+      - Karaoke              KARAOKE-00
+      - Healing              HEALING-00
+      - Meditation           MEDITATION-00
+      - Nature               NATURE-00
+      - Relaxation           RELAXATION-00
+      - Travel               TRAVEL-00
+      - Yoga                 YOGA-00
+      - Sound Effects        SOUND-EFFECT-00
+      - Video Game           VIDEOGAME-00
+      - Spoken Word          SPOKEN-WORD-00
+    `,
+    'userExplanation': `Non-musical content is discouraged.`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `See the iTunes Package Music Specification Addendum: Music, Music Video, and Ringtone Genre Codes`
+    }
+  },
+
   'keywordblacklist': {
     'orchardDescription': `keyword blacklist`,
     'programmerDescription': `
