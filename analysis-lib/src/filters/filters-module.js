@@ -18,7 +18,8 @@ module.exports = {
   filter17: require('./filter17'),
   filter18: require('./filter18'),
   albumswithvsandmeets: require('./albumswithvsandmeets'),
-  correctlanguagesetatalbumlevel: require('./correctlanguagesetatalbumlevel'),
   nazipropaganda: require('./nazipropaganda'),
+  correctlanguagesetatalbumlevel: require('./correctlanguagesetatalbumlevel'),
+  nonmusicalcontent: require('./nonmusicalcontent'),
   duplicatesthreshold: require('./duplicatesthreshold')
 }

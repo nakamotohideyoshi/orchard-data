@@ -2,7 +2,7 @@
 #barba-wrapper
     .page(class=outClass)
         block header
-            AppHeader
+            app-header
         .page__content
             block content
                 .p-container
@@ -38,12 +38,10 @@
                                             td {{new Date(data.time).toString().slice(0, -14)}}
 
         block footer
-            AppFooter
+            app-footer
 </template>
 
 <script>
-import moment from 'moment'
-
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
@@ -65,11 +63,6 @@ export default {
   components: {
     AppHeader,
     AppFooter
-  },
-  methods: {
-    moment: function () {
-      return moment()
-    }
   }
 }
 </script>
