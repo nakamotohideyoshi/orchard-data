@@ -1,6 +1,9 @@
+'use strict'
+
 module.exports = function () {
   let sqlite = require('sqlite')
   let Promise = require('bluebird')
+  let _ = require('lodash')
   let dbInfo = require('./db-info')
   let IO = require('../scripts/IO-module')
   let DATABASE = require('../scripts/constants').DATABASE
@@ -240,6 +243,13 @@ module.exports = function () {
       .then(db => db.all(`SELECT * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`))
 
     return dbPromise
+  }
+
+  this.datasetColumnsDictionary = function () {
+    const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
+    const fieldsDict = orchardTable['columns_dict']
+
+    return _.invert(fieldsDict)
   }
 
   // Save field by field report
