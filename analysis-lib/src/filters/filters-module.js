@@ -21,6 +21,7 @@ var correctlanguagesetatalbumlevel = require('./correctlanguagesetatalbumlevel')
 var nazipropaganda = require('./nazipropaganda')
 var nonmusicalcontent = require('./nonmusicalcontent')
 var keywordblacklist = require('./keywordblacklist')
+var artistblacklist = require('./artistblacklist')
 
 module.exports = {
   'filter1': filter1,
@@ -45,5 +46,6 @@ module.exports = {
   'nazipropaganda': nazipropaganda,
   'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel,
   'nonmusicalcontent': nonmusicalcontent,
-  'keywordblacklist': keywordblacklist
+  'keywordblacklist': keywordblacklist,
+  'artistblacklist': artistblacklist
 }
