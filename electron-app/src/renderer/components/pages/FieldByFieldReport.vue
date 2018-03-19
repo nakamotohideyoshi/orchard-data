@@ -21,22 +21,25 @@ div
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import {
-  FIELDS,
   FIELDS_REQUEST,
   FIELDS_FAILURE,
-  FILTERS_META
+  FILTERS_META,
+  FIELD_BY_FIELD_REPORT
 } from '@/constants/types'
 
 export default {
   name: 'field-by-field',
   computed: {
+    ...mapState({
+      items: state => state.Reports[FIELD_BY_FIELD_REPORT]
+    }),
     ...mapGetters({
       error: FIELDS_FAILURE,
       loading: FIELDS_REQUEST,
-      items: FIELDS,
+      // items: FIELDS,
       filters: FILTERS_META
     })
   },
@@ -49,7 +52,7 @@ export default {
     const id = this.$route.params.id
 
     if (id) {
-      this.fetchFields(id)
+      this.fetchFieldByFieldReport({batchId: id})
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
       // is instance of a native type (e.g. Array, Error), let's find a better
@@ -67,7 +70,7 @@ export default {
       })
     },
     hide () {
-      this.$modal.hide('field-report-modal')
+      this.$modal.hide('field-modal')
     },
     getFilter (id) {
       if (
@@ -80,7 +83,7 @@ export default {
 
       return 'N/A'
     },
-    ...mapActions(['fetchFields', 'fetchDataset'])
+    ...mapActions(['fetchFieldByFieldReport'])
   }
 }
 </script>
