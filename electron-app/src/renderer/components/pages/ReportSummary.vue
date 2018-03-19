@@ -35,6 +35,7 @@ include _mixins
                                       ).report-summary__text
                                         +icon('ico-download')
 
+                                    // keep-alive
                                     router-view(v-if="item")
         block footer
             AppFooter

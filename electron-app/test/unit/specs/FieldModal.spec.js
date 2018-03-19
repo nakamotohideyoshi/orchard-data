@@ -1,7 +1,7 @@
 import FieldModal from '@/components/sections/FieldModal'
-import { mount } from 'avoriaz'
+import { shallow } from 'avoriaz'
 import Vuex from 'vuex'
-import _ from 'lodash'
+import sinon from 'sinon'
 import { FILTERS_META } from '@/constants/types'
 import router from '../../../src/renderer/router'
 
@@ -26,6 +26,7 @@ describe('FieldModal.vue', () => {
   let wrapper
   let getters
   let store
+  let $router
 
   beforeEach(() => {
     getters = {
@@ -37,24 +38,73 @@ describe('FieldModal.vue', () => {
       getters
     })
 
-    wrapper = mount(FieldModal, {
+    $router = {
+      push: sinon.stub()
+    }
+
+    wrapper = shallow(FieldModal, {
       store,
       router,
-      propsData: _.extend({}, data),
-      attachToDocument: true
+      globals: {
+        $router
+      }
     })
   })
 
-  it('should have all required props', () => {
-    wrapper.update()
-
+  it('should have a computed prop that represents the rowId', () => {
     wrapper.vm.$modal.show('field-modal', {
-      ...data
+      ...data,
+      rowid: 5
     })
 
-    wrapper.update()
-    // TODO:
-    //  * Find a way to raise the right events
-    //  * Stub modal hooks
+    expect(wrapper.vm.rowid).to.equal(5)
+  })
+
+  it('has the necessary methods', () => {
+    expect(wrapper.vm.beforeOpen).to.be.a('function')
+    expect(wrapper.vm.getDescription).to.be.a('function')
+    expect(wrapper.vm.showParams).to.be.a('function')
+    expect(wrapper.vm.close).to.be.a('function')
+  })
+
+  it('`showParams() should move to another route and close the modal', () => {
+    const $modal = {
+      hide: sinon.stub()
+    }
+
+    wrapper = shallow(FieldModal, {
+      store,
+      router,
+      globals: {
+        $router,
+        $modal
+      }
+    })
+
+    wrapper.vm.showParams()
+    expect($router.push.calledOnce).to.be.true
+    expect($router.push.calledWith(`/report/${wrapper.vm.rowid}/params`)).to.be.true
+
+    expect($modal.hide.calledOnce).to.be.true
+    expect($modal.hide.calledWith('field-modal')).to.be.true
+  })
+
+  it('`close() should close the modal', () => {
+    const $modal = {
+      hide: sinon.stub()
+    }
+
+    wrapper = shallow(FieldModal, {
+      store,
+      router,
+      globals: {
+        $router,
+        $modal
+      }
+    })
+
+    wrapper.vm.close()
+    expect($modal.hide.calledOnce).to.be.true
+    expect($modal.hide.calledWith('field-modal')).to.be.true
   })
 })

@@ -49,24 +49,6 @@ describe('RowByRowReport.vue', () => {
     })
   })
 
-  /*
-  We don't need these in here, it should be tested in the parent
-  it('should have a computed property called `downloadLink`', () => {
-    expect(wrapper.vm.downloadLink).to.be.a('string')
-  })
-  it('should have a computed property called `batchId`', () => {
-    expect(wrapper.vm.batchId).to.be.a('number')
-  })
-
-  it('should have a computed property called `batchId` that matches the route', () => {
-    expect(wrapper.vm.batchId).to.equal(123)
-  })
-
-  it('should have a computed property called `formattedDate`', () => {
-    expect(wrapper.vm.formattedDate).to.be.a('string')
-  })
-  */
-
   it('should have a method for fetching report results', () => {
     expect(wrapper.vm.fetchReport).to.be.a('function')
   })
@@ -83,5 +65,9 @@ describe('RowByRowReport.vue', () => {
     })
 
     expect(wrapper.vm.overallStatusMap).to.be.an('object')
+  })
+
+  it('should fetch report data when first created', () => {
+    expect(actions.fetchRowByRowReport.calledOnce).to.equal(true)
   })
 })
