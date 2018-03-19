@@ -64,9 +64,9 @@ module.exports = function (row, index, metadata) {
   fieldsToCheck.forEach((field) => {
     if (row.hasOwnProperty(field) && row[field].length > 0) {
       artistBlacklist.forEach((artist) => {
-        let fieldValueIsBlacklistedArtist = (row[field].toLowerCase() === artist.toLowerCase())
+        let fieldValueContainsBlacklistedArtist = (row[field].toLowerCase().indexOf(artist.toLowerCase()) > -1)
 
-        if (fieldValueIsBlacklistedArtist) {
+        if (fieldValueContainsBlacklistedArtist) {
           occurrence.field.push(field)
           occurrence.value.push(row[field])
           occurrence.explanation_id.push(defaultExplanationId)
