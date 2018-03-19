@@ -10,17 +10,11 @@ import {
   ERROR_BY_ERROR_REPORT_FAILURE
 } from '@/constants/types'
 import {
-  ITUNES_CATEGORY,
-  OVERALL_CATEGORY
-} from '@/constants/report-category'
-import {
-  API_URL
+  API_URL,
+  CATEGORIES
 } from '@/constants/config'
 
-const categoryMap = {
-  [ITUNES_CATEGORY]: 'itunes',
-  [OVERALL_CATEGORY]: 'risk'
-}
+const categoryMap = CATEGORIES
 
 export default {
   getters: {

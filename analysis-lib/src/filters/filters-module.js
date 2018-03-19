@@ -19,6 +19,7 @@ var filter18 = require('./filter18')
 var albumswithvsandmeets = require('./albumswithvsandmeets')
 var correctlanguagesetatalbumlevel = require('./correctlanguagesetatalbumlevel')
 var nazipropaganda = require('./nazipropaganda')
+var nonmusicalcontent = require('./nonmusicalcontent')
 var keywordblacklist = require('./keywordblacklist')
 
 module.exports = {
@@ -43,5 +44,6 @@ module.exports = {
   'albumswithvsandmeets': albumswithvsandmeets,
   'nazipropaganda': nazipropaganda,
   'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel,
+  'nonmusicalcontent': nonmusicalcontent,
   'keywordblacklist': keywordblacklist
 }

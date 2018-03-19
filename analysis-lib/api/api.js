@@ -406,7 +406,10 @@ router.get('/dataset-meta-all', (req, res) => {
 
 // Return filters meta data
 router.get('/config', (req, res) => {
-  res.status(200).json(analysisLibModule.filtersMeta)
+  const meta = analysisLibModule.filtersMeta
+  const datasetColumns = dbInterface.datasetColumnsDictionary()
+
+  res.status(200).json({ meta, datasetColumns })
 })
 
 // Export modules
