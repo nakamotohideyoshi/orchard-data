@@ -583,7 +583,7 @@ module.exports = {
   },
   shouldFailFirstWordInKeywordBlacklistIsChecked: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': ['first keyword', 'A BLACKLISTED ARTIST', 'last keyword']
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -621,7 +621,7 @@ module.exports = {
   },
   shouldFailLastWordInKeywordBlacklistIsChecked: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': ['first keyword', 'A BLACKLISTED ARTIST', 'last keyword']
     },
     'dataset': [{
       'release_name': 'George Best Plus',
