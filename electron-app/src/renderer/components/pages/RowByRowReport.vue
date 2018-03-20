@@ -5,7 +5,7 @@ div
     table.p-table.p-table--full(js-stacktable v-if="results.length")
         thead
             tr
-                td #
+                td Dataset Row ID
                 td Count of Errors
                 td Count of Warnings
                 td Overall Status
@@ -17,11 +17,6 @@ div
                 td {{ result.warnings }}
                 td {{ overallStatusMap[result.grade] }}
 
-
-    .p-container__more(v-if="results.length")
-        a(href="#" js-load-more).btn.btn-more
-            span Load more
-
     empty-state(
         v-if="!loading && !results.length && error"
         title="No rows found"
@@ -30,15 +25,13 @@ div
 </template>
 
 <script>
-import moment from 'moment'
 import { mapGetters, mapState, mapActions } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
   SUBMISSIONS_FAILURE,
   ACTIVE_REPORT_CATEGORY,
-  ROW_BY_ROW_REPORT,
-  DATE_FORMAT
+  ROW_BY_ROW_REPORT
 } from '@/constants/types'
 
 export default {
@@ -67,10 +60,6 @@ export default {
       results: state => state.Reports[ROW_BY_ROW_REPORT]
     }),
 
-    formattedDate () {
-      return moment(this.item.time).format(DATE_FORMAT)
-    },
-
     batchId () {
       return this.$route.params.id
     }
@@ -88,9 +77,6 @@ export default {
      */
     async fetchReport () {
       await this.fetchRowByRowReport({ batchId: this.batchId })
-    },
-    goBack () {
-      this.$router.go(-1)
     }
   }
 }
