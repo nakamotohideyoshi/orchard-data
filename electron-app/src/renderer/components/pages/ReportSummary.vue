@@ -26,7 +26,7 @@ include _mixins
                                       :status="item.status"
                                       :title="title"
                                       :category="category"
-                                      :root="!canGoBack")
+                                      :has-download-link="!!downloadLink")
                                       a(
                                         :href="downloadLink"
                                         download
@@ -75,6 +75,7 @@ export default {
       fieldByFieldDownloadLink: 'fieldByFieldDownloadLink',
       errorByErrorDownloadLink: 'errorByErrorDownloadLink',
       rowByRowDownloadLink: 'rowByRowDownloadLink',
+      summaryDownloadLink: 'summaryDownloadLink',
       error: SUBMISSIONS_FAILURE,
       loading: SUBMISSIONS_REQUEST,
       item: SUBMISSION,
@@ -107,6 +108,7 @@ export default {
           break
         default:
           this.title = 'Report Summary'
+          this.downloadLink = this.summaryDownloadLink(this.batchId)
           this.canGoBack = false
       }
     },

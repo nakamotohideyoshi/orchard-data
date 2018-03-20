@@ -9,7 +9,7 @@ include ../pages/_mixins
     .report-summary__col
         .report-summary__head Date
         .report-summary__text {{ date }}
-    .report-summary__col(v-if="!root")
+    .report-summary__col(v-if="hasDownloadLink")
         .report-summary__head download
         <slot name="download-link"></slot>
 </template>
@@ -46,7 +46,7 @@ export default {
       type: String,
       required: true
     },
-    root: {
+    hasDownloadLink: {
       type: Boolean,
       required: true,
       default: true
