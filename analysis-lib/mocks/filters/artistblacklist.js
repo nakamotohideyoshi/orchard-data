@@ -1,7 +1,7 @@
 module.exports = {
   shouldFailReleaseArtistPrimaryArtist: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -39,7 +39,7 @@ module.exports = {
   },
   shouldFailReleaseArtistFeaturing: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -78,7 +78,7 @@ module.exports = {
   },
   shouldFailReleaseArtistRemixer: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -117,7 +117,7 @@ module.exports = {
   },
   shouldFailReleaseArtistComposer: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -156,7 +156,7 @@ module.exports = {
   },
   shouldFailReleaseArtistOrchestra: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -195,7 +195,7 @@ module.exports = {
   },
   shouldFailReleaseArtistEnsemble: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -234,7 +234,7 @@ module.exports = {
   },
   shouldFailReleaseArtistConductor: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -273,7 +273,7 @@ module.exports = {
   },
   shouldFailTrackArtist: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -311,7 +311,7 @@ module.exports = {
   },
   shouldFailTrackArtistFeaturing: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -350,7 +350,7 @@ module.exports = {
   },
   shouldFailTrackArtistRemixer: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -389,7 +389,7 @@ module.exports = {
   },
   shouldFailTrackArtistComposer: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -428,7 +428,7 @@ module.exports = {
   },
   shouldFailTrackArtistOrchestra: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -467,7 +467,7 @@ module.exports = {
   },
   shouldFailTrackArtistEnsemble: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -506,7 +506,7 @@ module.exports = {
   },
   shouldFailTrackArtistConductor: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -545,7 +545,7 @@ module.exports = {
   },
   shouldFailCaseInsensitiveMatch: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -583,7 +583,7 @@ module.exports = {
   },
   shouldFailFirstWordInKeywordBlacklistIsChecked: {
     'metadata': {
-      'artist_blacklist': ['first keyword', 'A BLACKLISTED ARTIST', 'last keyword']
+      'artist_blacklist': 'first keyword \r\n  A BLACKLISTED ARTIST \r\n last keyword'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -621,7 +621,7 @@ module.exports = {
   },
   shouldFailLastWordInKeywordBlacklistIsChecked: {
     'metadata': {
-      'artist_blacklist': ['first keyword', 'A BLACKLISTED ARTIST', 'last keyword']
+      'artist_blacklist': 'first keyword\nA BLACKLISTED ARTIST\nlast keyword'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -659,7 +659,7 @@ module.exports = {
   },
   shouldFailSubstringMatch: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'George Best Plus',
@@ -697,7 +697,7 @@ module.exports = {
   },
   shouldPass: {
     'metadata': {
-      'artist_blacklist': ['A BLACKLISTED ARTIST']
+      'artist_blacklist': 'A BLACKLISTED ARTIST'
     },
     'dataset': [{
       'release_name': 'Demos',
