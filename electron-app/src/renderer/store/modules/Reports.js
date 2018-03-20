@@ -37,6 +37,12 @@ export default {
         return `${API_URL}field-by-field/${categoryMap[rootState.ACTIVE_REPORT_CATEGORY]}/${batchId}.tsv`
       }
     },
+    summaryDownloadLink () {
+      return function (batchId) {
+        return `${API_URL}report-summary/${batchId}.tsv`
+      }
+    },
+
     [ERROR_BY_ERROR_REPORT_FAILURE]: (state) => state[ERROR_BY_ERROR_REPORT_FAILURE]
   },
   state: {
