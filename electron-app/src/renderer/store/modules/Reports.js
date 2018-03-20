@@ -70,9 +70,9 @@ export default {
     }
   },
   actions: {
-    async fetchSummary ({commit}, { batchId }) {
+    async fetchSummary ({ commit }, { batchId }) {
       const reportData = (await axios.get(`${API_URL}report-summary/${batchId}`)).data
-      commit(SET_REPORT_SUMMARY_DATA, reportData[0])
+      commit(SET_REPORT_SUMMARY_DATA, reportData)
     },
 
     /**
