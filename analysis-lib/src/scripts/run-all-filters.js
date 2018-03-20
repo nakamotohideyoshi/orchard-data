@@ -8,7 +8,8 @@ module.exports = async function (datasetId) {
   const DATABASE = require('./constants').DATABASE
 
   // Filters module
-  const filters = require('../filters/filters-module')
+  const path = require('path')
+  const filters = require('require-all')(path.join(__dirname, '/../filters'))
   const filtersMeta = require('../filters/filters-meta')
 
   // DB modules
