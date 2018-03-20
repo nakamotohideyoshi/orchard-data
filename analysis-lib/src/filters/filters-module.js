@@ -22,6 +22,7 @@ var nazipropaganda = require('./nazipropaganda')
 var keywordblacklist = require('./keywordblacklist')
 var nonmusicalcontent = require('./nonmusicalcontent')
 var trackcountthreshold = require('./trackcountthreshold')
+var duplicatesthreshold = require('./duplicatesthreshold')
 
 module.exports = {
   'filter1': filter1,
@@ -47,5 +48,6 @@ module.exports = {
   'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel,
   'keywordblacklist': keywordblacklist,
   'nonmusicalcontent': nonmusicalcontent,
-  'trackcountthreshold': trackcountthreshold
+  'trackcountthreshold': trackcountthreshold,
+  'duplicatesthreshold': duplicatesthreshold
 }
