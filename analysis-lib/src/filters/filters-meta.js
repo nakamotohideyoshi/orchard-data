@@ -609,5 +609,21 @@ module.exports = {
     'explanations': {
       'default': `Matching album and artist name are a risk factor.`
     }
+  },
+
+  'artistblacklist': {
+    'orchardDescription': `Artist Blacklist`,
+    'programmerDescription': `
+      - It is an error if any word from the artist list occurs in the list of input fields below
+      - The artist list is supplied by the user as a parameter when creating the dataset
+      - The keyword match is case-insensitive
+    `,
+    'userExplanation': `This artist is in the blacklist.`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `This artist is in the blacklist.`
+    }
   }
 }
