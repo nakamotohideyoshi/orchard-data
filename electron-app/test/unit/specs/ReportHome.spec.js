@@ -55,7 +55,14 @@ describe('ReportHome.vue', () => {
       [SET_ACTIVE_CATEGORY]: () => { }
     }
 
-    state = { Reports: { [REPORT_SUMMARY]: {} } }
+    state = { Reports: { [REPORT_SUMMARY]: {
+          category: {
+            itunes: {},
+            risk: {}
+          }
+        }
+      }
+    }
 
     actions = {
       fetchSummary: sinon.stub()
@@ -80,6 +87,8 @@ describe('ReportHome.vue', () => {
       store,
       globals: { $route: $validRoute }
     })
+
+    actions.fetchSummary.resetHistory()
   })
 
   it('should render correct function', () => {
@@ -94,6 +103,17 @@ describe('ReportHome.vue', () => {
     expect(wrapper.vm.overallRiskFlag).to.equal(true)
     expect(wrapper.vm.appleTabFlag).to.equal(false)
     expect(wrapper.vm.customFlag).to.equal(false)
+  })
+
+  it('should have proper computed props', () => {
+    expect(wrapper.vm.itunesQualityData).to.be.an('object')
+    expect(wrapper.vm.riskQualityData).to.be.an('object')
+    expect(wrapper.vm.summaryData).to.be.an('object')
+    expect(wrapper.vm.batchId).to.be.a('number')
+    expect(wrapper.vm.fileName).to.be.a('string')
+    expect(wrapper.vm.time).to.be.a('string')
+    expect(wrapper.vm.status).to.be.a('number')
+    expect(wrapper.vm.itemid).to.be.a('number')
   })
 
   it('should set flags when calling showAppleTab method', () => {
