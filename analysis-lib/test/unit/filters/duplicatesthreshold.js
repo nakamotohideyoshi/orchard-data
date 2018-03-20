@@ -15,7 +15,8 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   report.addFilter(filterId)
 
   it('should pass when duplicates ratio is lower than the threshold', () => {
-    let occurrences = filter(mocks.shouldPassWhenDuplicatesRatioIsLowerThanTheThreshold)
+    let mock = mocks.shouldPassWhenDuplicatesRatioIsLowerThanTheThreshold
+    let occurrences = filter(mock.dataset, mock.metadata)
     occurrences.forEach((occurrence, index) => {
       if (index >= 0 && index <= 6) {
         assert.deepEqual(occurrence.field, ['isrc'])
@@ -28,7 +29,8 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   })
 
   it('should fail when duplicates ratio is equal to the threshold', () => {
-    let occurrences = filter(mocks.shouldFailWhenDuplicatesRatioIsEqualToTheThreshold)
+    let mock = mocks.shouldFailWhenDuplicatesRatioIsEqualToTheThreshold
+    let occurrences = filter(mock.dataset, mock.metadata)
     occurrences.forEach((occurrence, index) => {
       if (index >= 0 && index <= 6) {
         assert.deepEqual(occurrence.field, ['isrc'])
@@ -41,7 +43,8 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   })
 
   it('should fail when duplicates ratio is greater than the threshold', () => {
-    let occurrences = filter(mocks.shouldFailWhenDuplicatesRatioIsGreaterThanTheThreshold)
+    let mock = mocks.shouldFailWhenDuplicatesRatioIsGreaterThanTheThreshold
+    let occurrences = filter(mock.dataset, mock.metadata)
     occurrences.forEach((occurrence, index) => {
       if (index >= 0 && index <= 6) {
         assert.deepEqual(occurrence.field, ['isrc'])
