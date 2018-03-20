@@ -7,6 +7,7 @@ import {
   SUBMISSIONS_FAILURE,
   SUBMISSIONS_ADD,
   SUBMISSIONS_LOADED,
+  SUBMISSION_TSV,
   FIELDS,
   FIELDS_FAILURE,
   FIELDS_REQUEST
@@ -17,6 +18,7 @@ import {
 
 const state = {
   [SUBMISSIONS]: [],
+  [SUBMISSION_TSV]: null,
   [SUBMISSION]: null,
   [SUBMISSION_ERRORS]: [],
   [SUBMISSIONS_REQUEST]: false,
@@ -60,6 +62,9 @@ const mutations = {
     return Object.assign(s, {
       [SUBMISSIONS]: s[SUBMISSIONS].concat(newSubmission)
     })
+  },
+  [SUBMISSION_TSV] (s, tsv) {
+    return Object.assign(s, { [SUBMISSION_TSV]: tsv })
   },
   [FIELDS] (s, item) {
     if (item instanceof Object) {
@@ -150,6 +155,24 @@ const actions = {
         commit(SUBMISSIONS_FAILURE, e)
       })
   },
+  fetchTSV ({ commit }, id) {
+    commit(SUBMISSIONS_REQUEST, true)
+    commit(SUBMISSIONS_FAILURE, null)
+    commit(SUBMISSION_TSV, null)
+
+    console.log(id, 'id')
+
+    return axios
+      .get(`${API_URL}dataset/${id}.tsv`)
+      .then((res) => {
+        commit(SUBMISSIONS_REQUEST, false)
+        commit(SUBMISSION_TSV, res.data)
+      })
+      .catch((e) => {
+        commit(SUBMISSIONS_REQUEST, false)
+        commit(SUBMISSIONS_FAILURE, e)
+      })
+  },
   fetchFields ({ commit }, id) {
     commit(FIELDS_REQUEST, true)
     commit(FIELDS_FAILURE, null)
@@ -199,6 +222,7 @@ const actions = {
 
 const getters = {
   [SUBMISSION]: s => s[SUBMISSION],
+  [SUBMISSION_TSV]: s => s[SUBMISSION_TSV],
   [SUBMISSION_ERRORS]: s => s[SUBMISSION_ERRORS],
   [SUBMISSIONS]: s => s[SUBMISSIONS],
   [SUBMISSIONS_REQUEST]: s => s[SUBMISSIONS_REQUEST],

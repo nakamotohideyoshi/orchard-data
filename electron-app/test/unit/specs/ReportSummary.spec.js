@@ -12,7 +12,7 @@ import {
   SUBMISSIONS_FAILURE
   */
 } from '@/constants/types'
-import router from '../../../src/renderer/router'
+import router from '@/router'
 
 describe('ReportSummary.vue', () => {
   let wrapper
@@ -20,6 +20,7 @@ describe('ReportSummary.vue', () => {
   let store
   let actions
   let $validRoute
+
   const item = {
     rowid: 1,
     source: '/dir/1-spanish.tsv',
@@ -44,7 +45,10 @@ describe('ReportSummary.vue', () => {
       item: () => item,
       [`${SUBMISSION}`]: () => item,
       category: () => ACTIVE_REPORT_CATEGORY,
-      [ACTIVE_REPORT_CATEGORY]: () => ''
+      [ACTIVE_REPORT_CATEGORY]: () => '',
+      rowByRowDownloadLink: () => () => 'link',
+      errorByErrorDownloadLink: () => () => 'link',
+      fieldByFieldDownloadLink: () => () => 'link'
     }
 
     actions = {
@@ -67,7 +71,12 @@ describe('ReportSummary.vue', () => {
       router,
       store,
       propsData: _.extend({}, data),
-      globals: { $route: $validRoute }
+      globals: {
+        $route: $validRoute,
+        $router: {
+          go: () => ''
+        }
+      }
     })
   })
 
@@ -76,12 +85,50 @@ describe('ReportSummary.vue', () => {
   })
 
   it('should render correct function', () => {
-    expect(typeof wrapper.methods().goBack).to.equal('function')
-    expect(typeof wrapper.methods().setTitles).to.equal('function')
+    expect(typeof wrapper.vm.goBack).to.equal('function')
+    expect(typeof wrapper.vm.setTitles).to.equal('function')
   })
 
   it('should call fetchDataset action from store', () => {
     expect(actions.fetchDataset.calledOnce).to.equal(true)
+  })
+
+  it('should go back in history when `goBack()` is called', () => {
+    const backSpy = sinon.spy(wrapper.vm.$router, 'go')
+    wrapper.vm.goBack()
+
+    expect(backSpy.called).to.be.true
+  })
+
+  it('should set the proper info for `row-by-row` report', () => {
+    wrapper.vm.setTitles('row-by-row')
+
+    expect(wrapper.vm.title).to.equal('Errors Per Row')
+    expect(wrapper.vm.downloadLink).to.be.not.empty
+    expect(wrapper.vm.canGoBack).to.be.true
+  })
+
+  it('`setTitles()` should set the proper info for `field-by-field` report', () => {
+    wrapper.vm.setTitles('field-by-field')
+
+    expect(wrapper.vm.title).to.equal('Every Row')
+    expect(wrapper.vm.downloadLink).to.be.not.empty
+    expect(wrapper.vm.canGoBack).to.be.true
+  })
+
+  it('`setTitles()` should set the proper info for `error-by-error` report', () => {
+    wrapper.vm.setTitles('error-by-error')
+
+    expect(wrapper.vm.title).to.equal('Count Per Row')
+    expect(wrapper.vm.downloadLink).to.be.not.empty
+    expect(wrapper.vm.canGoBack).to.be.true
+  })
+
+  it('`setTitles()` should have a default title if nothing is passed in', () => {
+    wrapper.vm.setTitles()
+
+    expect(wrapper.vm.title).to.equal('Report Summary')
+    expect(wrapper.vm.canGoBack).to.be.false
   })
 
   // TODO: Write test for the following cases:
