@@ -15,23 +15,41 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   report.addFilter(filterId)
 
   it('should pass when duplicates ratio is lower than the threshold', () => {
-    let result = filter(mocks.shouldPassWhenDuplicatesRatioIsLowerThanTheThreshold)
-    assert.equal(result.duplicatesRatio, 0.1)
-    assert.equal(result.numberOfDuplicates, 10)
-    assert.equal(result.exceeded, false)
+    let occurrences = filter(mocks.shouldPassWhenDuplicatesRatioIsLowerThanTheThreshold)
+    occurrences.forEach((occurrence, index) => {
+      if (index >= 0 && index <= 6) {
+        assert.deepEqual(occurrence.field, ['isrc'])
+        assert.deepEqual(occurrence.value, ['GBCEJ7800024'])
+      } else if (index >= 7 && index <= 9) {
+        assert.deepEqual(occurrence.field, ['isrc'])
+        assert.deepEqual(occurrence.value, ['GBCEJ0399666'])
+      }
+    })
   })
 
   it('should fail when duplicates ratio is equal to the threshold', () => {
-    let result = filter(mocks.shouldFailWhenDuplicatesRatioIsEqualToTheThreshold)
-    assert.equal(result.duplicatesRatio, 0.1)
-    assert.equal(result.numberOfDuplicates, 10)
-    assert.equal(result.exceeded, true)
+    let occurrences = filter(mocks.shouldFailWhenDuplicatesRatioIsEqualToTheThreshold)
+    occurrences.forEach((occurrence, index) => {
+      if (index >= 0 && index <= 6) {
+        assert.deepEqual(occurrence.field, ['isrc'])
+        assert.deepEqual(occurrence.value, ['GBCEJ7800024'])
+      } else if (index >= 7 && index <= 9) {
+        assert.deepEqual(occurrence.field, ['isrc'])
+        assert.deepEqual(occurrence.value, ['GBCEJ0399666'])
+      }
+    })
   })
 
   it('should fail when duplicates ratio is greater than the threshold', () => {
-    let result = filter(mocks.shouldFailWhenDuplicatesRatioIsGreaterThanTheThreshold)
-    assert.equal(result.duplicatesRatio, 0.1)
-    assert.equal(result.numberOfDuplicates, 10)
-    assert.equal(result.exceeded, true)
+    let occurrences = filter(mocks.shouldFailWhenDuplicatesRatioIsGreaterThanTheThreshold)
+    occurrences.forEach((occurrence, index) => {
+      if (index >= 0 && index <= 6) {
+        assert.deepEqual(occurrence.field, ['isrc'])
+        assert.deepEqual(occurrence.value, ['GBCEJ7800024'])
+      } else if (index >= 7 && index <= 9) {
+        assert.deepEqual(occurrence.field, ['isrc'])
+        assert.deepEqual(occurrence.value, ['GBCEJ0399666'])
+      }
+    })
   })
 })
