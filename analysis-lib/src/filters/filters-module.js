@@ -21,6 +21,7 @@ var correctlanguagesetatalbumlevel = require('./correctlanguagesetatalbumlevel')
 var nazipropaganda = require('./nazipropaganda')
 var keywordblacklist = require('./keywordblacklist')
 var nonmusicalcontent = require('./nonmusicalcontent')
+var trackcountthreshold = require('./trackcountthreshold')
 var artistblacklist = require('./artistblacklist')
 
 module.exports = {
@@ -47,5 +48,6 @@ module.exports = {
   'correctlanguagesetatalbumlevel': correctlanguagesetatalbumlevel,
   'keywordblacklist': keywordblacklist,
   'nonmusicalcontent': nonmusicalcontent,
+  'trackcountthreshold': trackcountthreshold,
   'artistblacklist': artistblacklist
 }

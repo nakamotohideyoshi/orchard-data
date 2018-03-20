@@ -48,7 +48,8 @@ describe('ReportSummary.vue', () => {
       [ACTIVE_REPORT_CATEGORY]: () => '',
       rowByRowDownloadLink: () => () => 'link',
       errorByErrorDownloadLink: () => () => 'link',
-      fieldByFieldDownloadLink: () => () => 'link'
+      fieldByFieldDownloadLink: () => () => 'link',
+      summaryDownloadLink: () => () => 'link'
     }
 
     actions = {
@@ -103,25 +104,28 @@ describe('ReportSummary.vue', () => {
   it('should set the proper info for `row-by-row` report', () => {
     wrapper.vm.setTitles('row-by-row')
 
-    expect(wrapper.vm.title).to.equal('Errors Per Row')
+    expect(wrapper.vm.title).to.equal('Input Row Scores')
     expect(wrapper.vm.downloadLink).to.be.not.empty
     expect(wrapper.vm.canGoBack).to.be.true
+    expect(wrapper.vm.downloadLink).to.be.not.empty
   })
 
   it('`setTitles()` should set the proper info for `field-by-field` report', () => {
     wrapper.vm.setTitles('field-by-field')
 
-    expect(wrapper.vm.title).to.equal('Every Row')
+    expect(wrapper.vm.title).to.equal('Every Error')
     expect(wrapper.vm.downloadLink).to.be.not.empty
     expect(wrapper.vm.canGoBack).to.be.true
+    expect(wrapper.vm.downloadLink).to.be.not.empty
   })
 
   it('`setTitles()` should set the proper info for `error-by-error` report', () => {
     wrapper.vm.setTitles('error-by-error')
 
-    expect(wrapper.vm.title).to.equal('Count Per Row')
+    expect(wrapper.vm.title).to.equal('Test Criteria Scores')
     expect(wrapper.vm.downloadLink).to.be.not.empty
     expect(wrapper.vm.canGoBack).to.be.true
+    expect(wrapper.vm.downloadLink).to.be.not.empty
   })
 
   it('`setTitles()` should have a default title if nothing is passed in', () => {
@@ -129,6 +133,7 @@ describe('ReportSummary.vue', () => {
 
     expect(wrapper.vm.title).to.equal('Report Summary')
     expect(wrapper.vm.canGoBack).to.be.false
+    expect(wrapper.vm.downloadLink).to.be.not.empty
   })
 
   // TODO: Write test for the following cases:
