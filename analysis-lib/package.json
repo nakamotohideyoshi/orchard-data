@@ -5,8 +5,9 @@
   "author": "",
   "scripts": {
     "dev": "nodemon api/main.js",
-    "test:unit": "npm run lint:fix && NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
-    "test:unit:keep_db": "npm run lint:fix && NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
+    "test": "npm run lint:fix && npm run test:unit",
+    "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
+    "test:unit:keep_db": "NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
     "load-and-run": "node ./dev-scripts/load-and-run",
     "update-status": "node ./dev-scripts/update-status",
     "clear-tables": "node ./dev-scripts/clear-dev-tables",
@@ -21,6 +22,7 @@
   "private": true,
   "dependencies": {
     "ajv": "^6.0.0",
+    "ajv-keywords": "^3.1.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "config": "^1.29.4",
@@ -46,7 +48,6 @@
     "eslint": "^4.18.2",
     "eslint-config-standard": "^11.0.0",
     "eslint-friendly-formatter": "^3.0.0",
-    "eslint-loader": "^2.0.0",
     "eslint-plugin-html": "^4.0.2",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
