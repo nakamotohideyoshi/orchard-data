@@ -15,24 +15,21 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   report.addFilter(filterId)
 
   it('should pass when duplicates ratio is lower than the threshold', () => {
-    let threshold = 12.3
-    let result = filter(mocks.longDataset, threshold)
+    let result = filter(mocks.shouldPassWhenDuplicatesRatioIsLowerThanTheThreshold)
     assert.equal(result.duplicatesRatio, 0.1)
     assert.equal(result.numberOfDuplicates, 10)
     assert.equal(result.exceeded, false)
   })
 
   it('should fail when duplicates ratio is equal to the threshold', () => {
-    let threshold = 10
-    let result = filter(mocks.longDataset, threshold)
+    let result = filter(mocks.shouldFailWhenDuplicatesRatioIsEqualToTheThreshold)
     assert.equal(result.duplicatesRatio, 0.1)
     assert.equal(result.numberOfDuplicates, 10)
     assert.equal(result.exceeded, true)
   })
 
   it('should fail when duplicates ratio is greater than the threshold', () => {
-    let threshold = 9.5
-    let result = filter(mocks.longDataset, threshold)
+    let result = filter(mocks.shouldFailWhenDuplicatesRatioIsGreaterThanTheThreshold)
     assert.equal(result.duplicatesRatio, 0.1)
     assert.equal(result.numberOfDuplicates, 10)
     assert.equal(result.exceeded, true)
