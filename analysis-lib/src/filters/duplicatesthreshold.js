@@ -6,15 +6,16 @@ const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
 
 /**
- * @param {{metadata: Object, dataset: Array}} dataset
+ * @param {Array} dataset
+ * @param {Object} metadata
  * @returns {Array<{row_id: number, field: array, value: array, explanation_id: array, error_type: array}>}
  */
-module.exports = function (dataset) {
+module.exports = function (dataset, metadata) {
   const occurrences = []
 
   // Convert duplicatesThreshold into fraction (percentage) by dividing it by 100.
 
-  let duplicatesThreshold = dataset.metadata.duplicates_threshold / 100
+  let duplicatesThreshold = metadata.duplicates_threshold / 100
 
   // Rule: Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the
   // total number of tracks.
@@ -25,9 +26,9 @@ module.exports = function (dataset) {
 
   let numberOfDuplicates = 0
 
-  let totalNumberOfTracks = dataset.dataset.length
+  let totalNumberOfTracks = dataset.length
 
-  dataset.dataset.forEach((row) => {
+  dataset.forEach((row) => {
     if (row.hasOwnProperty('isrc') && row['isrc'].length > 0) {
       if (alreadyRegisteredISRCList.indexOf(row['isrc']) > -1) {
         if (duplicatedISRC.indexOf(row['isrc']) === -1) {
@@ -42,7 +43,7 @@ module.exports = function (dataset) {
     }
   })
 
-  dataset.dataset.forEach((row, index) => {
+  dataset.forEach((row, index) => {
     if (row.hasOwnProperty('isrc') && row['isrc'].length > 0 && duplicatedISRC.indexOf(row['isrc']) > -1) {
       const occurrence = {
         'row_id': index,
@@ -71,7 +72,7 @@ module.exports = function (dataset) {
     exceeded: exceeded
   }
 
-  console.log(reportSummaryExtension) // TODO: Change REST API to carry this info.
+  console.log('    ✓ report summary should also inform:', reportSummaryExtension) // TODO: Change REST API to carry this info.
 
   return occurrences
 }
