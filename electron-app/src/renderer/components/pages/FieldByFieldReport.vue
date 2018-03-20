@@ -5,12 +5,10 @@ div
         thead
             tr
                 td #
-                td Test Data Row ID
                 td Description
         tbody
             tr(v-for="data in items" @click="show(data)")
                 td {{data.id}}
-                td {{data.criteria}}
                 td {{getFilter(data.criteria)}}
 
     empty-state(
