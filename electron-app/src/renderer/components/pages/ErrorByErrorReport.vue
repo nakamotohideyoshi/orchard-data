@@ -5,14 +5,12 @@ include _mixins
     table.p-table.p-table--full(js-stacktable v-if="items.length")
         thead
             tr
-                td Dataset Row ID
                 td Explanation
                 td
                     a(@click.prevent="toggleSort('count')" href="#") Count
 
         tbody
             tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
-                td {{ i + 1 }}
                 td {{ getFilter(item.criteriaId) }}
                 td {{ item.count }}
     empty-state(
