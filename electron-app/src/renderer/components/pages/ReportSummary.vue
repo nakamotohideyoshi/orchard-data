@@ -91,17 +91,17 @@ export default {
     setTitles (name) {
       switch (name) {
         case 'row-by-row':
-          this.title = 'Errors Per Row'
+          this.title = 'Input Row Scores'
           this.downloadLink = this.rowByRowDownloadLink(this.batchId)
           this.canGoBack = true
           break
         case 'field-by-field':
-          this.title = 'Every Row'
+          this.title = 'Every Error'
           this.downloadLink = this.fieldByFieldDownloadLink(this.batchId)
           this.canGoBack = true
           break
         case 'error-by-error':
-          this.title = 'Count Per Row'
+          this.title = 'Test Criteria Scores'
           this.downloadLink = this.errorByErrorDownloadLink(this.batchId)
           this.canGoBack = true
           break
