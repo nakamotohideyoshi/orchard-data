@@ -593,6 +593,24 @@ module.exports = {
     }
   },
 
+  'albummatchesartist': {
+    'orchardDescription': `The Tool shall flag any and all content wherein the album and artist name are matching`,
+    'programmerDescription': `
+      - It is an error for release name to be the same as artist name. 
+      - The string match is case-insensitive
+      - A substring match is not an error
+      - This test applies to every row in a matching release, so one with 10 tracks will have 10 errors
+      - This only compares the fields in the following Input Fields: Release Name, Release Artist(s)-Primary Artist(s)
+    `,
+    'userExplanation': `Matching album and artist name are a risk factor.`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `Matching album and artist name are a risk factor.`
+    }
+  },
+
   'artistblacklist': {
     'orchardDescription': `Artist Blacklist`,
     'programmerDescription': `
