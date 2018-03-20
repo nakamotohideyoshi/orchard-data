@@ -5,8 +5,9 @@
   "author": "",
   "scripts": {
     "dev": "nodemon api/main.js",
-    "test:unit": "npm run lint:fix && NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
-    "test:unit:keep_db": "npm run lint:fix && NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
+    "test": "npm run lint:fix && NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
+    "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
+    "test:unit:keep_db": "NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
     "load-and-run": "node ./dev-scripts/load-and-run",
     "update-status": "node ./dev-scripts/update-status",
     "clear-tables": "node ./dev-scripts/clear-dev-tables",
