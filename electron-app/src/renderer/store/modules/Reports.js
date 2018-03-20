@@ -7,20 +7,16 @@ import {
   SET_ROW_BY_ROW_DATA,
   SET_FIELD_BY_FIELD_DATA,
   SET_ERROR_BY_ERROR_DATA,
-  ERROR_BY_ERROR_REPORT_FAILURE
+  ERROR_BY_ERROR_REPORT_FAILURE,
+  SET_REPORT_SUMMARY_DATA,
+  REPORT_SUMMARY
 } from '@/constants/types'
 import {
-  ITUNES_CATEGORY,
-  OVERALL_CATEGORY
-} from '@/constants/report-category'
-import {
-  API_URL
+  API_URL,
+  CATEGORIES
 } from '@/constants/config'
 
-const categoryMap = {
-  [ITUNES_CATEGORY]: 'itunes',
-  [OVERALL_CATEGORY]: 'risk'
-}
+const categoryMap = CATEGORIES
 
 export default {
   getters: {
@@ -47,9 +43,13 @@ export default {
     [ROW_BY_ROW_REPORT]: [],
     [FIELD_BY_FIELD_REPORT]: [],
     [ERROR_BY_ERROR_REPORT]: [],
-    [ERROR_BY_ERROR_REPORT_FAILURE]: null
+    [ERROR_BY_ERROR_REPORT_FAILURE]: null,
+    [REPORT_SUMMARY]: {}
   },
   mutations: {
+    [SET_REPORT_SUMMARY_DATA] (state, reportData) {
+      state[REPORT_SUMMARY] = reportData
+    },
     [SET_ROW_BY_ROW_DATA] (state, reportData) {
       state[ROW_BY_ROW_REPORT] = reportData
     },
@@ -64,6 +64,11 @@ export default {
     }
   },
   actions: {
+    async fetchSummary ({commit}, { batchId }) {
+      const reportData = (await axios.get(`${API_URL}report-summary/${batchId}`)).data
+      commit(SET_REPORT_SUMMARY_DATA, reportData[0])
+    },
+
     /**
      * Fetch RowByRow report data
      *
