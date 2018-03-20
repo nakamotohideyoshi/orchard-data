@@ -40,7 +40,6 @@ const naziKeywords = [
 ]
 
 /**
- * Filter: Albums with vs. and meets - artists must be listed separately as primary.
  * @param {Object} row
  * @param {number} index
  * @returns {{row_id: number, field: array, value: array, explanation_id: array, error_type: array}|boolean}

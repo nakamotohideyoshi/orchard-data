@@ -499,6 +499,26 @@ module.exports = {
     }
   },
 
+  'keywordblacklist': {
+    'orchardDescription': `keyword blacklist`,
+    'programmerDescription': `
+
+      - It is an error if any word from the keyword list occurs in the list of input fields below
+      - The keyword list is supplied by the user as a parameter when creating the dataset
+      - The keyword match is case-insensitive
+    `,
+    'userExplanation': `Keyword blacklist match`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+
+        Keyword blacklist match
+      `
+    }
+  },
+
   'nonmusicalcontent': {
     'orchardDescription': `Clearly non-musical content`,
     'programmerDescription': `
@@ -534,6 +554,25 @@ module.exports = {
     'basis': 'row',
     'explanations': {
       'default': `See the iTunes Package Music Specification Addendum: Music, Music Video, and Ringtone Genre Codes`
+    }
+  },
+
+  'trackcountthreshold': {
+    'orchardDescription': `
+      Album Track Count: The Orchard shall designate a maximum track for each respective album submitted to Musical
+      Turk. The RA Tool shall flag any album wherein the track count exceeds the amount designated by The Orchard.
+    `,
+    'programmerDescription': `
+      Not in the filter: The REST API to save a dataset needs to add a new parameter for the track count threshold.
+      This value must be saved with the dataset. On running a filter, it is an error if the value of the "Track No."
+      field is greater than the track count threshold.
+    `,
+    'userExplanation': `Too many tracks in this album.`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'dataset',
+    'explanations': {
+      'default': `Too many tracks in this album.`
     }
   },
 

@@ -125,11 +125,9 @@ describe('ReportHome.vue', () => {
     wrapper.vm.showCustom()
     wrapper.update()
 
-    const fileName = wrapper.find('.report-container.custom-tab .report__view-link span')[0]
     const tabButton = wrapper.contains('.report__tabs.report__tabs--left .custom-tab.is-active')
     const tab = wrapper.contains('.report-container.custom-tab.is-active')
 
-    expect(fileName.text().trim()).to.equal(item.source.split('/')[2])
     expect(tabButton).to.equal(true)
     expect(tab).to.equal(true)
   })

@@ -44,6 +44,11 @@ router.post('/dataset', async (req, res) => {
     console.log('***** Done *****\n')
     console.log('***** Calculating Field by Field Report *****')
 
+    const vaCount = await analysisLibModule.runVACount(datasetId)
+
+    console.log('***** Done *****\n')
+    console.log('***** Various Artists count *****')
+
     await report.calcFieldByFieldReportAll()
 
     console.log('***** Done *****\n')
@@ -59,7 +64,7 @@ router.post('/dataset', async (req, res) => {
     console.log('***** Done *****\n')
     console.log('***** Saving Batch Results Report *****')
 
-    await dbInterface.saveBatchResultsReport(report.BRReport)
+    await dbInterface.saveBatchResultsReport(report.BRReport, vaCount)
 
     console.log('***** Done *****\n')
     console.log('***** FINISHED *****\n')
