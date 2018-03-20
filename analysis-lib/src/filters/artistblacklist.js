@@ -43,7 +43,7 @@ const fieldsToCheck = [
  * Filter: Clearly non-musical content.
  * @param {Object} row
  * @param {number} index
- * @param {{artist_blacklist: Array}} metadata
+ * @param {{artist_blacklist: string}} metadata
  * @returns {{row_id: number, field: array, value: array, explanation_id: array, error_type: array}|boolean}
  */
 module.exports = function (row, index, metadata) {
@@ -55,16 +55,22 @@ module.exports = function (row, index, metadata) {
     'error_type': []
   }
 
+  if (metadata[0]) {
+    metadata = metadata[0] // TODO: Fix this workaround. Metadata should never come as array.
+  }
+
   // Rule: The artist list is supplied by the user as a parameter when creating the dataset
 
-  let artistBlacklist = metadata.artist_blacklist
+  let artistBlacklist = metadata.artist_blacklist.replace('\r\n', '\n').split('\n')
 
   // Rule: keyword match is case-insensitive
 
   fieldsToCheck.forEach((field) => {
     if (row.hasOwnProperty(field) && row[field].length > 0) {
       artistBlacklist.forEach((artist) => {
-        let fieldValueContainsBlacklistedArtist = (row[field].toLowerCase().indexOf(artist.toLowerCase()) > -1)
+        let artistFormatted = artist.toLowerCase().trim()
+        let fieldValueFormatted = row[field].toLowerCase().trim()
+        let fieldValueContainsBlacklistedArtist = (fieldValueFormatted.indexOf(artistFormatted) > -1)
 
         if (fieldValueContainsBlacklistedArtist) {
           occurrence.field.push(field)
