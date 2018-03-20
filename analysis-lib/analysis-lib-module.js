@@ -5,7 +5,7 @@ let dbInterface = require('./src/db-scripts/db-interface')
 // Filters
 let filtersMeta = require('./src/filters/filters-meta')
 let path = require('path')
-let filtersModule = require('require-all')(path.join(__dirname, '/src/filters'))
+let filtersModule = require('require-all')(path.join(__dirname, 'src', 'filters'))
 
 // Main Script
 let runAllFilters = require('./src/scripts/run-all-filters')
