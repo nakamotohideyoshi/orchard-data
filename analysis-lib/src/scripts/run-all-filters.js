@@ -53,22 +53,22 @@ module.exports = async function (datasetId) {
           report.addFilter(filter)
 
           for (let idx in dataset) {
-            // console.log(`Row: ${idx}`)
-            idx = parseInt(idx)
-            const row = dataset[idx]
-
-            const occurrence = await filters[filter](row, idx + 1, metadata)
-            if (occurrence) { report.addOccurrence(filter, occurrence) }
-          };
+            if (dataset.hasOwnProperty(idx)) {
+              idx = parseInt(idx)
+              const row = dataset[idx]
+              const occurrence = await filters[filter](row, idx + 1, metadata)
+              if (occurrence) { report.addOccurrence(filter, occurrence) }
+            }
+          }
         }
 
         for (let filter of datasetFilters) {
           console.log(`Running: ${filter}`)
           report.addFilter(filter)
-          const occurrences = await filters[filter](dataset, report)
+          const occurrences = await filters[filter](dataset, metadata)
 
           occurrences.forEach(occurrence => report.addOccurrence(filter, occurrence))
-        };
+        }
 
         resolve()
       } catch (err) { reject(err) }
