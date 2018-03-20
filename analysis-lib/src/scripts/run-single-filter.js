@@ -8,7 +8,8 @@ module.exports = async function (datasetId, filter) {
   const DATABASE = require('./constants').DATABASE
 
   // Filters modules
-  const filters = require('../filters/filters-module')
+  const path = require('path')
+  const filters = require('require-all')(path.join(__dirname, '/../filters'))
   const filtersMeta = require('../filters/filters-meta')
 
   // DB modules
@@ -43,17 +44,20 @@ module.exports = async function (datasetId, filter) {
 
         if (filtersMeta[filter]['basis'] === 'row') {
           for (let idx in dataset) {
-            // console.log(`Row: ${idx}`)
-            idx = parseInt(idx)
-            const row = dataset[idx]
+            if (dataset.hasOwnProperty(idx)) {
+              idx = parseInt(idx)
+              const row = dataset[idx]
 
-            const occurrence = await filters[filter](row, idx + 1)
-            if (occurrence) { report.addOccurrence(filter, occurrence) }
-          };
+              const occurrence = await filters[filter](row, idx + 1)
+              if (occurrence) {
+                report.addOccurrence(filter, occurrence)
+              }
+            }
+          }
         } else if (filtersMeta[filter]['basis'] === 'dataset') {
           const occurrences = await filters[filter](dataset, report)
           occurrences.forEach(occurrence => report.addOccurrence(filter, occurrence))
-        };
+        }
 
         resolve()
       } catch (err) { reject(err) }
