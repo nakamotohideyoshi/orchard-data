@@ -1,14 +1,13 @@
 'use strict'
 
 /**
- * @param {Array} dataset
- * @param {number} duplicatesThreshold Integer or Float number, representing the duplicates ratio.
+ * @param {{metadata: Object, dataset: Array}} dataset
  * @returns {{duplicatesRatio: number, numberOfDuplicates: number, exceeded: boolean}}
  */
-module.exports = function (dataset, duplicatesThreshold) {
+module.exports = function (dataset) {
   // Convert duplicatesThreshold into fraction (percentage) by dividing it by 100.
 
-  duplicatesThreshold /= 100
+  let duplicatesThreshold = dataset.metadata.duplicates_threshold / 100
 
   // Rule: Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the
   // total number of tracks.
@@ -19,9 +18,9 @@ module.exports = function (dataset, duplicatesThreshold) {
 
   let numberOfDuplicates = 0
 
-  let totalNumberOfTracks = dataset.length
+  let totalNumberOfTracks = dataset.dataset.length
 
-  dataset.forEach((row) => {
+  dataset.dataset.forEach((row) => {
     if (row.hasOwnProperty('isrc') && row['isrc'].length > 0) {
       if (alreadyRegisteredISRCList.indexOf(row['isrc']) > -1) {
         if (duplicatedISRC.indexOf(row['isrc']) === -1) {
