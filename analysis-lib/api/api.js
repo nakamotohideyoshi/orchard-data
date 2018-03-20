@@ -403,6 +403,14 @@ router.get('/dataset-meta/:rowId', (req, res) => {
     .then(row => res.send(row))
 })
 
+// Delete a dataset based on its rowid
+router.delete('/dataset-meta/:rowId', (req, res) => {
+  let rowId = req.params.rowId
+
+  dbInterface.deleteDatasetMetaRow(rowId)
+    .then(row => res.send(row))
+})
+
 // Fetch params for all datasets
 router.get('/dataset-meta-all', (req, res) => {
   dbInterface.fetchDatasetMeta()
