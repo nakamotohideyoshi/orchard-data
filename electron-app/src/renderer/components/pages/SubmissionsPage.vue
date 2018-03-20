@@ -25,6 +25,7 @@
                                                 .p-table__icon-td
                                                     i.icon.icon-calendar-grid
                                                     span Date Created
+                                            td
                                     tbody
                                         tr(v-for="data in items")
                                             td
@@ -36,6 +37,9 @@
                                                     span(v-if="data.status === 2") Fail
                                                     span(v-if="data.status === 3") In Progress
                                             td {{new Date(data.time).toString().slice(0, -14)}}
+                                            td
+                                                a(class="delete" @click.prevent.stop="deleteSubmission(data.rowid)" href="" title="delete")
+                                                    img(src="/src/renderer/assets/icons/axe.png")
 
         block footer
             app-footer
@@ -46,9 +50,13 @@ import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
 import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'SubmissionsPage',
+  methods: {
+    ...mapActions(['deleteSubmission'])
+  },
   computed: {
     items () {
       return this.$store.getters[SUBMISSIONS]
@@ -66,3 +74,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+    .delete {
+        color: red;
+    }
+</style>
