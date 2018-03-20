@@ -20,14 +20,5 @@ npm-debug.log.*
 
 analysis-lib/node_modules/
 analysis-lib/db/*
-!.gitkeep
-analysis-lib/node_modules/
-analysis-lib/db/*
-analysis-lib/package-lock.json
-electron-app/package-lock.json
-analysis-lib/yarn.lock
-electron-app/yarn.lock
 electron-app/test/unit/coverage/
 yarn-error.log
-
-.idea
