@@ -16,9 +16,6 @@ include _mixins
         report-links
     .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
         // group
-        router-link(:to="`/csv/${itemid}`").report__view-link
-            +icon('ico-document')
-            span {{fileName}}
         .upload__group
             .upload__group-name
                 +icon('ico-market-music')
