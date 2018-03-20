@@ -9,7 +9,7 @@ module.exports = async function (datasetId, filter) {
 
   // Filters modules
   const path = require('path')
-  const filters = require('require-all')(path.join(__dirname, '/../filters'))
+  const filters = require('require-all')(path.join(__dirname, '..', 'filters'))
   const filtersMeta = require('../filters/filters-meta')
 
   // DB modules
