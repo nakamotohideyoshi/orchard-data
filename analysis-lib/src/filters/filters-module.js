@@ -24,6 +24,7 @@ var nonmusicalcontent = require('./nonmusicalcontent')
 var trackcountthreshold = require('./trackcountthreshold')
 var duplicatesthreshold = require('./duplicatesthreshold')
 var albummatchesartist = require('./albummatchesartist')
+var artistblacklist = require('./artistblacklist')
 
 module.exports = {
   'filter1': filter1,
@@ -51,5 +52,6 @@ module.exports = {
   'nonmusicalcontent': nonmusicalcontent,
   'trackcountthreshold': trackcountthreshold,
   'duplicatesthreshold': duplicatesthreshold,
-  'albummatchesartist': albummatchesartist
+  'albummatchesartist': albummatchesartist,
+  'artistblacklist': artistblacklist
 }
