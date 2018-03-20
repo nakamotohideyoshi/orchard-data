@@ -84,8 +84,8 @@ include _mixins
 
 <script>
 // TODO: Use absolute paths when possible
-import AppHeader from './Header.vue'
-import AppFooter from './Footer.vue'
+import AppHeader from '@/components/pages/Header.vue'
+import AppFooter from '@/components/pages/Footer.vue'
 import { mapGetters } from 'vuex'
 import {
   SUBMISSION,
@@ -141,7 +141,7 @@ export default {
       // TODO: Improve the logic below, there is better way to compute
       // the payload
       if (this.filePath === '') {
-        alert('Please select Dataset file')
+        window.alert('Please select Dataset file')
         return
       }
       this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
@@ -179,7 +179,7 @@ export default {
         this.$router.push(`/report/${this.item['datasetId']}`)
       }
     },
-    processFile: function (/* e */) {
+    processFile: function (event) {
       this.file = event.target.files[0]
       this.fileName = this.file.name
       this.filePath = this.file.path
