@@ -499,6 +499,26 @@ module.exports = {
     }
   },
 
+  'keywordblacklist': {
+    'orchardDescription': `keyword blacklist`,
+    'programmerDescription': `
+
+      - It is an error if any word from the keyword list occurs in the list of input fields below
+      - The keyword list is supplied by the user as a parameter when creating the dataset
+      - The keyword match is case-insensitive
+    `,
+    'userExplanation': `Keyword blacklist match`,
+    'category': 'Risk',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+
+        Keyword blacklist match
+      `
+    }
+  },
+
   'nonmusicalcontent': {
     'orchardDescription': `Clearly non-musical content`,
     'programmerDescription': `
@@ -534,26 +554,6 @@ module.exports = {
     'basis': 'row',
     'explanations': {
       'default': `See the iTunes Package Music Specification Addendum: Music, Music Video, and Ringtone Genre Codes`
-    }
-  },
-
-  'keywordblacklist': {
-    'orchardDescription': `keyword blacklist`,
-    'programmerDescription': `
-
-      - It is an error if any word from the keyword list occurs in the list of input fields below
-      - The keyword list is supplied by the user as a parameter when creating the dataset
-      - The keyword match is case-insensitive
-    `,
-    'userExplanation': `Keyword blacklist match`,
-    'category': 'Risk',
-    'type': 'error',
-    'basis': 'row',
-    'explanations': {
-      'default': `
-
-        Keyword blacklist match
-      `
     }
   },
 
