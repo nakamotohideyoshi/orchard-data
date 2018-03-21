@@ -20,7 +20,7 @@ module.exports = function (dataset, trackCountThreshold) {
 
       if (trackNumber > trackCountThreshold) {
         let occurrence = {
-          'row_id': index,
+          'row_id': index + 1,
           'field': ['track_no'],
           'value': [row['track_no']],
           'explanation_id': [defaultExplanationId],
