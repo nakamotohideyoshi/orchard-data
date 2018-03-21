@@ -9,10 +9,10 @@ include _mixins
 
     // summary
     .report-container.apple-tab(v-if="appleTabFlag" :class="{ 'is-active': appleTabFlag }")
-        report-summary-quality(:report-summary="summaryData")
+        report-summary-quality(:report-summary="itunesQualityData")
         report-links
     .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
-        report-summary-quality(:report-summary="summaryData")
+        report-summary-quality(:report-summary="riskQualityData")
         report-links
     .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
         // group
@@ -79,6 +79,22 @@ export default {
     }
   },
   computed: {
+    itunesQualityData () {
+      let value = {}
+      if (this.summaryData.hasOwnProperty('category')) {
+        value = this.summaryData.category.itunes
+      }
+      return value
+    },
+
+    riskQualityData () {
+      let value = {}
+      if (this.summaryData.hasOwnProperty('category')) {
+        value = this.summaryData.category.risk
+      }
+      return value
+    },
+
     batchId () {
       return this.$route.params.id
     },
