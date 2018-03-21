@@ -159,31 +159,43 @@ function ReportModule () {
    */
   this.calcBatchResultsReport = function () {
     return new Promise((resolve) => {
-      let occurrences = []
-
+      let riskOccurrences = []
+      let iTunesOccurrences = []
       // Gets all occurrences
       Object.keys(this['filters']).forEach(filterId => {
         let filterOccursOn = Object.keys(this['filters'][filterId]['occurs_on'])
-        occurrences = occurrences.concat(filterOccursOn)
+
+        if (this['filters'][filterId]['category'] === 'iTunes') {
+          iTunesOccurrences = iTunesOccurrences.concat(filterOccursOn)
+        } else {
+          riskOccurrences = riskOccurrences.concat(filterOccursOn)
+        }
       })
 
       // Gets all unique occurrences
-      occurrences = occurrences.filter((v, i, a) => a.indexOf(v) === i)
+      riskOccurrences = riskOccurrences.filter((v, i, a) => a.indexOf(v) === i)
+      iTunesOccurrences = iTunesOccurrences.filter((v, i, a) => a.indexOf(v) === i)
 
-      this.noOfErrors = occurrences.length
+      this.noOfRiskErrors = riskOccurrences.length
+      this.noOfiTunesErrors = iTunesOccurrences.length
 
       // Percentage of rows with any error
-      let errorPercent = this.noOfErrors / this.noOfRows
+      let errorRiskPercent = this.noOfRiskErrors / this.noOfRows
+      let erroriTunesPercent = this.noOfiTunesErrors / this.noOfRows
 
       // TODO: Weighted score for data quality
-      let errorScore = Math.random() * 6
+      let errorRiskScore = Math.random() * 6
+      let erroriTunesScore = Math.random() * 6
 
       this.BRReport = {
         'dataset_id': this.datasetId,
         'no_of_rows': this.noOfRows,
-        'no_of_errors': this.noOfErrors,
-        'error_percent': errorPercent,
-        'error_score': errorScore
+        'no_of_risk_errors': this.noOfRiskErrors,
+        'error_risk_percent': errorRiskPercent,
+        'error_risk_score': errorRiskScore,
+        'no_of_itunes_errors': this.noOfiTunesErrors,
+        'error_itunes_percent': erroriTunesPercent,
+        'error_itunes_score': erroriTunesScore
       }
 
       resolve(this)
