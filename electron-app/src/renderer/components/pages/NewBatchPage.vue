@@ -172,11 +172,12 @@ export default {
         status: 1,
         time: Date.now()
       }
-      this.$router.push(`/report-progress`)
+
       await this.$store.dispatch('submitDataset', datasetMeta)
-        .then((item) => {
-          this.$router.push(`/report/${item.datasetId}`)
-        })
+
+      if (this.item) {
+        this.$router.push(`/report/${this.item['datasetId']}`)
+      }
     },
     processFile: function (event) {
       this.file = event.target.files[0]
