@@ -45,7 +45,7 @@ module.exports = function (dataset, metadata) {
   dataset.forEach((row, index) => {
     if (row.hasOwnProperty('isrc') && row['isrc'].length > 0 && duplicatedISRC.indexOf(row['isrc']) > -1) {
       const occurrence = {
-        'row_id': index,
+        'row_id': index + 1,
         'field': ['isrc'],
         'value': [row['isrc']],
         'explanation_id': [defaultExplanationId],
