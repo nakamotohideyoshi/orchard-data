@@ -279,18 +279,16 @@ module.exports = function () {
   }
 
   // Save field by field report
-  this.saveBatchResultsReport = function (report, vaCount) {
+  this.saveBatchResultsReport = function (report) {
     var reportTable = dbInfo[DATABASE]['tables']['batch_results_reports']
 
     let dbPromise = Promise.resolve()
       .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
         let columns = Object.keys(report)
-        columns.push('vacount_percent')
         let placeholders = columns.map(() => '(?)').join(',')
         let stmt = `INSERT INTO ${reportTable.name}(${columns}) VALUES(${placeholders})`
         let values = Object.keys(report).map(key => report[key])
-        values.push(vaCount)
         return db.run(stmt, values)
           .then((result) => {
             console.log(`Rows inserted: ${result.changes}`)
