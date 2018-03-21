@@ -14,8 +14,7 @@ module.exports = function (dataset, metadata) {
   const occurrences = []
 
   // Convert duplicatesThreshold into fraction (percentage) by dividing it by 100.
-
-  let duplicatesThreshold = metadata.duplicates_threshold / 100
+  let duplicatesThreshold = metadata.duplicates_threshold ? (metadata.duplicates_threshold / 100) : 0
 
   // Rule: Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the
   // total number of tracks.
