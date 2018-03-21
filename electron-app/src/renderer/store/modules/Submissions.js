@@ -10,7 +10,8 @@ import {
   SUBMISSION_TSV,
   FIELDS,
   FIELDS_FAILURE,
-  FIELDS_REQUEST
+  FIELDS_REQUEST,
+  SUBMISSION_DELETED
 } from '@/constants/types'
 import {
   API_URL
@@ -32,6 +33,13 @@ const state = {
 const mutations = {
   [SUBMISSION] (s, data) {
     return Object.assign(s, { [SUBMISSION]: data })
+  },
+  [SUBMISSION_DELETED] (s, id) {
+    let subs = new Set(s[SUBMISSIONS])
+    const matchingSub = s[SUBMISSIONS].find(sub => sub.rowid === id)
+    subs.delete(matchingSub)
+
+    s[SUBMISSIONS] = Array.from(subs)
   },
   [SUBMISSION_ERRORS] (s, data = []) {
     return Object.assign(s, { [SUBMISSION_ERRORS]: data })
@@ -88,6 +96,17 @@ const mutations = {
 }
 
 const actions = {
+  deleteSubmission ({ commit }, id) {
+    commit(SUBMISSIONS_REQUEST, true)
+
+    return axios
+      .delete(`${API_URL}dataset-meta/${id}`)
+      .then((res) => {
+        commit(SUBMISSIONS_REQUEST, false)
+        commit(SUBMISSION_DELETED, id)
+      })
+  },
+
   fetchSubmissions ({ commit }) {
     commit(SUBMISSIONS_REQUEST, true)
 
