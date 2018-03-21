@@ -85,7 +85,7 @@ module.exports = {
       EBEReport[filterId] = {
         'count': 0,
         'criteriaId': filterId,
-        'description': filtersMeta[filterId][explanationCriteria]
+        'description': filtersMeta[filterId][explanationCriteria].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
       }
     })
 
@@ -111,7 +111,7 @@ module.exports = {
     report.forEach(occurrence => {
       const values = Object.keys(occurrence).map(key => occurrence[key])
 
-      tsv += values.join('\t')
+      tsv += values.join('\t').replace('\n', ' ').trim()
       tsv += '\n'
     })
 
@@ -150,12 +150,18 @@ module.exports = {
       const fields = JSON.parse(row['test_data_field_ids'])
       const values = JSON.parse(row['test_data_field_values'])
 
+      // replaces line breaks and multiple whitespaces
+      const description = filtersMeta[row['criteria_id']][explanationCriteria]
+        .replace(/\n/g, ' ')
+        .replace(/  +/g, ' ')
+        .trim()
+
       const occurrence = [
         datasetSize,
         row['test_data_row_id'],
         row['criteria_id'],
-        filtersMeta[row['criteria_id']][explanationCriteria],
-        JSON.stringify(fields.map((name, i) => ({ 'name': name, 'value': values[i] })))
+        description,
+        JSON.stringify(fields.map((name, i) => ({ 'name': name, 'value': values[i] }))).replace('\n', ' ').trim()
       ]
 
       tsv += occurrence.join('\t')
