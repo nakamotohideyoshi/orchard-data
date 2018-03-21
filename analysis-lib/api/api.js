@@ -76,7 +76,7 @@ router.post('/dataset', async (req, res) => {
 // Sava TSV and run test cases
 router.get('/run-filter/:filterId/:datasetId', async (req, res) => {
   const datasetId = req.params.datasetId
-  const filterId = 'filter' + req.params.filterId
+  const filterId = req.params.filterId
 
   try {
     console.log('\n***** Getting Dataset Size *****')
