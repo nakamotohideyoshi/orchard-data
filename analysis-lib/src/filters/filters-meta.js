@@ -306,6 +306,12 @@ module.exports = {
     }
   },
 
+  /* TEMPORARILY DISABLED
+  // Filter #14 has been disabled on 2018-03-21 due to aggressive calls to MusicBrainz API.
+  // Please, check Issue #157 on GitLab.
+  // If you need to re-enable it, please search for files 'filter14.js.disabled' in the project
+  // and remove '.disabled' from their names.
+
   'filter14': {
     'orchardDescription': `Each artist field must only contain one artist name.`,
     'programmerDescription': `
@@ -324,6 +330,7 @@ module.exports = {
       'default': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`
     }
   },
+  */
 
   'filter15': {
     'orchardDescription': `Generic Titles (Track 1, Track 2)`,
