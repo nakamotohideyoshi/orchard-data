@@ -39,7 +39,7 @@ export default {
     },
     summaryDownloadLink () {
       return function (batchId) {
-        return `${API_URL}report-summary/${batchId}.tsv`
+        return `${API_URL}dataset/${batchId}.tsv`
       }
     },
 
