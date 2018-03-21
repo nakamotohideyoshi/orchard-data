@@ -85,7 +85,7 @@ module.exports = {
       EBEReport[filterId] = {
         'count': 0,
         'criteriaId': filterId,
-        'description': filtersMeta[filterId][explanationCriteria]
+        'description': filtersMeta[filterId][explanationCriteria].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
       }
     })
 
@@ -111,7 +111,7 @@ module.exports = {
     report.forEach(occurrence => {
       const values = Object.keys(occurrence).map(key => occurrence[key])
 
-      tsv += values.join('\t')
+      tsv += values.join('\t').replace('\n', ' ').trim()
       tsv += '\n'
     })
 
@@ -123,13 +123,14 @@ module.exports = {
     report.forEach(row => {
       const fields = JSON.parse(row['test_data_field_ids'])
       const values = JSON.parse(row['test_data_field_values'])
+      const errors = JSON.parse(row['test_data_field_error_types'])
 
       const occurrence = {
         'size': datasetSize,
         'criteria': row['criteria_id'],
         'id': row['test_data_row_id'],
-
-        'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] }))
+        'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] })),
+        'errors': errors
       }
 
       parsed.push(occurrence)
@@ -141,7 +142,7 @@ module.exports = {
   'fieldByFieldToTsv': function (report, datasetSize) {
     const filtersMeta = require('../filters/filters-meta')
     const explanationCriteria = 'userExplanation'
-    const headers = ['datasetSize', 'dataRowId', 'criteriaId', 'description', 'fields']
+    const headers = ['datasetSize', 'dataRowId', 'criteriaId', 'description', 'fields', 'errors']
 
     let tsv = headers.join('\t')
     tsv += '\n'
@@ -149,13 +150,21 @@ module.exports = {
     report.forEach(row => {
       const fields = JSON.parse(row['test_data_field_ids'])
       const values = JSON.parse(row['test_data_field_values'])
+      const errors = JSON.parse(row['test_data_field_error_types'])
+
+      // replaces line breaks and multiple whitespaces
+      const description = filtersMeta[row['criteria_id']][explanationCriteria]
+        .replace(/\n/g, ' ')
+        .replace(/  +/g, ' ')
+        .trim()
 
       const occurrence = [
         datasetSize,
         row['test_data_row_id'],
         row['criteria_id'],
-        filtersMeta[row['criteria_id']][explanationCriteria],
-        JSON.stringify(fields.map((name, i) => ({ 'name': name, 'value': values[i] })))
+        description,
+        JSON.stringify(fields.map((name, i) => ({ 'name': name, 'value': values[i] }))).replace('\n', ' ').trim(),
+        JSON.stringify(errors)
       ]
 
       tsv += occurrence.join('\t')

@@ -13,7 +13,8 @@ let parseReport = function (report) {
   report.forEach(occurrence => {
     let data = {
       'test_data_row_id': occurrence['dataRowId'],
-      'criteria_id': occurrence['criteriaId']
+      'criteria_id': occurrence['criteriaId'],
+      'test_data_field_error_types': occurrence['errors']
     }
 
     parsedReport.push(data)
@@ -40,7 +41,8 @@ try {
       report.forEach(occurrence => {
         let data = {
           'test_data_row_id': occurrence['dataRowId'],
-          'criteria_id': occurrence['criteriaId']
+          'criteria_id': occurrence['criteriaId'],
+          'test_data_field_error_types': occurrence['errors']
         }
 
         parsedReport.push(data)

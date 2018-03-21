@@ -87,7 +87,8 @@ describe('should test report tool', () => {
       const obj = {
         'count': 0,
         'criteriaId': filterId,
-        'description': filtersMeta[filterId]['userExplanation']
+        'description': filtersMeta[filterId]['userExplanation'].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
+
       }
 
       if (filterId === 'filter1' || filterId === 'filter2') { obj['count'] = 3 }
@@ -110,7 +111,6 @@ describe('should test report tool', () => {
 
     const EBEReport = reportUtils.errorByError(FBFReport)
     const EBEReportTsv = reportUtils.errorByErrorToTsv(EBEReport)
-
     assert.deepEqual(EBEReportTsv, tsv)
   })
 
