@@ -21,8 +21,10 @@ module.exports = function (row, index, dataset) {
     'error_type': []
   }
 
-  // Rule: Does the release name contain “Meets” or “vs.”? If not, there is no error.
+  // if release name is not set, returns
+  if (!row.release_name) { return false }
 
+  // Rule: Does the release name contain “Meets” or “vs.”? If not, there is no error.
   let releaseNameContainsMeetsTerm = (row.release_name.toLowerCase().indexOf(' meets ') > -1)
   let releaseNameContainsVsTerm = (row.release_name.toLowerCase().indexOf(' vs. ') > -1)
 
