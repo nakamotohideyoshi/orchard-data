@@ -14,7 +14,7 @@ describe('ReportSummaryHeader.vue', () => {
     id: 1,
     category: 'itunes',
     title: 'Title',
-    root: true
+    hasDownloadLink: true
   }
 
   it('should have a `ReportSummaryLabel` component', () => {

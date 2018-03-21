@@ -27,13 +27,7 @@ include _mixins
                                       :title="title"
                                       :category="category"
                                       :has-download-link="!!downloadLink")
-                                      a(
-                                        :href="downloadLink"
-                                        download
-                                        slot="download-link"
-                                        @click.prevent="openTSV"
-                                      ).report-summary__text
-                                        +icon('ico-download')
+                                      download-tsv(slot="download-link", :batch-id="batchId", :download-link="downloadLink")
 
                                     // keep-alive
                                     router-view(v-if="item")
@@ -43,7 +37,6 @@ include _mixins
 
 <script>
 import { mapGetters } from 'vuex'
-import { remote } from 'electron'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
@@ -53,21 +46,20 @@ import {
 
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
-
-const { BrowserWindow } = remote
+import DownloadTsv from '@/components/DownloadTsv'
 
 export default {
   name: 'ReportSummary',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    DownloadTsv
   },
   data () {
     return {
       title: '',
       downloadLink: '',
-      canGoBack: false,
-      win: null
+      canGoBack: false
     }
   },
   computed: {
@@ -111,22 +103,6 @@ export default {
           this.downloadLink = this.summaryDownloadLink(this.batchId)
           this.canGoBack = false
       }
-    },
-    openTSV () {
-      const { batchId } = this
-      const winURL = process.env.NODE_ENV === 'development'
-        ? `http://localhost:9080/#tsv/${batchId}`
-        : `file://${__dirname}/index.html/#tsv/${batchId}`
-
-      this.win = new BrowserWindow({
-        title: `Dataset TSV (${batchId})`,
-        show: false
-      })
-      this.win.on('closed', () => {
-        this.win = null
-      })
-      this.win.loadURL(winURL)
-      this.win.show()
     }
   },
   async created () {
