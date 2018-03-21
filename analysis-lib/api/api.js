@@ -59,12 +59,12 @@ router.post('/dataset', async (req, res) => {
     console.log('***** Saved *****\n')
     console.log('***** Calculating Batch Results Report *****')
 
-    await report.calcBatchResultsReport()
+    await report.calcBatchResultsReport(vaCount)
 
     console.log('***** Done *****\n')
     console.log('***** Saving Batch Results Report *****')
 
-    await dbInterface.saveBatchResultsReport(report.BRReport, vaCount)
+    await dbInterface.saveBatchResultsReport(report.BRReport)
 
     console.log('***** Done *****\n')
     console.log('***** FINISHED *****\n')

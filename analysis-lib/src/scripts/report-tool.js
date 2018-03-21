@@ -157,7 +157,7 @@ function ReportModule () {
   /**
    * Calculates dataset metadata for a al filters
    */
-  this.calcBatchResultsReport = function () {
+  this.calcBatchResultsReport = function (vaCount) {
     return new Promise((resolve) => {
       let riskOccurrences = []
       let iTunesOccurrences = []
@@ -195,7 +195,8 @@ function ReportModule () {
         'error_risk_score': errorRiskScore,
         'no_of_itunes_errors': this.noOfiTunesErrors,
         'error_itunes_percent': erroriTunesPercent,
-        'error_itunes_score': erroriTunesScore
+        'error_itunes_score': erroriTunesScore,
+        'vacount_percent': vaCount
       }
 
       resolve(this)
