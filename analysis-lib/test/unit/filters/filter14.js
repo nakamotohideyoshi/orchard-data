@@ -8,7 +8,7 @@ const filter = require(`../../../src/filters/${filterId}`)
 
 const ReportModule = require('../../../src/scripts/report-tool')
 
-describe(`should test ${filterId}`, function () {
+describe.skip(`should test ${filterId}`, function () {
   let report = new ReportModule()
   report.init()
   report.addFilter(filterId)
