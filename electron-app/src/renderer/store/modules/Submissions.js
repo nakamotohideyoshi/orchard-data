@@ -122,12 +122,11 @@ const actions = {
       })
       .then((res) => {
         const item = res.data
-        console.log(res.data)
+
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, null)
         commit(SUBMISSION, item)
         commit(SUBMISSIONS_ADD, item)
-        return res.data
       })
       .catch((e) => {
         commit(SUBMISSIONS_REQUEST, false)
