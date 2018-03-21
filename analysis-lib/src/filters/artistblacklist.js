@@ -59,8 +59,10 @@ module.exports = function (row, index, metadata) {
     metadata = metadata[0] // TODO: Fix this workaround. Metadata should never come as array.
   }
 
-  // Rule: The artist list is supplied by the user as a parameter when creating the dataset
+  // if there's no blacklist, returns
+  if (!metadata.artist_blacklist) { return false }
 
+  // Rule: The artist list is supplied by the user as a parameter when creating the dataset
   let artistBlacklist = metadata.artist_blacklist.replace('\r\n', '\n').split('\n')
 
   // Rule: keyword match is case-insensitive
