@@ -127,7 +127,7 @@ describe('NewBatchPage.vue', () => {
       })
   })
 
-  it('should not change the router if submitting the file does not yield a new submission', (done) => {
+  it('should show report-progress page if submitting the file does not yield a new submission', (done) => {
     getters[SUBMISSION] = () => ''
 
     store = new Vuex.Store({
@@ -148,7 +148,7 @@ describe('NewBatchPage.vue', () => {
 
     wrapper.vm.submitForm()
       .then(() => {
-        expect($router.push.called).to.be.false
+        expect($router.push.called).to.be.true
         done()
       })
       .catch((error) => {
