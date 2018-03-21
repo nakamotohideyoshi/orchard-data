@@ -215,6 +215,30 @@ module.exports = function () {
     return dbPromise
   }
 
+  this.deleteDatasetMetaRow = function (rowId) {
+    let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta']
+    let reportTable = dbInfo[DATABASE]['tables']['field_by_field_reports']
+    let batchResultsTable = dbInfo[DATABASE]['tables']['batch_results_reports']
+    let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
+    let logsTable = dbInfo[DATABASE]['tables']['tsv_logs_table']
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then((db) => {
+        // delete dataset meta and all related data across other tables
+        return Promise.all([
+          db.all(`DELETE FROM ${datasetMetaTable.name} WHERE rowId = ${rowId}`),
+          db.all(`DELETE FROM ${reportTable.name} WHERE dataset_id = ${rowId}`),
+          db.all(`DELETE FROM ${batchResultsTable.name} WHERE dataset_id = ${rowId}`),
+          db.all(`DELETE FROM ${orchardTable.name} WHERE dataset_id = ${rowId}`),
+          db.all(`DELETE FROM ${logsTable.name} WHERE dataset_id = ${rowId}`)
+        ])
+          .then(() => {})
+      })
+
+    return dbPromise
+  }
+
   this.fetchDatasetMetaRow = function (rowId) {
     let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta']
 
