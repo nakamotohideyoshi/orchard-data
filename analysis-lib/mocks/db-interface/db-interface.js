@@ -10,7 +10,7 @@ module.exports = {
       'various_artists_threshold': 0,
       'lang': 'en-US',
       'status': 1,
-      'time': 1519073116716
+      'time': Date.now()
     },
     invalid: {
       'source': path.resolve(__dirname, '..', '..', 'data-tests', 'all-testcases-NOT-A-VALID-FILE.tsv'),
@@ -20,7 +20,7 @@ module.exports = {
       'various_artists_threshold': 0,
       'lang': 'en-US',
       'status': 1,
-      'time': 1519073116716
+      'time': Date.now()
     },
     invalidDatatypes: {
       'source': null,
@@ -39,7 +39,7 @@ module.exports = {
       'various_artists_threshold': 0,
       'lang': 'en-US',
       'status': 1,
-      'time': 1519073116716
+      'time': Date.now()
     },
     nullObject: null
   },
