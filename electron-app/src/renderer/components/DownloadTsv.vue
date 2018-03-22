@@ -6,7 +6,7 @@
         download
         ).report-summary__text
             +icon('ico-download')
-        div.download-tsv__toggle(@click="toggleMenu")
+        //div.download-tsv__toggle(@click="toggleMenu")
             ul.download-tsv__flyout(v-show="isOpen")
                 li
                     a(:href="downloadLink" @click.prevent="openTSV") Open TSV
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-
   import { remote } from 'electron'
   const { BrowserWindow } = remote
 
@@ -69,6 +68,7 @@
     .download-tsv__wrapper
         display: flex
         overflow: visible
+        justify-content: center
 
     .download-tsv__toggle
         position: relative
