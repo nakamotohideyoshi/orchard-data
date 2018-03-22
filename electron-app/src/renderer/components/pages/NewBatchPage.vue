@@ -174,9 +174,8 @@ export default {
       }
       this.$router.push(`/report-progress`)
       await this.$store.dispatch('submitDataset', datasetMeta)
-        .then((item) => {
-          if (item) this.$router.push(`/report/${item.datasetId}`)
-        })
+      if (!this.error && this.item) this.$router.push(`/report/${this.item.datasetId}`)
+      else this.$router.push(`/report-error`)
     },
     processFile: function (event) {
       this.file = event.target.files[0]
