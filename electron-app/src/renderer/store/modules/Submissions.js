@@ -146,7 +146,6 @@ const actions = {
         commit(SUBMISSIONS_FAILURE, null)
         commit(SUBMISSION, item)
         commit(SUBMISSIONS_ADD, item)
-        return res.data
       })
       .catch((e) => {
         commit(SUBMISSIONS_REQUEST, false)
