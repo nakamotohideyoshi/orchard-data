@@ -119,7 +119,7 @@ describe('NewBatchPage.vue', () => {
 
     wrapper.vm.submitForm()
       .then(() => {
-        expect($router.push.calledOnce).to.be.true
+        expect($router.push.called).to.be.true
         done()
       })
       .catch((error) => {
