@@ -56,12 +56,12 @@ describe('ReportHome.vue', () => {
     }
 
     state = { Reports: { [REPORT_SUMMARY]: {
-          category: {
-            itunes: {},
-            risk: {}
-          }
-        }
+      category: {
+        itunes: {},
+        risk: {}
       }
+    }
+    }
     }
 
     actions = {
