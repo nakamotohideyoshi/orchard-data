@@ -4,8 +4,9 @@
   "description": "Command line interface to run the TSV tests",
   "author": "",
   "scripts": {
-    "dev": "nodemon api/main.js",
-    "test": "npm run lint:fix && npm run test:unit",
+    "start": "nodemon api/main.js",
+    "dev": "NODE_ENV=test nodemon api/main.js",
+    "test": "NODE_ENV=test nohup nodemon api/main.js > /dev/null 2>&1 & npm run lint:fix && npm run test:unit; kill $!",
     "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha --recursive test/unit/",
     "test:unit:keep_db": "NODE_ENV=test KEEP_DB=true ./node_modules/.bin/mocha --recursive test/unit/",
     "load-and-run": "node ./dev-scripts/load-and-run",
@@ -14,7 +15,6 @@
     "gen-row-report": "node ./src/scripts/gen-row-report",
     "gen-error-report": "node ./src/scripts/gen-error-report",
     "tsv-to-json": "node ./dev-scripts/tsv-to-json",
-    "run-filter": "node ./dev-scripts/run-filter",
     "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter ./",
     "lint:fix": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter --fix ./",
     "postinstall": "npm run lint:fix"
