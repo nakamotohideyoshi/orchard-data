@@ -337,6 +337,7 @@ module.exports = function () {
           SELECT rowId, *
           FROM ${FBFReportTable.name}
           WHERE dataset_id = ${datasetId}
+          ORDER BY test_data_row_id ASC
         `))
     } else {
       let filters = Object.keys(filtersMeta).filter(filterId => filtersMeta[filterId]['category'].toLowerCase() === category)
@@ -348,6 +349,7 @@ module.exports = function () {
           FROM ${FBFReportTable.name}
           WHERE dataset_id = ${datasetId}
           AND criteria_id IN (${placeholders})
+          ORDER BY test_data_row_id ASC
         `, filters))
     }
   }

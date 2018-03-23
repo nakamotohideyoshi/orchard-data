@@ -9,14 +9,13 @@
         //div.download-tsv__toggle(@click="toggleMenu")
             ul.download-tsv__flyout(v-show="isOpen")
                 li
-                    a(:href="downloadLink" @click.prevent="openTSV") Open TSV
+                    a(:href="downloadLink" @click.prevent="openTsv(batchId)") Open TSV
                 li
                     a(:href="downloadLink" download) Save TSV
 </template>
 
 <script>
-  import { remote } from 'electron'
-  const { BrowserWindow } = remote
+  import openTsv from '@/helpers/openTsvViewer'
 
   export default {
     name: 'download-tsv',
@@ -34,8 +33,7 @@
 
     data () {
       return {
-        isOpen: false,
-        win: null
+        isOpen: false
       }
     },
 
@@ -44,22 +42,7 @@
         this.isOpen = !this.isOpen
       },
 
-      openTSV () {
-        const batchId = this.batchId
-        const winURL = process.env.NODE_ENV === 'development'
-          ? `http://localhost:9080/#tsv/${batchId}`
-          : `file://${__dirname}/index.html/#tsv/${batchId}`
-
-        this.win = new BrowserWindow({
-          title: `Dataset TSV (${batchId})`,
-          show: false
-        })
-        this.win.on('closed', () => {
-          this.win = null
-        })
-        this.win.loadURL(winURL)
-        this.win.show()
-      }
+      openTsv
     }
   }
 </script>
