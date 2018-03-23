@@ -7,7 +7,7 @@ include _mixins
         td(v-for="k in keys") {{ columns[k] || k }}
 
     tbody
-        tr(v-for="(item, i) in data" :id="`row-${ i+1 }`")
+        tr(v-for="(item, i) in data", :id="`row-${ i+1 }`", :class="{highlight: isHighlightedRow(i)}")
             td(v-for="k in keys") {{ item[k] }}
 </template>
 
@@ -24,7 +24,10 @@ import {
 export default {
   name: 'tsv-page',
   methods: {
-    ...mapActions(['fetchTSV'])
+    ...mapActions(['fetchTSV']),
+    isHighlightedRow (id) {
+      return (id + 1) === window.parseInt(this.highlightRowId)
+    }
   },
   computed: {
     ...mapGetters({
@@ -36,6 +39,9 @@ export default {
     id () {
       return this.$route.params.id
     },
+    highlightRowId () {
+      return window.parseInt(this.$route.params.highlightRowId) || undefined
+    },
     keys () {
       return !_.isEmpty(this.data) ? _.keys(this.data[0]) : []
     }
@@ -43,12 +49,25 @@ export default {
   async created () {
     const { id } = this
     await this.fetchTSV(id)
+
+    // if a particular row is to be highlighted, then scroll down to it so it is in view
+    if (this.highlightRowId !== undefined) {
+      const targetRow = document.getElementsByClassName('highlight')[0]
+      const scrollPos = targetRow.offsetTop
+
+      window.scrollTo(0, scrollPos)
+    }
+
   }
 }
 </script>
 <style lang="scss" scoped>
 table {
   margin: 0;
+}
+
+.highlight td {
+    background: yellow;
 }
 
 .p-table thead td,
