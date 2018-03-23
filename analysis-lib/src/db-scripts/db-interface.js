@@ -151,6 +151,7 @@ module.exports = function () {
     return dbPromise
   }
 
+  // update DataSet Status as success (1) or failed (2)
   this.updateDatasetStatus = function (datasetId, status) {
     console.log(`***** Updating dataset status: ${status} *****\n`)
 
