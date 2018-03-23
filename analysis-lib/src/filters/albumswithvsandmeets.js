@@ -1,12 +1,12 @@
 'use strict'
 
-const filterMeta = require('./filters-meta').albumswithvsandmeets
+const filterId = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterId]
 
 const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
 
 /**
- * Filter: Albums with vs. and meets - artists must be listed separately as primary.
  * @param {Object} row
  * @param {number} index
  * @param {Array} dataset
@@ -21,8 +21,10 @@ module.exports = function (row, index, dataset) {
     'error_type': []
   }
 
-  // if release name is not set, returns
-  if (!row.release_name) { return false }
+  // If release name is not set, returns false as there won't be errors anyway.
+  if (!row.hasOwnProperty('release_name')) {
+    return false
+  }
 
   // Rule: Does the release name contain “Meets” or “vs.”? If not, there is no error.
   let releaseNameContainsMeetsTerm = (row.release_name.toLowerCase().indexOf(' meets ') > -1)
