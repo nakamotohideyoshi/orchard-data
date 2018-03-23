@@ -25,11 +25,13 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
 // Sava TSV and run test cases
 router.post('/dataset', async (req, res) => {
   const data = req.body
+  let currentDatasetId
 
   try {
     console.log('\n***** Saving Dataset Metadata *****')
 
     const { datasetId } = await dbInterface.saveDatasetMeta(data)
+    currentDatasetId = datasetId
 
     console.log('***** Done *****\n')
     console.log('***** Saving Tsv File *****')
@@ -67,10 +69,22 @@ router.post('/dataset', async (req, res) => {
     await dbInterface.saveBatchResultsReport(report.BRReport)
 
     console.log('***** Done *****\n')
+    console.log('***** Updating Dataset Status "Success" *****\n')
+
+    await dbInterface.updateDatasetStatus(datasetId, 1)
+
+    console.log('***** Done *****\n')
     console.log('***** FINISHED *****\n')
 
     res.status(201).json({ status: 'OK', datasetId: datasetId })
-  } catch (err) { res.status(500).json({ 'title': err.name, 'detail': err.message }) }
+  } catch (err) {
+    console.log('***** Updating Dataset Status "Failed" *****\n')
+
+    await dbInterface.updateDatasetStatus(currentDatasetId, 2)
+    console.log('***** Done *****\n')
+
+    res.status(500).json({ 'title': err.name, 'detail': err.message })
+  }
 })
 
 // Sava TSV and run test cases
