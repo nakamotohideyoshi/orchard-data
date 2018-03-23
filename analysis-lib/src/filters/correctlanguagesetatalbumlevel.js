@@ -1,15 +1,14 @@
-// Filter: correct language set at album level
+'use strict'
+
+const languageDetector = new (require('languagedetect'))()
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
 
 module.exports = async function (row, idx) {
-  'use strict'
-  let languageDetector = new (require('languagedetect'))()
-
-  const filterName = 'correctlanguagesetatalbumlevel'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
   const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english'
   const fields = ['release_name', 'track_name']
 
@@ -21,6 +20,7 @@ module.exports = async function (row, idx) {
     'error_type': []
   }
 
+  // noinspection UnnecessaryLocalVariableJS
   const result = await new Promise(async (resolve) => {
     // If field is related to 'release_meta_language'
     for (let field of fields) {
