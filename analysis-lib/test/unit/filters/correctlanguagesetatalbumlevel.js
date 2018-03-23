@@ -3,7 +3,7 @@ const assert = require('chai').assert
 const describe = require('mocha').describe
 const it = require('mocha').it
 
-const filterId = 'correctlanguagesetatalbumlevel'
+const filterId = require('path').parse(__filename).name
 
 const mocks = require(`../../../mocks/filters/${filterId}`)
 
@@ -25,42 +25,58 @@ describe(`should test ${filterId}`, function () {
     const mock = mocks['validEnglish']
 
     for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
       idx = parseInt(idx)
       const row = mock[idx]
       const occurrence = await filter(row, idx + 1, report)
 
       assert.equal(occurrence, false)
-    };
+    }
   })
 
   it('should pass: Match The Language - Portuguese', async () => {
     const mock = mocks['validPortuguese']
 
     for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
       idx = parseInt(idx)
       const row = mock[idx]
       const occurrence = await filter(row, idx + 1, report)
 
       assert.equal(occurrence, false)
-    };
+    }
   })
 
   it('should pass: Match The Language - Spanish', async () => {
     const mock = mocks['validSpanish']
 
     for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
       idx = parseInt(idx)
       const row = mock[idx]
       const occurrence = await filter(row, idx + 1, report)
 
       assert.equal(occurrence, false)
-    };
+    }
   })
 
   it('should fail: No Match The Language - English', async () => {
     const mock = mocks['invalidEnglish']
 
     for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
       idx = parseInt(idx)
       const row = mock[idx]
       const occurrence = await filter(row, idx + 1, report)
@@ -73,13 +89,17 @@ describe(`should test ${filterId}`, function () {
           assert.deepEqual(occurrence.error_type, [defaultErrorType])
           break
       }
-    };
+    }
   })
 
   it('should fail: No Match The Language - Portuguese', async () => {
     const mock = mocks['invalidPortuguese']
 
     for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
       idx = parseInt(idx)
       const row = mock[idx]
       const occurrence = await filter(row, idx + 1, report)
@@ -92,13 +112,17 @@ describe(`should test ${filterId}`, function () {
           assert.deepEqual(occurrence.error_type, [defaultErrorType])
           break
       }
-    };
+    }
   })
 
   it('should fail: No Match The Language - Spanish', async () => {
     const mock = mocks['invalidSpanish']
 
     for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
       idx = parseInt(idx)
       const row = mock[idx]
       const occurrence = await filter(row, idx + 1, report)
