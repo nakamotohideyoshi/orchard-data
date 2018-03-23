@@ -124,25 +124,29 @@ describe('should test report tool', () => {
         'rowID': i,
         'errors': 0,
         'warnings': 0,
-        'grade': 'PASS'
+        'grade': 'PASS',
+        'acceptability': 'GREEN'
       }
 
       switch (i) {
         case 1:
           obj['errors'] = 2
           obj['grade'] = 'ERROR'
+          obj['acceptability'] = 'RED'
           break
 
         case 2:
           obj['errors'] = 1
           obj['warnings'] = 1
           obj['grade'] = 'ERROR'
+          obj['acceptability'] = 'YELLOW'
           break
 
         case 3:
           obj['errors'] = 2
           obj['warnings'] = 2
           obj['grade'] = 'ERROR'
+          obj['acceptability'] = 'RED'
           break
       }
 
@@ -170,25 +174,29 @@ describe('should test report tool', () => {
         'rowID': i,
         'errors': 0,
         'warnings': 0,
-        'grade': 'PASS'
+        'grade': 'PASS',
+        'acceptability': 'GREEN'
       }
 
       switch (i) {
         case 1:
           obj['errors'] = 2
           obj['grade'] = 'ERROR'
+          obj['acceptability'] = 'RED'
           break
 
         case 2:
           obj['errors'] = 1
           obj['warnings'] = 1
           obj['grade'] = 'ERROR'
+          obj['acceptability'] = 'YELLOW'
           break
 
         case 3:
           obj['errors'] = 2
           obj['warnings'] = 2
           obj['grade'] = 'ERROR'
+          obj['acceptability'] = 'RED'
           break
       }
 
@@ -202,7 +210,7 @@ describe('should test report tool', () => {
       return bProblems - aProblems || b['errors'] - a['errors']
     })
 
-    const headers = ['rowId', 'errors', 'warnings', 'grade']
+    const headers = ['rowId', 'errors', 'warnings', 'grade', 'acceptability']
     let tsv = headers.join('\t')
     tsv += '\n'
 
