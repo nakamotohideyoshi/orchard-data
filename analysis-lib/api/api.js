@@ -405,7 +405,7 @@ router.get('/report-summary/:datasetId', async (req, res) => {
       }
     }
 
-    res.status(201).json(resObj)
+    res.status(200).json(resObj)
   } catch (err) { res.status(400).json({ 'title': err.name, 'detail': err.message }) }
 })
 
