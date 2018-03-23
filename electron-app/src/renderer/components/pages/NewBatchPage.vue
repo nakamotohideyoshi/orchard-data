@@ -169,7 +169,7 @@ export default {
         duplicates_threshold: this.thresValue1,
         various_artists_threshold: this.thresValue2,
         lang: this.lang,
-        status: 1,
+        status: 3,
         time: Date.now()
       }
       this.$router.push(`/report-progress`)
