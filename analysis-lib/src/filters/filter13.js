@@ -1,34 +1,33 @@
-// filter: Part and Volume should be abbreviated to Pt. and Vol.
+'use strict'
+
+const removeDiacritics = require('../scripts/remove-diacritics')
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
+const fields = ['release_name', 'track_name']
+
+const patterns = {
+  'valid': [
+    /\bVol\. ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/g,
+    /\bPt\. ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/g
+  ],
+
+  'invalidAbbreviations': [
+    /\bvol ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
+    /\bpt ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi
+  ],
+
+  'invalidStrings': [
+    /volume ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
+    /part ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi
+  ]
+}
 
 module.exports = function (row, idx) {
-  'use strict'
-
-  const removeDiacritics = require('../scripts/remove-diacritics')
-  const filterName = 'filter13'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
-  const fields = ['release_name', 'track_name']
-
-  const patterns = {
-    'valid': [
-      /\bVol\. ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/g,
-      /\bPt\. ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/g
-    ],
-
-    'invalidAbbreviations': [
-      /\bvol ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
-      /\bpt ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi
-    ],
-
-    'invalidStrings': [
-      /volume ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi,
-      /part ?(M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})|[0-9]+)+\b/gi
-    ]
-  }
-
   const occurrence = {
     'row_id': idx,
     'field': [],
@@ -41,15 +40,18 @@ module.exports = function (row, idx) {
     let value = row[field]
 
     if (value) {
-      value = removeDiacritics(value).trim()
+      value = removeDiacritics(value)
+      value = value.trim()
       let error = false
 
       // volume or part followed by a number appears
       patterns['invalidStrings'].forEach(pattern => {
-        if (value.match(pattern)) { error = true }
+        if (value.match(pattern)) {
+          error = true
+        }
       })
 
-      // if theres already an error, we don't need to test other cases
+      // if there's already an error, we don't need to test other cases
       if (!error) {
         patterns['invalidAbbreviations'].forEach(invalidAbbr => {
           // tested for vol or pt
@@ -59,7 +61,9 @@ module.exports = function (row, idx) {
 
             // tests for a period after abbreviation
             patterns['valid'].forEach(validPattern => {
-              if (value.match(validPattern)) { error = false }
+              if (value.match(validPattern)) {
+                error = false
+              }
             })
           }
         })
@@ -74,6 +78,5 @@ module.exports = function (row, idx) {
     }
   })
 
-  // nothing occurred
-  if (occurrence.field.length === 0) { return false } else { return occurrence }
+  return (occurrence.field.length > 0) ? occurrence : false
 }
