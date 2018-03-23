@@ -1,3 +1,5 @@
+const stats = require('stats-analysis')
+
 module.exports = {
 
   'rowByRow': function (report, datasetSize, category) {
@@ -11,7 +13,8 @@ module.exports = {
         'rowID': i,
         'errors': 0,
         'warnings': 0,
-        'grade': 'PASS'
+        'grade': 'PASS',
+        'acceptability': 'GREEN'
       }
     }
 
@@ -48,6 +51,29 @@ module.exports = {
       const bProblems = b['errors'] + b['warnings']
 
       return bProblems - aProblems || b['errors'] - a['errors']
+    })
+
+    let errorScorePerRow = []
+
+    reportArray.forEach(RBRReport => {
+      let errorScore = RBRReport.errors + RBRReport.warnings * 0.5
+      RBRReport.errorScore = errorScore
+      errorScorePerRow.push(errorScore)
+    })
+
+    let standardDeviation = stats.stdev(errorScorePerRow)
+    let mean = stats.mean(errorScorePerRow)
+    let errorScoreBelowMean = mean - 0.5 * standardDeviation
+    let errorScoreAboveMean = mean + 0.5 * standardDeviation
+
+    reportArray.forEach(RBRReport => {
+      if (RBRReport.errorScore < errorScoreBelowMean) {
+        RBRReport.acceptability = 'GREEN'
+      } else if (RBRReport.errorScore > errorScoreAboveMean) {
+        RBRReport.acceptability = 'RED'
+      } else {
+        RBRReport.acceptability = 'YELLOW'
+      }
     })
 
     return reportArray
