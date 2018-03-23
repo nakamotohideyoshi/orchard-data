@@ -193,3 +193,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+    .upload__group {
+        max-width: none;
+    }
+</style>
