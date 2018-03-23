@@ -57,7 +57,6 @@ export default {
 
       window.scrollTo(0, scrollPos)
     }
-
   }
 }
 </script>
