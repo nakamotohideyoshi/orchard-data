@@ -74,13 +74,15 @@ module.exports = {
       } else {
         RBRReport.acceptability = 'YELLOW'
       }
+
+      delete RBRReport.errorScore
     })
 
     return reportArray
   },
 
   'rowByRowToTsv': function (report) {
-    const headers = ['rowId', 'errors', 'warnings', 'grade']
+    const headers = ['rowId', 'errors', 'warnings', 'grade', 'acceptability']
 
     let tsv = headers.join('\t')
     tsv += '\n'
