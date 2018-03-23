@@ -4,10 +4,10 @@ div
     table.p-table.p-table--full(js-stacktable v-if="items.length")
         thead
             tr
-                td #
+                td Dataset Row ID
                 td Description
         tbody
-            tr(v-for="data in items" @click="show(data)")
+            tr(v-for="(data, index) in items" @click="show(data, index)")
                 td {{data.id}}
                 td {{getFilter(data.criteria)}}
 
@@ -60,11 +60,12 @@ export default {
     }
   },
   methods: {
-    show (data) {
+    show (data, index) {
       // console.log(data, 'data', this.$modal)
       this.$modal.show('field-modal', {
         ...data,
-        rowid: this.$route.params.id
+        fieldByFieldRowId: index + 1,
+        batchId: this.$route.params.id
       })
     },
     hide () {
