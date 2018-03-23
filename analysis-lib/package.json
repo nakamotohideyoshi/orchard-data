@@ -38,7 +38,8 @@
     "morgan": "^1.9.0",
     "musicbrainz": "^0.2.6",
     "require-all": "^2.2.0",
-    "sqlite": "^2.9.1"
+    "sqlite": "^2.9.1",
+    "stats-analysis": "^2.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
