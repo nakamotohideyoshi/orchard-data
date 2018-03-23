@@ -11,21 +11,22 @@ modal.modal(
   label Description
   .description {{ getDescription(item.criteria) }}
   label Row Id in field-by-field report
-  .description {{ item.id }}
+  .description {{ fieldByFieldRowId }}
   label Row id in Dataset
-  .description {{ item.rowid }}
+  .description {{ datasetRowId }}
   label Data fields
   .field(v-for="field in item.fields")
     .description ID: {{field.name}}
     .description VALUE: {{field.value}}
   .btn-group
-    router-link(:to="`/csv/${item.rowid}`").btn.btn-view-detail View Row
+    button(v-on:click="openTsv(batchId, datasetRowId)").btn.btn-view-detail View Row
     button(v-on:click="showParams()").btn.btn-view-detail View Test Parameters
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { FILTERS_META } from '@/constants/types'
+import openTsv from '@/helpers/openTsvViewer'
 
 export default {
   name: 'FieldModal',
@@ -38,11 +39,18 @@ export default {
     ...mapGetters({
       filters: FILTERS_META
     }),
-    rowid () {
-      return this.item && this.item.rowid
+    fieldByFieldRowId () {
+      return this.item && this.item.fieldByFieldRowId
+    },
+    datasetRowId () {
+      return this.item && this.item.id
+    },
+    batchId () {
+      return this.item && this.item.batchId
     }
   },
   methods: {
+    openTsv,
     beforeOpen (event) {
       this.item = Object.assign({}, this.item, { ...event.params })
     },
@@ -58,8 +66,8 @@ export default {
       return 'N/A'
     },
     showParams () {
-      const { rowid } = this
-      this.$router.push(`/report/${rowid}/params`)
+      const { datasetRowId } = this
+      this.$router.push(`/report/${datasetRowId}/params`)
       this.$modal.hide('field-modal')
     },
     close () {

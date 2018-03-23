@@ -51,13 +51,34 @@ describe('FieldModal.vue', () => {
     })
   })
 
-  it('should have a computed prop that represents the rowId', () => {
+  it('should have a computed prop that represents the dataset rowId', () => {
     wrapper.vm.$modal.show('field-modal', {
       ...data,
-      rowid: 5
+      fieldByFieldRowId: 50,
+      batchId: 10
     })
 
-    expect(wrapper.vm.rowid).to.equal(5)
+    expect(wrapper.vm.datasetRowId).to.equal(1)
+  })
+
+  it('should have a computed prop that represents the field-by-field rowId', () => {
+    wrapper.vm.$modal.show('field-modal', {
+      ...data,
+      fieldByFieldRowId: 50,
+      batchId: 10
+    })
+
+    expect(wrapper.vm.fieldByFieldRowId).to.equal(50)
+  })
+
+  it('should have a computed prop that represents the batch ID', () => {
+    wrapper.vm.$modal.show('field-modal', {
+      ...data,
+      fieldByFieldRowId: 50,
+      batchId: 10
+    })
+
+    expect(wrapper.vm.batchId).to.equal(10)
   })
 
   it('has the necessary methods', () => {
@@ -65,6 +86,7 @@ describe('FieldModal.vue', () => {
     expect(wrapper.vm.getDescription).to.be.a('function')
     expect(wrapper.vm.showParams).to.be.a('function')
     expect(wrapper.vm.close).to.be.a('function')
+    expect(wrapper.vm.openTsv).to.be.a('function')
   })
 
   it('`showParams() should move to another route and close the modal', () => {

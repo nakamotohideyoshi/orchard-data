@@ -80,7 +80,7 @@ const router = new Router({
       component: CsvPage
     },
     {
-      path: '/tsv/:id',
+      path: '/tsv/:id/:highlightRowId?',
       name: 'tsv',
       component: TSVPage
     },

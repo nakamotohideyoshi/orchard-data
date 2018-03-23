@@ -16,7 +16,7 @@ describe('DownloadTsv.vue', () => {
 
   it('should render correct function', () => {
     expect(typeof wrapper.vm.toggleMenu).to.equal('function')
-    expect(typeof wrapper.vm.openTSV).to.equal('function')
+    expect(typeof wrapper.vm.openTsv).to.equal('function')
   })
 
   it('should render correct props', () => {
