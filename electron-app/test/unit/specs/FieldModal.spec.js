@@ -94,7 +94,6 @@ describe('FieldModal.vue', () => {
       hide: sinon.stub()
     }
 
-
     wrapper = shallow(FieldModal, {
       store,
       router,
