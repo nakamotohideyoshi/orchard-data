@@ -396,32 +396,31 @@ router.get('/error-by-error/:category/:datasetId', (req, res) => {
 })
 
 // Fetch single report summary
-router.get('/report-summary/:datasetId', (req, res) => {
+router.get('/report-summary/:datasetId', async (req, res) => {
   let datasetId = req.params.datasetId
+  try {
+    const report = await dbInterface.fetchBatchResultsReport(datasetId)
 
-  dbInterface.fetchBatchResultsReport(datasetId)
-    .then((report) => {
-      // Generate response data
-      let resObj = {
-        'rowid': report[0].rowid,
-        'dataset_id': report[0].dataset_id,
-        'no_of_rows': report[0].no_of_rows,
-        'category': {
-          'risk': {
-            'no_of_errors': report[0].no_of_risk_errors,
-            'error_percent': report[0].error_risk_percent,
-            'error_score': report[0].error_risk_score
-          },
-          'itunes': {
-            'no_of_errors': report[0].no_of_itunes_errors,
-            'error_percent': report[0].error_itunes_percent,
-            'error_score': report[0].error_itunes_score
-          }
+    let resObj = {
+      'rowid': report[0].rowid,
+      'dataset_id': report[0].dataset_id,
+      'no_of_rows': report[0].no_of_rows,
+      'category': {
+        'risk': {
+          'no_of_errors': report[0].no_of_risk_errors,
+          'error_percent': report[0].error_risk_percent,
+          'error_score': report[0].error_risk_score
+        },
+        'itunes': {
+          'no_of_errors': report[0].no_of_itunes_errors,
+          'error_percent': report[0].error_itunes_percent,
+          'error_score': report[0].error_itunes_score
         }
       }
+    }
 
-      res.send(resObj)
-    })
+    res.status(200).json(resObj)
+  } catch (err) { res.status(400).json({ 'title': err.name, 'detail': err.message }) }
 })
 
 // Fetch all report summaries
