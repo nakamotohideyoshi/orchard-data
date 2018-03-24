@@ -1,19 +1,26 @@
-// filter: formatting of "featuring"
+'use strict'
+
+const removeDiacritics = require('../scripts/remove-diacritics')
+const stringUtils = require('../scripts/string-utils')
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
+const fields = ['release_name', 'release_artists_featuring', 'track_name', 'track_artist_featuring']
+
+const validPatterns = [/feat\./g, /with +/g]
 
 module.exports = function (row, idx) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-  const stringUtils = require('../scripts/string-utils')
-
-  const filterName = 'filter11'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
-  const fields = ['release_name', 'release_artists_featuring', 'track_name',
-    'track_artist_featuring']
-
-  const validPatterns = [/feat\./g, /with +/g]
+  const occurrence = {
+    'row_id': idx,
+    'field': [],
+    'value': [],
+    'explanation_id': [],
+    'error_type': []
+  }
 
   const invalidPatterns = {
     'english': [
@@ -24,28 +31,20 @@ module.exports = function (row, idx) {
     ],
 
     'portuguese': [
-      /estrel(ad(o|a)(s)?|ando)/gi,
-      /apresent(ad(o|a)(s)?|ando)/gi,
+      /estrel(ad([oa])(s)?|ando)/gi,
+      /apresent(ad([oa])(s)?|ando)/gi,
       /com/gi,
       /c\//gi,
       /c\\/gi
     ],
 
     'spanish': [
-      /protagoniz(ad(o|a)(s)?|ando)/gi,
-      /present(ad(a|o)(s)?|ando)/gi,
+      /protagoniz(ad([oa])(s)?|ando)/gi,
+      /present(ad([ao])(s)?|ando)/gi,
       /con/gi,
       /c\//gi,
       /c\\/gi
     ]
-  }
-
-  const occurrence = {
-    'row_id': idx,
-    'field': [],
-    'value': [],
-    'explanation_id': [],
-    'error_type': []
   }
 
   const closeTokens = ']})'
@@ -58,7 +57,8 @@ module.exports = function (row, idx) {
     let value = row[field]
 
     if (value) {
-      value = removeDiacritics(value).trim()
+      value = removeDiacritics(value)
+      value = value.trim()
 
       const parensStr = stringUtils.stripParentheses(value)
 
@@ -100,8 +100,7 @@ module.exports = function (row, idx) {
             occurrence.explanation_id.push(defaultExplanationId)
             occurrence.error_type.push(defaultErrorType)
 
-            // there is already a wrong string. doesn't need to test other
-            // regexes
+            // there is already a wrong string. doesn't need to test other regexes
             match = true
             break
           }
