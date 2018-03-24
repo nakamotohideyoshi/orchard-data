@@ -22,34 +22,23 @@ module.exports = function (row, index, dataset) {
   }
 
   // Rule: It is an error if the following terms occur (with a case-insensitive match)
-  // in a release name: "(Explicit)", "(Clean)".
+  // in a release name or a track title: "(Explicit)", "(Clean)".
 
-  if (row.hasOwnProperty('release_name')) {
-    let releaseNameContainsExplicitTerm = (row.release_name.toLowerCase().indexOf('(explicit)') > -1)
-    let releaseNameContainsCleanTerm = (row.release_name.toLowerCase().indexOf('(clean)') > -1)
+  let propertiesToCheck = ['release_name', 'track_name']
 
-    if (releaseNameContainsExplicitTerm || releaseNameContainsCleanTerm) {
-      occurrence.field.push('release_name')
-      occurrence.value.push(row.release_name)
-      occurrence.explanation_id.push(defaultExplanationId)
-      occurrence.error_type.push(defaultErrorType)
+  propertiesToCheck.forEach(property => {
+    if (row.hasOwnProperty(property)) {
+      let releaseNameContainsExplicitTerm = (row[property].toLowerCase().indexOf('(explicit)') > -1)
+      let releaseNameContainsCleanTerm = (row[property].toLowerCase().indexOf('(clean)') > -1)
+
+      if (releaseNameContainsExplicitTerm || releaseNameContainsCleanTerm) {
+        occurrence.field.push(property)
+        occurrence.value.push(row[property])
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
+      }
     }
-  }
-
-  // Rule: It is an error if the following terms occur (with a case-insensitive match)
-  // in a track title: "(Explicit)", "(Clean)".
-
-  if (row.hasOwnProperty('track_name')) {
-    let trackNameContainsExplicitTerm = (row.track_name.toLowerCase().indexOf('(explicit)') > -1)
-    let trackNameContainsCleanTerm = (row.track_name.toLowerCase().indexOf('(clean)') > -1)
-
-    if (trackNameContainsExplicitTerm || trackNameContainsCleanTerm) {
-      occurrence.field.push('track_name')
-      occurrence.value.push(row.track_name)
-      occurrence.explanation_id.push(defaultExplanationId)
-      occurrence.error_type.push(defaultErrorType)
-    }
-  }
+  })
 
   // Rule: Let a track be marked as clean, explicit, or "clean-or-unknown" according to the value of the
   // "Explicit (No/Yes/Clean)" field. The match is case-insensitive.
