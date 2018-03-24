@@ -1,15 +1,15 @@
 // Artist Name formatting (cannot be Last, First)
 
+const removeDiacritics = require('../scripts/remove-diacritics')
+
+// retrieves filter description
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
 module.exports = function (row, idx) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-
-  // retrieves filter description
-  const filterName = 'filter4'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
   const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : ''
 
   const fields = [
