@@ -1,14 +1,14 @@
 // Composer as artist
 
+const removeDiacritics = require('../scripts/remove-diacritics')
+
+// retrieves filter description
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+
 module.exports = function (dataset) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-
-  // retrieves filter description
-  const filterName = 'filter6'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-
   let hasMultipleComposers = false
   let lastTrackComposer
 
