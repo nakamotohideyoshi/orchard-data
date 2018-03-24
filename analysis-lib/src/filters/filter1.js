@@ -10,7 +10,7 @@ const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
 
 module.exports = function (row, idx) {
-  const fields = ['track_artist', 'track_artist_featuring']
+  const fields = ['track_artist', 'track_artist_featuring', 'track_artist_remixer']
 
   let language = row['release_meta_language']
   language = language ? language.trim().toLowerCase() : ''
