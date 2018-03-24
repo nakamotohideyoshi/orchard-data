@@ -101,7 +101,7 @@ const actions = {
 
     return axios
       .delete(`${API_URL}dataset-meta/${id}`)
-      .then((res) => {
+      .then(() => {
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSION_DELETED, id)
       })
