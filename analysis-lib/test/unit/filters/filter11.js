@@ -1,8 +1,7 @@
 const assert = require('chai').assert
 const _ = require('lodash')
 
-const filterId = 'filter11'
-
+const filterId = require('path').parse(__filename).name
 const mocks = require(`../../../mocks/filters/${filterId}`)
 
 const filter = require(`../../../src/filters/${filterId}`)
