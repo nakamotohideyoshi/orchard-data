@@ -1,53 +1,45 @@
-// filter: formatting of "featuring"
+'use strict'
+
+const removeDiacritics = require('../scripts/remove-diacritics')
+const stringUtils = require('../scripts/string-utils')
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
+const patterns = {
+  'english': [
+    /(\blive\b)/
+  ],
+
+  'portuguese': [
+    /(\bao vivo\b)/
+  ],
+
+  'spanish': [
+    /(\ben vivo\b)/,
+    /(\ben directo\b)/
+  ]
+}
+
+const exactPatterns = {
+  'english': [
+    /(^live$)/
+  ],
+
+  'portuguese': [
+    /(^ao vivo$)/
+  ],
+
+  'spanish': [
+    /(^en vivo$)/,
+    /(^en directo$)/
+  ]
+}
 
 module.exports = function (row, idx) {
-  'use strict'
-
-  const removeDiacritics = require('../scripts/remove-diacritics')
-  const stringUtils = require('../scripts/string-utils')
-
-  const filterName = 'filter12'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
-  const releaseName = row['release_name'] ? removeDiacritics(row['release_name']).trim().toLowerCase() : ''
-  const releaseVersion = row['release_version'] ? removeDiacritics(row['release_version']).trim().toLowerCase() : ''
-
-  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : ''
-  const trackVersion = row['version'] ? removeDiacritics(row['version']).trim().toLowerCase() : ''
-
-  const patterns = {
-    'english': [
-      /(\blive\b)/
-    ],
-
-    'portuguese': [
-      /(\bao vivo\b)/
-    ],
-
-    'spanish': [
-      /(\ben vivo\b)/,
-      /(\ben directo\b)/
-    ]
-  }
-
-  const exactPatterns = {
-    'english': [
-      /(^live$)/
-    ],
-
-    'portuguese': [
-      /(^ao vivo$)/
-    ],
-
-    'spanish': [
-      /(^en vivo$)/,
-      /(^en directo$)/
-    ]
-  }
-
   const occurrence = {
     'row_id': idx,
     'field': [],
@@ -55,6 +47,12 @@ module.exports = function (row, idx) {
     'explanation_id': [],
     'error_type': []
   }
+
+  const releaseName = row['release_name'] ? removeDiacritics(row['release_name']).trim().toLowerCase() : ''
+  const releaseVersion = row['release_version'] ? removeDiacritics(row['release_version']).trim().toLowerCase() : ''
+
+  const trackName = row['track_name'] ? removeDiacritics(row['track_name']).trim().toLowerCase() : ''
+  const trackVersion = row['version'] ? removeDiacritics(row['version']).trim().toLowerCase() : ''
 
   let releaseParens = stringUtils.getTextBetweenParentheses(releaseName)
   let trackParens = stringUtils.getTextBetweenParentheses(trackName)
@@ -94,7 +92,7 @@ module.exports = function (row, idx) {
     if (releaseIsLive) { break }
   }
 
-  // Release is definetely not live. So we don't need to proceed further
+  // Release is definitely not live. So we don't need to proceed further
   if (!releaseIsLive) { return false }
 
   // Test tracks
