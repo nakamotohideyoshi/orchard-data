@@ -1,15 +1,15 @@
 // Check Various Artists on Track Levels
 
+const removeDiacritics = require('../scripts/remove-diacritics')
+
+// retrieves filter description
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
 module.exports = function (row, idx) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-
-  // retrieves filter description
-  const filterName = 'filter1'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
   const fields = ['track_artist', 'track_artist_featuring']
 
   let language = row['release_meta_language']
