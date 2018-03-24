@@ -4,7 +4,7 @@ const it = require('mocha').it
 
 const ReportModule = require('../../../src/scripts/report-tool')
 
-const filterId = 'filter18'
+const filterId = require('path').parse(__filename).name
 const mocks = require(`../../../mocks/filters/${filterId}`)
 const filter = require(`../../../src/filters/${filterId}`)
 const filterMeta = require('../../../src/filters/filters-meta')[filterId]

@@ -1,6 +1,7 @@
 'use strict'
 
-const filterMeta = require('./filters-meta').filter18
+const filterId = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterId]
 
 const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
