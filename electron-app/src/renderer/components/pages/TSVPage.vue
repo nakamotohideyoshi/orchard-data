@@ -4,11 +4,13 @@ include _mixins
   table.p-table(v-if="keys.length")
     thead
       tr
+        td No.
         td(v-for="k in keys") {{ columns[k] || k }}
 
     tbody
-        tr(v-for="(item, i) in data", :id="`row-${ i+1 }`", :class="{highlight: isHighlightedRow(i)}")
-            td(v-for="k in keys") {{ item[k] }}
+      tr(v-for="(item, i) in data", :id="`row-${ i+1 }`", :class="{highlight: isHighlightedRow(i)}")
+        td {{ i+1 }}
+        td(v-for="k in keys") {{ item[k] }}
 </template>
 
 <script>
