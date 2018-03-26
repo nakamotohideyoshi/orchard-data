@@ -11,6 +11,9 @@ include ../pages/_mixins
             .failed(v-for="stars in emptyStarts")
                 +icon('ico-star-empty')
         .report__top-description Overall data quality
+    .report__top-col
+        .report__top-percent {{vacount_percent}} %
+        .report__top-description Various Artists
 </template>
 
 <script>
@@ -24,6 +27,14 @@ include ../pages/_mixins
     },
 
     computed: {
+      vacount_percent () {
+        if (this.reportSummary.hasOwnProperty('vacount_percent')) {
+          return (this.reportSummary.vacount_percent * 100).toFixed(2)
+        }
+
+        return null
+
+      },
       percentage () {
         return (this.reportSummary.error_percent * 100).toFixed(2)
       },
