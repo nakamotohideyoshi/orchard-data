@@ -15,7 +15,8 @@ div
                 td {{ result.rowID }}
                 td {{ result.errors }}
                 td {{ result.warnings }}
-                td {{ overallStatusMap[result.grade] }}
+                td
+                  span(v-bind:style="{ color: result.acceptability }") &#8226;
 
     empty-state(
         v-if="!loading && !results.length && error"
