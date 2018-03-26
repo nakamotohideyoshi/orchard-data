@@ -44,12 +44,12 @@ router.post('/dataset', async (req, res) => {
     const report = await analysisLibModule.runAllFilters(datasetId)
 
     console.log('***** Done *****\n')
-    console.log('***** Calculating Field by Field Report *****')
+    console.log('***** Various Artists count *****')
 
     const vaCount = await analysisLibModule.runVACount(datasetId)
 
     console.log('***** Done *****\n')
-    console.log('***** Various Artists count *****')
+    console.log('***** Calculating Field by Field Report *****')
 
     await report.calcFieldByFieldReportAll()
 
