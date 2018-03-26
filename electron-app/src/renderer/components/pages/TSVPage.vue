@@ -4,7 +4,7 @@ include _mixins
   table.p-table(v-if="keys.length")
     thead
       tr
-        td No.
+        td Row ID
         td(v-for="k in keys") {{ columns[k] || k }}
 
     tbody
