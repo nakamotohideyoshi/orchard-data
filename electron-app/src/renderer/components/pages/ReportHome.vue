@@ -8,13 +8,13 @@ include _mixins
         button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab {{categoryCustomText}}
 
     // summary
-    .report-container.apple-tab(v-if="appleTabFlag" :class="{ 'is-active': appleTabFlag }")
+    .report-container.apple-tab(v-show="appleTabFlag" :class="{ 'is-active': appleTabFlag }")
         report-summary-quality(:report-summary="itunesQualityData")
         report-links
-    .report-container.overall-tab(v-if="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
+    .report-container.overall-tab(v-show="overallRiskFlag" :class="{ 'is-active': overallRiskFlag }")
         report-summary-quality(:report-summary="riskQualityData")
         report-links
-    .report-container.custom-tab(v-if="customFlag" :class="{ 'is-active': customFlag }")
+    .report-container.custom-tab(v-show="customFlag" :class="{ 'is-active': customFlag }")
         // group
         .upload__group
             .upload__group-name
