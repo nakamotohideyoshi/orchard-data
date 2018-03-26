@@ -405,6 +405,7 @@ router.get('/report-summary/:datasetId', async (req, res) => {
       'rowid': report[0].rowid,
       'dataset_id': report[0].dataset_id,
       'no_of_rows': report[0].no_of_rows,
+      'vacount_percent': report[0].vacount_percent,
       'category': {
         'risk': {
           'no_of_errors': report[0].no_of_risk_errors,
