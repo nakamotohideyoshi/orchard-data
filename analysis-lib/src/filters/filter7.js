@@ -1,4 +1,4 @@
-// Composer as artist
+// Track/album versions that aren’t allowed
 
 const removeDiacritics = require('../scripts/remove-diacritics')
 const stringUtils = require('../scripts/string-utils')
