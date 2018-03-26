@@ -140,8 +140,7 @@ const actions = {
         }
       })
       .then((res) => {
-        const item = res.data
-        console.log(res.data)
+        const item = { ...data, status: 1, rowid: res.data.datasetId }
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, null)
         commit(SUBMISSION, item)
