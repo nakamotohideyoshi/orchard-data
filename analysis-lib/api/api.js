@@ -44,12 +44,12 @@ router.post('/dataset', async (req, res) => {
     const report = await analysisLibModule.runAllFilters(datasetId)
 
     console.log('***** Done *****\n')
-    console.log('***** Calculating Field by Field Report *****')
+    console.log('***** Various Artists count *****')
 
     const vaCount = await analysisLibModule.runVACount(datasetId)
 
     console.log('***** Done *****\n')
-    console.log('***** Various Artists count *****')
+    console.log('***** Calculating Field by Field Report *****')
 
     await report.calcFieldByFieldReportAll()
 
@@ -409,7 +409,8 @@ router.get('/report-summary/:datasetId', async (req, res) => {
         'risk': {
           'no_of_errors': report[0].no_of_risk_errors,
           'error_percent': report[0].error_risk_percent,
-          'error_score': report[0].error_risk_score
+          'error_score': report[0].error_risk_score,
+          'vacount_percent': report[0].vacount_percent
         },
         'itunes': {
           'no_of_errors': report[0].no_of_itunes_errors,
