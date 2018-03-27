@@ -147,7 +147,7 @@ router.get('/field-by-field/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
-    .catch(err => res.send(err))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch single report from DB
