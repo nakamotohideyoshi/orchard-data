@@ -264,6 +264,7 @@ router.get('/row-by-row/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Row by Row Aggregation TSV
