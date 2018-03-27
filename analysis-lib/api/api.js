@@ -83,7 +83,7 @@ router.post('/dataset', async (req, res) => {
     await dbInterface.updateDatasetStatus(currentDatasetId, 2)
     console.log('***** Done *****\n')
 
-    res.status(500).json({ 'title': err.name, 'detail': err.message })
+    res.status(500).json({ title: err.name, detail: err.message, datasetId: currentDatasetId })
   }
 })
 
