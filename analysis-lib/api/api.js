@@ -290,6 +290,7 @@ router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Row by Row Aggregation Report
