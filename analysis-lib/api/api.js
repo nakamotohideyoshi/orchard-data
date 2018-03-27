@@ -438,6 +438,7 @@ router.get('/report-summary/:datasetId', async (req, res) => {
 router.get('/report-summaries', (req, res) => {
   dbInterface.fetchAllBatchResultsReports()
     .then(report => res.send(report))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch params and status for a dataset
@@ -446,6 +447,7 @@ router.get('/dataset-meta/:rowId', (req, res) => {
 
   dbInterface.fetchDatasetMetaRow(rowId)
     .then(row => res.send(row))
+    .catch(err => res.status(500).send(err))
 })
 
 // Delete a dataset based on its rowid
@@ -454,12 +456,14 @@ router.delete('/dataset-meta/:rowId', (req, res) => {
 
   dbInterface.deleteDatasetMetaRow(rowId)
     .then(row => res.send(row))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch params for all datasets
 router.get('/dataset-meta-all', (req, res) => {
   dbInterface.fetchDatasetMeta()
     .then(rows => res.send(rows))
+    .catch(err => res.status(500).send(err))
 })
 
 // Return filters meta data
