@@ -312,6 +312,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Error by Error Aggregation TSV
