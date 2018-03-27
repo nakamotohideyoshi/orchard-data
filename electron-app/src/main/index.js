@@ -1,6 +1,10 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import {app, BrowserWindow} from 'electron'
+import {execFile} from 'child_process'
+import {existsSync} from 'fs'
+
+let apiNodeInstance = null
 
 // stubbing out - causes unit test error
 // import {initialize} from '../db.js'
@@ -35,9 +39,53 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+/**
+ * Starts the API Node.js Instance.
+ */
+function startApiNodeInstance () {
+  let currentWorkingDirectory = './analysis-lib'
+  let apiEntryScript = './api/main.js'
+  let nodeForLinuxAndMacFilePath = './node'
+  let nodeForWindowsFilePath = './node.exe'
+  let nodeForLinuxAndMacExistsOnFolder = existsSync('./analysis-lib/node')
+  let nodeForWindowsExistsOnFolder = existsSync('./analysis-lib/node.exe')
+
+  if (process.env.NODE_ENV === 'development') {
+    currentWorkingDirectory = '../analysis-lib'
+    nodeForLinuxAndMacExistsOnFolder = existsSync('../analysis-lib/node')
+    nodeForWindowsExistsOnFolder = existsSync('../analysis-lib/node.exe')
+  }
+
+  if (nodeForLinuxAndMacExistsOnFolder || nodeForWindowsExistsOnFolder) {
+    if (nodeForLinuxAndMacExistsOnFolder) {
+      apiNodeInstance = execFile(nodeForLinuxAndMacFilePath, [apiEntryScript], {cwd: currentWorkingDirectory})
+    } else if (nodeForWindowsExistsOnFolder) {
+      apiNodeInstance = execFile(nodeForWindowsFilePath, [apiEntryScript], {cwd: currentWorkingDirectory})
+    }
+
+    apiNodeInstance.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`)
+    })
+  }
+}
+
+/**
+ * Stops the API Node.js Instance.
+ */
+function stopApiNodeInstance () {
+  if (apiNodeInstance != null) {
+    apiNodeInstance.kill()
+  }
+}
+
+app.on('ready', () => {
+  startApiNodeInstance()
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
+  stopApiNodeInstance()
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
