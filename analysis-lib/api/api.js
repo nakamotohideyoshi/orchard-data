@@ -379,6 +379,7 @@ router.get('/error-by-error/:category/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Error by Error Aggregation
