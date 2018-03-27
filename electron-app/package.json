@@ -25,8 +25,8 @@
     "package-win": "electron-packager . --overwrite --platform=win32 --arch=x64 --icon=build/icons/icon.ico"
   },
   "build": {
-    "productName": "electron-vue",
-    "appId": "org.simulatedgreg.electron-vue",
+    "productName": "musical-turk",
+    "appId": "com.vivadata.musical-turk",
     "directories": {
       "output": "build"
     },
