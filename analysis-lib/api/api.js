@@ -402,6 +402,7 @@ router.get('/error-by-error/:category/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch single report summary
