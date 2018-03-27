@@ -43,24 +43,19 @@ function createWindow () {
  * Starts the API Node.js Instance.
  */
 function startApiNodeInstance () {
-  let currentWorkingDirectory = './analysis-lib'
-  let apiEntryScript = './api/main.js'
-  let nodeForLinuxAndMacFilePath = './node'
-  let nodeForWindowsFilePath = './node.exe'
-  let nodeForLinuxAndMacExistsOnFolder = existsSync('./analysis-lib/node')
-  let nodeForWindowsExistsOnFolder = existsSync('./analysis-lib/node.exe')
+  let currentWorkingDirectory = './'
 
-  if (process.env.NODE_ENV === 'development') {
-    currentWorkingDirectory = '../analysis-lib'
-    nodeForLinuxAndMacExistsOnFolder = existsSync('../analysis-lib/node')
-    nodeForWindowsExistsOnFolder = existsSync('../analysis-lib/node.exe')
-  }
+  let nodeForLinuxAndMacFilePath = './analysis-lib'
+  let nodeForLinuxAndMacExistsOnFolder = existsSync(nodeForLinuxAndMacFilePath)
+
+  let nodeForWindowsFilePath = './analysis-lib.exe'
+  let nodeForWindowsExistsOnFolder = existsSync(nodeForWindowsFilePath)
 
   if (nodeForLinuxAndMacExistsOnFolder || nodeForWindowsExistsOnFolder) {
     if (nodeForLinuxAndMacExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForLinuxAndMacFilePath, [apiEntryScript], {cwd: currentWorkingDirectory})
+      apiNodeInstance = execFile(nodeForLinuxAndMacFilePath, {cwd: currentWorkingDirectory})
     } else if (nodeForWindowsExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForWindowsFilePath, [apiEntryScript], {cwd: currentWorkingDirectory})
+      apiNodeInstance = execFile(nodeForWindowsFilePath, {cwd: currentWorkingDirectory})
     }
 
     apiNodeInstance.stdout.on('data', (data) => {
