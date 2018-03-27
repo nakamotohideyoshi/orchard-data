@@ -467,11 +467,15 @@ router.get('/dataset-meta-all', (req, res) => {
 })
 
 // Return filters meta data
-router.get('/config', (req, res) => {
-  const meta = analysisLibModule.filtersMeta
-  const datasetColumns = dbInterface.datasetColumnsDictionary()
+router.get('/config', async (req, res) => {
+  try {
+    const meta = await analysisLibModule.filtersMeta
+    const datasetColumns = await dbInterface.datasetColumnsDictionary()
 
-  res.status(200).json({ meta, datasetColumns })
+    res.status(200).json({ meta, datasetColumns })
+  } catch (err) {
+    res.status(500).json({ err: 'error' })
+  }
 })
 
 // Export modules
