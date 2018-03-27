@@ -97,7 +97,7 @@ router.get('/run-filter/:filterId/:datasetId', async (req, res) => {
     const datasetSize = await dbInterface.getDatasetSize(datasetId)
 
     if (datasetSize === 0) {
-      res.send(`Empty report for datasetId ${datasetId}.`)
+      res.status(400).send(`Empty report for datasetId ${datasetId}.`)
       return
     }
 
@@ -108,7 +108,7 @@ router.get('/run-filter/:filterId/:datasetId', async (req, res) => {
     await report.calcFieldByFieldReportAll()
 
     res.send(reportUtils.fieldByFieldToTsv(report.FBFReport, datasetSize))
-  } catch (err) { res.send(err) }
+  } catch (err) { res.status(500).send(err) }
 })
 
 // Fetch all reports
