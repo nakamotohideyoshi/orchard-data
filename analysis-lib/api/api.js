@@ -168,6 +168,7 @@ router.get('/field-by-field/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Returns report as a TSV
