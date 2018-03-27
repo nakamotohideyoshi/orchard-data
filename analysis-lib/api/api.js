@@ -120,7 +120,7 @@ router.get('/field-by-field-reports', (req, res) => {
       })
     })
     .then(result => res.send(result))
-    .then(err => res.status(500).send(err))
+    .catch(err => res.status(500).send(err))
 })
 
 // Returns report as a TSV
