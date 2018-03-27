@@ -28,7 +28,14 @@
     "postinstall": "npm run lint:fix"
   },
   "pkg": {
-    "scripts": "src/filters/**/*.js"
+    "scripts": [
+      "api/**/*.js",
+      "src/**/*.js",
+      "schemas/**/*.js"
+    ],
+    "assets": [
+      "config/**/*"
+    ]
   },
   "private": true,
   "dependencies": {
