@@ -1,6 +1,6 @@
 {
-  "name": "electron-vue",
-  "version": "0.0.0",
+  "name": "musical-turk",
+  "version": "1.0.0",
   "author": "meanpeace52 <info@spacedig.ch>",
   "description": "An electron-vue project",
   "private": true,
@@ -25,7 +25,7 @@
     "package-win": "electron-packager . --overwrite --platform=win32 --arch=x64 --icon=build/icons/icon.ico"
   },
   "build": {
-    "productName": "musical-turk",
+    "productName": "Musical Turk",
     "appId": "com.vivadata.musical-turk",
     "directories": {
       "output": "build"
