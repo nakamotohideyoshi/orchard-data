@@ -5,7 +5,7 @@
 module.exports = {
 
   'analysis-lib': {
-    'path': ['..', 'analysis-lib', 'db'], // path is relative to the root of the project
+    'path': ['.', 'db'],
     'name': 'analysis-lib.db',
 
     'tables': {
