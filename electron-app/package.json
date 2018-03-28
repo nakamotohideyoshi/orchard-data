@@ -33,6 +33,7 @@
     "files": [
       "dist/electron/**/*"
     ],
+    "afterPack": ".electron-vue/after-pack-electron.js",
     "dmg": {
       "contents": [
         {
@@ -64,6 +65,7 @@
     "avoriaz": "^6.3.0",
     "axios": "^0.16.1",
     "concurrently": "^3.5.1",
+    "copy-dir": "^0.3.0",
     "file2html": "^0.1.9",
     "file2html-dsv": "^0.4.0",
     "moment": "^2.20.1",
