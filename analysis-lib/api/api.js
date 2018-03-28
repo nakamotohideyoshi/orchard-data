@@ -83,7 +83,7 @@ router.post('/dataset', async (req, res) => {
     await dbInterface.updateDatasetStatus(currentDatasetId, 2)
     console.log('***** Done *****\n')
 
-    res.status(500).json({ 'title': err.name, 'detail': err.message })
+    res.status(500).json({ title: err.name, detail: err.message, datasetId: currentDatasetId })
   }
 })
 
@@ -97,7 +97,7 @@ router.get('/run-filter/:filterId/:datasetId', async (req, res) => {
     const datasetSize = await dbInterface.getDatasetSize(datasetId)
 
     if (datasetSize === 0) {
-      res.send(`Empty report for datasetId ${datasetId}.`)
+      res.status(400).send(`Empty report for datasetId ${datasetId}.`)
       return
     }
 
@@ -108,7 +108,7 @@ router.get('/run-filter/:filterId/:datasetId', async (req, res) => {
     await report.calcFieldByFieldReportAll()
 
     res.send(reportUtils.fieldByFieldToTsv(report.FBFReport, datasetSize))
-  } catch (err) { res.send(err) }
+  } catch (err) { res.status(500).send(err) }
 })
 
 // Fetch all reports
@@ -120,6 +120,7 @@ router.get('/field-by-field-reports', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Returns report as a TSV
@@ -146,7 +147,7 @@ router.get('/field-by-field/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
-    .catch(err => res.send(err))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch single report from DB
@@ -167,6 +168,7 @@ router.get('/field-by-field/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Returns report as a TSV
@@ -216,6 +218,7 @@ router.get('/field-by-field/:category/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Row by Row Aggregation TSV
@@ -240,6 +243,7 @@ router.get('/row-by-row/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Row by Row Aggregation Report
@@ -260,6 +264,7 @@ router.get('/row-by-row/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Row by Row Aggregation TSV
@@ -285,6 +290,7 @@ router.get('/row-by-row/:category/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Row by Row Aggregation Report
@@ -306,6 +312,7 @@ router.get('/row-by-row/:category/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Error by Error Aggregation TSV
@@ -329,6 +336,7 @@ router.get('/error-by-error/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Error by Error Aggregation
@@ -371,6 +379,7 @@ router.get('/error-by-error/:category/:datasetId.tsv', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Error by Error Aggregation
@@ -393,6 +402,7 @@ router.get('/error-by-error/:category/:datasetId', (req, res) => {
       })
     })
     .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch single report summary
@@ -428,6 +438,7 @@ router.get('/report-summary/:datasetId', async (req, res) => {
 router.get('/report-summaries', (req, res) => {
   dbInterface.fetchAllBatchResultsReports()
     .then(report => res.send(report))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch params and status for a dataset
@@ -436,6 +447,7 @@ router.get('/dataset-meta/:rowId', (req, res) => {
 
   dbInterface.fetchDatasetMetaRow(rowId)
     .then(row => res.send(row))
+    .catch(err => res.status(500).send(err))
 })
 
 // Delete a dataset based on its rowid
@@ -444,20 +456,26 @@ router.delete('/dataset-meta/:rowId', (req, res) => {
 
   dbInterface.deleteDatasetMetaRow(rowId)
     .then(row => res.send(row))
+    .catch(err => res.status(500).send(err))
 })
 
 // Fetch params for all datasets
 router.get('/dataset-meta-all', (req, res) => {
   dbInterface.fetchDatasetMeta()
     .then(rows => res.send(rows))
+    .catch(err => res.status(500).send(err))
 })
 
 // Return filters meta data
-router.get('/config', (req, res) => {
-  const meta = analysisLibModule.filtersMeta
-  const datasetColumns = dbInterface.datasetColumnsDictionary()
+router.get('/config', async (req, res) => {
+  try {
+    const meta = await analysisLibModule.filtersMeta
+    const datasetColumns = await dbInterface.datasetColumnsDictionary()
 
-  res.status(200).json({ meta, datasetColumns })
+    res.status(200).json({ meta, datasetColumns })
+  } catch (err) {
+    res.status(500).json({ err: 'error' })
+  }
 })
 
 // Export modules
