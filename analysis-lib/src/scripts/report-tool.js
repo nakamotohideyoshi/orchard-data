@@ -202,8 +202,8 @@ function ReportModule () {
       let erroriTunesPercent = this.noOfiTunesErrors / this.noOfRows
 
       // TODO: Weighted score for data quality
-      let errorRiskScore = (riskErrors.length + 0.5*riskWarnings.length)/this.noOfRows
-      let erroriTunesScore = (iTunesErrors.length + 0.5*iTunesWarnings.length)/this.noOfRows
+      let errorRiskScore = (riskErrors.length + 0.5 * riskWarnings.length) / (1.5 * this.noOfRows)
+      let erroriTunesScore = (iTunesErrors.length + 0.5 * iTunesWarnings.length) / (1.5 * this.noOfRows)
 
       this.BRReport = {
         'dataset_id': this.datasetId,
