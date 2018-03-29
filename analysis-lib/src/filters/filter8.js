@@ -65,6 +65,7 @@ module.exports = function (row, idx) {
       /Musica inspirada en/gi,
       /Original/gi,
       /Elenco/gi,
+      /Reparto/gi,
       /Música de la/gi,
       /Musica de la/gi,
       /Música de/gi,
