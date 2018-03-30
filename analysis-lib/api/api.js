@@ -409,7 +409,60 @@ router.get('/error-by-error/:category/:datasetId', (req, res) => {
 router.get('/report-summary/:datasetId', async (req, res) => {
   let datasetId = req.params.datasetId
   try {
+    const allReports = await dbInterface.fetchAllBatchResultsReports()
     const report = await dbInterface.fetchBatchResultsReport(datasetId)
+
+    // default error_star = 2
+    let riskErrorStars = 2
+    let itunesErrorStars = 2
+
+    // If this is the first dataset, then return default error_stars, Otherwise calculate error_stars
+    if (allReports.length > 1) {
+      let riskAVG = 0
+      let riskSTD = 0
+      let itunesAVG = 0
+      let itunesSTD = 0
+
+      // calculate average of error_ratios
+      Object.keys(allReports).forEach(index => {
+        riskAVG += allReports[index].error_risk_score
+        itunesAVG += allReports[index].error_itunes_score
+      })
+      riskAVG /= allReports.length
+      itunesAVG /= allReports.length
+
+      // calculate standard deviation of error_ratios
+      Object.keys(allReports).forEach(index => {
+        riskSTD += (allReports[index].error_risk_score - riskAVG) * (allReports[index].error_risk_score - riskAVG)
+        itunesSTD += (allReports[index].error_itunes_score - itunesAVG) * (allReports[index].error_itunes_score - itunesAVG)
+      })
+      riskSTD /= allReports.length
+      itunesSTD /= allReports.length
+      riskSTD = Math.sqrt(riskSTD)
+      itunesSTD = Math.sqrt(itunesSTD)
+
+      // calculate error_stars
+
+      if (report[0].error_risk_score < riskAVG - 0.5 * riskSTD) {
+        riskErrorStars = 1
+      } else if (report[0].error_risk_score < riskAVG) {
+        riskErrorStars = 2
+      } else if (report[0].error_risk_score < riskAVG + 0.5 * riskSTD) {
+        riskErrorStars = 3
+      } else {
+        riskErrorStars = 4
+      }
+
+      if (report[0].error_itunes_score < itunesAVG - 0.5 * itunesSTD) {
+        itunesErrorStars = 1
+      } else if (report[0].error_itunes_score < itunesAVG) {
+        itunesErrorStars = 2
+      } else if (report[0].error_itunes_score < itunesAVG + 0.5 * itunesSTD) {
+        itunesErrorStars = 3
+      } else {
+        itunesErrorStars = 4
+      }
+    }
 
     let resObj = {
       'rowid': report[0].rowid,
@@ -420,18 +473,20 @@ router.get('/report-summary/:datasetId', async (req, res) => {
           'no_of_errors': report[0].no_of_risk_errors,
           'error_percent': report[0].error_risk_percent,
           'error_score': report[0].error_risk_score,
-          'vacount_percent': report[0].vacount_percent
+          'vacount_percent': report[0].vacount_percent,
+          'error_stars': riskErrorStars
         },
         'itunes': {
           'no_of_errors': report[0].no_of_itunes_errors,
           'error_percent': report[0].error_itunes_percent,
-          'error_score': report[0].error_itunes_score
+          'error_score': report[0].error_itunes_score,
+          'error_stars': itunesErrorStars
         }
       }
     }
 
     res.status(200).json(resObj)
-  } catch (err) { res.status(400).json({ 'title': err.name, 'detail': err.message }) }
+  } catch (err) { res.status(500).json({ 'title': err.name, 'detail': err.message }) }
 })
 
 // Fetch all report summaries
