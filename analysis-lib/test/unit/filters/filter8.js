@@ -104,4 +104,24 @@ describe(`should test ${filterId}`, () => {
       assert.equal(occurrence, false)
     })
   })
+
+  // squareBrackets
+  it('should not report - genre is soundtrack and information is inside parentheses (for portuguese language)', () => {
+    const mock = mocks['validSoundtrackPortuguese']
+
+    mock.forEach((row, idx) => {
+      const occurrence = filter(row, idx, report)
+      assert.equal(occurrence, false)
+    })
+  })
+
+  // squareBrackets
+  it('should not report - genre is soundtrack and information is inside parentheses (for spanish language)', () => {
+    const mock = mocks['validSoundtrackSpanish']
+
+    mock.forEach((row, idx) => {
+      const occurrence = filter(row, idx, report)
+      assert.equal(occurrence, false)
+    })
+  })
 })
