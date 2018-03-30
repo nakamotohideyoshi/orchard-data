@@ -25,22 +25,42 @@ module.exports = function (row, idx) {
       /Album/gi,
       /[0-9]+\./gi,
       /Produced *By/gi,
-      /(\(?|\[?)Exclusive(\)?\]?)/gi,
+      /(\(?|\[?)Exclusive(\)?]?)/gi,
       /- *Exclusive/gi,
-      /(\(?|\[?)Limited Edition(\)?\]?)/gi,
+      /(\(?|\[?)Limited Edition(\)?]?)/gi,
       /- *Limited Edition/gi
     ],
 
     'portuguese': [
+      /Álbum/gi,
       /Album/gi,
       /[0-9]+\./gi,
       /Produzido *Por/gi,
-      /(\(?|\[?)Exclusivo(\)?\]?)/gi,
+      /(\(?|\[?)Exclusivo(\)?]?)/gi,
       /- *Exclusivo/gi,
-      /(\(?|\[?)Edicao Limitada(\)?\]?)/gi,
+      /(\(?|\[?)Edição Limitada(\)?]?)/gi,
+      /(\(?|\[?)Edicao Limitada(\)?]?)/gi,
+      /- *Edição Limitada/gi,
       /- *Edicao Limitada/gi
+    ],
+
+    'spanish': [
+      /Álbum/gi,
+      /Album/gi,
+      /[0-9]+\./gi,
+      /Producido *Por/gi,
+      /(\(?|\[?)Exclusivo(\)?]?)/gi,
+      /- *Exclusivo/gi,
+      /(\(?|\[?)Edicion Limitada(\)?]?)/gi,
+      /- *Edicion Limitada/gi
     ]
   }
+
+  // Just to grant the portuguese word for 'portuguese' is also detected if its set as the release_meta_language.
+  patterns['portugues'] = patterns['portuguese']
+
+  // Just to grant the spanish word for 'spanish' is also detected if its set as the release_meta_language.
+  patterns['espanol'] = patterns['spanish']
 
   // language not supported
   if (!(language in patterns)) { return false }
@@ -87,7 +107,7 @@ module.exports = function (row, idx) {
 
           break
         }
-      };
+      }
     }
   })
 
