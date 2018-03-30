@@ -286,4 +286,63 @@ describe(`should test ${filterId}`, () => {
       }
     })
   })
+
+  it('should report - invalid occurrences in spanish', () => {
+    const mock = mocks['invalidSpanishOccurrences']
+
+    mock.forEach((row, idx) => {
+      let occurrence = filter(row, idx, report)
+      switch (idx) {
+        case 0:
+          assert.deepEqual(occurrence.field, ['release_name'])
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory (Producido por Mr. Spectacular)'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 1:
+          assert.deepEqual(occurrence.field, ['track_name'])
+          assert.deepEqual(occurrence.value, ['9 of Disks (Producido por Jeff Bezos)'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 2:
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory (Exclusivo)'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 3:
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory [Exclusivo]'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 4:
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory - Exclusivo'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 5:
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory (Edicion Limitada)'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 6:
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory [Edicion Limitada]'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+
+        case 7:
+          assert.deepEqual(occurrence.value, ['Telephone Free Landslide Victory - Edicion Limitada'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+      }
+    })
+  })
 })
