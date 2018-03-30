@@ -160,21 +160,39 @@ function ReportModule () {
   this.calcBatchResultsReport = function (vaCount) {
     return new Promise((resolve) => {
       let riskOccurrences = []
+      let riskErrors = []
+      let riskWarnings = []
       let iTunesOccurrences = []
+      let iTunesErrors = []
+      let iTunesWarnings = []
       // Gets all occurrences
       Object.keys(this['filters']).forEach(filterId => {
         let filterOccursOn = Object.keys(this['filters'][filterId]['occurs_on'])
 
         if (this['filters'][filterId]['category'] === 'iTunes') {
           iTunesOccurrences = iTunesOccurrences.concat(filterOccursOn)
+          if (this['filters'][filterId]['type'] === 'error') {
+            iTunesErrors = iTunesErrors.concat(filterOccursOn)
+          } else if (this['filters'][filterId]['type'] === 'warning') {
+            iTunesWarnings = iTunesWarnings.concat(filterOccursOn)
+          }
         } else {
           riskOccurrences = riskOccurrences.concat(filterOccursOn)
+          if (this['filters'][filterId]['type'] === 'error') {
+            riskErrors = riskErrors.concat(filterOccursOn)
+          } else if (this['filters'][filterId]['type'] === 'warning') {
+            riskWarnings = riskWarnings.concat(filterOccursOn)
+          }
         }
       })
 
       // Gets all unique occurrences
       riskOccurrences = riskOccurrences.filter((v, i, a) => a.indexOf(v) === i)
+      riskErrors = riskErrors.filter((v, i, a) => a.indexOf(v) === i)
+      riskWarnings = riskWarnings.filter((v, i, a) => a.indexOf(v) === i)
       iTunesOccurrences = iTunesOccurrences.filter((v, i, a) => a.indexOf(v) === i)
+      iTunesErrors = iTunesErrors.filter((v, i, a) => a.indexOf(v) === i)
+      iTunesWarnings = iTunesWarnings.filter((v, i, a) => a.indexOf(v) === i)
 
       this.noOfRiskErrors = riskOccurrences.length
       this.noOfiTunesErrors = iTunesOccurrences.length
@@ -184,8 +202,8 @@ function ReportModule () {
       let erroriTunesPercent = this.noOfiTunesErrors / this.noOfRows
 
       // TODO: Weighted score for data quality
-      let errorRiskScore = Math.random() * 6
-      let erroriTunesScore = Math.random() * 6
+      let errorRiskScore = (riskErrors.length + 0.5 * riskWarnings.length) / (1.5 * this.noOfRows)
+      let erroriTunesScore = (iTunesErrors.length + 0.5 * iTunesWarnings.length) / (1.5 * this.noOfRows)
 
       this.BRReport = {
         'dataset_id': this.datasetId,
