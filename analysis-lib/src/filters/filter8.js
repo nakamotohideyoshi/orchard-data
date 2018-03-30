@@ -27,7 +27,7 @@ module.exports = function (row, idx) {
   // nothing to be tested or genre is not soundtrack or not related to score
   if (!genre || (genre !== 'soundtrack' && !/Score/gi.test(genre))) { return false }
 
-  const patterns = {
+  let patterns = {
     'english': [
       /Soundtrack/gi,
       /Original Score/gi,
@@ -37,9 +37,49 @@ module.exports = function (row, idx) {
       /Music From/gi
     ],
 
-    // TODO: research portuguese keywords
-    'portuguese': []
+    'portuguese': [
+      /Trilha Sonora/gi,
+      /Trilha Sonora Original/gi,
+      /Música inspirada por/gi,
+      /Musica inspirada por/gi,
+      /Música inspirada pelo/gi,
+      /Musica inspirada pelo/gi,
+      /Música inspirada pela/gi,
+      /Musica inspirada pela/gi,
+      /Original/gi,
+      /Elenco/gi,
+      /Música da/gi,
+      /Musica da/gi,
+      /Música de/gi,
+      /Musica de/gi,
+      /Música do/gi,
+      /Musica do/gi
+    ],
+
+    'spanish': [
+      /Banda Sonora/gi,
+      /Banda Sonora Original/gi,
+      /Música inspirada por/gi,
+      /Musica inspirada por/gi,
+      /Música inspirada en/gi,
+      /Musica inspirada en/gi,
+      /Original/gi,
+      /Elenco/gi,
+      /Reparto/gi,
+      /Música de la/gi,
+      /Musica de la/gi,
+      /Música de/gi,
+      /Musica de/gi,
+      /Música del/gi,
+      /Musica del/gi
+    ]
   }
+
+  // Just to grant the portuguese word for 'portuguese' is also detected if its set as the release_meta_language.
+  patterns['portugues'] = patterns['portuguese']
+
+  // Just to grant the spanish word for 'spanish' is also detected if its set as the release_meta_language.
+  patterns['espanol'] = patterns['spanish']
 
   // language not supported
   if (!(language in patterns)) { return false }
@@ -79,6 +119,6 @@ module.exports = function (row, idx) {
     }
   }
 
-  // If anything error occurred, creates report
+  // If registered an occurrence, creates report
   if (occurrence.field.length > 0) { return occurrence } else { return false }
 }
