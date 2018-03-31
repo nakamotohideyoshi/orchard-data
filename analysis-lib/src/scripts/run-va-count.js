@@ -6,7 +6,7 @@ module.exports = async function (datasetId) {
   // tools and constants
   const DATABASE = require('./constants').DATABASE
 
-  const variousArtistsCount = require('../va-count/variousartistscount')
+  const variousArtistsCount = require('../features/variousartistscount')
   let vacount = 0
   // DB modules
   const dbInfo = require('../db-scripts/db-info')

@@ -5,7 +5,7 @@ const it = require('mocha').it
 
 const mocks = require(`../../mocks/va-count/va-count`)
 
-const vaCount = require(`../../src/va-count/variousartistscount`)
+const vaCount = require(`../../src/features/variousartistscount`)
 
 describe(`should test Various Artists`, function () {
   this.timeout(10000)
