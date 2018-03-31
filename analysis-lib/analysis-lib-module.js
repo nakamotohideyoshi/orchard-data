@@ -11,6 +11,7 @@ let filtersModule = require('require-all')(path.join(__dirname, 'src', 'filters'
 let runAllFilters = require('./src/scripts/run-all-filters')
 let runSingleFilter = require('./src/scripts/run-single-filter')
 let runVACount = require('./src/scripts/run-va-count')
+let runDuplicatesThreshold = require('./src/scripts/run-duplicatesthreshold')
 
 let constants = require('./src/scripts/constants')
 let IO = require('./src/scripts/IO-module')
@@ -29,6 +30,7 @@ module.exports = {
   'runAllFilters': runAllFilters,
   'runSingleFilter': runSingleFilter,
   'runVACount': runVACount,
+  'runDuplicatesThreshold': runDuplicatesThreshold,
   'constants': constants,
   'IO': IO,
   'reportUtils': reportUtils
