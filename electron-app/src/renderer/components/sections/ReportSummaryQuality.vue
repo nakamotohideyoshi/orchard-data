@@ -38,11 +38,14 @@ include ../pages/_mixins
         return (this.reportSummary.error_percent * 100).toFixed(2)
       },
       filledStars () {
-        return this.reportSummary.error_stars
-      },
+        if (this.reportSummary && this.reportSummary.hasOwnProperty('error_stars')) {
+          return parseInt(this.reportSummary.error_stars)
+        }
 
+        return 0
+      },
       emptyStarts () {
-        return (5 - this.reportSummary.error_stars)
+        return 5 - this.filledStars
       }
     }
   }
