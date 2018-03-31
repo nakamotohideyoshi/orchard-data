@@ -7,5 +7,7 @@ CREATE TABLE IF NOT EXISTS batch_results_reports (
   no_of_itunes_errors       NUMBER      NOT NULL,  
   error_itunes_percent      NUMBER      NOT NULL,
   error_itunes_score        NUMBER      NOT NULL,
-  vacount_percent           NUMBER      NOT NULL
+  vacount_percent           NUMBER      NOT NULL,
+  duplicates_threshold      NUMBER      NOT NULL,
+  duplicates_exceeded       BOOLEAN     NOT NULL
 );

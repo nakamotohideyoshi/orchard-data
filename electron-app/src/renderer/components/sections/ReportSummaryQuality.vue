@@ -11,6 +11,9 @@ include ../pages/_mixins
             .failed(v-for="stars in emptyStarts")
                 +icon('ico-star-empty')
         .report__top-description Overall data quality
+    .report__top-col(v-if="duplicates_threshold !== null")
+        .report__top-percent {{duplicates_threshold}} %
+        .report__top-description Of ISRCs are duplicates
     .report__top-col(v-if="vacount_percent !== null")
         .report__top-percent {{vacount_percent}} %
         .report__top-description Various Artists
@@ -33,6 +36,20 @@ include ../pages/_mixins
         }
 
         return null
+      },
+      duplicates_threshold () {
+        if (this.reportSummary.hasOwnProperty('duplicates_threshold')) {
+          return (this.reportSummary.duplicates_threshold * 100).toFixed(2)
+        }
+
+        return null
+      },
+      no_of_rows () {
+        if (this.reportSummary.hasOwnProperty('no_of_rows')) {
+          return this.reportSummary.no_of_rows
+        }
+
+        return 0
       },
       percentage () {
         return (this.reportSummary.error_percent * 100).toFixed(2)

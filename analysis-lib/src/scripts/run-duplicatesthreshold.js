@@ -1,13 +1,13 @@
 'use strict'
 
-module.exports = async function (datasetId) {
+module.exports = async function (datasetId, metadata) {
   const Promise = require('bluebird')
 
   // tools and constants
   const DATABASE = require('./constants').DATABASE
 
-  const variousArtistsCount = require('../features/variousartistscount')
-  let vacount = 0
+  const duplicatesThreshold = require('../features/duplicatesthreshold')
+  let duplicatesThresholdInfo = {}
   // DB modules
   const dbInfo = require('../db-scripts/db-info')
   const DbInterfaceModule = require('../db-scripts/db-interface')
@@ -27,16 +27,16 @@ module.exports = async function (datasetId) {
 
   try {
     // Waits for all filters to finish
-    vacount = await new Promise(async (resolve, reject) => {
+    duplicatesThresholdInfo = await new Promise(async (resolve, reject) => {
       try {
         console.log(`Various Artists count: `)
 
         // calculate Various Artists Count
-        const count = await variousArtistsCount(dataset)
-        resolve(count)
+        const info = await duplicatesThreshold(dataset, metadata)
+        resolve(info)
       } catch (err) { reject(err) }
     })
   } catch (err) { throw err }
 
-  return vacount
+  return duplicatesThresholdInfo
 }

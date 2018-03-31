@@ -49,6 +49,11 @@ router.post('/dataset', async (req, res) => {
     const vaCount = await analysisLibModule.runVACount(datasetId)
 
     console.log('***** Done *****\n')
+    console.log('***** Calculate Duplicates Threshold *****')
+
+    const duplicatesThreshold = await analysisLibModule.runDuplicatesThreshold(datasetId, data.source)
+
+    console.log('***** Done *****\n')
     console.log('***** Calculating Field by Field Report *****')
 
     await report.calcFieldByFieldReportAll()
@@ -61,7 +66,7 @@ router.post('/dataset', async (req, res) => {
     console.log('***** Saved *****\n')
     console.log('***** Calculating Batch Results Report *****')
 
-    await report.calcBatchResultsReport(vaCount)
+    await report.calcBatchResultsReport(vaCount, duplicatesThreshold)
 
     console.log('***** Done *****\n')
     console.log('***** Saving Batch Results Report *****')
@@ -474,7 +479,9 @@ router.get('/report-summary/:datasetId', async (req, res) => {
           'error_percent': report[0].error_risk_percent,
           'error_score': report[0].error_risk_score,
           'vacount_percent': report[0].vacount_percent,
-          'error_stars': riskErrorStars
+          'error_stars': riskErrorStars,
+          'duplicates_threshold': report[0].duplicates_threshold,
+          'duplicates_exceeded': report[0].duplicates_exceeded
         },
         'itunes': {
           'no_of_errors': report[0].no_of_itunes_errors,
