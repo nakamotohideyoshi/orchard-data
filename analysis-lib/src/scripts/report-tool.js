@@ -157,7 +157,7 @@ function ReportModule () {
   /**
    * Calculates dataset metadata for a al filters
    */
-  this.calcBatchResultsReport = function (vaCount) {
+  this.calcBatchResultsReport = function (vaCount, duplicatesThreshold) {
     return new Promise((resolve) => {
       let riskOccurrences = []
       let riskErrors = []
@@ -214,7 +214,9 @@ function ReportModule () {
         'no_of_itunes_errors': this.noOfiTunesErrors,
         'error_itunes_percent': erroriTunesPercent,
         'error_itunes_score': erroriTunesScore,
-        'vacount_percent': vaCount
+        'vacount_percent': vaCount,
+        'duplicates_threshold': duplicatesThreshold.duplicatesRatio,
+        'duplicates_exceeded': duplicatesThreshold.exceeded
       }
 
       resolve(this)
