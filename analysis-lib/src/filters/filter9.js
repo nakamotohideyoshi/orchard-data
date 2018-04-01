@@ -1,17 +1,19 @@
 // OST abbreviation
 
+const removeDiacritics = require('../scripts/remove-diacritics')
+const stringUtils = require('../scripts/string-utils')
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
 module.exports = function (row, idx) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-  const stringUtils = require('../scripts/string-utils')
-
-  const filterName = 'filter9'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
   const field = 'release_name'
+
   let value = row[field]
+
   value = value ? removeDiacritics(value).trim().toLowerCase() : ''
 
   if (!value) { return false }
