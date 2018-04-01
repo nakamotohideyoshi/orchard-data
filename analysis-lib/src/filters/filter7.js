@@ -1,15 +1,15 @@
-// Composer as artist
+// Track/album versions that aren’t allowed
+
+const removeDiacritics = require('../scripts/remove-diacritics')
+const stringUtils = require('../scripts/string-utils')
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
 
 module.exports = function (row, idx) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-  const stringUtils = require('../scripts/string-utils')
-
-  const filterName = 'filter7'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
   const fields = ['release_name', 'track_name']
 
   const invalidStrings = [
