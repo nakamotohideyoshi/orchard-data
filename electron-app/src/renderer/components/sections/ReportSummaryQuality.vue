@@ -55,13 +55,12 @@ include ../pages/_mixins
         return (this.reportSummary.error_percent * 100).toFixed(2)
       },
       filledStars () {
-        if (this.reportSummary && this.reportSummary.hasOwnProperty('error_percent')) {
-          return Math.round((1 - this.reportSummary.error_percent) * 5)
+        if (this.reportSummary && this.reportSummary.hasOwnProperty('error_stars')) {
+          return parseInt(this.reportSummary.error_stars)
         }
 
         return 0
       },
-
       emptyStarts () {
         return 5 - this.filledStars
       }
