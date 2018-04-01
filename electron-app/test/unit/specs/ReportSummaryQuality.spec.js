@@ -54,7 +54,8 @@ describe('ReportSummaryQuality.vue', () => {
 
   it('should show 3 full stars when 50%', () => {
     reportSummary = {
-      error_percent: 0.5
+      error_percent: 0.5,
+      error_stars: 3
     }
 
     wrapper = shallow(ReportSummaryQuality, {
@@ -70,7 +71,8 @@ describe('ReportSummaryQuality.vue', () => {
 
   it('should show no full stars when 0%', () => {
     reportSummary = {
-      error_percent: 0
+      error_percent: 0,
+      error_stars: 5
     }
 
     wrapper = shallow(ReportSummaryQuality, {
