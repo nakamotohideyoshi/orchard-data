@@ -1,14 +1,14 @@
 // Generic Release Titles
 
+const removeDiacritics = require('../scripts/remove-diacritics')
+
+const filterName = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterName]
+
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
+
 module.exports = function (row, idx) {
-  const removeDiacritics = require('../scripts/remove-diacritics')
-
-  const filterName = 'filter3'
-  const filterMeta = require('./filters-meta')[filterName]
-
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
-
   const field = 'release_name'
   const releaseName = row[field]
   const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : ''
