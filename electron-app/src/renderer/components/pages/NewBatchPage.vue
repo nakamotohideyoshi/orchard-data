@@ -29,11 +29,10 @@ include _mixins
                       span Choose a dataset (required)
 
                     .ui-group
-                      label Dataset
-                      .uploader(js-uploader data-validate="csv")
+                      .uploader()
                         .uploader__btn
-                          label Choose file
-                            input(type="file" id="file" name="file" v-on:change="processFile")
+                          label Select dataset file
+                            input(type="file" id="file" name="file" accept=".cvs,.tsv" v-on:change="processFile")
                           span {{fileName}}
 
                         .uploader__current
@@ -139,9 +138,12 @@ export default {
     },
     async submitForm (/* e */) {
       // TODO: Improve the logic below, there is better way to compute
-      // the payload
-      if (this.filePath === '') {
-        window.alert('Please select Dataset file')
+
+      let fileIsNotATsv = this.filePath.toLowerCase().indexOf('.tsv') === -1
+      let fileIsNotACsv = this.filePath.toLowerCase().indexOf('.csv') === -1
+
+      if (fileIsNotATsv && fileIsNotACsv) {
+        window.alert('Please, select a valid dataset. It must be a .csv or .tsv file.')
         return
       }
       this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
