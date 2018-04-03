@@ -44,7 +44,7 @@
                                             td {{new Date(data.time).toString().slice(0, -14)}}
                                             td
                                                 a(class="delete" @click.prevent.stop="deleteSubmission(data.rowid)" href="" title="delete")
-                                                    img(src="/src/renderer/assets/icons/axe.png")
+                                                    img(src="~@/assets/icons/axe.png")
 
         block footer
             app-footer
