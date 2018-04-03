@@ -147,11 +147,13 @@ const actions = {
         commit(SUBMISSIONS_ADD, item)
       })
       .catch((e) => {
-        const item = { ...data, status: 2, rowid: e.response.data.datasetId }
-        commit(SUBMISSIONS_REQUEST, false)
-        commit(SUBMISSIONS_FAILURE, e)
-        commit(SUBMISSION, item)
-        commit(SUBMISSIONS_ADD, item)
+        if (e.response && e.response.data && e.response.data.datasetId > 0) {
+          const item = {...data, status: 2, rowid: e.response.data.datasetId}
+          commit(SUBMISSIONS_REQUEST, false)
+          commit(SUBMISSIONS_FAILURE, e)
+          commit(SUBMISSION, item)
+          commit(SUBMISSIONS_ADD, item)
+        }
       })
   },
   fetchDataset ({ commit }, id) {
