@@ -29,11 +29,10 @@ include _mixins
                       span Choose a dataset (required)
 
                     .ui-group
-                      label Dataset
-                      .uploader(js-uploader data-validate="csv")
+                      .uploader()
                         .uploader__btn
-                          label Choose file
-                            input(type="file" id="file" name="file" v-on:change="processFile")
+                          label Select the dataset file
+                            input(type="file" id="file" name="file" accept=".tsv" v-on:change="processFile")
                           span {{fileName}}
 
                         .uploader__current
