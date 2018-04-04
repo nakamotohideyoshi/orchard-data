@@ -147,7 +147,12 @@ const actions = {
         commit(SUBMISSIONS_ADD, item)
       })
       .catch((e) => {
-        const item = { ...data, status: 2, rowid: e.response.data.datasetId }
+        // If there's no 'datasetId' set, we don't add a 'fail' record on home page. Otherwise it would be undeletable.
+        if (!e.response || !e.response.data || !e.response.data.datasetId) {
+          return
+        }
+
+        const item = {...data, status: 2, rowid: e.response.data.datasetId}
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, e)
         commit(SUBMISSION, item)
