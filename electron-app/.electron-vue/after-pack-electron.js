@@ -12,12 +12,13 @@ const analysisLibDirPath = path.join(__dirname, '..', '..', 'analysis-lib')
 let afterPack = function (context) {
   console.log(`  • building analysis-lib for ${context.electronPlatformName}`)
   execSync('npm install', {cwd: analysisLibDirPath})
+  let destinationPath = ''
 
   switch (context.electronPlatformName) {
     case 'linux':
       execSync('npm run build:linux', {cwd: analysisLibDirPath})
       execSync('npm run build:linux-sqlite3', {cwd: analysisLibDirPath})
-      const destinationPath = path.join(context.outDir, 'musical-turk');
+      destinationPath = path.join(context.outDir, 'musical-turk');
       console.log(`  • copying analysis-lib to ${destinationPath}`)
       copyDir.sync(path.join('..', 'analysis-lib', 'build', 'linux'), destinationPath)
       execSync('chmod +x analysis-lib', {cwd: destinationPath})
@@ -27,9 +28,10 @@ let afterPack = function (context) {
     case 'darwin':
       execSync('npm run build:mac', {cwd: analysisLibDirPath})
       execSync('npm run build:mac-sqlite3', {cwd: analysisLibDirPath})
-      console.log(`  • copying analysis-lib to ${context.appOutDir}`)
-      copyDir.sync(path.join('..', 'analysis-lib', 'build', 'mac'), context.appOutDir)
-      execSync('chmod +x analysis-lib', {cwd: context.appOutDir})
+      destinationPath = path.join(context.appOutDir, 'Musical Turk.app', 'Contents');
+      console.log(`  • copying analysis-lib to ${destinationPath}`)
+      copyDir.sync(path.join('..', 'analysis-lib', 'build', 'mac'), destinationPath)
+      execSync('chmod +x analysis-lib', {cwd: destinationPath})
       break
     case 'windows':
     case 'win':
