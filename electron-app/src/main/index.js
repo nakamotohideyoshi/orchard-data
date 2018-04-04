@@ -22,7 +22,7 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+async function createWindow () {
   /**
    * Initial window options
    */
@@ -42,7 +42,7 @@ function createWindow () {
 /**
  * Starts the API Node.js Instance.
  */
-function startApiNodeInstance () {
+async function startApiNodeInstance () {
   let currentWorkingDirectory = './'
 
   let nodeForLinuxFilePath = './analysis-lib'
@@ -78,12 +78,12 @@ function stopApiNodeInstance () {
   }
 }
 
-app.on('ready', () => {
-  startApiNodeInstance()
-  setTimeout(() => {
-    createWindow()
-  }, 1000)
-})
+async function onAppReady () {
+  await startApiNodeInstance()
+  await createWindow()
+}
+
+app.on('ready', onAppReady)
 
 app.on('window-all-closed', () => {
   stopApiNodeInstance()
