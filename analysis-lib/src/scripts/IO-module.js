@@ -14,7 +14,8 @@ module.exports = function () {
         let parser = csvParser({
           delimiter: '\t',
           columns: true,
-          quote: '`'
+          quote: '`',
+          relax: true
         }, (err, data) => {
           if (err) {
             reject(err)
