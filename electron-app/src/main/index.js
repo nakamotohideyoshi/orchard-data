@@ -22,7 +22,7 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+async function createWindow () {
   /**
    * Initial window options
    */
@@ -42,18 +42,23 @@ function createWindow () {
 /**
  * Starts the API Node.js Instance.
  */
-function startApiNodeInstance () {
+async function startApiNodeInstance () {
   let currentWorkingDirectory = './'
 
-  let nodeForLinuxAndMacFilePath = './analysis-lib'
-  let nodeForLinuxAndMacExistsOnFolder = existsSync(nodeForLinuxAndMacFilePath)
+  let nodeForLinuxFilePath = './analysis-lib'
+  let nodeForLinuxExistsOnFolder = existsSync(nodeForLinuxFilePath)
+
+  let nodeForMacFilePath = require('path').join(app.getAppPath(), '..', '..', 'analysis-lib')
+  let nodeForMacExistsOnFolder = existsSync(nodeForMacFilePath)
 
   let nodeForWindowsFilePath = './analysis-lib.exe'
   let nodeForWindowsExistsOnFolder = existsSync(nodeForWindowsFilePath)
 
-  if (nodeForLinuxAndMacExistsOnFolder || nodeForWindowsExistsOnFolder) {
-    if (nodeForLinuxAndMacExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForLinuxAndMacFilePath, {cwd: currentWorkingDirectory})
+  if (nodeForLinuxExistsOnFolder || nodeForMacExistsOnFolder || nodeForWindowsExistsOnFolder) {
+    if (nodeForLinuxExistsOnFolder) {
+      apiNodeInstance = execFile(nodeForLinuxFilePath, {cwd: currentWorkingDirectory})
+    } else if (nodeForMacExistsOnFolder) {
+      apiNodeInstance = execFile(nodeForMacFilePath, {cwd: require('path').dirname(nodeForMacFilePath)})
     } else if (nodeForWindowsExistsOnFolder) {
       apiNodeInstance = execFile(nodeForWindowsFilePath, {cwd: currentWorkingDirectory})
     }
@@ -73,17 +78,16 @@ function stopApiNodeInstance () {
   }
 }
 
-app.on('ready', () => {
-  startApiNodeInstance()
-  createWindow()
-})
+async function onAppReady () {
+  await startApiNodeInstance()
+  await createWindow()
+}
+
+app.on('ready', onAppReady)
 
 app.on('window-all-closed', () => {
   stopApiNodeInstance()
-
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  app.quit()
 })
 
 app.on('activate', () => {
