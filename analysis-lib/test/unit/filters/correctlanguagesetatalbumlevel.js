@@ -83,8 +83,8 @@ describe(`should test ${filterId}`, function () {
 
       switch (occurrence.row_id) {
         case 0:
-          assert.deepEqual(occurrence.field, ['release_name'])
-          assert.deepEqual(occurrence.value, ['Te quiero mucho'])
+          assert.deepEqual(occurrence.field, ['release_name', 'track_name'])
+          assert.deepEqual(occurrence.value, ['Te quiero mucho', 'Este es un texto en español'])
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
           assert.deepEqual(occurrence.error_type, [defaultErrorType])
           break
@@ -106,8 +106,8 @@ describe(`should test ${filterId}`, function () {
 
       switch (occurrence.row_id) {
         case 0:
-          assert.deepEqual(occurrence.field, ['release_name'])
-          assert.deepEqual(occurrence.value, ['I Love You So Much'])
+          assert.deepEqual(occurrence.field, ['release_name', 'track_name'])
+          assert.deepEqual(occurrence.value, ['I Love You So Much', 'Este es un texto en español'])
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
           assert.deepEqual(occurrence.error_type, [defaultErrorType])
           break
@@ -129,8 +129,8 @@ describe(`should test ${filterId}`, function () {
 
       switch (occurrence.row_id) {
         case 0:
-          assert.deepEqual(occurrence.field, ['release_name'])
-          assert.deepEqual(occurrence.value, ['This is some English text'])
+          assert.deepEqual(occurrence.field, ['release_name', 'track_name'])
+          assert.deepEqual(occurrence.value, ['This is some English text', 'This is some more English text'])
           assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
           assert.deepEqual(occurrence.error_type, [defaultErrorType])
           break
