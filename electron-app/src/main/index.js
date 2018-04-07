@@ -3,6 +3,7 @@
 import {app, BrowserWindow} from 'electron'
 import {execFile} from 'child_process'
 import {existsSync} from 'fs'
+import path from 'path'
 
 let apiNodeInstance = null
 
@@ -14,7 +15,7 @@ let apiNodeInstance = null
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
@@ -29,7 +30,8 @@ async function createWindow () {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000
+    width: 1000,
+    icon: path.join(__dirname, '..', '..', 'build', 'icons', '64x64.png')
   })
 
   mainWindow.loadURL(winURL)
@@ -48,7 +50,7 @@ async function startApiNodeInstance () {
   let nodeForLinuxFilePath = './analysis-lib'
   let nodeForLinuxExistsOnFolder = existsSync(nodeForLinuxFilePath)
 
-  let nodeForMacFilePath = require('path').join(app.getAppPath(), '..', '..', 'analysis-lib')
+  let nodeForMacFilePath = path.join(app.getAppPath(), '..', '..', 'analysis-lib')
   let nodeForMacExistsOnFolder = existsSync(nodeForMacFilePath)
 
   let nodeForWindowsFilePath = './analysis-lib.exe'
@@ -58,7 +60,7 @@ async function startApiNodeInstance () {
     if (nodeForLinuxExistsOnFolder) {
       apiNodeInstance = execFile(nodeForLinuxFilePath, {cwd: currentWorkingDirectory})
     } else if (nodeForMacExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForMacFilePath, {cwd: require('path').dirname(nodeForMacFilePath)})
+      apiNodeInstance = execFile(nodeForMacFilePath, {cwd: path.dirname(nodeForMacFilePath)})
     } else if (nodeForWindowsExistsOnFolder) {
       apiNodeInstance = execFile(nodeForWindowsFilePath, {cwd: currentWorkingDirectory})
     }
