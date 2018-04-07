@@ -19,42 +19,43 @@ module.exports = async function (row, idx) {
     'explanation_id': [],
     'error_type': []
   }
+  let value = ''
 
   // noinspection UnnecessaryLocalVariableJS
   const result = await new Promise(async (resolve) => {
-    // If field is related to 'release_meta_language'
     for (let field of fields) {
-      // temp to store best match language
-      let bestMatch = [releaseLanguage, 0]
+      value += row[field] ? row[field].trim() + ' ' : ''
+    }
 
-      const value = row[field] ? row[field].trim() : ''
+    // temp to store best match language
+    let bestMatch = [releaseLanguage, 0]
 
-      // language detect using 'languagedetect' libarary
-      const detectResults = languageDetector.detect(value)
-      let count = 0
+    // language detect using 'languagedetect' libarary
+    const detectResults = languageDetector.detect(value)
+    let count = 0
 
-      for (let result of detectResults) {
-        // find the score of 'English', 'Portuguese', and 'Spanish'
-        if (result[0] === 'english' || result[0] === 'portuguese' || result[0] === 'spanish') {
-          count++
-          if (result[1] > bestMatch[1]) {
-            bestMatch[0] = result[0]
-            bestMatch[1] = result[1]
-          }
+    for (let result of detectResults) {
+      // find the score of 'English', 'Portuguese', and 'Spanish'
+      if (result[0] === 'english' || result[0] === 'portuguese' || result[0] === 'spanish') {
+        count++
+        if (result[1] > bestMatch[1]) {
+          bestMatch[0] = result[0]
+          bestMatch[1] = result[1]
+        }
 
-          if (count === 3) {
-            break
-          }
+        if (count === 3) {
+          break
         }
       }
+    }
 
-      // doesn't match with 'release_meta_language'
-      if (bestMatch[0] !== releaseLanguage) {
+    // doesn't match with 'release_meta_language'
+    if (bestMatch[0] !== releaseLanguage) {
+      for (let field of fields) {
         occurrence.field.push(field)
         occurrence.value.push(row[field])
         occurrence.explanation_id.push(defaultExplanationId)
         occurrence.error_type.push(defaultErrorType)
-        break
       }
     }
 

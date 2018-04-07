@@ -632,5 +632,21 @@ module.exports = {
     'explanations': {
       'default': `This artist is in the blacklist.`
     }
+  },
+
+  'variousartistsmisspelled': {
+    'orchardDescription': `Various Artists cannot be written as V.A. VA, Various, etc.`,
+    'programmerDescription': `
+      - Let there be a standardized set of misspellings of the term "Various Artists" for any given language.
+      - Let the language in use be determined by [fixme: setting on the batch or setting in metadata]
+      - It is an error if the primary album-level artist is a misspelling of "Various Artists."
+    `,
+    'userExplanation': `"Various Artists" must be spelled exactly like that.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `misspelled "various artists"`
+    }
   }
 }
