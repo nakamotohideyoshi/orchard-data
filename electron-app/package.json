@@ -1,8 +1,8 @@
 {
   "name": "musical-turk",
   "version": "1.0.0",
-  "author": "meanpeace52 <info@spacedig.ch>",
-  "description": "An electron-vue project",
+  "author": "Viva Data <lucas@gonze.com>",
+  "description": "Tooling for curated data sets.",
   "private": true,
   "main": "./dist/electron/main.js",
   "scripts": {
