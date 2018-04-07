@@ -6,7 +6,9 @@ include _mixins
         .container
             .header__wrapper
                 .header__logo
-                    router-link(:to="'/'")
+                    router-link(v-if="lastOpendRowId < 0" :to="'/'")
+                        i.icon.icon-logo
+                    router-link(v-else :to="`/report/${lastOpendRowId}`")
                         i.icon.icon-logo
                 ul.header__menu
                     li
@@ -51,12 +53,13 @@ include _mixins
 
 <script>
 import { mapGetters } from 'vuex'
-import { SUBMISSIONS } from '@/constants/types'
+import { LAST_OPENED_ROW_ID, SUBMISSIONS } from '@/constants/types'
 
 export default {
   computed: {
     ...mapGetters({
-      submissions: SUBMISSIONS
+      lastOpendRowId: LAST_OPENED_ROW_ID,
+      submissions: SUBMISSIONS,
     })
   },
   name: 'app-header'
