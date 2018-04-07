@@ -20,7 +20,7 @@ TSVs for QA - Sheet5.tsv
 * 33% failure in risk assessment filter. 1/3 rows have a risk assessment error; there are no iTunes errors. Check: report summary stats are accurate.
 
 TSVs for QA - Sheet6.tsv
-* One filter has 2 iTunes errors, another has 1 iTunes error, there are no other errors. Check: error-by-error report gets these numbers right.
+* One row has 2 iTunes errors, another has 1 iTunes error, there are no other errors. Check: error-by-error report gets these numbers right.
 
 TSVs for QA - Sheet7.tsv
 * One row has 2 iTunes errors, another has 1 iTunes error, no other rows have errors. Check: row-by-row report, field-by-field-report, error-by-error report
