@@ -635,7 +635,7 @@ module.exports = {
   },
 
   'variousartistsmisspelled': {
-    'orchardDescription': `Have you learned or tried to learn braille? What is your experience with the tactile`,
+    'orchardDescription': `Various Artists cannot be written as V.A. VA, Various, etc.`,
     'programmerDescription': `
       - Let there be a standardized set of misspellings of the term "Various Artists" for any given language.
       - Let the language in use be determined by [fixme: setting on the batch or setting in metadata]
