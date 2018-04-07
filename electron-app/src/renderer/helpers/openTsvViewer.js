@@ -13,7 +13,7 @@ const { BrowserWindow } = remote
 export default function (batchId, rowId) {
   const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080/#tsv/${batchId}/${rowId}`
-    : `file://${__dirname}/index.html/#tsv/${batchId}/${rowId}`
+    : `file://${__dirname}/index.html#tsv/${batchId}/${rowId}`
 
   const newWindow = new BrowserWindow({
     title: `Dataset TSV (${batchId})`,
