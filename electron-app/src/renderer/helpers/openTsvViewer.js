@@ -1,4 +1,6 @@
 import { remote } from 'electron'
+import path from 'path'
+
 const { BrowserWindow } = remote
 
 /**
@@ -15,7 +17,8 @@ export default function (batchId, rowId) {
 
   const newWindow = new BrowserWindow({
     title: `Dataset TSV (${batchId})`,
-    show: false
+    show: false,
+    icon: path.join(__dirname, '..', '..', '..', 'build', 'icons', '64x64.png')
   })
 
   newWindow.loadURL(winURL)
