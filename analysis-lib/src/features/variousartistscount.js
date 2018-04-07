@@ -22,7 +22,7 @@ module.exports = function (dataset) {
     ],
 
     'spanish': [
-      /(^varios artistas$)/g,
+      /(^varios artistas$)/gi,
       /(^v\/a$)/gi,
       /(^v.a$)/gi,
       /(^varios$)/gi,
