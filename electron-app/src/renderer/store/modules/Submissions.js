@@ -11,6 +11,7 @@ import {
   FIELDS,
   FIELDS_FAILURE,
   FIELDS_REQUEST,
+  LAST_OPENED_ROW_ID,
   SUBMISSION_DELETED
 } from '@/constants/types'
 import {
@@ -27,7 +28,8 @@ const state = {
   [SUBMISSIONS_LOADED]: false,
   [FIELDS]: null,
   [FIELDS_REQUEST]: false,
-  [FIELDS_FAILURE]: null
+  [FIELDS_FAILURE]: null,
+  [LAST_OPENED_ROW_ID]: -1
 }
 
 const mutations = {
@@ -92,6 +94,9 @@ const mutations = {
   },
   [FIELDS_FAILURE] (s, error) {
     return Object.assign(s, { [FIELDS_FAILURE]: error })
+  },
+  [LAST_OPENED_ROW_ID] (s, data) {
+    return Object.assign(s, { [LAST_OPENED_ROW_ID]: data })
   }
 }
 
@@ -104,6 +109,7 @@ const actions = {
       .then(() => {
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSION_DELETED, id)
+        commit(LAST_OPENED_ROW_ID, -1)
       })
   },
 
@@ -145,6 +151,7 @@ const actions = {
         commit(SUBMISSIONS_FAILURE, null)
         commit(SUBMISSION, item)
         commit(SUBMISSIONS_ADD, item)
+        commit(LAST_OPENED_ROW_ID, res.data.datasetId)
       })
       .catch((e) => {
         // If there's no 'datasetId' set, we don't add a 'fail' record on home page. Otherwise it would be undeletable.
@@ -157,6 +164,7 @@ const actions = {
         commit(SUBMISSIONS_FAILURE, e)
         commit(SUBMISSION, item)
         commit(SUBMISSIONS_ADD, item)
+        commit(LAST_OPENED_ROW_ID, e.response.data.datasetId)
       })
   },
   fetchDataset ({ commit }, id) {
@@ -175,6 +183,7 @@ const actions = {
         // Not sure about this, will this endpoint ever return more
         // than one result?
         commit(SUBMISSION, res.data[0])
+        commit(LAST_OPENED_ROW_ID, id)
       })
       .catch((e) => {
         commit(SUBMISSIONS_REQUEST, false)
@@ -256,7 +265,8 @@ const getters = {
   [SUBMISSIONS_LOADED]: s => s[SUBMISSIONS_LOADED],
   [FIELDS]: s => s[FIELDS],
   [FIELDS_REQUEST]: s => s[FIELDS_REQUEST],
-  [FIELDS_FAILURE]: s => s[FIELDS_FAILURE]
+  [FIELDS_FAILURE]: s => s[FIELDS_FAILURE],
+  [LAST_OPENED_ROW_ID]: s => s[LAST_OPENED_ROW_ID]
 }
 
 export default {
