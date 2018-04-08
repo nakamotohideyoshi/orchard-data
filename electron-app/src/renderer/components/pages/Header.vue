@@ -59,7 +59,7 @@ export default {
   computed: {
     ...mapGetters({
       lastOpendRowId: LAST_OPENED_ROW_ID,
-      submissions: SUBMISSIONS,
+      submissions: SUBMISSIONS
     })
   },
   name: 'app-header'
