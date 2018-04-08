@@ -35,7 +35,7 @@ describe('ReportSummaryQuality.vue', () => {
 
   it('should show no empty starts when 100%', () => {
     expect(wrapper.vm.percentage).to.equal('100.00')
-    expect(wrapper.vm.emptyStarts).to.equal(5)
+    expect(wrapper.vm.emptyStarts).to.equal(4)
     expect(wrapper.vm.filledStars).to.equal(0)
   })
 
@@ -48,14 +48,14 @@ describe('ReportSummaryQuality.vue', () => {
       }
     })
 
+    expect(wrapper.vm.emptyStarts).to.equal(4)
     expect(wrapper.vm.filledStars).to.equal(0)
-    expect(wrapper.vm.emptyStarts).to.equal(5)
   })
 
-  it('should show 3 full stars when 50%', () => {
+  it('should show 2 full stars when 50%', () => {
     reportSummary = {
       error_percent: 0.5,
-      error_stars: 3
+      error_stars: 2
     }
 
     wrapper = shallow(ReportSummaryQuality, {
@@ -66,13 +66,13 @@ describe('ReportSummaryQuality.vue', () => {
 
     expect(wrapper.vm.percentage).to.equal('50.00')
     expect(wrapper.vm.emptyStarts).to.equal(2)
-    expect(wrapper.vm.filledStars).to.equal(3)
+    expect(wrapper.vm.filledStars).to.equal(2)
   })
 
   it('should show no full stars when 0%', () => {
     reportSummary = {
       error_percent: 0,
-      error_stars: 5
+      error_stars: 4
     }
 
     wrapper = shallow(ReportSummaryQuality, {
@@ -83,6 +83,6 @@ describe('ReportSummaryQuality.vue', () => {
 
     expect(wrapper.vm.percentage).to.equal('0.00')
     expect(wrapper.vm.emptyStarts).to.equal(0)
-    expect(wrapper.vm.filledStars).to.equal(5)
+    expect(wrapper.vm.filledStars).to.equal(4)
   })
 })
