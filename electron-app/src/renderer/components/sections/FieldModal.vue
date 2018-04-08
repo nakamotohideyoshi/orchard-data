@@ -58,9 +58,9 @@ export default {
       if (
         this.filters &&
         this.filters[id] &&
-        this.filters[id].orchardDescription
+        this.filters[id].userExplanation
       ) {
-        return this.filters[id].orchardDescription
+        return this.filters[id].userExplanation
       }
 
       return 'N/A'
