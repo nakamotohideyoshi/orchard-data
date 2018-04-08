@@ -62,7 +62,13 @@ include ../pages/_mixins
         return 0
       },
       emptyStarts () {
-        return 5 - this.filledStars
+        const filledStars = this.filledStars
+
+        if (filledStars < 5) {
+          return 4 - filledStars
+        } else {
+          return 0;
+        }
       }
     }
   }
