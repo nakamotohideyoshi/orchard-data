@@ -1,5 +1,3 @@
-let config = require('config')
-
 // Below are genre info fetched from "Music, Music Video, and Ringtone Genre Codes 5.3":
 // https://itunespartner.apple.com/assets/downloads/Music_MusicVideo_Ringtone_Genre_Codes.xls
 
@@ -3053,7 +3051,7 @@ const ringtoneGenreCodes = [
 
 module.exports = {
   'DATABASE': (() => {
-    if (config.util.getEnv('NODE_ENV') === 'test') {
+    if (process.env.NODE_ENV === 'test') {
       return 'analysis-lib-test'
     }
 
