@@ -1,7 +1,7 @@
 {
   "name": "musical-turk",
   "version": "1.0.0",
-  "author": " Viva Data <info@vivadata.co>",
+  "author": "Viva Data <info@vivadata.co>",
   "description": "Tooling for curated data sets.",
   "private": true,
   "main": "./dist/electron/main.js",
