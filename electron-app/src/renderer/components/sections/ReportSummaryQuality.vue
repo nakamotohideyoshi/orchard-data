@@ -11,8 +11,11 @@ include ../pages/_mixins
             .failed(v-for="stars in emptyStarts")
                 +icon('ico-star-empty')
         .report__top-description Overall data quality
-    .report__top-col(v-if="duplicates_threshold !== null")
+    .report__top-col(v-if="duplicates_threshold !== null && duplicates_threshold <= 1")
         .report__top-percent {{duplicates_threshold}} %
+        .report__top-description Of ISRCs are duplicates
+    .report__top-col(v-else-if="duplicates_threshold !== null && duplicates_threshold > 1")
+        .report__top-percent-warning {{duplicates_threshold}} %
         .report__top-description Of ISRCs are duplicates
     .report__top-col(v-if="vacount_percent !== null")
         .report__top-percent {{vacount_percent}} %
