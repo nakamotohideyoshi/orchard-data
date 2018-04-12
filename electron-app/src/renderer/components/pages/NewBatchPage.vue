@@ -58,6 +58,9 @@ include _mixins
                       label Various Artists threshold
                       input(placeholder="Please input integers greater than -1" type="number" v-model="threshold2")
                     .ui-group
+                      label Track Count threshold
+                      input(placeholder="Please input integers greater than 0" type="number" v-model="threshold3")
+                    .ui-group
                       label Language
                       .ui-checkbox-row
                         .ui-checkbox
