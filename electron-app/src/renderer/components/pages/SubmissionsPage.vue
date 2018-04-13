@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     items () {
-      return this.$store.getters[SUBMISSIONS]
+      return this.$store.getters[SUBMISSIONS].reverse()
     },
     error () {
       return this.$store.getters[SUBMISSIONS_FAILURE]
