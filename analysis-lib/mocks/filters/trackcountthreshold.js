@@ -1,5 +1,5 @@
 module.exports = {
-  metadata: {
+  metadata: [{
     'source': '/data-tests/input-files/trackcountthreshold/test.tsv',
     'artist_blacklist': 'test',
     'keyword_blacklist': 'keywords',
@@ -9,8 +9,8 @@ module.exports = {
     'lang': 'en-US',
     'status': 1,
     'time': Date.now()
-  },
-  metadata1: {
+  }],
+  metadata1: [{
     'source': '/data-tests/input-files/trackcountthreshold/test.tsv',
     'artist_blacklist': 'test',
     'keyword_blacklist': 'keywords',
@@ -20,7 +20,7 @@ module.exports = {
     'lang': 'en-US',
     'status': 1,
     'time': Date.now()
-  },
+  }],
   albumWithTooManyTracks: [
     {
       'release_name': 'Death Party',
