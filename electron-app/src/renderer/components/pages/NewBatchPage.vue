@@ -114,6 +114,7 @@ export default {
       textareaMax: 1000,
       thresValue1: 0,
       thresValue2: 0,
+      thresValue3: 0,
       buttonDisabled: true,
       lang: 'en-US',
       dbData: {},
@@ -149,7 +150,7 @@ export default {
       }
       this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
       this.thresValue2 = parseFloat(this.threshold2)
-      this.thresValue3 = parseFloat(this.threshold3)
+      this.thresValue3 = parseInt(this.threshold3, 10)
       if (this.threshold1 === '') {
         this.thresValue1 = 0
       }
@@ -157,7 +158,7 @@ export default {
         this.thresValue2 = null
       }
       if (this.threshold3 === '') {
-        this.thresValue3 = null
+        // this.thresValue3 = null
       }
       if (this.thresValue1 > 100 || this.thresValue1 < 0 || isNaN(this.thresValue1)) {
         alert('Duplicates threshold must be between 0 and 100.')
@@ -167,7 +168,7 @@ export default {
         alert('Various Artists threshold must be greater than -1.')
         return
       }
-      if (this.thresValue3 < 1 || isNaN(this.thresValue3)) {
+      if (this.thresValue3 < 1) {
         alert('Track Count threshold must be greater than 0.')
         return
       }
@@ -179,7 +180,7 @@ export default {
         keyword_blacklist: this.keywordList,
         duplicates_threshold: this.thresValue1,
         various_artists_threshold: this.thresValue2,
-        track_count_threshold: this.threshold3,
+        track_count_threshold: this.thresValue3,
         lang: this.lang,
         status: 3,
         time: Date.now()
