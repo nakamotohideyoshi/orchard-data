@@ -620,7 +620,7 @@ module.exports = {
       'keyword_blacklist': 'keywords',
       'duplicates_threshold': 1,
       'various_artists_threshold': 0,
-      'track_count_threshold': 9,
+      'track_count_threshold': 1,
       'lang': 'en-US',
       'status': 1,
       'time': Date.now()
@@ -632,7 +632,7 @@ module.exports = {
       'keyword_blacklist': 'keywords',
       'duplicates_threshold': 1,
       'various_artists_threshold': 0,
-      'track_count_threshold': 9,
+      'track_count_threshold': 1,
       'lang': 'en-US',
       'status': 1,
       'time': Date.now()
