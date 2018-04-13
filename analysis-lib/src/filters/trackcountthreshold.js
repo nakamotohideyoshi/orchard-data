@@ -16,7 +16,7 @@ module.exports = function (dataset, metadata) {
   // if trackCountThreshold is defiend, then get trackCountThreshold.
   // if trackCountThreshold is undefiend, then set trackCountThreshold as -1.
 
-  const trackCountThreshold = metadata.track_count_threshold ? metadata.track_count_threshold : -1
+  const trackCountThreshold = metadata[0].track_count_threshold ? metadata[0].track_count_threshold : -1
 
   if (trackCountThreshold === -1) {
     // if trackCountThreshold is undefiend, exit the process
