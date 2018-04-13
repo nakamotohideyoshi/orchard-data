@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS dataset_meta (
   keyword_blacklist TEXT,
   duplicates_threshold INTEGER,
   various_artists_threshold INTEGER,
+  track_count_threshold INTEGER,
   lang text,
   status INTEGER,
   time INTEGER
