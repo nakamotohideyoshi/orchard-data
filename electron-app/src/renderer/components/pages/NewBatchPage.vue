@@ -109,6 +109,7 @@ export default {
       keywordList: '',
       threshold1: '',
       threshold2: '',
+      threshold3: '',
       btnClass: 'btn-disabled',
       textareaMax: 1000,
       thresValue1: 0,
@@ -148,11 +149,15 @@ export default {
       }
       this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
       this.thresValue2 = parseFloat(this.threshold2)
+      this.thresValue3 = parseFloat(this.threshold3)
       if (this.threshold1 === '') {
         this.thresValue1 = 0
       }
       if (this.threshold2 === '') {
         this.thresValue2 = null
+      }
+      if (this.threshold3 === '') {
+        this.thresValue3 = null
       }
       if (this.thresValue1 > 100 || this.thresValue1 < 0 || isNaN(this.thresValue1)) {
         alert('Duplicates threshold must be between 0 and 100.')
@@ -160,6 +165,10 @@ export default {
       }
       if (this.thresValue2 < 0 || isNaN(this.thresValue2)) {
         alert('Various Artists threshold must be greater than -1.')
+        return
+      }
+      if (this.thresValue3 < 1 || isNaN(this.thresValue3)) {
+        alert('Track Count threshold must be greater than 0.')
         return
       }
 
