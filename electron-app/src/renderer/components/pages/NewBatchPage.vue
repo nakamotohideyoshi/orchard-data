@@ -179,6 +179,7 @@ export default {
         keyword_blacklist: this.keywordList,
         duplicates_threshold: this.thresValue1,
         various_artists_threshold: this.thresValue2,
+        track_count_threshold: this.threshold3,
         lang: this.lang,
         status: 3,
         time: Date.now()
