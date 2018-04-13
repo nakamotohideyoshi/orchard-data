@@ -46,6 +46,8 @@ import moment from 'moment'
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
+import { API_URL } from '../../constants/config.js'
+
 export default {
   name: 'csv-page',
   components: {
@@ -66,7 +68,7 @@ export default {
     }
     */
     this.$http
-      .get('http://localhost:3000/dataset/' + this.id + '.tsv')
+      .get(API_URL + 'dataset/' + this.id + '.tsv')
       .then((res) => {
         this.batches = res.data
         this.headers = Object.keys(this.batches[0])
