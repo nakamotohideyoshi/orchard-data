@@ -449,23 +449,23 @@ router.get('/report-summary/:datasetId', async (req, res) => {
       // calculate error_stars
 
       if (report[0].error_risk_score < riskAVG - 0.5 * riskSTD) {
-        riskErrorStars = 1
-      } else if (report[0].error_risk_score < riskAVG) {
-        riskErrorStars = 2
-      } else if (report[0].error_risk_score < riskAVG + 0.5 * riskSTD) {
-        riskErrorStars = 3
-      } else {
         riskErrorStars = 4
+      } else if (report[0].error_risk_score < riskAVG) {
+        riskErrorStars = 3
+      } else if (report[0].error_risk_score < riskAVG + 0.5 * riskSTD) {
+        riskErrorStars = 2
+      } else {
+        riskErrorStars = 1
       }
 
       if (report[0].error_itunes_score < itunesAVG - 0.5 * itunesSTD) {
-        itunesErrorStars = 1
-      } else if (report[0].error_itunes_score < itunesAVG) {
-        itunesErrorStars = 2
-      } else if (report[0].error_itunes_score < itunesAVG + 0.5 * itunesSTD) {
-        itunesErrorStars = 3
-      } else {
         itunesErrorStars = 4
+      } else if (report[0].error_itunes_score < itunesAVG) {
+        itunesErrorStars = 3
+      } else if (report[0].error_itunes_score < itunesAVG + 0.5 * itunesSTD) {
+        itunesErrorStars = 2
+      } else {
+        itunesErrorStars = 1
       }
     }
 
