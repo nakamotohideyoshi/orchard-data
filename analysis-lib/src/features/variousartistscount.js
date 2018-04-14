@@ -31,21 +31,30 @@ module.exports = function (dataset) {
   }
   let count = 0
 
-  dataset.forEach((row) => {
-    const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english'
-    const primaryArtist = row['release_artists_primary_artist'] ? row['release_artists_primary_artist'].trim().toLowerCase() : ''
+  if (dataset.length !== 0) {
+    // if there is exist dataset, calcuate va-count.
 
-    const langPatterns = patterns[releaseLanguage]
+    const releaseLanguage = dataset[0]['release_meta_language'] ? dataset[0]['release_meta_language'].trim().toLowerCase() : 'english'
 
-    for (let i = 0; i < langPatterns.length; i++) {
-      let regExp = langPatterns[i]
+    if (releaseLanguage in patterns) {
+      // language support
 
-      if (primaryArtist.match(regExp)) {
-        count++
-        break
-      }
+      dataset.forEach((row) => {
+        const primaryArtist = row['release_artists_primary_artist'] ? row['release_artists_primary_artist'].trim().toLowerCase() : ''
+
+        const langPatterns = patterns[releaseLanguage]
+
+        for (let i = 0; i < langPatterns.length; i++) {
+          let regExp = langPatterns[i]
+
+          if (primaryArtist.match(regExp)) {
+            count++
+            break
+          }
+        }
+      })
     }
-  })
+  }
 
   return count / dataset.length
 }
