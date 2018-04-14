@@ -39,6 +39,8 @@ module.exports = function (row, idx) {
     'error_type': []
   }
 
+  if (!(releaseLanguage in patterns)) { return false }
+
   let isInvalid = false
   const langPatterns = patterns[releaseLanguage]
 

@@ -65,7 +65,7 @@ module.exports = function (dataset) {
   language = language ? language.trim().toLowerCase() : 'english'
 
   // language not supported
-  if (!(language in stopWords)) { return false }
+  if (!(language in stopWords)) { return occurrences }
 
   stopWords = stopWords[language]
 
