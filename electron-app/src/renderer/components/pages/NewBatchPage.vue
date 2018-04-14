@@ -58,6 +58,9 @@ include _mixins
                       label Various Artists threshold
                       input(placeholder="Please input integers greater than -1" type="number" v-model="threshold2")
                     .ui-group
+                      label Track Count threshold
+                      input(placeholder="Please input integers greater than 1" type="number" v-model="threshold3")
+                    .ui-group
                       label Language
                       .ui-checkbox-row
                         .ui-checkbox
@@ -106,10 +109,12 @@ export default {
       keywordList: '',
       threshold1: '',
       threshold2: '',
+      threshold3: '',
       btnClass: 'btn-disabled',
       textareaMax: 1000,
       thresValue1: 0,
       thresValue2: 0,
+      thresValue3: 0,
       buttonDisabled: true,
       lang: 'en-US',
       dbData: {},
@@ -145,11 +150,15 @@ export default {
       }
       this.thresValue1 = parseFloat(String(this.threshold1).replace('%', ''))
       this.thresValue2 = parseFloat(this.threshold2)
+      this.thresValue3 = parseInt(this.threshold3, 10)
       if (this.threshold1 === '') {
         this.thresValue1 = 0
       }
       if (this.threshold2 === '') {
         this.thresValue2 = null
+      }
+      if (this.threshold3 === '') {
+        // this.thresValue3 = null
       }
       if (this.thresValue1 > 100 || this.thresValue1 < 0 || isNaN(this.thresValue1)) {
         alert('Duplicates threshold must be between 0 and 100.')
@@ -157,6 +166,10 @@ export default {
       }
       if (this.thresValue2 < 0 || isNaN(this.thresValue2)) {
         alert('Various Artists threshold must be greater than -1.')
+        return
+      }
+      if (this.thresValue3 < 1) {
+        alert('Track Count threshold must be greater than 0.')
         return
       }
 
@@ -167,6 +180,7 @@ export default {
         keyword_blacklist: this.keywordList,
         duplicates_threshold: this.thresValue1,
         various_artists_threshold: this.thresValue2,
+        track_count_threshold: this.thresValue3,
         lang: this.lang,
         status: 3,
         time: Date.now()

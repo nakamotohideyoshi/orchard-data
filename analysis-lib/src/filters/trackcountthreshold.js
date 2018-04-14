@@ -6,31 +6,41 @@ const defaultExplanationId = 'default'
 
 /**
  * @param {Array} dataset
- * @param {number} trackCountThreshold
+ * @param {Object} metadata
  * @returns {Array}
  */
-module.exports = function (dataset, trackCountThreshold) {
+module.exports = function (dataset, metadata) {
   const occurrences = []
+  const field = 'track_no'
 
-  // Rule: It is an error if the value of the "Track No." field is greater than the track count threshold.
+  // if trackCountThreshold is defiend, then get trackCountThreshold.
+  // if trackCountThreshold is undefiend, then set trackCountThreshold as -1.
 
-  dataset.forEach((row, index) => {
-    if (row.hasOwnProperty('track_no') && row['track_no'].toString().length > 0) {
-      let trackNumber = parseInt(row['track_no'])
+  const trackCountThreshold = metadata[0].track_count_threshold ? metadata[0].track_count_threshold : -1
 
-      if (trackNumber > trackCountThreshold) {
-        let occurrence = {
-          'row_id': index + 1,
-          'field': ['track_no'],
-          'value': [row['track_no']],
-          'explanation_id': [defaultExplanationId],
-          'error_type': [defaultErrorType]
+  if (trackCountThreshold === -1) {
+    // if trackCountThreshold is undefiend, exit the process
+    return occurrences
+  } else {
+    // Rule: It is an error if the value of the "Track No." field is greater than the track count threshold.
+    dataset.forEach((row, index) => {
+      if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
+        let trackNumber = parseInt(row[field])
+
+        if (trackNumber > trackCountThreshold) {
+          let occurrence = {
+            'row_id': index + 1,
+            'field': [field],
+            'value': [row[field]],
+            'explanation_id': [defaultExplanationId],
+            'error_type': [defaultErrorType]
+          }
+
+          occurrences.push(occurrence)
         }
-
-        occurrences.push(occurrence)
       }
-    }
-  })
+    })
 
-  return occurrences
+    return occurrences
+  }
 }
