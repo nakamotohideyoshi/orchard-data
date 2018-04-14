@@ -34,6 +34,9 @@ include _mixins
                 label Various Artists threshold
                 input(v-bind:placeholder="item.various_artists_threshold" type="number" v-model="threshold2" :disabled="true")
             .ui-group
+                label Various Artists threshold
+                input(v-bind:placeholder="item.track_count_threshold" type="number" v-model="threshold3" :disabled="true")
+            .ui-group
                 label Language
                     .language(v-if="item.lang == 'en-US'") English
                     .language(v-if="item.lang == 'en-ES'") Spanish
@@ -75,6 +78,7 @@ export default {
       keywordList: '',
       threshold1: '',
       threshold2: '',
+      threshold3: '',
       lang: ''
     }
   },
