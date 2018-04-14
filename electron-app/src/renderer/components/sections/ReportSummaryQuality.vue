@@ -70,7 +70,7 @@ include ../pages/_mixins
         if (filledStars < 5) {
           return 4 - filledStars
         } else {
-          return 0;
+          return 0
         }
       }
     }
