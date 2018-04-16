@@ -64,7 +64,8 @@ export default {
   },
   computed: {
     items () {
-      return this.$store.getters[SUBMISSIONS].reverse()
+      let submissions = JSON.parse(JSON.stringify(this.$store.getters[SUBMISSIONS]))
+      return submissions.reverse()
     },
     error () {
       return this.$store.getters[SUBMISSIONS_FAILURE]
