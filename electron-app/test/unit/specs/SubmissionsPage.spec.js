@@ -33,8 +33,8 @@ describe('SubmissionsPage.vue', () => {
   it('should render the proper status text based on the status', () => {
     const tableRows = wrapper.find('.p-table__status')
 
-    expect(tableRows[0].text()).to.equal('Success')
+    expect(tableRows[0].text()).to.equal('In Progress')
     expect(tableRows[1].text()).to.equal('Fail')
-    expect(tableRows[2].text()).to.equal('In Progress')
+    expect(tableRows[2].text()).to.equal('Success')
   })
 })
