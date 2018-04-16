@@ -71,6 +71,7 @@
     "file2html-dsv": "^0.4.0",
     "moment": "^2.20.1",
     "node-pre-gyp": "^0.6.39",
+    "portscanner": "^2.1.1",
     "sinon": "^4.3.0",
     "sqlite3": "^3.1.13",
     "targz": "^1.0.1",
