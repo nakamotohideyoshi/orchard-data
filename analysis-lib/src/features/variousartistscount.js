@@ -34,12 +34,12 @@ module.exports = function (dataset) {
   if (dataset.length !== 0) {
     // if there is exist dataset, calcuate va-count.
 
-    const releaseLanguage = dataset[0]['release_meta_language'] ? dataset[0]['release_meta_language'].trim().toLowerCase() : 'english'
+    dataset.forEach((row) => {
+      const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english'
 
-    if (releaseLanguage in patterns) {
-      // language support
+      if (releaseLanguage in patterns) {
+        // language support
 
-      dataset.forEach((row) => {
         const primaryArtist = row['release_artists_primary_artist'] ? row['release_artists_primary_artist'].trim().toLowerCase() : ''
 
         const langPatterns = patterns[releaseLanguage]
@@ -52,8 +52,8 @@ module.exports = function (dataset) {
             break
           }
         }
-      })
-    }
+      }
+    })
   }
 
   return count / dataset.length
