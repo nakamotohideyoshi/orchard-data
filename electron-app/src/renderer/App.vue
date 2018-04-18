@@ -42,7 +42,6 @@ export default {
 
     this.retryingConnectionInterval = setInterval(() => {
       if (this.error) {
-        console.log('retrying connection to server')
         this.retry()
       }
     }, 200)
