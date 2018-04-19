@@ -13,6 +13,11 @@ dbInterface.init()
 // reportUtils
 let reportUtils = analysisLibModule.reportUtils
 
+// Confirm to the front-end that this server is from Musical Turk.
+router.get('/is-musical-turk', (req, res) => {
+  res.status(200).type('text/plain').send('is-musical-turk')
+})
+
 // Fetch a TSV dataset
 router.get('/dataset/:datasetId.tsv', (req, res) => {
   let datasetId = req.params.datasetId
