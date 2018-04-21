@@ -185,9 +185,9 @@ export default {
         status: 3,
         time: Date.now()
       }
-      this.$router.push(`/report-progress`)
+      // this.$router.push(`/report-progress`)
       await this.$store.dispatch('submitDataset', datasetMeta)
-      if (!this.error && this.item) this.$router.push(`/report/${this.item.rowid}`)
+      if (!this.error && this.item) this.$router.push(`/submissions`)
       else this.$router.push(`/report-error`)
     },
     processFile: function (event) {
