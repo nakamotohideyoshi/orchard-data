@@ -38,6 +38,8 @@ router.post('/dataset', async (req, res) => {
     const { datasetId } = await dbInterface.saveDatasetMeta(data)
     currentDatasetId = datasetId
 
+    await dbInterface.updateDatasetStatus(currentDatasetId, 3)
+
     console.log('***** Done *****\n')
 
     res.status(201).json({ status: 'OK', datasetId: datasetId })
