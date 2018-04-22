@@ -55,14 +55,19 @@ import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
 import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import difference from 'lodash/difference'
 
 export default {
   name: 'SubmissionsPage',
   methods: {
-    ...mapActions(['deleteSubmission'])
+    ...mapActions(['deleteSubmission']),
+    goToSummary(submissionRowId) {
+      this.$router.push({path: `/report/${submissionRowId}`})
+    }
   },
   computed: {
+    ...mapGetters({pendingSubmissions: 'PENDING_SUBMISSIONS'}),
     items () {
       let submissions = JSON.parse(JSON.stringify(this.$store.getters[SUBMISSIONS]))
       return submissions.reverse()
@@ -74,6 +79,17 @@ export default {
       return this.$store.getters[SUBMISSIONS_REQUEST]
     }
   },
+
+  watch: {
+    pendingSubmissions (newList, oldList) {
+      // get what was removed from the old list, meaning that that is the one item whose status changed
+      const updatedSubmissionRowId = difference(oldList, newList)
+      if (updatedSubmissionRowId.length) {
+        this.goToSummary(updatedSubmissionRowId[0])
+      }
+    }
+  },
+
   components: {
     AppHeader,
     AppFooter
