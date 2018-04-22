@@ -38,7 +38,12 @@ router.post('/dataset', async (req, res) => {
     const { datasetId } = await dbInterface.saveDatasetMeta(data)
     currentDatasetId = datasetId
 
+    await dbInterface.updateDatasetStatus(currentDatasetId, 3)
+
     console.log('***** Done *****\n')
+
+    res.status(201).json({ status: 'OK', datasetId: datasetId })
+
     console.log('***** Saving Tsv File *****')
 
     await dbInterface.saveTsvIntoDB(data.source, datasetId)
@@ -85,8 +90,6 @@ router.post('/dataset', async (req, res) => {
 
     console.log('***** Done *****\n')
     console.log('***** FINISHED *****\n')
-
-    res.status(201).json({ status: 'OK', datasetId: datasetId })
   } catch (err) {
     console.log('***** Updating Dataset Status "Failed" *****\n')
 

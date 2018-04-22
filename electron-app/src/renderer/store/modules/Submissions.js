@@ -12,7 +12,8 @@ import {
   FIELDS_FAILURE,
   FIELDS_REQUEST,
   LAST_OPENED_ROW_ID,
-  SUBMISSION_DELETED
+  SUBMISSION_DELETED,
+  UPDATE_SUBMISSION
 } from '@/constants/types'
 import {
   API_URL
@@ -72,6 +73,13 @@ const mutations = {
     return Object.assign(s, {
       [SUBMISSIONS]: s[SUBMISSIONS].concat(newSubmission)
     })
+  },
+  [UPDATE_SUBMISSION] (state, updatedSubmission) {
+    const submissionId = updatedSubmission.rowid
+    // find the index of updated submission (based on its ID)
+    const targetIndex = state[SUBMISSIONS].findIndex(submission => submission.rowid === submissionId)
+    // remove the old submission data and insert the new one at the same index
+    state[SUBMISSIONS].splice(targetIndex, 1, updatedSubmission)
   },
   [SUBMISSION_TSV] (s, tsv) {
     return Object.assign(s, { [SUBMISSION_TSV]: tsv })
@@ -133,7 +141,7 @@ const actions = {
         commit(SUBMISSIONS_LOADED, true)
       })
   },
-  submitDataset ({ commit }, data) {
+  submitDataset ({ commit, dispatch, state }, data) {
     commit(SUBMISSIONS_REQUEST, true)
     commit(SUBMISSIONS_FAILURE, false) // RESET IN CASE OF A RE-TRY
 
@@ -146,7 +154,7 @@ const actions = {
         }
       })
       .then((res) => {
-        const item = { ...data, status: 1, rowid: res.data.datasetId }
+        const item = { ...data, status: 3, rowid: res.data.datasetId }
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, null)
         commit(SUBMISSION, item)
@@ -166,6 +174,23 @@ const actions = {
         commit(SUBMISSIONS_ADD, item)
         commit(LAST_OPENED_ROW_ID, e.response.data.datasetId)
       })
+      .finally(() => {
+        dispatch('pollSubmissions', state[LAST_OPENED_ROW_ID])
+      })
+  },
+  pollSubmissions ({commit}, datasetId) {
+    const RECHECK_INTERVAL = 3 * 1000 // three seconds
+
+    const intervalTimerId = window.setInterval(async () => {
+      const dataset = (await axios.get(`${API_URL}dataset-meta/${datasetId}`)).data[0]
+
+      if (dataset.status !== 3) {
+        // once the status is no longer 'in-progress', cancel the timer and save the changes to the store
+        window.clearTimeout(intervalTimerId)
+        commit(UPDATE_SUBMISSION, dataset)
+      }
+    }, RECHECK_INTERVAL)
+
   },
   fetchDataset ({ commit }, id) {
     commit(SUBMISSIONS_REQUEST, true)
@@ -266,7 +291,16 @@ const getters = {
   [FIELDS]: s => s[FIELDS],
   [FIELDS_REQUEST]: s => s[FIELDS_REQUEST],
   [FIELDS_FAILURE]: s => s[FIELDS_FAILURE],
-  [LAST_OPENED_ROW_ID]: s => s[LAST_OPENED_ROW_ID]
+  [LAST_OPENED_ROW_ID]: s => s[LAST_OPENED_ROW_ID],
+  'PENDING_SUBMISSIONS' (state) {
+    let pendingList = state[SUBMISSIONS].filter(submission => submission.status === 3) || []
+
+    if (pendingList.length) {
+      pendingList = pendingList.map(submission => submission.rowid)
+    }
+
+    return pendingList
+  }
 }
 
 export default {
