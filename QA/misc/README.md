@@ -7,7 +7,10 @@
   * Throws a false-positive language-detection error "The value of the meta should match the language of the metadata, not the audio."
 
 * column-headers.tsv
-  * Dataless file with only the header row. This is a null case which should be processable with no errors.
+  * Dataless file with only the header row. This should go to the error page in the front end. See ticket 238 (https://gitlab.com/vivadata/orchard-data-tests/issues/238)
+
+* zero-bytes.tsv
+    * Empty file . This should go to the error page in the front end. See ticket 238 (https://gitlab.com/vivadata/orchard-data-tests/issues/238)  
 
 * metalanguage-japanese.tsv
   * In this data file Release Metadata Language is "japanese." In error 237 (https://gitlab.com/vivadata/orchard-data-tests/issues/217) (now fixed) that would crash the app. This file was designed to test what happens with a completely unsupported language.
