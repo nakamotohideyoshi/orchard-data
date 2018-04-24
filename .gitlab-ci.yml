@@ -8,16 +8,15 @@ before_script:
   - cd ..
   - cd electron-app
   - npm install
-  - cd ..
 
-#only:
-#    refs:
-#      - master
+only:
+  refs:
+    - master
+    - 232-continuous-deployment
 
 build:windows:
   image: electronuserland/builder:wine
   script:
-    - cd electron-app
     - npm run build:windows
   artifacts:
     paths:
@@ -27,17 +26,15 @@ build:windows:
 build:mac:
   image: electronuserland/builder
   script:
-    - cd electron-app
     - npm run build:mac
   artifacts:
     paths:
-    - electron-app/build/Musical Turk-1.0.0-mac.tar.gz
+    - electron-app/build/Musical Turk-1.0.0-mac.zip
     expire_in: 1 week
 
 build:linux:
   image: electronuserland/builder
   script:
-    - cd electron-app
     - npm run build:linux
   artifacts:
     paths:
