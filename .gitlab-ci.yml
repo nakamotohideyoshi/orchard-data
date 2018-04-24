@@ -1,0 +1,46 @@
+image: electronuserland/builder
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - cd analysis-lib
+  - npm install
+  - mkdir db
+  - sqlite3 db/analysis-lib.db < ./src/db-scripts/tables/reset-tables.sql
+  - cd ..
+  - cd electron-app
+  - npm install
+
+build:windows:
+  image: electronuserland/builder:wine
+  script:
+    - npm run build:windows
+  artifacts:
+    paths:
+    - electron-app/build/Musical Turk Setup *.exe
+    expire_in: 1 week
+  only:
+    refs:
+      - master
+
+build:mac:
+  script:
+    - npm run build:mac
+  artifacts:
+    paths:
+    - electron-app/build/Musical Turk-*-mac.zip
+    expire_in: 1 week
+  only:
+    refs:
+      - master
+
+build:linux:
+  script:
+    - npm run build:linux
+  artifacts:
+    paths:
+    - electron-app/build/musical-turk.tar.gz
+    expire_in: 1 week
+  only:
+    refs:
+      - master
