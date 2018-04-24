@@ -22,7 +22,6 @@ build:windows:
   only:
     refs:
       - master
-      - 232-continuous-deployment
 
 build:mac:
   script:
@@ -34,7 +33,6 @@ build:mac:
   only:
     refs:
       - master
-      - 232-continuous-deployment
 
 build:linux:
   script:
@@ -46,4 +44,3 @@ build:linux:
   only:
     refs:
       - master
-      - 232-continuous-deployment
