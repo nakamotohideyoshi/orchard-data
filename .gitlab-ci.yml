@@ -15,7 +15,7 @@ before_script:
 #      - master
 
 build:windows:
-  image: jzvelc/electron-builder-wine
+  image: electronuserland/builder:wine
   script:
 #    - add-apt-repository ppa:ubuntu-wine/ppa
 #    - apt-get update -qq
