@@ -1,5 +1,3 @@
-image: electronuserland/builder
-
 before_script:
   - apt-get update -qq
   - apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
@@ -12,7 +10,12 @@ before_script:
   - npm install
   - cd ..
 
+#only:
+#    refs:
+#      - master
+
 build:windows:
+  image: jzvelc/electron-builder-wine
   script:
 #    - add-apt-repository ppa:ubuntu-wine/ppa
 #    - apt-get update -qq
@@ -20,13 +23,16 @@ build:windows:
     - cd electron-app
     - npm run build:windows
 
-build:mac:
-  script:
-    - cd electron-app
-    - npm run build:mac
+#We already know mac build is running fine, so we area leaving this out while fixing windows builds.
+#build:mac:
+#  image: electronuserland/builder
+#  script:
+#    - cd electron-app
+#    - npm run build:mac
 
-#We already know linux build is running fine, so we area leaving this out while fixing mac/windows builds.
+#We already know linux build is running fine, so we area leaving this out while fixing windows builds.
 #build:linux:
+#  image: electronuserland/builder
 #  script:
 #    - cd electron-app
 #    - npm run build:linux
