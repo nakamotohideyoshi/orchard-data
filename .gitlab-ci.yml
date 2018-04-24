@@ -13,15 +13,16 @@ before_script:
 
 build:windows:
   script:
+    - apt-get install -y apt-utils zip python2.7 python2.7-dev wine1.8 wine32 mono-devel
     - cd electron-app
-    - npm run build:windows
+    - npm run build:windows-dir
 
 build:mac:
   script:
     - cd electron-app
-    - npm run build:mac
+    - npm run build:mac-dir
 
 build:linux:
   script:
     - cd electron-app
-    - npm run build:linux
+    - npm run build:linux-dir
