@@ -1,7 +1,8 @@
 image: electronuserland/builder
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - apt-get update -qq
+  - apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
   - cd analysis-lib
   - npm install
   - mkdir db
@@ -13,16 +14,18 @@ before_script:
 
 build:windows:
   script:
-    - apt-get install -y apt-utils zip python2.7 python2.7-dev wine1.8 wine32 mono-devel
+    - add-apt-repository ppa:ubuntu-wine/ppa
+    - apt-get update -qq
+    - apt-get install -y wine1.8 wine32 mono-devel
     - cd electron-app
     - npm run build:windows-dir
 
 build:mac:
   script:
     - cd electron-app
-    - npm run build:mac-dir
+    - npm run build:mac
 
 build:linux:
   script:
     - cd electron-app
-    - npm run build:linux-dir
+    - npm run build:linux
