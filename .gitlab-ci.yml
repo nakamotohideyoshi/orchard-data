@@ -1,0 +1,27 @@
+image: electronuserland/builder
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - cd analysis-lib
+  - npm install
+  - mkdir db
+  - sqlite3 db/analysis-lib.db < ./src/db-scripts/tables/reset-tables.sql
+  - cd ..
+  - cd electron-app
+  - npm install
+  - cd ..
+
+build:windows:
+  script:
+    - cd electron-app
+    - npm run build:windows
+
+build:mac:
+  script:
+    - cd electron-app
+    - npm run build:mac
+
+build:linux:
+  script:
+    - cd electron-app
+    - npm run build:linux
