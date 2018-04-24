@@ -13,7 +13,7 @@
     "build:all-platforms": "node .electron-vue/build.js && electron-builder --mac && electron-builder --win && electron-builder --linux && node .electron-vue/after-build-electron.js",
     "build:all-platforms-dir": "node .electron-vue/build.js && electron-builder --mac --dir && electron-builder --win --dir && electron-builder --linux --dir && node .electron-vue/after-build-electron.js",
     "build:windows": "node .electron-vue/build.js && electron-builder --win && node .electron-vue/after-build-electron.js",
-    "build:mac": "node .electron-vue/build.js && electron-builder --mac && node .electron-vue/after-build-electron.js",
+    "build:mac": "node .electron-vue/build.js && electron-builder --mac tar.gz && node .electron-vue/after-build-electron.js",
     "build:linux": "node .electron-vue/build.js electron-builder --linux && node .electron-vue/after-build-electron.js",
     "build:windows-dir": "node .electron-vue/build.js && electron-builder --win --dir",
     "build:mac-dir": "node .electron-vue/build.js && electron-builder --mac --dir",

@@ -14,18 +14,19 @@ before_script:
 
 build:windows:
   script:
-    - add-apt-repository ppa:ubuntu-wine/ppa
-    - apt-get update -qq
-    - apt-get install -y wine1.8 wine32 mono-devel
+#    - add-apt-repository ppa:ubuntu-wine/ppa
+#    - apt-get update -qq
+#    - apt-get install -y wine1.8 wine32 mono-devel
     - cd electron-app
-    - npm run build:windows-dir
+    - npm run build:windows
 
 build:mac:
   script:
     - cd electron-app
     - npm run build:mac
 
-build:linux:
-  script:
-    - cd electron-app
-    - npm run build:linux
+#We already know linux build is running fine, so we area leaving this out while fixing mac/windows builds.
+#build:linux:
+#  script:
+#    - cd electron-app
+#    - npm run build:linux
