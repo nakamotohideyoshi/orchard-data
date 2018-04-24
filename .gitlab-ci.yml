@@ -17,22 +17,29 @@ before_script:
 build:windows:
   image: electronuserland/builder:wine
   script:
-#    - add-apt-repository ppa:ubuntu-wine/ppa
-#    - apt-get update -qq
-#    - apt-get install -y wine1.8 wine32 mono-devel
     - cd electron-app
     - npm run build:windows
+  artifacts:
+    paths:
+    - electron-app/build/Musical Turk Setup 1.0.0.exe
+    expire_in: 1 week
 
-#We already know mac build is running fine, so we area leaving this out while fixing windows builds.
-#build:mac:
-#  image: electronuserland/builder
-#  script:
-#    - cd electron-app
-#    - npm run build:mac
+build:mac:
+  image: electronuserland/builder
+  script:
+    - cd electron-app
+    - npm run build:mac
+  artifacts:
+    paths:
+    - electron-app/build/Musical Turk-1.0.0-mac.tar.gz
+    expire_in: 1 week
 
-#We already know linux build is running fine, so we area leaving this out while fixing windows builds.
-#build:linux:
-#  image: electronuserland/builder
-#  script:
-#    - cd electron-app
-#    - npm run build:linux
+build:linux:
+  image: electronuserland/builder
+  script:
+    - cd electron-app
+    - npm run build:linux
+  artifacts:
+    paths:
+    - electron-app/build/musical-turk.tar.gz
+    expire_in: 1 week
