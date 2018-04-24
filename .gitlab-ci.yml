@@ -17,7 +17,7 @@ build:windows:
     - npm run build:windows
   artifacts:
     paths:
-    - electron-app/build/Musical Turk Setup 1.0.0.exe
+    - electron-app/build/Musical Turk Setup *.exe
     expire_in: 1 week
   only:
     refs:
@@ -29,7 +29,7 @@ build:mac:
     - npm run build:mac
   artifacts:
     paths:
-    - electron-app/build/Musical Turk-1.0.0-mac.zip
+    - electron-app/build/Musical Turk-*-mac.zip
     expire_in: 1 week
   only:
     refs:
