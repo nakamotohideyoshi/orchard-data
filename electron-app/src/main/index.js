@@ -1,9 +1,10 @@
 'use strict'
 
-import {app, BrowserWindow} from 'electron'
+import {app, BrowserWindow, dialog} from 'electron'
 import {execFile} from 'child_process'
 import {existsSync} from 'fs'
 import path from 'path'
+import {platform} from 'os'
 
 let apiNodeInstance = null
 
@@ -39,6 +40,21 @@ async function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  if (platform() === 'win32') {
+    mainWindow.webContents.session.on('will-download', (event, downloadItem) => {
+      var fileName = dialog.showSaveDialog({
+        defaultPath: `musical-turk-report-${new Date().valueOf()}.tsv`,
+        filters: [{ name: 'Excel', extensions: ['tsv'] }]
+      })
+
+      if (typeof fileName === 'undefined') {
+        downloadItem.cancel()
+      } else {
+        downloadItem.setSavePath(fileName)
+      }
+    })
+  }
 }
 
 /**
