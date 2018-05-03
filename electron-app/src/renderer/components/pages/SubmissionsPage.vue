@@ -54,7 +54,7 @@
 import AppHeader from './Header.vue'
 import AppFooter from './Footer.vue'
 
-import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST } from '@/constants/types'
+import { SUBMISSIONS, SUBMISSIONS_FAILURE, SUBMISSIONS_REQUEST, PENDING_SUBMISSIONS } from '@/constants/types'
 import { mapActions, mapGetters } from 'vuex'
 import difference from 'lodash/difference'
 
@@ -62,21 +62,20 @@ export default {
   name: 'SubmissionsPage',
   methods: {
     ...mapActions(['deleteSubmission']),
-    goToSummary(submissionRowId) {
+    goToSummary (submissionRowId) {
       this.$router.push({path: `/report/${submissionRowId}`})
     }
   },
   computed: {
-    ...mapGetters({pendingSubmissions: 'PENDING_SUBMISSIONS'}),
+    ...mapGetters({
+      pendingSubmissions: PENDING_SUBMISSIONS,
+      error: SUBMISSIONS_FAILURE,
+      loading: SUBMISSIONS_REQUEST,
+      submissions: SUBMISSIONS
+    }),
     items () {
       let submissions = JSON.parse(JSON.stringify(this.$store.getters[SUBMISSIONS]))
       return submissions.reverse()
-    },
-    error () {
-      return this.$store.getters[SUBMISSIONS_FAILURE]
-    },
-    loading () {
-      return this.$store.getters[SUBMISSIONS_REQUEST]
     }
   },
 
