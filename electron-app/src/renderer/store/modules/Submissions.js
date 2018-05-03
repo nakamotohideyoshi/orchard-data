@@ -13,7 +13,8 @@ import {
   FIELDS_REQUEST,
   LAST_OPENED_ROW_ID,
   SUBMISSION_DELETED,
-  UPDATE_SUBMISSION
+  UPDATE_SUBMISSION,
+  PENDING_SUBMISSIONS
 } from '@/constants/types'
 import {
   API_URL
@@ -190,7 +191,6 @@ const actions = {
         commit(UPDATE_SUBMISSION, dataset)
       }
     }, RECHECK_INTERVAL)
-
   },
   fetchDataset ({ commit }, id) {
     commit(SUBMISSIONS_REQUEST, true)
@@ -292,7 +292,7 @@ const getters = {
   [FIELDS_REQUEST]: s => s[FIELDS_REQUEST],
   [FIELDS_FAILURE]: s => s[FIELDS_FAILURE],
   [LAST_OPENED_ROW_ID]: s => s[LAST_OPENED_ROW_ID],
-  'PENDING_SUBMISSIONS' (state) {
+  [PENDING_SUBMISSIONS] (state) {
     let pendingList = state[SUBMISSIONS].filter(submission => submission.status === 3) || []
 
     if (pendingList.length) {
