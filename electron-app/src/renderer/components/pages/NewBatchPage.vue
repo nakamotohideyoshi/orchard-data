@@ -17,7 +17,8 @@ include _mixins
                   span Submissions
 
                 // upload form
-                form.p-box.upload(action="#" @submit.prevent="submitForm")
+                form.p-box.upload(action="#" @submit.prevent="submitForm" :class="{'no-pointer-events': loading}")
+
                   .upload__title
                     +icon('ico-upload')
                     h1 Upload new dataset
@@ -76,10 +77,14 @@ include _mixins
                           label(for="cb_1")
                             span Brazilian Portugese
                     // CTA
+
                     .upload__cta
                       .ui-group__text--red(v-if="error") {{ error.response.data.message }}
-                      button(type="submit" v-bind:disabled="buttonDisabled" v-bind:class="btnClass").btn.btn--filled
-                        span Start Testing
+                      transition(name="fade" mode="out-in")
+                        button(type="submit" v-bind:class="btnClass" key="upload" v-if="!loading").btn.btn--filled
+                          span Start Testing
+                        .ui-spinner.left(v-else key="spinner") Processing Dataset...
+
     block footer
       AppFooter
 </template>
@@ -88,7 +93,7 @@ include _mixins
 // TODO: Use absolute paths when possible
 import AppHeader from '@/components/pages/Header.vue'
 import AppFooter from '@/components/pages/Footer.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import {
   SUBMISSION,
   SUBMISSIONS_REQUEST,
@@ -128,9 +133,9 @@ export default {
       loading: SUBMISSIONS_REQUEST,
       item: SUBMISSION
     })
-
   },
   methods: {
+    ...mapActions(['submitDataset']),
     countdownArtistList: function (evt) {
       if (this.artistList.length >= this.textareaMax) {
         evt.preventDefault()
@@ -186,7 +191,7 @@ export default {
         time: Date.now()
       }
       // this.$router.push(`/report-progress`)
-      await this.$store.dispatch('submitDataset', datasetMeta)
+      await this.submitDataset(datasetMeta)
       if (!this.error && this.item) this.$router.push(`/submissions`)
       else this.$router.push(`/report-error`)
     },
