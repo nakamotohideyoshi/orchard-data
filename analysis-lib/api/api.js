@@ -21,13 +21,17 @@ router.get('/is-musical-turk', (req, res) => {
 // Fetch a TSV dataset
 router.get('/dataset/:datasetId.tsv', (req, res) => {
   let datasetId = req.params.datasetId
+  let datasetSize = 0
   res.type('text/tab-separated-values')
 
-  dbInterface.fetchTsvDataset(datasetId)
-    .then(rows => res.status(200).send(rows))
+  dbInterface
+    .getDatasetSize(datasetId)
+
+  // dbInterface.fetchTsvDataset(datasetId)
+  //   .then(rows => res.status(200).send(rows))
 })
 
-// Sava TSV and run test cases
+// Save TSV and run test cases
 router.post('/dataset', async (req, res) => {
   const data = req.body
   let currentDatasetId
