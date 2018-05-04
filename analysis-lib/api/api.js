@@ -26,9 +26,21 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
 
   dbInterface
     .getDatasetSize(datasetId)
-
-  // dbInterface.fetchTsvDataset(datasetId)
-  //   .then(rows => res.status(200).send(rows))
+    .then(result => {
+      datasetSize = result
+      return Promise.resolve(datasetSize)
+    })
+    .then(() => dbInterface.fetchFieldByFieldReport(datasetId, 'itunes'))
+    .then(report => {
+      return new Promise((resolve, reject) => {
+        try {
+          let RBRReport = reportUtils.rowByRow(report, datasetSize)
+          resolve(reportUtils.rowByRowToTsv(RBRReport))
+        } catch (err) { reject(err) }
+      })
+    })
+    .then(result => res.send(result))
+    .catch(err => res.status(500).send(err))
 })
 
 // Save TSV and run test cases
