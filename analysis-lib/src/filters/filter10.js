@@ -79,8 +79,10 @@ module.exports = function (row, idx) {
     if (value) {
       value = removeDiacritics(value).trim().toLowerCase()
 
-      // artist appears on release or
-      if (value.split('-')[0].search(trackArtist) !== -1) {
+      // It is an error if a release name or track title is prefixed with the track artist's name and a hyphen.
+      let valueHasHyphen = value.indexOf('-') !== -1
+      let valueBeforeHyphenIsTheArtistName = value.split('-')[0].indexOf(trackArtist) !== -1
+      if (valueHasHyphen && valueBeforeHyphenIsTheArtistName) {
         occurrence.field.push(field)
         occurrence.value.push(row[field])
         occurrence.explanation_id.push(defaultExplanationId)
