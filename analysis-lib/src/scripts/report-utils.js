@@ -4,6 +4,12 @@ module.exports = {
 
   'datasetByrow': function (dataset, datasetSize) {
     const TSVdataset = {}
+    let header = []
+    if (datasetSize !== 0) {
+      header.push('rowID')
+      header = header.concat(Object.keys(dataset[0]).map(key => key))
+    }
+    console.log(header)
 
     for (let i = 1; i <= datasetSize; i++) {
       TSVdataset[i] = dataset[i - 1]
