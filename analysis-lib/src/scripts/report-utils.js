@@ -2,6 +2,16 @@ const stats = require('stats-analysis')
 
 module.exports = {
 
+  'datasetByrow': function (dataset, datasetSize) {
+    const TSVdataset = {}
+
+    for (let i = 1; i <= datasetSize; i++) {
+      TSVdataset[i] = dataset[i - 1]
+      TSVdataset[i].rowID = i
+    }
+    return TSVdataset
+  },
+
   'rowByRow': function (report, datasetSize, category) {
     const filtersMeta = require('../filters/filters-meta')
 
