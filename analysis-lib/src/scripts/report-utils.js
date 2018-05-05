@@ -4,18 +4,21 @@ module.exports = {
 
   'datasetByrow': function (dataset, datasetSize) {
     const TSVdataset = {}
-    let header = []
+    let headers = []
     if (datasetSize !== 0) {
-      header.push('rowID')
-      header = header.concat(Object.keys(dataset[0]).map(key => key))
+      headers.push('rowID')
+      headers = headers.concat(Object.keys(dataset[0]).map(key => key))
     }
-    console.log(header)
+    console.log(headers)
+
+    let tsv = headers.join('\t')
+    tsv += '\n'
 
     for (let i = 1; i <= datasetSize; i++) {
       TSVdataset[i] = dataset[i - 1]
       TSVdataset[i].rowID = i
     }
-    return TSVdataset
+    return tsv
   },
 
   'rowByRow': function (report, datasetSize, category) {
