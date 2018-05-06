@@ -15,10 +15,13 @@ module.exports = {
     tsv += '\n'
 
     for (let i = 1; i <= datasetSize; i++) {
-      TSVdataset[i] = dataset[i - 1]
-      TSVdataset[i].rowID = i
+      const obj1 = {
+        'rowID': i
+      }
+      const obj2 = dataset[ i - 1 ]
+      TSVdataset[i] = Object.assign(obj1, obj2)
     }
-    return tsv
+    return TSVdataset
   },
 
   'rowByRow': function (report, datasetSize, category) {
