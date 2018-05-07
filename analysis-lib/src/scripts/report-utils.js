@@ -3,21 +3,25 @@ const stats = require('stats-analysis')
 module.exports = {
 
   'datasetByrow': function (dataset, datasetSize) {
-    let TSVdataset = {}
     let headers = []
+
+    // Generate Headers
     if (datasetSize !== 0) {
       headers.push('rowID')
       headers = headers.concat(Object.keys(dataset[0]).map(key => key))
     }
 
+    // Convert headers to TSV
     let tsv = headers.join('\t')
     tsv += '\n'
 
+    // Convert dataset to TSV
     for (let i = 1; i <= datasetSize; i++) {
-      TSVdataset = Object.assign({'rowID': i}, dataset[ i - 1 ])
+      // Add rowID
+      const data = Object.assign({'rowID': i}, dataset[ i - 1 ])
+      const values = Object.keys(data).map(key => data[key])
 
-      const values = Object.keys(TSVdataset).map(key => TSVdataset[key])
-
+      // Mount TSV tsv
       tsv += values.join('\t')
       tsv += '\n'
     }
