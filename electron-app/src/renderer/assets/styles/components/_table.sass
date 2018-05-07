@@ -161,3 +161,12 @@
       display: none
     &.small-only
       display: table
+
+.p-table.p-table--fixed
+  table-layout: fixed
+  thead tr td,
+  tbody tr td
+    &:first-child
+      width: auto
+    &.count
+      width: 150px

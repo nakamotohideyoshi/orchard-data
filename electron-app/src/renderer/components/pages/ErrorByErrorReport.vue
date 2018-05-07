@@ -2,11 +2,11 @@
 include _mixins
 .report-summary__container
     // table
-    table.p-table.p-table--full(js-stacktable v-if="items.length")
+    table.p-table.p-table--full.p-table--fixed(js-stacktable v-if="items.length")
         thead
             tr
-                td Explanation
-                td
+                td.explanation Explanation
+                td.count
                     a(@click.prevent="toggleSort('count')" href="#") Count
 
         tbody
