@@ -33,7 +33,7 @@ include _mixins
                       .uploader()
                         .uploader__btn
                           label Select the dataset file
-                            input(type="file" id="file" name="file" accept=".tsv" v-on:change="processFile")
+                            input(type="file" id="file" name="file" accept=".xls,.xlsx,.tsv" v-on:change="processFile")
                           span {{fileName}}
 
                         .uploader__current
