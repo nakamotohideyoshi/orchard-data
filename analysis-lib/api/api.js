@@ -13,6 +13,9 @@ dbInterface.init()
 // reportUtils
 let reportUtils = analysisLibModule.reportUtils
 
+// datasetUtils
+let datasetUtils = analysisLibModule.datasetUtils
+
 // Confirm to the front-end that this server is from Musical Turk.
 router.get('/is-musical-turk', (req, res) => {
   res.status(200).type('text/plain').send('is-musical-turk')
@@ -42,9 +45,6 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
     })
     .then(result => res.send(result))
     .catch(err => res.status(500).send(err))
-
-    // dbInterface.fetchTsvDataset(datasetId)
-    // .then(rows => res.status(200).send(rows))
 })
 
 // Save TSV and run test cases
