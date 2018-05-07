@@ -61,7 +61,8 @@
     "pkg": "^4.3.1",
     "require-all": "^2.2.0",
     "sqlite": "^2.9.1",
-    "stats-analysis": "^2.0.0"
+    "stats-analysis": "^2.0.0",
+    "xlsx": "^0.12.11"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
