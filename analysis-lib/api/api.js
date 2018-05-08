@@ -37,9 +37,8 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
     .then(dataset => {
       return new Promise((resolve, reject) => {
         try {
-          let TSVdataset = reportUtils.datasetByrow(dataset, datasetSize)
+          let TSVdataset = datasetUtils.datasetToTSV(dataset, datasetSize)
           resolve(TSVdataset)
-          // resolve(reportUtils.rowByRowToTsv(RBRReport))
         } catch (err) { reject(err) }
       })
     })
