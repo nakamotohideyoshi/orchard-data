@@ -197,6 +197,10 @@ export default {
     },
     processFile: function (event) {
       this.file = event.target.files[0]
+      if (this.file.size === 0) {
+        alert("The file you've selected is empty, please, select another file.")
+        return
+      }
       this.fileName = this.file.name
       this.filePath = this.file.path
       this.buttonDisabled = false
