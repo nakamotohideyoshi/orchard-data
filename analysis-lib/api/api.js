@@ -42,26 +42,35 @@ router.post('/dataset', async (req, res) => {
 
     console.log('***** Done *****\n')
 
-    res.status(201).json({ status: 'OK', datasetId: datasetId })
+    res.status(201).json({ status: 'OK', datasetId: currentDatasetId })
+  } catch (err) {
+    console.log('***** Updating Dataset Status "Failed" *****\n')
 
+    await dbInterface.updateDatasetStatus(currentDatasetId, 2)
+    console.log('***** Done *****\n')
+
+    res.status(500).json({ title: err.name, detail: err.message, datasetId: currentDatasetId })
+  }
+
+  try {
     console.log('***** Saving Tsv File *****')
 
-    await dbInterface.saveTsvIntoDB(data.source, datasetId)
+    await dbInterface.saveTsvIntoDB(data.source, currentDatasetId)
 
     console.log('***** Done *****\n')
     console.log('***** Running all Filters *****')
 
-    const report = await analysisLibModule.runAllFilters(datasetId)
+    const report = await analysisLibModule.runAllFilters(currentDatasetId)
 
     console.log('***** Done *****\n')
     console.log('***** Various Artists count *****')
 
-    const vaCount = await analysisLibModule.runVACount(datasetId)
+    const vaCount = await analysisLibModule.runVACount(currentDatasetId)
 
     console.log('***** Done *****\n')
     console.log('***** Calculate Duplicates Threshold *****')
 
-    const duplicatesThreshold = await analysisLibModule.runDuplicatesThreshold(datasetId, data.source)
+    const duplicatesThreshold = await analysisLibModule.runDuplicatesThreshold(currentDatasetId, data.source)
 
     console.log('***** Done *****\n')
     console.log('***** Calculating Field by Field Report *****')
@@ -86,7 +95,7 @@ router.post('/dataset', async (req, res) => {
     console.log('***** Done *****\n')
     console.log('***** Updating Dataset Status "Success" *****\n')
 
-    await dbInterface.updateDatasetStatus(datasetId, 1)
+    await dbInterface.updateDatasetStatus(currentDatasetId, 1)
 
     console.log('***** Done *****\n')
     console.log('***** FINISHED *****\n')
@@ -95,8 +104,6 @@ router.post('/dataset', async (req, res) => {
 
     await dbInterface.updateDatasetStatus(currentDatasetId, 2)
     console.log('***** Done *****\n')
-
-    res.status(500).json({ title: err.name, detail: err.message, datasetId: currentDatasetId })
   }
 })
 
