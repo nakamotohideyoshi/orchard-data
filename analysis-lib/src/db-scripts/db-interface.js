@@ -278,6 +278,18 @@ module.exports = function () {
     return dbPromise
   }
 
+  this.fetchTsvSegment = function (datasetId, rowId, padding) {
+    let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
+    const set = (padding * 2) + 1
+    const offset = rowId > padding ? rowId - padding : padding - rowId
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => db.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}' LIMIT '${set}' OFFSET '${offset}'`))
+
+    return dbPromise
+  }
+
   this.datasetColumnsDictionary = function () {
     const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
     const fieldsDict = orchardTable['columns_dict']
