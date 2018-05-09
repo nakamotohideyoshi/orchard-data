@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     show (data, index) {
-      // console.log(data, 'data', this.$modal)
       this.$modal.show('field-modal', {
         ...data,
         fieldByFieldRowId: index + 1,
