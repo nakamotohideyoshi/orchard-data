@@ -42,7 +42,7 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
         } catch (err) { reject(err) }
       })
     })
-    .then(result => res.send(result))
+    .then(result => res.status(200).send(result))
     .catch(err => res.status(500).send(err))
 })
 
