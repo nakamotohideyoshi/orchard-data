@@ -45,7 +45,7 @@ export default {
       return window.parseInt(this.$route.params.highlightRowId, 10) || undefined
     },
     keys () {
-      return !_.isEmpty(this.data) ? _.keys(this.data[0]) : []
+      return !_.isEmpty(this.data) ? _.chain(this.data[0]).omit(['dataset_id', 'rowid']).keys().value() : []
     }
   },
   async created () {
@@ -53,7 +53,7 @@ export default {
     await this.fetchTSVSegment({ id, highlightRowId })
 
     // if a particular row is to be highlighted, then scroll down to it so it is in view
-    if (this.highlightRowId !== undefined) {
+    if (this.highlightRowId && this.data.length > 15) {
       const targetRow = document.getElementsByClassName('highlight')[0]
       const scrollPos = targetRow.offsetTop / 2
 
