@@ -42,7 +42,7 @@ router.get('/dataset/:datasetId.tsv', (req, res) => {
         } catch (err) { reject(err) }
       })
     })
-    .then(result => datasetSize !== 0 ? res.status(200).send(result) : res.status(400).send('No DataSet!'))
+    .then(result => res.status(200).send(result))
     .catch(err => res.status(500).send(err))
 })
 
