@@ -21,7 +21,7 @@ describe('should test API', function () {
     _interface = new DbInterface()
     _interface.init()
 
-    _interface.saveTsvIntoDB(mocks['getDataset']['tsvFile'])
+    _interface.saveTsvIntoDB(mocks['getDataset']['tsvFile'], 1)
       .then(() => done())
   })
 
