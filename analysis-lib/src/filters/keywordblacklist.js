@@ -20,9 +20,14 @@ module.exports = async function (row, idx, metadata) {
     'explanation_id': [],
     'error_type': []
   }
+
+  if (metadata[0]) {
+    metadata = metadata[0] // TODO: Fix this workaround. Metadata should never come as array.
+  }
+
   if (metadata['keyword_blacklist']) {
     // keywordblkacklist spilt with ' '
-    const blacklistkeywords = metadata['keyword_blacklist'].trim().toLowerCase().split(' ')
+    const blacklistkeywords = metadata['keyword_blacklist'].trim().toLowerCase().replace('\r\n', '\n').split('\n')
 
     const result = await new Promise(async (resolve) => {
       let isblacklistMatch = false
