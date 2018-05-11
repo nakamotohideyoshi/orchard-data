@@ -41,14 +41,14 @@ describe('should test API', function () {
       })
   })
 
-  it('should test dataset/:datasetId - returns an empty array', (done) => {
+  it('should test dataset/:datasetId - returns an empty tsv', (done) => {
     request(server)
       .get('/dataset/-1.tsv')
       .end((err, res) => {
         if (err) {}
 
-        const response = JSON.parse(res.text)
-        expect(response).to.be.an('array').that.is.empty('Reason: Array should be empty')
+        const response = res.text
+        expect(response).to.be.an('string').that.is.empty('Reason: response should be empty')
 
         expect(res).to.have.status(200)
 
