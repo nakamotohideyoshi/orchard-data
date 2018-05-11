@@ -10,12 +10,14 @@ chai.use(dirtyChai)
 const mocks = require('../../mocks/api/api')
 
 const DbInterface = require('../../src/db-scripts/db-interface')
+let fs = require('fs')
 
 describe('should test API', function () {
   this.timeout(10000)
 
   let _interface
   const server = 'http://localhost:3000'
+  const dataPath = mocks['getDataset']['dataset']
 
   before((done) => {
     _interface = new DbInterface()
@@ -31,12 +33,15 @@ describe('should test API', function () {
       .end((err, res) => {
         if (err) {}
 
-        const dataset = mocks['getDataset']['dataset'].sort((a, b) => a['track_no'] - b['track_no'])
-        const response = JSON.parse(res.text).sort((a, b) => a['track_no'] - b['track_no'])
+        let dataset = ''
+        if (fs.existsSync(dataPath)) {
+          dataset = fs.readFileSync(dataPath, { encoding: 'utf-8' })
+        }
+
+        const response = res.text
 
         expect(res).to.have.status(200)
-
-        response.forEach((row, idx) => expect(row).to.be.an('object').that.include(dataset[idx]))
+        expect(response).to.be.equal(dataset)
         done()
       })
   })
