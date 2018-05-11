@@ -13,6 +13,10 @@ const defaultExplanationId = 'default'
 module.exports = function (dataset, metadata) {
   const occurrences = []
 
+  if (metadata[0]) {
+    metadata = metadata[0] // TODO: Fix this workaround. Metadata should never come as array.
+  }
+
   // Convert duplicatesThreshold into fraction (percentage) by dividing it by 100.
   let duplicatesThreshold = metadata.duplicates_threshold ? (metadata.duplicates_threshold / 100) : 0
 
