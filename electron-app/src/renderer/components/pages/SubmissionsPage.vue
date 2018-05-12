@@ -84,7 +84,10 @@ export default {
       // get what was removed from the old list, meaning that that is the one item whose status changed
       const updatedSubmissionRowId = difference(oldList, newList)
       if (updatedSubmissionRowId.length) {
-        this.goToSummary(updatedSubmissionRowId[0])
+        if( 2 == this.$store.getters["SUBMISSIONS"][updatedSubmissionRowId[0]-1].status )
+          this.$router.push({path: `/report-error`});
+        else
+          this.goToSummary(updatedSubmissionRowId[0])
       }
     }
   },
