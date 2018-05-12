@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "posting new dataset..."
+
+# you'll need to adjust this path. It must be absolute.
+DATASET=/Users/lucasgonze/Downloads/src/7/orchard-data-tests/QA/release-metalanguage/bug-236-language-detection.tsv
+
+# you'll need to manually insert DATASET into this command
+# caution: you'll need to adjust the path to the dataset. It must be an absolute reference on your own system
+JSON=`curl 'http://localhost:3000/dataset' -H 'Content-Type: application/json' -H 'Accept: application/json, text/plain, */*' -H 'Referer: http://localhost:9080/' --data-binary '{"source":"/Users/lucasgonze/Downloads/src/7/orchard-data-tests/QA/release-metalanguage/bug-236-language-detection.tsv","artist_blacklist":"","keyword_blacklist":"","duplicates_threshold":0,"various_artists_threshold":null,"track_count_threshold":null,"lang":"en-US","status":3,"time":1526140443209}'`
+
+datasetID=`echo "$JSON" | jq \.datasetId`
+
+echo "leaving time for processing..."
+sleep 3
+
+curl http://localhost:3000/field-by-field/itunes/$datasetID | jq
