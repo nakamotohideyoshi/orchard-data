@@ -29,7 +29,7 @@ module.exports = {
     'orchardDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
     'programmerDescription': `Release name must not be generic (e.g., 00s Best Hits)`,
     'userExplanation': `Release name must not be generic (e.g., 00s Best Hits)`,
-    'category': 'risk',
+    'category': 'Risk',
     'type': 'warning',
     'basis': 'row',
     'explanations': {
@@ -64,7 +64,7 @@ module.exports = {
     'programmerDescription': `It is a warning if "Release Artist(s)-Primary Artist(s)" contains any of the following: Yoga, Workout, Meditation, Baby, Christmas, Top Hits, Chorus, Orchestra, Singer, or Cast`,
     'userExplanation': `Generic artists (such as such as Yoga, Workout, Meditation, Baby, Christmas, Top Hits, Chorus, Orchestra, or Singer) are not accepted.
     `,
-    'category': 'iTunes',
+    'category': 'Risk',
     'type': 'warning',
     'basis': 'row',
     'explanations': {
@@ -263,7 +263,7 @@ module.exports = {
 
     `,
     'userExplanation': `If the album title contains "Live", each track must also.`,
-    'category': 'risk',
+    'category': 'Risk',
     'type': 'warning',
     'basis': 'row',
     'explanations': {
@@ -587,7 +587,7 @@ module.exports = {
     'orchardDescription': `Low diversity of tracks across catalog: what percentage (and how many) tracks within a respect catalog have matching ISRC code(s) shall be determined.`,
     'programmerDescription': `
       - If the threshold parameter passed in the REST call is a floating point, that is fine.
-      - Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the total number of tracks. 
+      - Let the duplicates ratio be the number of ISRCs which appear in more than one track divided by the total number of tracks.
       - Let exceeded be true if the duplicates ratio is equal to or greater than the value selected by the user
       - The REST API for the report summary should be extended to carry the duplicates ratio, the gross number of duplicates, and the exceeded flag.
     `,
@@ -603,7 +603,7 @@ module.exports = {
   'albummatchesartist': {
     'orchardDescription': `The Tool shall flag any and all content wherein the album and artist name are matching`,
     'programmerDescription': `
-      - It is an error for release name to be the same as artist name. 
+      - It is an error for release name to be the same as artist name.
       - The string match is case-insensitive
       - A substring match is not an error
       - This test applies to every row in a matching release, so one with 10 tracks will have 10 errors
