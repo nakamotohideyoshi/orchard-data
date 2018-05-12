@@ -1,3 +1,5 @@
+/* eslint prefer-promise-reject-errors: off */
+
 'use strict'
 
 module.exports = function () {
@@ -36,7 +38,7 @@ module.exports = function () {
       .then(db => {
         // Raw Fields
         const tsvFields = Object.keys(tsvFile[0])
-        // const numberOfFields = tsvFields.length
+        const numberOfFields = tsvFields.length
 
         // Filters are maped to datavase columns
         const fields = ['dataset_id']
@@ -45,39 +47,37 @@ module.exports = function () {
           if (key in fieldsDict) { fields.push(fieldsDict[key]) } else { warnings.push(`Field "${key}" does not exist on ${orchardTable.name}'s columns_dict`) }
         })
 
-        /* We'll let this commented for now. TSV files can have extra fields
-         *
-          // Checks if TSV has missing or extra fields
-          console.log("***** Checking Number of Fields *****\n");
-          if(numberOfFields !== 52) {
+        // Checks if TSV has missing or extra fields
+        console.log('***** Checking Number of Fields *****\n')
+        if (numberOfFields < 52 || numberOfFields > 53) {
+          console.log('Field count error when trying to upload TSV', numberOfFields, '\n')
 
-            console.log("Error when trying to upload TSV\n");
+          return Promise.reject({
+            'thrower': 'saveTsvIntoDB',
+            'row_id': -1,
+            'error': new Error(`Invalid number of fields: ${numberOfFields}`)
+          })
+        }
+
+        // Checks if some field is undefined
+        /*
+        console.log("***** Checking for undefined fields *****\n");
+        let offset = numberOfFields == 52 ? 0 : 1;
+        for(let i = offset; i < fields.length; i++) {
+
+          let field = fields[i];
+
+          if(typeof(field) === 'undefined') {
 
             return Promise.reject({
               "thrower": "saveTsvIntoDB",
               "row_id": -1,
-              "error": new Error(`Invalid number of fields: ${numberOfFields}`)
+              "error": new Error(`Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`)
             });
 
           }
 
-          // Checks if some field is undefined
-          console.log("***** Checking for undefined fields *****\n");
-          for(let i = 0; i < fields.length; i++) {
-
-            let field = fields[i];
-
-            if(typeof(field) === 'undefined') {
-
-              return Promise.reject({
-                "thrower": "saveTsvIntoDB",
-                "row_id": -1,
-                "error": new Error(`Field "${tsvFields[i - 1]}" does not exist under table ${orchardTable.name} columns. Check db-info.js file.`)
-              });
-
-            }
-
-          }
+        }
         */
 
         return Promise.map(tsvFile, (row, idx) => {
