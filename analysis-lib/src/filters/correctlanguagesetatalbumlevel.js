@@ -59,7 +59,11 @@ module.exports = async function (row, idx) {
       }
     }
 
-    if (occurrence.field.length > 0) {
+    // stubbing out this filter until it doesn't stink
+    // Fixes https://gitlab.com/vivadata/orchard-data-tests/issues/236
+    /* eslint no-constant-condition: off */
+    console.log('*** Filter correctlanguagesetatalbumlevel stubbed out ***')
+    if (false && occurrence.field.length > 0) {
       resolve(occurrence)
     } else {
       resolve(false)
