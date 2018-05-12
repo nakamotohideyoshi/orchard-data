@@ -16,6 +16,7 @@ let runDuplicatesThreshold = require('./src/scripts/run-duplicatesthreshold')
 let constants = require('./src/scripts/constants')
 let IO = require('./src/scripts/IO-module')
 let reportUtils = require('./src/scripts/report-utils')
+let datasetUtils = require('./src/scripts/dataset-utils')
 
 // Main scripts
 
@@ -33,6 +34,7 @@ module.exports = {
   'runDuplicatesThreshold': runDuplicatesThreshold,
   'constants': constants,
   'IO': IO,
-  'reportUtils': reportUtils
+  'reportUtils': reportUtils,
+  'datasetUtils': datasetUtils
 
 }

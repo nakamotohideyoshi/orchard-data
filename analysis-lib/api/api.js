@@ -13,6 +13,9 @@ dbInterface.init()
 // reportUtils
 let reportUtils = analysisLibModule.reportUtils
 
+// datasetUtils
+let datasetUtils = analysisLibModule.datasetUtils
+
 // Confirm to the front-end that this server is from Musical Turk.
 router.get('/is-musical-turk', (req, res) => {
   res.status(200).type('text/plain').send('is-musical-turk')
@@ -21,13 +24,29 @@ router.get('/is-musical-turk', (req, res) => {
 // Fetch a TSV dataset
 router.get('/dataset/:datasetId.tsv', (req, res) => {
   let datasetId = req.params.datasetId
+  let datasetSize = 0
   res.type('text/tab-separated-values')
 
-  dbInterface.fetchTsvDataset(datasetId)
-    .then(rows => res.status(200).send(rows))
+  dbInterface
+    .getDatasetSize(datasetId)
+    .then(result => {
+      datasetSize = result
+      return Promise.resolve(datasetSize)
+    })
+    .then(() => dbInterface.fetchTsvDataset(datasetId))
+    .then(dataset => {
+      return new Promise((resolve, reject) => {
+        try {
+          let TSVdataset = datasetUtils.datasetToTSV(dataset, datasetSize)
+          resolve(TSVdataset)
+        } catch (err) { reject(err) }
+      })
+    })
+    .then(result => res.status(200).send(result))
+    .catch(err => res.status(500).send(err))
 })
 
-// Sava TSV and run test cases
+// Save TSV and run test cases
 router.post('/dataset', async (req, res) => {
   const data = req.body
   let currentDatasetId

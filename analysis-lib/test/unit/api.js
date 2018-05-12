@@ -10,18 +10,20 @@ chai.use(dirtyChai)
 const mocks = require('../../mocks/api/api')
 
 const DbInterface = require('../../src/db-scripts/db-interface')
+let fs = require('fs')
 
 describe('should test API', function () {
   this.timeout(10000)
 
   let _interface
   const server = 'http://localhost:3000'
+  const dataPath = mocks['getDataset']['dataset']
 
   before((done) => {
     _interface = new DbInterface()
     _interface.init()
 
-    _interface.saveTsvIntoDB(mocks['getDataset']['tsvFile'])
+    _interface.saveTsvIntoDB(mocks['getDataset']['tsvFile'], 1)
       .then(() => done())
   })
 
@@ -31,24 +33,27 @@ describe('should test API', function () {
       .end((err, res) => {
         if (err) {}
 
-        const dataset = mocks['getDataset']['dataset'].sort((a, b) => a['track_no'] - b['track_no'])
-        const response = JSON.parse(res.text).sort((a, b) => a['track_no'] - b['track_no'])
+        let dataset = ''
+        if (fs.existsSync(dataPath)) {
+          dataset = fs.readFileSync(dataPath, { encoding: 'utf-8' })
+        }
+
+        const response = res.text
 
         expect(res).to.have.status(200)
-
-        response.forEach((row, idx) => expect(row).to.be.an('object').that.include(dataset[idx]))
+        expect(response).to.be.equal(dataset)
         done()
       })
   })
 
-  it('should test dataset/:datasetId - returns an empty array', (done) => {
+  it('should test dataset/:datasetId - returns an empty tsv', (done) => {
     request(server)
       .get('/dataset/-1.tsv')
       .end((err, res) => {
         if (err) {}
 
-        const response = JSON.parse(res.text)
-        expect(response).to.be.an('array').that.is.empty('Reason: Array should be empty')
+        const response = res.text
+        expect(response).to.be.an('string').that.is.empty('Reason: response should be empty')
 
         expect(res).to.have.status(200)
 
