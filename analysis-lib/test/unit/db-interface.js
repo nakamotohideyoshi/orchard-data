@@ -11,7 +11,7 @@ describe('should test database interface utilities', function () {
   let _interface
   let request
 
-  this.timeout(50000)
+  this.timeout(10000)
 
   before(() => {
     _interface = new DbInterface()
