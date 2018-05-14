@@ -22,6 +22,7 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
+    "postinstall:deps": "electron-builder install-app-deps",
     "postinstall": "electron-builder install-app-deps",
     "rebuild": "electron-rebuild -f -w sqlite3",
     "package-win": "electron-packager . --overwrite --platform=win32 --arch=x64 --icon=build/icons/icon.ico"
