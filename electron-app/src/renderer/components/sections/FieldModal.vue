@@ -19,7 +19,7 @@ modal.modal(
     .description ID: {{field.name}}
     .description VALUE: {{field.value}}
   .btn-group
-    button(v-on:click="openTsv(batchId, datasetRowId)").btn.btn-view-detail View Row
+    button(v-on:click="openTsv(batchId, tsvRowId)").btn.btn-view-detail View Row
     button(v-on:click="showParams()").btn.btn-view-detail View Test Parameters
 </template>
 
@@ -47,6 +47,9 @@ export default {
     },
     batchId () {
       return this.item && this.item.batchId
+    },
+    tsvRowId () {
+      return this.item && this.item.tsvRowId
     }
   },
   methods: {
