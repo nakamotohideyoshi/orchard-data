@@ -50,6 +50,7 @@ module.exports = function (dataset, metadata) {
     if (row.hasOwnProperty('isrc') && row['isrc'].length > 0 && duplicatedISRC.indexOf(row['isrc']) > -1) {
       const occurrence = {
         'row_id': index + 1,
+        'dataset_row_id': row.rowid,
         'field': ['isrc'],
         'value': [row['isrc']],
         'explanation_id': [defaultExplanationId],
