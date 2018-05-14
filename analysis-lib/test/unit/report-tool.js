@@ -37,6 +37,7 @@ describe('should test report tool', () => {
 
     occurrenceReport['1'] = {
       'row_id': 1,
+      'dataset_row_id': 1,
       'fields': ['release_name'],
       'values': ['A value'],
       'explanations_ids': [-1],
@@ -48,6 +49,7 @@ describe('should test report tool', () => {
 
     occurrenceReport['2'] = {
       'row_id': 2,
+      'dataset_row_id': 2,
       'fields': ['track_name'],
       'values': ['Another value'],
       'explanations_ids': [1],
@@ -58,6 +60,7 @@ describe('should test report tool', () => {
     assert.deepEqual(report.filters[filter]['occurs_on'], occurrenceReport)
     occurrenceReport['3'] = {
       'row_id': 3,
+      'dataset_row_id': 3,
       'fields': ['release_name', 'track_name'],
       'values': ['A value', 'Another value'],
       'explanations_ids': [1, -1],
