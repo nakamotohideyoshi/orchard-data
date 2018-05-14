@@ -33,6 +33,15 @@ router.get('/dataset/:datasetId/:rowId.tsv', (req, res) => {
 
 router.get('/dataset/:datasetId.tsv', (req, res) => {
   let datasetId = req.params.datasetId
+  let rowId = req.params.rowId
+  res.type('text/tab-separated-values')
+
+  dbInterface.fetchTsvSegment(datasetId, rowId, 15)
+    .then(rows => res.status(200).send(rows))
+})
+
+router.get('/dataset/:datasetId.tsv', (req, res) => {
+  let datasetId = req.params.datasetId
   let datasetSize = 0
   res.type('text/tab-separated-values')
 
