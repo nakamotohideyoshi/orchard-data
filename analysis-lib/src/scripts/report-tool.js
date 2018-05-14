@@ -67,6 +67,7 @@ function ReportModule () {
     if (!rowOccurrence) {
       rowOccurrence = {
         'row_id': rowId,
+        'dataset_row_id': occurrence.dataset_row_id,
         'fields': [],
         'values': [],
         'explanations_ids': [],
@@ -247,6 +248,7 @@ function ReportModule () {
       let values = {
         'dataset_id': this.datasetId,
         'criteria_id': filterId,
+        'dataset_row_id': occurrence['dataset_row_id'],
         'test_data_row_id': occurrence['row_id'],
         'test_data_field_ids': JSON.stringify(occurrence['fields']),
         'test_data_field_values': JSON.stringify(occurrence['values']),
