@@ -156,6 +156,7 @@ module.exports = {
       const occurrence = {
         'size': datasetSize,
         'criteria': row['criteria_id'],
+        'tsvRowId': row['dataset_row_id'],
         'id': row['test_data_row_id'],
         'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] })),
         'errors': errors

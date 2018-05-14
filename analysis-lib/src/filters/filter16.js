@@ -75,6 +75,7 @@ module.exports = function (dataset) {
   dataset.forEach((row, idx) => {
     const occurrence = {
       'row_id': idx + 1,
+      'dataset_row_id': row.rowid,
       'field': [],
       'value': [],
       'explanation_id': [],
