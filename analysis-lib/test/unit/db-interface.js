@@ -143,6 +143,38 @@ describe('should test database interface utilities', function () {
       })
   })
 
+  it('should save tsv in order', async () => {
+    const mock = mocks['saveTsvOrder']['tsvFile']
+
+    request = await _interface.saveTsvIntoDB(mock, 999)
+    const saved = await _interface.fetchTsvDataset(999)
+
+    // deletes dataset_id key
+    for (const idx in saved) {
+      const obj = saved[idx]
+      delete obj.dataset_id
+      saved[idx] = obj
+    }
+
+    assert.deepEqual(saved, mocks['saveTsvOrder']['saved'])
+  })
+
+  it('should save tsv in order 2', async () => {
+    const mock = mocks['saveTsvOrder']['tsvFile2']
+
+    request = await _interface.saveTsvIntoDB(mock, 998)
+    const saved = await _interface.fetchTsvDataset(998)
+
+    // deletes dataset_id key
+    for (const idx in saved) {
+      const obj = saved[idx]
+      delete obj.dataset_id
+      saved[idx] = obj
+    }
+
+    assert.deepEqual(saved, mocks['saveTsvOrder']['saved2'])
+  })
+
   /*
   it('should return database size', (done) => {
 
