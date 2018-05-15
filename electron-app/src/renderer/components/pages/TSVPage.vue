@@ -9,11 +9,7 @@ include _mixins
 
     tbody
       tr(v-for="(item, i) in data", :id="`row-${ i }`", :class="{highlight: isHighlightedRow(item.rowid)}")
-<<<<<<< HEAD
         td {{ item.index }}
-=======
-        td {{ i+1 }}
->>>>>>> a14d9032197bff3362552433636325b81f1020f9
         td(v-for="k in keys") {{ item[k] }}
 </template>
 
