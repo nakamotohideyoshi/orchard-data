@@ -9,7 +9,7 @@ include _mixins
 
     tbody
       tr(v-for="(item, i) in data", :id="`row-${ i }`", :class="{highlight: isHighlightedRow(item.rowid)}")
-        td {{ i+1 }}
+        td {{ item.index }}
         td(v-for="k in keys") {{ item[k] }}
 </template>
 
@@ -35,9 +35,29 @@ export default {
     ...mapGetters({
       loading: SUBMISSIONS_REQUEST,
       error: SUBMISSIONS_FAILURE,
-      data: SUBMISSION_TSV,
+      items: SUBMISSION_TSV,
       columns: DATASET_COLUMNS
     }),
+    data () {
+      let items = this.items
+
+      // Check the row in dataset argument and sync the row id with it
+      if (items && items.length) {
+        let { rowid } = this.$route.query
+        let index = items.findIndex(x => x.rowid === this.highlightRowId)
+
+        if (rowid) {
+          rowid = parseInt(rowid, 10)
+          items = items.map((i) => {
+            const item = { index: rowid - index, ...i }
+            index = index - 1
+            return item
+          })
+        }
+      }
+
+      return items
+    },
     id () {
       return this.$route.params.id
     },
@@ -45,7 +65,7 @@ export default {
       return window.parseInt(this.$route.params.highlightRowId, 10) || undefined
     },
     keys () {
-      return !_.isEmpty(this.data) ? _.chain(this.data[0]).omit(['dataset_id', 'rowid']).keys().value() : []
+      return !_.isEmpty(this.data) ? _.chain(this.data[0]).omit(['dataset_id', 'rowid', 'index']).keys().value() : []
     }
   },
   async created () {
