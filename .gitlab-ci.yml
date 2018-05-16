@@ -3,7 +3,7 @@ image: electronuserland/builder
 before_script:
   - apt-get update -qq
   - apt-get install -y -qq sqlite3 libsqlite3-dev
-  - export NVM_DIR="$PWD/.nvm" && (git clone https://github.com/creationix/nvm.git "$NVM_DIR"; cd "$NVM_DIR"; git pull; git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`) && \. "$NVM_DIR/nvm.sh"
+  - export NVM_DIR="$PWD/.nvm" && (git clone https://github.com/creationix/nvm.git "$NVM_DIR"; cd "$NVM_DIR"; git fetch; git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`) && \. "$NVM_DIR/nvm.sh"
   - nvm install --lts --latest-npm
   - npm config --global set cache "$PWD/.npm"
   - cd analysis-lib
@@ -33,7 +33,6 @@ build:windows:
   only:
     refs:
       - master
-      - 291-fix-gitlab-pipelines
 
 build:mac:
   script:
@@ -45,7 +44,6 @@ build:mac:
   only:
     refs:
       - master
-      - 291-fix-gitlab-pipelines
 
 build:linux:
   script:
@@ -57,5 +55,3 @@ build:linux:
   only:
     refs:
       - master
-      - 291-fix-gitlab-pipelines
-
