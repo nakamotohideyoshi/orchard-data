@@ -58,3 +58,4 @@ build:linux:
     refs:
       - master
       - 291-fix-gitlab-pipelines
+
