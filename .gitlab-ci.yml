@@ -30,6 +30,7 @@ build:windows:
   only:
     refs:
       - master
+      - 291-fix-gitlab-pipelines
 
 build:mac:
   script:
@@ -41,6 +42,7 @@ build:mac:
   only:
     refs:
       - master
+      - 291-fix-gitlab-pipelines
 
 build:linux:
   script:
