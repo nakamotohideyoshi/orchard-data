@@ -153,6 +153,7 @@ describe('should test database interface utilities', function () {
     for (const idx in saved) {
       const obj = saved[idx]
       delete obj.dataset_id
+      delete obj.rowid
       saved[idx] = obj
     }
 
@@ -169,6 +170,7 @@ describe('should test database interface utilities', function () {
     for (const idx in saved) {
       const obj = saved[idx]
       delete obj.dataset_id
+      delete obj.rowid
       saved[idx] = obj
     }
 
