@@ -246,7 +246,34 @@ module.exports = function () {
 
     let dbPromise = Promise.resolve()
       .then(() => sqlite.open(this.dbPath, { Promise }))
-      .then(db => db.all(`SELECT * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`))
+      .then(db => db.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`))
+
+    return dbPromise
+  }
+
+  this.fetchTsvSegment = function (datasetId, rowId, padding) {
+    let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
+    let sets = []
+    let dbRef
+
+    let dbPromise = Promise.resolve()
+      .then(() => sqlite.open(this.dbPath, { Promise }))
+      .then(db => {
+        dbRef = db
+        return dbRef.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}' AND rowId < '${rowId}' LIMIT '${padding}'`)
+      })
+      .then(found => {
+        sets = sets.concat(found)
+        return dbRef.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}' AND rowId = '${rowId}'`)
+      })
+      .then(found => {
+        sets = sets.concat(found)
+        return dbRef.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}' AND rowId > '${rowId}' LIMIT '${padding}'`)
+      })
+      .then(found => {
+        sets = sets.concat(found)
+        return sets
+      })
 
     return dbPromise
   }

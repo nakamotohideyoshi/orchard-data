@@ -30,6 +30,7 @@ module.exports = function (dataset, metadata) {
         if (trackNumber > trackCountThreshold) {
           let occurrence = {
             'row_id': index + 1,
+            'dataset_row_id': row.rowid,
             'field': [field],
             'value': [row[field]],
             'explanation_id': [defaultExplanationId],

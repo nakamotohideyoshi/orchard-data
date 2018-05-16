@@ -8,8 +8,8 @@ include _mixins
         td(v-for="k in keys") {{ columns[k] || k }}
 
     tbody
-      tr(v-for="(item, i) in data", :id="`row-${ i+1 }`", :class="{highlight: isHighlightedRow(i)}")
-        td {{ i+1 }}
+      tr(v-for="(item, i) in data", :id="`row-${ i }`", :class="{highlight: isHighlightedRow(item.rowid)}")
+        td {{ item.index }}
         td(v-for="k in keys") {{ item[k] }}
 </template>
 
@@ -26,36 +26,56 @@ import {
 export default {
   name: 'tsv-page',
   methods: {
-    ...mapActions(['fetchTSV']),
+    ...mapActions(['fetchTSVSegment']),
     isHighlightedRow (id) {
-      return (id + 1) === window.parseInt(this.highlightRowId)
+      return parseInt(id, 10) === window.parseInt(this.highlightRowId, 10)
     }
   },
   computed: {
     ...mapGetters({
       loading: SUBMISSIONS_REQUEST,
       error: SUBMISSIONS_FAILURE,
-      data: SUBMISSION_TSV,
+      items: SUBMISSION_TSV,
       columns: DATASET_COLUMNS
     }),
+    data () {
+      let items = this.items
+
+      // Check the row in dataset argument and sync the row id with it
+      if (items && items.length) {
+        let { rowid } = this.$route.query
+        let index = items.findIndex(x => x.rowid === this.highlightRowId)
+
+        if (rowid) {
+          rowid = parseInt(rowid, 10)
+          items = items.map((i) => {
+            const item = { index: rowid - index, ...i }
+            index = index - 1
+            return item
+          })
+        }
+      }
+
+      return items
+    },
     id () {
       return this.$route.params.id
     },
     highlightRowId () {
-      return window.parseInt(this.$route.params.highlightRowId) || undefined
+      return window.parseInt(this.$route.params.highlightRowId, 10) || undefined
     },
     keys () {
-      return !_.isEmpty(this.data) ? _.keys(this.data[0]) : []
+      return !_.isEmpty(this.data) ? _.chain(this.data[0]).omit(['dataset_id', 'rowid', 'index']).keys().value() : []
     }
   },
   async created () {
-    const { id } = this
-    await this.fetchTSV(id)
+    const { id, highlightRowId } = this
+    await this.fetchTSVSegment({ id, highlightRowId })
 
     // if a particular row is to be highlighted, then scroll down to it so it is in view
-    if (this.highlightRowId !== undefined) {
+    if (this.highlightRowId && this.data.length > 15) {
       const targetRow = document.getElementsByClassName('highlight')[0]
-      const scrollPos = targetRow.offsetTop
+      const scrollPos = targetRow.offsetTop / 2
 
       window.scrollTo(0, scrollPos)
     }
@@ -67,8 +87,10 @@ table {
   margin: 0;
 }
 
-.highlight td {
-    background: yellow;
+.highlight td,
+.highlight:hover {
+    background: yellow !important;
+    cursor: pointer;
 }
 
 .p-table thead td,

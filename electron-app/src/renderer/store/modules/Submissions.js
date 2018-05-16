@@ -233,6 +233,22 @@ const actions = {
         commit(SUBMISSIONS_FAILURE, e)
       })
   },
+  fetchTSVSegment ({ commit }, { id, highlightRowId }) {
+    commit(SUBMISSIONS_REQUEST, true)
+    commit(SUBMISSIONS_FAILURE, null)
+    commit(SUBMISSION_TSV, null)
+
+    return axios
+      .get(`${API_URL}dataset/${id}/${highlightRowId}.tsv`)
+      .then((res) => {
+        commit(SUBMISSIONS_REQUEST, false)
+        commit(SUBMISSION_TSV, res.data)
+      })
+      .catch((e) => {
+        commit(SUBMISSIONS_REQUEST, false)
+        commit(SUBMISSIONS_FAILURE, e)
+      })
+  },
   fetchFields ({ commit }, id) {
     commit(FIELDS_REQUEST, true)
     commit(FIELDS_FAILURE, null)
