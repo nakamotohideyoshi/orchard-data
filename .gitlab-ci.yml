@@ -2,7 +2,11 @@ image: electronuserland/builder
 
 before_script:
   - apt-get update -qq
-  - apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - apt-get install -y -qq sqlite3 libsqlite3-dev curl
+  - apt-get -y autoclean
+  - curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+  - source $NVM_DIR/nvm.sh
+  - nvm install --lts --latest-npm
   - cd analysis-lib
   - npm install
   - mkdir db
@@ -10,6 +14,11 @@ before_script:
   - cd ..
   - cd electron-app
   - npm install
+
+cache:
+  key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+  paths:
+  - node_modules/
 
 build:windows:
   image: electronuserland/builder:wine
@@ -22,6 +31,7 @@ build:windows:
   only:
     refs:
       - master
+      - 291-fix-gitlab-pipelines
 
 build:mac:
   script:
@@ -33,6 +43,7 @@ build:mac:
   only:
     refs:
       - master
+      - 291-fix-gitlab-pipelines
 
 build:linux:
   script:
@@ -44,3 +55,4 @@ build:linux:
   only:
     refs:
       - master
+      - 291-fix-gitlab-pipelines
