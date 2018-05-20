@@ -126,6 +126,11 @@ module.exports = {
     let reportArray = Object.keys(EBEReport).map(key => EBEReport[key])
     reportArray.sort((a, b) => b['count'] - a['count'])
 
+    let found = reportArray.find(function (element) {
+      return (element.count === 0)
+    })
+    reportArray.splice(reportArray.indexOf(found))
+
     return reportArray
   },
 
