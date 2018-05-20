@@ -43,6 +43,7 @@
     "ajv-keywords": "^3.1.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
+    "cld": "^2.4.8",
     "config": "^1.29.4",
     "cors": "^2.8.4",
     "cpy-cli": "^1.0.1",
