@@ -7,25 +7,17 @@ module.exports = function () {
   let XLSX = require('xlsx')
 
   this.readTsv = function (inputFile) {
-    console.log('readTsv 1', inputFile)
     return new Promise((resolve, reject) => {
-      console.log('readTsv 2')
-
       if (!fs.existsSync(inputFile)) {
-        console.log('readTsv 3')
         reject(new Error('File does not exist'))
         return
       }
 
-      console.log('readTsv 4')
       let arr = inputFile.split('.')
-      console.log('readTsv 5', arr)
       let ext = arr[arr.length - 1].toLowerCase()
-      console.log('readTsv 6', ext)
       switch (ext) {
         case 'xls':
         case 'xlsx':
-          console.log('readTsv 7')
           let workbook = XLSX.readFile(inputFile)
           let firstSheetName = workbook.SheetNames[0]
           let worksheet = workbook.Sheets[firstSheetName]
@@ -45,7 +37,6 @@ module.exports = function () {
           break
 
         case 'tsv':
-          console.log('readTsv 8')
           // Creates stream of data
           let stream = fs.createReadStream(inputFile, { encoding: 'utf-8' })
           let parser = csvParser({
@@ -64,7 +55,6 @@ module.exports = function () {
           break
 
         default:
-          console.log('readTsv 9')
           reject(new Error('File type not supported'))
       } // end switch
     }) // end Promise
