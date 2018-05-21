@@ -101,6 +101,12 @@ describe('should test report tool', () => {
 
     EBEReportMock.sort((a, b) => b['count'] - a['count'])
 
+    // remove items with count == 0
+    let found = EBEReportMock.find(function (element) {
+      return (element.count === 0)
+    })
+    EBEReportMock.splice(EBEReportMock.indexOf(found))
+
     const headers = ['count', 'criteriaId', 'description']
     let tsv = headers.join('\t')
     tsv += '\n'
