@@ -10,10 +10,10 @@ const { BrowserWindow } = remote
  * @param {String, Number} rowId The row ID to be highlighted (optional)
  * @returns {Electron.Remote.BrowserWindow} Reference to the new Electron window
  */
-export default function (batchId, rowId) {
+export default function (batchId, rowId, datasetRowId) {
   const winURL = process.env.NODE_ENV === 'development'
-    ? `http://localhost:9080/#tsv/${batchId}/${rowId}`
-    : `file://${__dirname}/index.html#tsv/${batchId}/${rowId}`
+    ? `http://localhost:9080/#tsv/${batchId}/${rowId}?rowid=${datasetRowId}`
+    : `file://${__dirname}/index.html#tsv/${batchId}/${rowId}?rowid=${datasetRowId}`
 
   const newWindow = new BrowserWindow({
     title: `Dataset TSV (${batchId})`,

@@ -126,6 +126,11 @@ module.exports = {
     let reportArray = Object.keys(EBEReport).map(key => EBEReport[key])
     reportArray.sort((a, b) => b['count'] - a['count'])
 
+    let found = reportArray.find(function (element) {
+      return (element.count === 0)
+    })
+    reportArray.splice(reportArray.indexOf(found))
+
     return reportArray
   },
 
@@ -156,6 +161,7 @@ module.exports = {
       const occurrence = {
         'size': datasetSize,
         'criteria': row['criteria_id'],
+        'tsvRowId': row['dataset_row_id'],
         'id': row['test_data_row_id'],
         'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] })),
         'errors': errors
