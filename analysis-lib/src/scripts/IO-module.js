@@ -8,9 +8,16 @@ module.exports = function () {
 
   this.readTsv = function (inputFile) {
     return new Promise((resolve, reject) => {
-      // Checks if file exist
-      if (fs.existsSync(inputFile)) {
-        if (inputFile.toLowerCase().indexOf('.xls') !== -1) {
+      if (!fs.existsSync(inputFile)) {
+        reject(new Error('File does not exist'))
+        return
+      }
+
+      let arr = inputFile.split('.')
+      let ext = arr[arr.length - 1].toLowerCase()
+      switch (ext) {
+        case 'xls':
+        case 'xlsx':
           let workbook = XLSX.readFile(inputFile)
           let firstSheetName = workbook.SheetNames[0]
           let worksheet = workbook.Sheets[firstSheetName]
@@ -27,7 +34,9 @@ module.exports = function () {
               resolve(data)
             }
           })
-        } else {
+          break
+
+        case 'tsv':
           // Creates stream of data
           let stream = fs.createReadStream(inputFile, { encoding: 'utf-8' })
           let parser = csvParser({
@@ -43,12 +52,13 @@ module.exports = function () {
             }
           })
           stream.pipe(parser)
-        }
-      } else {
-        reject(new Error('File does not exist'))
-      }
-    })
-  }
+          break
+
+        default:
+          reject(new Error('File type not supported'))
+      } // end switch
+    }) // end Promise
+  } // end readTsv
 
   this.writeTsv = function (outPath, data, headers) {
     // Creates stream of data
