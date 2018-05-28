@@ -306,31 +306,16 @@ module.exports = {
     }
   },
 
-  /* TEMPORARILY DISABLED
-  // Filter #14 has been disabled on 2018-03-21 due to aggressive calls to MusicBrainz API.
-  // Please, check Issue #157 on GitLab.
-  // If you need to re-enable it, please search for files 'filter14.js.disabled' in the project
-  // and remove '.disabled' from their names.
-
   'filter14': {
-    'orchardDescription': `Each artist field must only contain one artist name.`,
-    'programmerDescription': `
-
-      If the field does not "&", "+", or "and", there is no error.
-      There is no error if the field contains an artist with a direct match in Musicbrainz or Wikipedia
-      There is no error if the field contains more than one instance of "&", "+", or "and".
-      Split the string on "&", "+", or "and". Search for component as an artist. If both components are found, there is an error.
-
-    `,
-    'userExplanation': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`,
+    'orchardDescription': 'Each artist field must only contain one artist name.',
+    'userExplanation': 'Each artist field must only contain one artist name. See iTunes Style Guide 2.8',
     'category': 'iTunes',
     'type': 'warning',
     'basis': 'row',
     'explanations': {
-      'default': `Each artist field must only contain one artist name. See iTunes Style Guide 2.8`
+      'default': 'Each artist field must only contain one artist name. See iTunes Style Guide 2.8'
     }
   },
-  */
 
   'filter15': {
     'orchardDescription': `Generic Titles (Track 1, Track 2)`,
