@@ -95,7 +95,7 @@ module.exports = function (row, index) {
   fieldsToCheck.forEach((field) => {
     if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
       nonMusicalContentList.forEach((nonMusicalContent) => {
-        let fieldValueIsNonMusicalContent = (row[field].toLowerCase() === nonMusicalContent)
+        let fieldValueIsNonMusicalContent = (row[field].toLowerCase() === nonMusicalContent.toLowerCase())
 
         if (fieldValueIsNonMusicalContent) {
           occurrence.field.push(field)
