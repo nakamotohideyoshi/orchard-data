@@ -2,8 +2,6 @@
 'use strict'
 
 module.exports = async function (row, idx) {
-  const mb = require('../scripts/musicbrainz-interface')
-
   const filterName = 'filter14'
   const filterMeta = require('./filters-meta')[filterName]
 
@@ -28,57 +26,27 @@ module.exports = async function (row, idx) {
       if (!value) { break }
 
       let divisorsCount = 0
-      let divisor
 
       // check for &
       if (value.match(/&/g)) {
-        divisor = '&'
         divisorsCount += value.match(/&/g).length
       }
       // check for +
       if (value.match(/\+/g)) {
-        divisor = '+'
         divisorsCount += value.match(/\+/g).length
       }
 
       // check for 'and'
       if (value.match(/\band\b/gi)) {
-        divisor = 'and'
         divisorsCount += value.match(/\band\b/gi).length
       }
 
       // only one occurrence of '&', '+' or 'and'
       if (value && divisorsCount === 1) {
-        let artists = await mb.searchArtists(value)
-
-        let match = mb.checkForArtistInMB(value, artists)
-
-        // value not in musicbrainz db
-        if (!match) {
-          // splits string by the divisor and check for each occurrence
-          const valueArtists = value.split(divisor)
-
-          // if this doesn't change, then there's an error
-          match = true
-
-          for (let i = 0; i < valueArtists.length; i++) {
-            let artist = valueArtists[i]
-
-            // One of those artists is not in the list
-            if (!mb.checkForArtistInMB(artist, artists)) {
-              match = false
-              break
-            };
-          }
-
-          // both components were found
-          if (match) {
-            occurrence.field.push(field)
-            occurrence.value.push(row[field])
-            occurrence.explanation_id.push(defaultExplanationId)
-            occurrence.error_type.push(defaultErrorType)
-          }
-        }
+        occurrence.field.push(field)
+        occurrence.value.push(row[field])
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
       }
     };
 
