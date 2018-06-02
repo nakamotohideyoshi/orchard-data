@@ -470,6 +470,8 @@ module.exports = {
     }
   },
 
+  /* Disabled temporarily to get a working build for the Orchard Monday, 6/2/2018
+
   'correctlanguagesetatalbumlevel': {
     'orchardDescription': `Correct language set at album level (language should match the language of the metadata, not the audio)`,
     'programmerDescription': `
@@ -490,6 +492,7 @@ module.exports = {
       `
     }
   },
+  */
 
   'keywordblacklist': {
     'orchardDescription': `keyword blacklist`,
