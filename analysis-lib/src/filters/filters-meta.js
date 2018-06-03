@@ -72,7 +72,7 @@ module.exports = {
     }
   },
 
-  'filter6': {
+  'composerasartist': {
     'orchardDescription': `Composer cannot be listed as primary artist`,
     'programmerDescription': `Let release artist = both "Orchard Artist" and
       "Release Artist(s)-Primary Artist(s)")
