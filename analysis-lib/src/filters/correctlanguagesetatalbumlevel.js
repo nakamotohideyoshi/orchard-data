@@ -1,57 +1,56 @@
 'use strict'
 
+const { loadModule } = require('cld3-asm')
+var iso6391 = require('iso-639-1')
+
 const filterName = require('path').parse(__filename).name
 const filterMeta = require('./filters-meta')[filterName]
 
 const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
 
-const MATCH_THRESHOLD = 900
-
-// https://www.npmjs.com/package/cld
-const cld = require('cld')
+const MATCH_THRESHOLD = 0.90
 
 module.exports = async function (row, idx) {
-  const result = await new Promise(async (resolve) => {
-    let releaseLanguage = (
-      row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english'
-    ).toLowerCase()
+  const occurrence = {
+    'row_id': idx,
+    'field': [],
+    'value': [],
+    'explanation_id': [],
+    'error_type': []
+  }
 
-    const occurrence = {
-      'row_id': idx,
-      'field': [],
-      'value': [],
-      'explanation_id': [],
-      'error_type': []
+  const fieldsToEvaluate = ['release_name', 'track_name']
+  let releaseLanguageCode = iso6391.getCode(row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english')
+
+  const cldFactory = await loadModule()
+  const identifier = cldFactory.create(0, 1024)
+
+  fieldsToEvaluate.forEach((field) => {
+    const textToEvaluate = row[field]
+    const findResult = identifier.findLanguage(textToEvaluate)
+
+    if (!findResult.language) return
+
+    // When it detects the text as latin, we consider it's spanish.
+    if (findResult.language === 'la') findResult.language = 'es'
+
+    if (findResult.language !== releaseLanguageCode) {
+      if (findResult.probability > MATCH_THRESHOLD) {
+        occurrence.field.push(field)
+        occurrence.value.push(textToEvaluate)
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
+      }
     }
 
-    var evaluator = function (field) {
-      cld.detect(row[field], function (err, result) {
-        if (err || !result.languages || result.languages.length < 1) {
-          return
-        }
+    // Future: show expected language and detected language in score
+    // const frequentResult = identifier.findMostFrequentLanguages(textToEvaluate, 3)
+    // console.log(`Find most frequent languages for text "${textToEvaluate}..."`)
+    // console.log(JSON.stringify(frequentResult))
+  })
 
-        if (result.languages[0].name.toLowerCase() !== releaseLanguage) {
-          if (result.languages[0].score > MATCH_THRESHOLD) {
-            // future: show expected language and detected lanaguage in score
-            occurrence.field.push(field)
-            occurrence.value.push(row[field])
-            occurrence.explanation_id.push(defaultExplanationId)
-            occurrence.error_type.push(defaultErrorType)
-          }
-        }
-      }) // end cld.detect
-    } // end evaluator
+  identifier.dispose()
 
-    evaluator('release_name')
-    evaluator('track_name')
-
-    if (occurrence.field.length > 0) {
-      resolve(occurrence)
-    } else {
-      resolve(false)
-    }
-  }) // end promise
-
-  return result
+  return occurrence.field.length === 0 ? false : occurrence
 }
