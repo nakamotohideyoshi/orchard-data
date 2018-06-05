@@ -137,4 +137,59 @@ describe(`should test ${filterId}`, function () {
       }
     }
   })
+
+  it('should pass: Match The Language - Spanish; Castillan', async () => {
+    const mock = mocks['validSpanishCastillan']
+
+    for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
+      idx = parseInt(idx)
+      const row = mock[idx]
+      const occurrence = await filter(row, idx + 1, report)
+
+      assert.equal(occurrence, false)
+    }
+  })
+
+  it('should pass: Match The Language - Castillan; Spanish', async () => {
+    const mock = mocks['validCastillanSpanish']
+
+    for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
+      idx = parseInt(idx)
+      const row = mock[idx]
+      const occurrence = await filter(row, idx + 1, report)
+
+      assert.equal(occurrence, false)
+    }
+  })
+
+  it('should fail: No Match The Language - Spanish; Castillan', async () => {
+    const mock = mocks['invalidSpanishCastillan']
+
+    for (let idx in mock) {
+      if (!mock.hasOwnProperty(idx)) {
+        continue
+      }
+
+      idx = parseInt(idx)
+      const row = mock[idx]
+      const occurrence = await filter(row, idx + 1, report)
+
+      switch (occurrence.row_id) {
+        case 0:
+          assert.deepEqual(occurrence.field, ['release_name', 'track_name'])
+          assert.deepEqual(occurrence.value, ['Te quiero mucho', 'Este es un texto en español'])
+          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.error_type, [defaultErrorType])
+          break
+      }
+    }
+  })
 })
