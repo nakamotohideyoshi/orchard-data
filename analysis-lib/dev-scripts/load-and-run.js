@@ -21,10 +21,12 @@ let report
 let dbInterface = new analysisLibModule.DbInterface()
 dbInterface.init()
 
+console.log('BP ##', 2, data)
 let dbPromise = dbInterface.saveDatasetMeta(data)
 dbPromise
   .then(result => {
     datasetId = result.lastID
+    console.log('BP ##', 1, datasetId)
     return dbInterface.saveTsvIntoDB(data.source, datasetId)
   })
   .then(() => analysisLibModule.runAllFilters(datasetId))

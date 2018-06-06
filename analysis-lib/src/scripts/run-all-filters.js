@@ -1,6 +1,7 @@
 'use strict'
 
 module.exports = async function (datasetId) {
+  console.log('BP ##', 2)
   const Promise = require('bluebird')
 
   // tools and constants
@@ -18,6 +19,7 @@ module.exports = async function (datasetId) {
 
   // Initializes report for given tsv file
   const report = new ReportToolModule()
+  console.log('BP ##', 3)
   report.init(datasetId)
 
   // Initializes DB interface
@@ -26,12 +28,16 @@ module.exports = async function (datasetId) {
 
   // Main table
   const orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
+  console.log('BP ##', 4, datasetId)
 
   // Loads dataset
   const dataset = await dbInterface.fetchTsvDataset(datasetId)
+  console.log('BP ##', 5)
   const metadata = await dbInterface.fetchDatasetMetaRow(datasetId)
+  console.log('BP ##', 6)
   const noOfRows = dataset.length
 
+  console.log('BP ##', 7)
   if (noOfRows === 0) { throw new Error(`*** dataset_id ${datasetId} does not exist on table ${orchardTable.name} ***`) }
 
   // stashes no of rows
@@ -41,6 +47,7 @@ module.exports = async function (datasetId) {
   const rowFilters = Object.keys(filtersMeta)
     .filter(filterId => filtersMeta[filterId]['basis'] === 'row')
 
+  console.log('BP ##', 1)
   // Filters that must be run against an entire dataset
   const datasetFilters = Object.keys(filtersMeta)
     .filter(filterId => filtersMeta[filterId]['basis'] === 'dataset')
