@@ -406,7 +406,7 @@ module.exports = {
     'userExplanation': `Albums with vs. and meets - see iTunes Style Guide 6.3.`,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row',
+    'basis': 'dataset',
     'explanations': {
       'default': `
         From iTunes Style Guide 6.3 : Remixes. When “Meets” or “vs.” is used to describe an album that is a collection
