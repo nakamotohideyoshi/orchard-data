@@ -50,10 +50,15 @@ module.exports = function () {
     })
 
     // Checks if TSV has missing or extra fields
-    console.log('***** Checking Number of Fields *****\n')
-    if (numberOfFields < 52 || numberOfFields > 53) {
-      console.log('Field count error when trying to upload TSV', numberOfFields, '\n')
 
+    console.log('***** Checking Number of Fields *****\n')
+    switch(numberOfFields){
+      case 52: // original version
+      case 53: // original version with a comment
+      case 70: // version 1.20
+        break;
+      default:
+      console.log('Field count error when trying to upload TSV', numberOfFields, '\n')
       return Promise.reject({
         'thrower': 'saveTsvIntoDB',
         'row_id': -1,
@@ -68,6 +73,17 @@ module.exports = function () {
       idx += 1
 
       tsvFields.forEach(key => {
+
+        // map variant field names in v1.2 to names in v1.3, the one we coded against
+        switch( key.toLowerCase() ){
+          case "album pricing": key = "Release iTunes Pricing"; break;
+          case "release genre genre": key = "genre"; break;
+          case "subgenre name": key = "Sub-genre";
+          // there are a bunch of other name mismatches across the various file versions
+          // but none affect any current filters as far as I know. This can and probably
+          // will bite us in the ass later, if not sooner
+        }
+
         if (key in fieldsDict) {
           values.push(row[key])
         }
