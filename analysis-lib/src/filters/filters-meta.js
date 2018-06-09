@@ -470,7 +470,7 @@ module.exports = {
     }
   },
 
-/*
+  /*
 Temporarily disabling because of #302 "1K set hangs"
 
   'correctlanguagesetatalbumlevel': {
