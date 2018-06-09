@@ -470,6 +470,9 @@ module.exports = {
     }
   },
 
+/*
+Temporarily disabling because of #302 "1K set hangs"
+
   'correctlanguagesetatalbumlevel': {
     'orchardDescription': `Correct language set at album level (language should match the language of the metadata, not the audio)`,
     'programmerDescription': `
@@ -490,6 +493,7 @@ module.exports = {
       `
     }
   },
+  */
 
   'keywordblacklist': {
     'orchardDescription': `keyword blacklist`,
