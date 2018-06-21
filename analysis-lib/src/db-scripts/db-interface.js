@@ -56,6 +56,7 @@ module.exports = function () {
       case 52: // original version
       case 53: // original version with a comment
       case 70: // version 1.20
+      case 76: // version in BlueDoor.xls
         break
       default:
         console.log('Field count error when trying to upload TSV', numberOfFields, '\n')
@@ -77,7 +78,10 @@ module.exports = function () {
         switch (key.toLowerCase()) {
           case 'album pricing': key = 'Release iTunes Pricing'; break
           case 'release genre genre': key = 'genre'; break
-          case 'subgenre name': key = 'Sub-genre'
+          case 'subgenre name': key = 'Sub-genre'; break;
+          case 'Folder Name / Project Code': key = 'Folder Name / Label Catalog Number'; break;
+          case 'Track Audio Language': key = 'Meta Language'; break;
+          case 'Track Pricing': key = 'Track iTunes Pricing'; break;
           // there are a bunch of other name mismatches across the various file versions
           // but none affect any current filters as far as I know. This can and probably
           // will bite us in the ass later, if not sooner
