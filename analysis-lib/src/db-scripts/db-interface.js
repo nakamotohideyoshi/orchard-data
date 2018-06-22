@@ -38,11 +38,24 @@ module.exports = function () {
     const tsvFields = Object.keys(tsvFile[0])
     const numberOfFields = tsvFields.length
 
-    // Filters are maped to datavase columns
+    // Filters are maped to database columns
     const fields = ['dataset_id']
 
+    // map variant field names across versions
+    const versionMap = {
+      'album pricing': 'Release iTunes Pricing',
+      'release genre genre': 'Genre',
+      'subgenre name': 'Sub-genre',
+      'Folder Name / Project Code': 'Folder Name / Label Catalog Number',
+      'Track Audio Language': 'Meta Language',
+      'Track Pricing': 'Track iTunes Pricing'
+    }
+    const versionedKeys = Object.keys(versionMap)
+
     Object.keys(tsvFile[0]).forEach(key => {
-      if (key in fieldsDict) {
+      if (key in versionedKeys) {
+        fields.push(fieldsDict[versionMap[key]])
+      } else if (key in fieldsDict) {
         fields.push(fieldsDict[key])
       } else {
         warnings.push(`Field "${key}" does not exist on ${orchardTable.name}'s columns_dict`)
@@ -74,21 +87,10 @@ module.exports = function () {
       idx += 1
 
       tsvFields.forEach(key => {
-        // map variant field names in v1.2 to names in v1.3, the one we coded against
-        switch (key.toLowerCase()) {
-          case 'album pricing': key = 'Release iTunes Pricing'; break
-          case 'release genre genre': key = 'genre'; break
-          case 'subgenre name': key = 'Sub-genre'; break;
-          case 'Folder Name / Project Code': key = 'Folder Name / Label Catalog Number'; break;
-          case 'Track Audio Language': key = 'Meta Language'; break;
-          case 'Track Pricing': key = 'Track iTunes Pricing'; break;
-          // there are a bunch of other name mismatches across the various file versions
-          // but none affect any current filters as far as I know. This can and probably
-          // will bite us in the ass later, if not sooner
-        }
-
-        if (key in fieldsDict) {
+        if (key in versionedKeys || key in fieldsDict) {
           values.push(row[key])
+        } else {
+          warnings.push(`Field "${key}" does not exist on ${orchardTable.name}'s columns_dict`)
         }
       })
 
