@@ -54,7 +54,7 @@
     "morgan": "^1.9.0",
     "musicbrainz": "^0.2.6",
     "node-pre-gyp": "^0.10.0",
-    "pkg": "^4.3.1",
+    "pkg": "^4.3.3",
     "require-all": "^2.2.0",
     "sqlite": "^2.9.2",
     "stats-analysis": "^2.0.0",
