@@ -1,10 +1,10 @@
 'use strict'
 
-import {app, BrowserWindow, dialog} from 'electron'
-import {execFile} from 'child_process'
-import {existsSync} from 'fs'
+import { app, BrowserWindow, dialog } from 'electron'
+import { spawn } from 'child_process'
+import { existsSync } from 'fs'
 import path from 'path'
-import {platform} from 'os'
+import { platform } from 'os'
 
 let apiNodeInstance = null
 
@@ -74,15 +74,23 @@ async function startApiNodeInstance () {
 
   if (nodeForLinuxExistsOnFolder || nodeForMacExistsOnFolder || nodeForWindowsExistsOnFolder) {
     if (nodeForLinuxExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForLinuxFilePath, {cwd: currentWorkingDirectory})
+      apiNodeInstance = spawn(nodeForLinuxFilePath, { cwd: currentWorkingDirectory })
     } else if (nodeForMacExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForMacFilePath, {cwd: path.dirname(nodeForMacFilePath)})
+      apiNodeInstance = spawn(nodeForMacFilePath, { cwd: path.dirname(nodeForMacFilePath) })
     } else if (nodeForWindowsExistsOnFolder) {
-      apiNodeInstance = execFile(nodeForWindowsFilePath, {cwd: currentWorkingDirectory})
+      apiNodeInstance = spawn(nodeForWindowsFilePath, { cwd: currentWorkingDirectory })
     }
 
     apiNodeInstance.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`)
+      console.log(`[analysis-lib] ${data}`)
+    })
+
+    apiNodeInstance.stderr.on('data', (data) => {
+      console.log(`[analysis-lib] Error: ${data}`)
+    })
+
+    apiNodeInstance.on('close', (code) => {
+      console.log(`[analysis-lib] Exited with code ${code}`)
     })
   }
 }
