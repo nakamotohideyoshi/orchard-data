@@ -680,7 +680,7 @@ Temporarily disabling because of #302 "1K set hangs"
     `,
     'category': 'iTunes',
     'type': 'error',
-    'basis': 'row',
+    'basis': 'dataset',
     'explanations': {
       'default': `A collection of remixes of the same track must communicate this in the album title. Track titles must not be identical.`
     }
