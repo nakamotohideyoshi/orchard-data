@@ -10,9 +10,7 @@ const defaultExplanationId = 'default'
  * @param {Array} dataset
  * @returns {{row_id: number, field: array, value: array, explanation_id: array, error_type: array}|boolean}
  */
-const filter = (dataset) => {
-  const occurrences = []
-
+module.exports = function (dataset) {
   // Definition: Tail
   // Let the head of a track title end at either:
   // - the first hyphen
@@ -20,30 +18,34 @@ const filter = (dataset) => {
   // So with the track title '(lorem) ipsum (dolor)[sit]', the tail is '(dolor)[sit]', and with the track title 'lorem (ipsum) dolor' there is no tail.
   // Then the *tail* is any text after the head.
 
+  /**
+   * @param {string} trackTitle
+   */
   const extractTrackTitleHead = (trackTitle) => {
     const firstHyphenPosition = trackTitle.indexOf(' - ')
-    const firstParenthesis = trackTitle.indexOf('(')
-    const firstSquareBracket = trackTitle.indexOf('[')
+    const lastParenthesis = trackTitle.lastIndexOf(' (')
+    const lastSquareBracket = trackTitle.lastIndexOf(' [')
+    const lastChar = trackTitle.charAt(trackTitle.length - 1)
+    let trackTitleHeadEndIndex = trackTitle.length - 1
 
-    // If first hyphen has been found...
     if (firstHyphenPosition !== -1) {
-      // TODO
+      trackTitleHeadEndIndex = firstHyphenPosition
+    } else if (lastChar === ')' || lastChar === ']') {
+      if (lastParenthesis !== -1 && lastSquareBracket !== -1) {
+        trackTitleHeadEndIndex = (lastParenthesis < lastSquareBracket ? lastParenthesis : lastSquareBracket)
+      } else if (lastParenthesis !== -1) {
+        trackTitleHeadEndIndex = lastParenthesis
+      } else if (lastSquareBracket !== -1) {
+        trackTitleHeadEndIndex = lastSquareBracket
+      }
     }
 
-    // If first parenthesis has been found...
-    if (firstParenthesis !== -1) {
-      // TODO
-    }
-
-    // If first square bracket has been found...
-    if (firstSquareBracket !== -1) {
-      // TODO
-    }
-
-    const trackTitleHead = ''
-    return trackTitleHead
+    return trackTitle.substring(0, trackTitleHeadEndIndex)
   }
 
+  /**
+   * @param {string} trackTitle
+   */
   const extractTrackTitleTail = (trackTitle) => {
     const trackTitleHead = extractTrackTitleHead(trackTitle)
     const trackTitleTail = trackTitle.replace(trackTitleHead, '')
@@ -55,6 +57,9 @@ const filter = (dataset) => {
   //  - A remix flag on a track is set if the "Track Artist(s) - Remixer(s)" field is not blank.
   //  Note: we assume the track-level remixer will always be set, even if the album-level remixer is also set.
 
+  /**
+   * @param {Object} track
+   */
   const checkIfTrackHasRemixFlag = (track) => {
     const trackArtistRemixer = track.track_artist_remixer
 
@@ -108,9 +113,18 @@ const filter = (dataset) => {
   // Rule: Remix album
   // - If every track on an album is either the original song or a remix of the original song, the album is a remix album.
 
-  const checkIAlbumIsARemixAlbum = () => {
+  let isARemixAlbum = true
 
-  }
+  dataset.forEach((row) => {
+    const songIsTheOriginalSong = (extractTrackTitleHead(row.track_name) === theOriginalSong)
+    const songIsARemixOfTheOriginalSong = checkIfSongIsARemixOfTheOriginalSong(row)
+
+    if (!songIsTheOriginalSong && !songIsARemixOfTheOriginalSong) {
+      isARemixAlbum = false
+    }
+  })
+
+  const occurrences = []
 
   dataset.forEach((row, index) => {
     const occurrence = {
@@ -122,25 +136,37 @@ const filter = (dataset) => {
       'error_type': []
     }
 
-    let thereIsARemixAlbumWithoutOriginalSongOnReleaseName = false
     let twoOrMoreTrackTitlesFromAlbumAreIdentical = false
 
-    //  TESTS
-    //  1. If there is a remix album, and the release name does not contain the original song, it is an error.
-    //  2. If there is an original song for a release, and any two track titles on that release are identical, it is an error.
+    // TEST 1. If there is a remix album, and the release name does not contain the original song, it is an error.
 
-    if (thereIsARemixAlbumWithoutOriginalSongOnReleaseName) {
+    const releaseNameDoesNotContainTheOriginalSong = (row.release_name.search(new RegExp(theOriginalSong, 'gi')) === -1)
+
+    if (isARemixAlbum && releaseNameDoesNotContainTheOriginalSong) {
       occurrence.field.push('release_name')
       occurrence.value.push(row.release_name)
       occurrence.explanation_id.push(defaultExplanationId)
       occurrence.error_type.push(defaultErrorType)
     }
 
-    if (twoOrMoreTrackTitlesFromAlbumAreIdentical) {
-      occurrence.field.push('track_name')
-      occurrence.value.push(row.track_name)
-      occurrence.explanation_id.push(defaultExplanationId)
-      occurrence.error_type.push(defaultErrorType)
+    // TEST 2. If there is an original song for the release, and any two track titles on that release are identical, it is an error.
+
+    if (theOriginalSong) {
+      for (let i = 0, l = dataset.length; i < l; i++) {
+        if (i === index) continue // Don't compare row with itself.
+
+        if (dataset[i].track_name === row.track_name) {
+          twoOrMoreTrackTitlesFromAlbumAreIdentical = true
+          break
+        }
+      }
+
+      if (twoOrMoreTrackTitlesFromAlbumAreIdentical) {
+        occurrence.field.push('track_name')
+        occurrence.value.push(row.track_name)
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
+      }
     }
 
     if (occurrence.field.length > 0) occurrences.push(occurrence)
@@ -148,5 +174,3 @@ const filter = (dataset) => {
 
   return occurrences
 }
-
-module.exports = filter
