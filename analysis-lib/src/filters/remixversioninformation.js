@@ -26,7 +26,7 @@ module.exports = function (dataset) {
     const lastParenthesis = trackTitle.lastIndexOf(' (')
     const lastSquareBracket = trackTitle.lastIndexOf(' [')
     const lastChar = trackTitle.charAt(trackTitle.length - 1)
-    let trackTitleHeadEndIndex = trackTitle.length - 1
+    let trackTitleHeadEndIndex = trackTitle.length
 
     if (firstHyphenPosition !== -1) {
       trackTitleHeadEndIndex = firstHyphenPosition
@@ -104,9 +104,9 @@ module.exports = function (dataset) {
   // - A song is a remix of the original song if the remix flag is set and the title contains the original song.
 
   const checkIfSongIsARemixOfTheOriginalSong = (track) => {
+    if (!theOriginalSong) return false
     const trackHasRemixFlag = checkIfTrackHasRemixFlag(track)
-    let trackTitleContainsTheOriginalSong = false
-    if (theOriginalSong) trackTitleContainsTheOriginalSong = (track.track_name.indexOf(theOriginalSong) !== -1)
+    let trackTitleContainsTheOriginalSong = (track.track_name.indexOf(theOriginalSong) !== -1)
     return (trackHasRemixFlag && trackTitleContainsTheOriginalSong)
   }
 
@@ -116,7 +116,7 @@ module.exports = function (dataset) {
   let isARemixAlbum = true
 
   dataset.forEach((row) => {
-    const songIsTheOriginalSong = (extractTrackTitleHead(row.track_name) === theOriginalSong)
+    const songIsTheOriginalSong = (row.track_name === theOriginalSong)
     const songIsARemixOfTheOriginalSong = checkIfSongIsARemixOfTheOriginalSong(row)
 
     if (!songIsTheOriginalSong && !songIsARemixOfTheOriginalSong) {
