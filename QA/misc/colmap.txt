@@ -1,0 +1,52 @@
+1	Release Name
+2	Release Meta Language
+3	Orchard Artist
+4	Artist Country
+5	Subaccount Name
+6	Artist URL
+7	Release Artist(s)-Primary Artist(s)
+8	Release Artist(s)-Featuring(s)
+9	Release Artist(s)-Remixer(s)
+10	Release Artist(s)-Composer(s)
+11	Release Artist(s)-Orchestra(s)
+12	Release Artist(s)-Ensemble(s)
+13	Release Artist(s)-Conductor(s)
+14	Release Date
+15	Sale Start Date
+16	iTunes Pre-Order
+17	iTunes Pre-Order Date
+18	Preorder Preview
+19	Release iTunes Pricing
+20	Release Amazon Pricing
+21	Format: Full Length / EP / Single
+22	Imprint
+23	Genre
+24	Sub-genre
+25	[C] Information
+26	Digital UPC
+27	Manufacturer's UPC
+28	Folder Name / Label Catalog Number
+29	Release Version
+30	File Name
+31	Volume
+32	Track No.
+33	Track Name
+34	Meta Language
+35	Version
+36	Track Artist
+37	Track Artist(s) - Featuring(s)
+38	Track Artist(s) - Remixer(s)
+39	Track Artist(s) - Composer(s)
+40	Track Artist(s) - Orchestra(s)
+41	Track Artist(s) - Ensemble(s)
+42	Track Artist(s) - Conductor(s)
+43	Track iTunes Pricing
+44	Track Amazon Pricing
+45	Explicit (No/Yes/Clean)
+46	ISRC
+47	3rd Party Publisher? (Yes/No)
+48	[P] Information
+49	Songwriter(s)
+50	Publisher(s)
+51	Only Include/Only Exclude?
+52	Territories (ISO Codes)
