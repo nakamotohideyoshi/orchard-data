@@ -637,5 +637,52 @@ Temporarily disabling because of #302 "1K set hangs"
     'explanations': {
       'default': `misspelled "various artists"`
     }
+  },
+
+  'remixversioninformation': {
+    'orchardDescription': `Proper remix formatting (such as "Title (feat.Artist) [Remix]")`,
+    'programmerDescription': `
+      (Tail)
+
+      Let the head of a track title end at either:
+
+      * the first hyphen
+      * the first parenthesis or square bracket after which there is no text not in parentheses or square brackets
+
+      So with the track title '(lorem) ipsum (dolor)[sit]', the tail is '(dolor)[sit]', and with the track title 'lorem (ipsum) dolor' there is no tail.
+
+      Then the *tail* is any text after the head.
+
+      (Remix flag)
+
+      * A remix flag is set on the track is set if the tail contains any of the words "remix", "mix", "remixed", "mixed", delimited by word separators, case insensitive.
+      * A remix flag on a track is set if the "Track Artist(s) - Remixer(s)" field is not blank.
+
+      Note: we assume the track-level remixer will always be set, even if the album-level remixer is also set.
+
+      (Original song)
+
+      * If every track on an album has the same head, let the "original song" be the head.
+
+      (Remix album)
+
+      * A song is a remix of the original song if the remix flag is set and the title contains the original song.
+      * If every track on an album is either the original song or a remix of the original song, the album is a remix album.
+
+      (Tests)
+
+      1. If there is a remix album, and the release name does not contain the original song, it is an error.
+      2. If there is an original song for a release, and any two track titles on that release are identical, it is an error.
+    `,
+    'userExplanation': `
+      A collection of remixes of the same track must communicate this in the album title.
+      Track titles must not be identical. See iTunes Style Guide 10.3.
+    `,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'dataset',
+    'explanations': {
+      'default': `A collection of remixes of the same track must communicate this in the album title. Track titles must not be identical.`
+    }
   }
 }
