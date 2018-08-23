@@ -1,0 +1,8 @@
+Expect	Track Name
+Fail: If a tail contains both parentheses and square brackets, and square brackets are used before parens, it is an error.	All of Me [Tiësto’s Birthday Treatment Remix] (Radio Edit)
+Pass: tail contains both parentheses and square brackets, and square brackets are used before parens	All of Me (Tiësto’s Birthday Treatment Remix) [Radio Edit]
+Fail: If a tail contains both parentheses and square brackets, and there is more than one set of parenthesis, it is an error.	All of Me (Tiësto’s Birthday Treatment Remix) (Radio Edit)
+Pass: first set of parenthesis are not in the tail	(Love Is Like A) Heat Wave (In the Style of Martha Reeves)
+Pass: first set of brackets are not in the tail	[Love Is Like A] Heat Wave (In the Style of Martha Reeves)
+Pass: If a tail contains both parentheses and square brackets, and there is more than one set of square brackets, it is not an error.	All of Me (Tiësto’s Birthday Treatment Remix)[Radio Edit][Another Set of Brackets]
+Fail: If a tail contains multiple explanatory references and the first one is in square brackets rather than parentheses, it is an error.	All of Me [Tiësto’s Birthday Treatment Remix] [Radio Edit]
