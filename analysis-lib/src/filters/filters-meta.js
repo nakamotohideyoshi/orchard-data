@@ -684,5 +684,27 @@ Temporarily disabling because of #302 "1K set hangs"
     'explanations': {
       'default': `A collection of remixes of the same track must communicate this in the album title. Track titles must not be identical.`
     }
+  },
+
+  'multipleversionreferences': {
+    'orchardDescription': `Proper remix formatting (such as “Title (feat.Artist) [Remix]”)`,
+    'programmerDescription': `
+      Let the tail of a track title be any component beginning with an open parenthesis or square bracket and closing with a matching parenthesis or square bracket, and with no non-parenthesized or bracketed text between the closing parenthesis or square bracket and the end of the line or field. So with the track title (lorem) ipsum (dolor)[sit], the tail is (dolor)[sit], and with the track title lorem (ipsum) dolor there is no tail.
+
+      If a tail contains both parentheses and square brackets, and square brackets are used before parens, it is an error.
+
+      If a tail contains both parentheses and square brackets, and there is more than one set of parenthesis, it is an error.
+
+      If a tail contains both parentheses and square brackets, and there is more than one set of square brackets, it is not an error.
+
+      If a tail contains multiple explanatory references and the first one is in square brackets rather than parentheses, it is an error.
+    `,
+    'userExplanation': `The first explanatory reference must be enclosed in parentheses, with any additional references enclosed in brackets.`,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `The first explanatory reference must be enclosed in parentheses, with any additional references enclosed in brackets.`
+    }
   }
 }
