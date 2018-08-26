@@ -36,7 +36,109 @@ const naziKeywords = [
   'totenkopf',
   'kampfgeschwader 54',
   'reichsadler',
-  'reichskriegsflagge'
+  'reichskriegsflagge',
+  'Iron Cross',
+  'Orion',
+  'Iron Eagle',
+  'RAHOWA',
+  'ROA',
+  'ZOG',
+  'Crossed Hammers',
+  'Triskelion',
+  'Reich',
+  'Reichskriegsflagge',
+  '14',
+  '88',
+  'BH or 28',
+  'WP/WS/WN',
+  'WPWW',
+  "Death's Head",
+  'SS',
+  'SA/Brownshirts',
+  'ZOG',
+  'White genocide',
+  'Abwehr',
+  'Aktion T4',
+  'Anschluss',
+  'anti-Semitism',
+  'Aryan',
+  'Aryan certificate',
+  'Aryan paragraph',
+  'autarky',
+  'Blockleiter',
+  'Blutorden',
+  'Blut und Boden',
+  'Brownshirt',
+  'Bund Deutscher Madel',
+  'concentration camp',
+  'Deutsche Arbeitsfront',
+  'Deutscheblutiger',
+  'Dolchstosslegende',
+  'emergency powers',
+  'Enabling Act',
+  'eugenics',
+  'euthanasia',
+  'fascism',
+  'fuhrer',
+  'fuhrerprinzip',
+  'functionalism',
+  'Gauleiter',
+  'Gestapo',
+  'gleichschaltung',
+  'Great Depression',
+  'gypsies',
+  'Romany',
+  'Hitler Jugend',
+  'Holocaust',
+  'Hitler Youth',
+  'Hitler Jugend',
+  'intentionalism',
+  'Iron Cross',
+  "Jehovah's Witnesses",
+  'Judaism',
+  'Juden',
+  'Jungmadelbund',
+  'Jungvolk',
+  'Junkers',
+  'Kraft durche Freude',
+  'Kriegsmarine',
+  'Kristallnacht',
+  'Lebensborn',
+  'lebensraum',
+  'Lebensunwertes leben',
+  'Luftwaffe',
+  'Marxism',
+  'master race',
+  'Mein Kampf',
+  'mischlinge',
+  'nationalism',
+  'National Socialism',
+  'Nazi',
+  'Nazism',
+  'Night of the Long Knives',
+  'Nuremberg Laws',
+  'paramilitary',
+  'Reichsarbeitdienst',
+  'Reichskirche',
+  'Reichstag',
+  'Reichswehr',
+  'Sturmabteilung',
+  'Schutzstaffel',
+  'Sicherheitsdienst',
+  'Social Democratic Party',
+  'Sonderweg',
+  'stab-in-the-back theory',
+  'Hakenkrauz',
+  'swastika',
+  'Third Reich',
+  'totalitarianism',
+  'Twenty-Five Points',
+  'ubermensch',
+  'untermensch',
+  'volkisch',
+  'volksgemeinschaft',
+  'Wehrmacht',
+  'Weimaror'
 ]
 
 /**
@@ -68,29 +170,12 @@ module.exports = function (row, index) {
   // - Track Artist
   // - Track Artist(s) - Featuring(s)
   // - Track Artist(s) - Remixer(s)
-  //
-  // Let the nazi keyword list be the following terms:
-  //
-  // - Hakenkreuz
-  // - Parteiadler
-  // - Thule Society
-  // - Ku Klux Klan
-  // - Wolfsangel
-  // - Celtic cross
-  // - Solar cross
-  // - Thule Society
-  // - Othala rune
-  // - Sturmabteilung
-  // - Sig runes
-  // - Totenkopf
-  // - Kampfgeschwader 54
-  // - Reichsadler
-  // - Reichskriegsflagge
 
   fieldsToCheck.forEach((field) => {
     if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
       naziKeywords.forEach((naziKeyword) => {
-        let fieldContainsNaziKeyword = (row[field].toLowerCase().indexOf(naziKeyword) > -1)
+        const searchTerm = new RegExp(`\\b${naziKeyword}\\b`, 'gi')
+        const fieldContainsNaziKeyword = (row[field].search(searchTerm) !== -1)
 
         if (fieldContainsNaziKeyword) {
           occurrence.field.push(field)
