@@ -70,7 +70,10 @@ module.exports = function (dataset) {
   stopWords = stopWords[language]
 
   // keeps track of the last case found
-  let lastCase = ''
+  let lastCaseForField = {}
+
+  let thereIsAnInconsistentError = false
+  let inconsistentErrorFields = []
 
   dataset.forEach((row, idx) => {
     const occurrence = {
@@ -111,11 +114,11 @@ module.exports = function (dataset) {
             // then keeps it capitalized. Otherwise, lowercases it
             if (previousWord && (
               previousWord !== '-' &&
-            previousWord !== '/' &&
-            previousWord[previousWord.length - 1] !== ':' &&
-            _word[_word.length - 1] !== ':' &&
-            nextWord !== '-' &&
-            nextWord !== '/')
+              previousWord !== '/' &&
+              previousWord[previousWord.length - 1] !== ':' &&
+              _word[_word.length - 1] !== ':' &&
+              nextWord !== '-' &&
+              nextWord !== '/')
             ) { value[j] = _word }
           }
         })
@@ -170,14 +173,11 @@ module.exports = function (dataset) {
           _case = 'sentence'
 
           // first run, stashes it
-          if (!lastCase) {
-            lastCase = _case
-          } else if (lastCase !== _case) {
-            // current case style is different from the previous one
-            occurrence.field.push(field)
-            occurrence.value.push(row[field])
-            occurrence.explanation_id.push('inconsistent')
-            occurrence.error_type.push(defaultErrorType)
+          if (!lastCaseForField[field]) {
+            lastCaseForField[field] = _case
+          } else if (lastCaseForField[field] !== _case) {
+            thereIsAnInconsistentError = true
+            inconsistentErrorFields.push(field)
           }
         }
 
@@ -202,7 +202,7 @@ module.exports = function (dataset) {
               // then keeps it capitalized. Otherwise, lowercases it
               if (
                 previousWord &&
-                  (previousWord !== '-' &&
+                (previousWord !== '-' &&
                   previousWord !== '/' &&
                   previousWord[previousWord.length - 1] !== ':' &&
                   _word[_word.length - 1] !== ':' &&
@@ -227,14 +227,11 @@ module.exports = function (dataset) {
             _case = 'title'
 
             // first run
-            if (!lastCase) {
-              lastCase = _case
-            } else if (lastCase !== _case) {
-              // inconsistent case
-              occurrence.field.push(field)
-              occurrence.value.push(row[field])
-              occurrence.explanation_id.push('inconsistent')
-              occurrence.error_type.push(defaultErrorType)
+            if (!lastCaseForField[field]) {
+              lastCaseForField[field] = _case
+            } else if (lastCaseForField[field] !== _case) {
+              thereIsAnInconsistentError = true
+              inconsistentErrorFields.push(field)
             }
           }
         }
@@ -252,6 +249,28 @@ module.exports = function (dataset) {
     // if there's an occurrence, saves it
     if (occurrence.field.length > 0) { occurrences.push(occurrence) }
   })
+
+  if (thereIsAnInconsistentError) {
+    dataset.forEach((row, idx) => {
+      const occurrence = {
+        'row_id': idx + 1,
+        'dataset_row_id': row.rowid,
+        'field': [],
+        'value': [],
+        'explanation_id': [],
+        'error_type': []
+      }
+
+      inconsistentErrorFields.forEach(field => {
+        occurrence.field.push(field)
+        occurrence.value.push(row[field])
+        occurrence.explanation_id.push('inconsistent')
+        occurrence.error_type.push(defaultErrorType)
+      })
+
+      occurrences.push(occurrence)
+    })
+  }
 
   return occurrences
 }
