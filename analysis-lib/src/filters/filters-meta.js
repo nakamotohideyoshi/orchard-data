@@ -617,7 +617,7 @@ Temporarily disabling because of #302 "1K set hangs"
     'userExplanation': `This artist is in the blacklist.`,
     'category': 'Risk',
     'type': 'error',
-    'basis': 'row',
+    'basis': 'dataset',
     'explanations': {
       'default': `This artist is in the blacklist.`
     }
