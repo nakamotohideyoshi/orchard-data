@@ -11,12 +11,13 @@ const defaultExplanationId = 'default'
  * @returns {{row_id: number, field: array, value: array, explanation_id: array, error_type: array}|boolean}
  */
 module.exports = function (dataset, metadata) {
-  if (metadata[0]) {
-    metadata = metadata[0] // For some reason, metadata comes as array, so we just use its first element.
-  }
+  const occurrences = []
+
+  // For some reason, metadata comes as array, so we just use its first element.
+  if (metadata[0]) metadata = metadata[0]
 
   // Skip this filter if there's no keywords in the blacklist.
-  if (!metadata.keyword_blacklist) return false
+  if (!metadata.keyword_blacklist) return occurrences
 
   // Rule: The keyword list is supplied by the user as a parameter when creating the dataset
 
@@ -30,8 +31,6 @@ module.exports = function (dataset, metadata) {
     'release_name',
     'track_name'
   ]
-
-  const occurrences = []
 
   dataset.forEach((row, index) => {
     const occurrence = {
