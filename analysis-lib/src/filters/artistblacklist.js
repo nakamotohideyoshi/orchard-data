@@ -56,31 +56,38 @@ module.exports = function (row, index, metadata) {
   }
 
   if (metadata[0]) {
-    metadata = metadata[0] // TODO: Fix this workaround. Metadata should never come as array.
+    metadata = metadata[0] // For some reason, metadata comes as array.
   }
 
-  // if there's no blacklist, returns
+  // Skip this filter if there's no artist in the blacklist.
   if (!metadata.artist_blacklist) { return false }
 
   // Rule: The artist list is supplied by the user as a parameter when creating the dataset
-  let artistBlacklist = metadata.artist_blacklist.replace('\r\n', '\n').split('\n')
+
+  let artistBlacklist = metadata.artist_blacklist
+    .replace('\r\n', '\n') // Replace CRLF by LF before splitting the list entries.
+    .split('\n') // Split the list entries into an array.
+    .map(blacklistedArtist => blacklistedArtist.trim()) // Trim array entries.
+    .filter(blacklistedArtist => blacklistedArtist.length > 0) // Remove array empty entries.
 
   // Rule: keyword match is case-insensitive
 
   fieldsToCheck.forEach((field) => {
-    if (row.hasOwnProperty(field) && row[field].length > 0) {
-      artistBlacklist.forEach((artist) => {
-        let artistFormatted = artist.toLowerCase().trim()
-        let fieldValueFormatted = row[field].toLowerCase().trim()
-        let fieldValueContainsBlacklistedArtist = (fieldValueFormatted.indexOf(artistFormatted) > -1)
+    if (!row[field]) return
 
-        if (fieldValueContainsBlacklistedArtist) {
-          occurrence.field.push(field)
-          occurrence.value.push(row[field])
-          occurrence.explanation_id.push(defaultExplanationId)
-          occurrence.error_type.push(defaultErrorType)
-        }
-      })
+    for (let i = 0, l = artistBlacklist.length; i < l; i++) {
+      const blacklistedArtist = artistBlacklist[i]
+
+      const searchTerm = new RegExp(`\\b${blacklistedArtist}\\b`, 'gi')
+      const fieldValueContainsBlacklistedArtist = (row[field].search(searchTerm) !== -1)
+
+      if (fieldValueContainsBlacklistedArtist) {
+        occurrence.field.push(field)
+        occurrence.value.push(row[field])
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
+        break
+      }
     }
   })
 
