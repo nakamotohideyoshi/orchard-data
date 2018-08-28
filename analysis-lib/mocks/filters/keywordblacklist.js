@@ -140,7 +140,7 @@ module.exports = {
     ]
   },
 
-  firstInKeywrodblacklist: {
+  firstInKeywordBlacklist: {
     'metadata': {
       'source': path.resolve(__dirname, '..', '..', 'data-tests', 'input-files', 'categories', 'test.tsv'),
       'artist_blacklist': 'test',
@@ -208,7 +208,7 @@ module.exports = {
       }
     ]
   },
-  lastInKeywrodblacklist: {
+  lastInKeywordBlacklist: {
     'metadata': {
       'source': path.resolve(__dirname, '..', '..', 'data-tests', 'input-files', 'categories', 'test.tsv'),
       'artist_blacklist': 'test',
