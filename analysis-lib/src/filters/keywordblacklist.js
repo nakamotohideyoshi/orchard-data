@@ -1,53 +1,59 @@
-// keyword blacklist
+'use strict'
 
-module.exports = async function (row, idx, metadata) {
-  'use strict'
+const filterId = require('path').parse(__filename).name
+const filterMeta = require('./filters-meta')[filterId]
 
-  const removeDiacritics = require('../scripts/remove-diacritics')
+const defaultErrorType = filterMeta['type']
+const defaultExplanationId = 'default'
 
-  const filterName = 'keywordblacklist'
-  const filterMeta = require('./filters-meta')[filterName]
+/**
+ * @param {Array} dataset
+ * @returns {{row_id: number, field: array, value: array, explanation_id: array, error_type: array}|boolean}
+ */
+module.exports = function (dataset, metadata) {
+  const occurrences = []
 
-  const defaultErrorType = filterMeta['type']
-  const defaultExplanationId = 'default'
+  // For some reason, metadata comes as array, so we just use its first element.
+  if (metadata[0]) metadata = metadata[0]
 
-  const fields = ['release_name', 'track_name']
+  // Skip this filter if there's no keywords in the blacklist.
+  if (!metadata.keyword_blacklist) return occurrences
 
-  const occurrence = {
-    'row_id': idx,
-    'field': [],
-    'value': [],
-    'explanation_id': [],
-    'error_type': []
-  }
+  // Rule: The keyword list is supplied by the user as a parameter when creating the dataset
 
-  if (metadata[0]) {
-    metadata = metadata[0] // TODO: Fix this workaround. Metadata should never come as array.
-  }
+  let keywordBlacklist = metadata.keyword_blacklist
+    .replace('\r\n', '\n') // Replace CRLF by LF before splitting the list entries.
+    .split('\n') // Split the list entries into an array.
+    .map(blacklistedKeyword => blacklistedKeyword.trim()) // Trim array entries.
+    .filter(blacklistedKeyword => blacklistedKeyword.length > 0) // Remove array empty entries.
 
-  if (metadata['keyword_blacklist']) {
-    // keywordblkacklist spilt with ' '
-    const blacklistkeywords = metadata['keyword_blacklist'].trim().toLowerCase().replace('\r\n', '\n').split('\n')
+  const fieldsToCheck = [
+    'release_name',
+    'track_name'
+  ]
 
-    const result = await new Promise(async (resolve) => {
-      let isblacklistMatch = false
+  dataset.forEach((row, index) => {
+    const occurrence = {
+      'row_id': index + 1,
+      'dataset_row_id': row.rowid,
+      'field': [],
+      'value': [],
+      'explanation_id': [],
+      'error_type': []
+    }
 
-      for (let field of fields) {
-        const value = row[field] ? removeDiacritics(row[field]).trim().toLowerCase() : ''
+    // Rule: keyword match is case-insensitive
 
-        // check for keyword_blacklist
-        blacklistkeywords.forEach(blacklistkeyword => {
-          // regex pattern
-          const pattern = new RegExp(blacklistkeyword, 'g')
+    fieldsToCheck.forEach((field) => {
+      if (!row[field]) return
 
-          // if matched with blacklist
-          if (value.match(pattern)) {
-            isblacklistMatch = true
-          }
-        })
+      for (let i = 0, l = keywordBlacklist.length; i < l; i++) {
+        const blacklistedKeyword = keywordBlacklist[i]
 
-        // keyword matched with blacklist were found
-        if (isblacklistMatch) {
+        const searchTerm = new RegExp(`\\b${blacklistedKeyword}\\b`, 'gi')
+        const fieldValueContainsBlacklistedKeyword = (row[field].search(searchTerm) !== -1)
+
+        if (fieldValueContainsBlacklistedKeyword) {
           occurrence.field.push(field)
           occurrence.value.push(row[field])
           occurrence.explanation_id.push(defaultExplanationId)
@@ -55,15 +61,10 @@ module.exports = async function (row, idx, metadata) {
           break
         }
       }
-
-      if (isblacklistMatch) {
-        resolve(occurrence)
-      } else {
-        resolve(false)
-      }
     })
-    return result
-  } else {
-    return false
-  }
+
+    if (occurrence.field.length > 0) occurrences.push(occurrence)
+  })
+
+  return occurrences
 }
