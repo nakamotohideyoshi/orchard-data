@@ -24,8 +24,9 @@ modal.modal(
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { FILTERS_META } from '@/constants/types'
+import { mapGetters, mapMutations } from 'vuex'
+import { FILTERS_META, SET_ACTIVE_CATEGORY } from '@/constants/types'
+import { CUSTOM_CATEGORY } from '@/constants/report-category'
 import openTsv from '@/helpers/openTsvViewer'
 
 export default {
@@ -53,6 +54,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
     openTsv,
     beforeOpen (event) {
       this.item = Object.assign({}, this.item, { ...event.params })
@@ -70,6 +72,7 @@ export default {
     },
     showParams () {
       const { datasetRowId } = this
+      this.setReportCategory(CUSTOM_CATEGORY)
       this.$router.push(`/report/${datasetRowId}/params`)
       this.$modal.hide('field-modal')
     },
