@@ -26,6 +26,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - hyphen delimiter', () => {
     let mock = mocks.failHyphenDelimiter
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 1'])
@@ -37,6 +38,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - tail begins with square brackets', () => {
     let mock = mocks.failTailBeginsWithSquareBrackets
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 3'])
@@ -48,6 +50,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - tail begins with paren', () => {
     let mock = mocks.failTailBeginsWithParen
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 4'])
@@ -65,6 +68,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - value is "remix"', () => {
     let mock = mocks.failValueIsRemix
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 6'])
@@ -76,6 +80,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - value is "mix"', () => {
     let mock = mocks.failValueIsMix
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 7'])
@@ -87,6 +92,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - value is "remixed"', () => {
     let mock = mocks.failValueIsRemixed
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 8'])
@@ -98,6 +104,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - value is "mixed"', () => {
     let mock = mocks.failValueIsMixed
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 8'])
@@ -121,6 +128,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - flag value is in parens', () => {
     let mock = mocks.failFlagValueIsInParens
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 11'])
@@ -132,6 +140,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - flag value is in square brackets', () => {
     let mock = mocks.failFlagValueIsInSquareBrackets
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 12'])
@@ -143,6 +152,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - flag value is MiX case', () => {
     let mock = mocks.failFlagValueIsMiXCase
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 13'])
@@ -154,6 +164,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - track remixer has a value', () => {
     let mock = mocks.failTrackRemixerHasAValue
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 14'])
@@ -165,6 +176,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - non-remix is the original song', () => {
     let mock = mocks.failNonRemixIsTheOriginalSong
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 3)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 15'])
@@ -176,6 +188,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - original song has parens', () => {
     let mock = mocks.failOriginalSongHasParens
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 3)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['release_name'])
       assert.deepEqual(occurrence.value, ['Consectetur 16'])
@@ -187,6 +200,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - identical track titles', () => {
     let mock = mocks.failIdenticalTrackTitles
     let occurrences = filter(mock)
+    assert.equal(occurrences.length, 2)
     occurrences.forEach((occurrence) => {
       assert.deepEqual(occurrence.field, ['track_name'])
       assert.deepEqual(occurrence.value, ['Lorem Ipsum'])
