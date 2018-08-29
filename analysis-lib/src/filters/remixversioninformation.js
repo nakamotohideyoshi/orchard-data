@@ -93,7 +93,10 @@ module.exports = function (dataset) {
       albumsOnThisDataset[groupName] = [row]
     }
   })
+
   const groupNames = Object.keys(albumsOnThisDataset)
+
+  let rowIndex = 0
 
   groupNames.forEach((groupName) => {
     const albumRows = albumsOnThisDataset[groupName]
@@ -144,9 +147,11 @@ module.exports = function (dataset) {
       }
     })
 
-    albumRows.forEach((row, index) => {
+    console.log(groupName)
+
+    albumRows.forEach((row) => {
       const occurrence = {
-        'row_id': index + 1,
+        'row_id': rowIndex + 1,
         'dataset_row_id': row.rowid,
         'field': [],
         'value': [],
@@ -171,7 +176,7 @@ module.exports = function (dataset) {
 
       if (theOriginalSong) {
         for (let i = 0, l = albumRows.length; i < l; i++) {
-          if (i === index) continue // Don't compare row with itself.
+          if (i === rowIndex) continue // Don't compare row with itself.
 
           if (albumRows[i].track_name === row.track_name) {
             twoOrMoreTrackTitlesFromAlbumAreIdentical = true
@@ -188,6 +193,10 @@ module.exports = function (dataset) {
       }
 
       if (occurrence.field.length > 0) occurrences.push(occurrence)
+
+      rowIndex++
+
+      console.log(`Line ${rowIndex}: ${occurrence.field.length} occurrences`)
     })
   })
 
