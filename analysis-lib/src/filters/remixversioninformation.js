@@ -110,9 +110,10 @@ module.exports = function (dataset) {
 
     albumRows.forEach((row) => {
       const trackTitle = row.track_name
+
       const currentTrackTitleHead = extractTrackTitleHead(trackTitle)
 
-      if (lastCheckedTrackTitleHead && lastCheckedTrackTitleHead !== currentTrackTitleHead) {
+      if (lastCheckedTrackTitleHead && lastCheckedTrackTitleHead.toLowerCase().trim() !== currentTrackTitleHead.toLowerCase().trim()) {
         everyTrackOnAnAlbumHasTheSameHead = false
       }
 
@@ -129,7 +130,7 @@ module.exports = function (dataset) {
     const checkIfSongIsARemixOfTheOriginalSong = (track) => {
       if (!theOriginalSong) return false
       const trackHasRemixFlag = checkIfTrackHasRemixFlag(track)
-      let trackTitleContainsTheOriginalSong = (track.track_name.indexOf(theOriginalSong) !== -1)
+      let trackTitleContainsTheOriginalSong = (track.track_name.search(new RegExp(`\\b${theOriginalSong}\\b`, 'gi')) !== -1)
       return (trackHasRemixFlag && trackTitleContainsTheOriginalSong)
     }
 
@@ -137,19 +138,31 @@ module.exports = function (dataset) {
     // - If every track on an album is either the original song or a remix of the original song, the album is a remix album.
 
     let isARemixAlbum = true
+    let originalSongHasBeenFoundInThisAlbum = false
+
+    const markOriginalSongFoundInThisAlbum = () => {
+      originalSongHasBeenFoundInThisAlbum = true
+    }
 
     albumRows.forEach((row) => {
-      const songIsTheOriginalSong = (row.track_name === theOriginalSong)
+      let songIsTheOriginalSong = false
+
       const songIsARemixOfTheOriginalSong = checkIfSongIsARemixOfTheOriginalSong(row)
+
+      if (!songIsARemixOfTheOriginalSong && !originalSongHasBeenFoundInThisAlbum) {
+        const currentTrackTitleHead = extractTrackTitleHead(row.track_name)
+
+        if (theOriginalSong) songIsTheOriginalSong = (currentTrackTitleHead.toLowerCase().trim() === theOriginalSong.toLowerCase().trim())
+
+        if (songIsTheOriginalSong) markOriginalSongFoundInThisAlbum()
+      }
 
       if (!songIsTheOriginalSong && !songIsARemixOfTheOriginalSong) {
         isARemixAlbum = false
       }
     })
 
-    console.log(groupName)
-
-    albumRows.forEach((row) => {
+    albumRows.forEach((row, rowIndexOnAlbum) => {
       const occurrence = {
         'row_id': rowIndex + 1,
         'dataset_row_id': row.rowid,
@@ -163,7 +176,9 @@ module.exports = function (dataset) {
 
       // TEST 1. If there is a remix album, and the release name does not contain the original song, it is an error.
 
-      const releaseNameDoesNotContainTheOriginalSong = (row.release_name.search(new RegExp(theOriginalSong, 'gi')) === -1)
+      let releaseNameDoesNotContainTheOriginalSong = true
+
+      if (theOriginalSong) releaseNameDoesNotContainTheOriginalSong = (row.release_name.search(new RegExp(`\\b${theOriginalSong}\\b`, 'gi')) === -1)
 
       if (isARemixAlbum && releaseNameDoesNotContainTheOriginalSong) {
         occurrence.field.push('release_name')
@@ -176,7 +191,7 @@ module.exports = function (dataset) {
 
       if (theOriginalSong) {
         for (let i = 0, l = albumRows.length; i < l; i++) {
-          if (i === rowIndex) continue // Don't compare row with itself.
+          if (i === rowIndexOnAlbum) continue // Don't compare row with itself.
 
           if (albumRows[i].track_name === row.track_name) {
             twoOrMoreTrackTitlesFromAlbumAreIdentical = true
@@ -195,8 +210,6 @@ module.exports = function (dataset) {
       if (occurrence.field.length > 0) occurrences.push(occurrence)
 
       rowIndex++
-
-      console.log(`Line ${rowIndex}: ${occurrence.field.length} occurrences`)
     })
   })
 
