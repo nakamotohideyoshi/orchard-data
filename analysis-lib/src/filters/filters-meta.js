@@ -394,8 +394,8 @@ module.exports = {
     }
   },
 
-  'albumswithvsandmeets': {
-    'orchardDescription': `Albums with vs. and meets - artists must be listed separately as primary`,
+  'vsmeetsremixalbums': {
+    'orchardDescription': `Proper remix formatting`,
     'programmerDescription': `
       - Does the release name contain “Meets” or “vs.”? If not, there is no error.
       - Is it a collection of different songs remixed by a single DJ? If not, there is no error.
@@ -403,7 +403,7 @@ module.exports = {
       - Are the original artists (whose songs are being remixed) listed at the track level identified as Primary? If not, there is an error.
       - Are the original artists listed at the album level? If so, there is an error.
     `,
-    'userExplanation': `Albums with vs. and meets - see iTunes Style Guide 6.3.`,
+    'userExplanation': `Mixing DJ must be listed at the album level and identified as Primary with the Remixer role - see iTunes Style Guide 6.3.`,
     'category': 'iTunes',
     'type': 'error',
     'basis': 'dataset',
