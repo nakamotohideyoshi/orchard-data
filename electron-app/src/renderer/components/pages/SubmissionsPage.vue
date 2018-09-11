@@ -13,7 +13,6 @@
                                 .page-title
                                     i.icon.icon-list
                                     h1 All Submissions ({{items.length}})
-                                    .page-title__num {{items.length}}
 
 
                                 table.p-table.p-table--subm(js-stacktable)
