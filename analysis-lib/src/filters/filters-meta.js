@@ -368,7 +368,8 @@ module.exports = {
       'default': `
         Genres must not be egregiously misclassified (for example, Hip Hop/Rap in place of Children’s Music).
         See iTunes Style Guide 12.1.
-      `
+      `,
+      'blankGenre': 'The genre field must not be blank.'
     }
   },
 
