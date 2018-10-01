@@ -6,6 +6,7 @@ const constants = require('../scripts/constants')
 
 const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
+const blankGenreExplanationId = 'blankGenre'
 
 const fields = ['genre', 'sub_genre']
 
@@ -31,9 +32,15 @@ module.exports = function (row, idx) {
 
     let value = row[field]
 
-    if (!value) {
-      // Rule: Genre and sub-genre cannot be blank.
-      hasError = true
+    if ((field === 'sub_genre') && !value) {
+      // Rule: Sub-genre can be blank.
+      hasError = false
+    } else if ((field === 'genre') && !value) {
+      // Rule: Genre cannot be blank.
+      occurrence.field.push(field)
+      occurrence.value.push(row[field])
+      occurrence.explanation_id.push(blankGenreExplanationId)
+      occurrence.error_type.push(defaultErrorType)
     } else {
       value = value.toLowerCase()
 
