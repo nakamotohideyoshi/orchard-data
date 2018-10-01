@@ -11,6 +11,7 @@ const filterMeta = require('../../../src/filters/filters-meta').filter17
 
 const defaultErrorType = filterMeta.type
 const defaultExplanationId = 'default'
+const blankGenreExplanationId = 'blankGenre'
 
 describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   let report = new ReportModule()
@@ -125,25 +126,17 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
         case 0:
           assert.deepEqual(occurrence.field, ['genre'])
           assert.deepEqual(occurrence.value, [''])
-          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+          assert.deepEqual(occurrence.explanation_id, [blankGenreExplanationId])
           assert.deepEqual(occurrence.error_type, [defaultErrorType])
           break
       }
     })
   })
 
-  it('should fail: sub-genre is blank', () => {
+  it('should pass: sub-genre is blank', () => {
     mocks.SubGenreIsBlank.forEach((item, index) => {
       let occurrence = filter(item, index)
-
-      switch (index) {
-        case 0:
-          assert.deepEqual(occurrence.field, ['sub_genre'])
-          assert.deepEqual(occurrence.value, [''])
-          assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
-          assert.deepEqual(occurrence.error_type, [defaultErrorType])
-          break
-      }
+      assert.equal(occurrence, false)
     })
   })
 })
