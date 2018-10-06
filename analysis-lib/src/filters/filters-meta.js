@@ -703,5 +703,38 @@ Temporarily disabling because of #302 "1K set hangs"
     'explanations': {
       'default': `The first explanatory reference must be enclosed in parentheses, with any additional references enclosed in brackets.`
     }
+  },
+
+  'trackswithvsandmeets': {
+    'orchardDescription': `Proper remix formatting (such as “Title (feat.Artist) [Remix]”)`,
+    'programmerDescription': `
+      There is no failure unless there exists a parenthesized expression in the track title.
+
+      There is a failure if a parenthesized expression in the track title contains a case-insensitive match
+      for "vs." or "Meets", but not a case-sensitive match. The error message would be the second one below,
+      that begins with "capitalization." This failure is a warning. Do not stop processing but continue to see
+      if other failure conditions are met.
+
+      There is a failure if that expression as a whole appears in in any track-level artist field. This is an error.
+
+      Split the parenthesized expression on "vs." or "meets", with leading and trailing whitespace trimmed.
+      It is a failure if neither (A|B) or (B|A), pipe-delimited, is the primary track artist.
+      For a track titled "Lorem (first meets second) Ipsum" or "Lorem (first vs second) Ipsum",
+      the primary track artist must be literally first|second or second|first. This failure is an error.
+    `,
+    'userExplanation': `
+      For tracks using “Meets” or “vs.,” all artists involved must be listed at the track level and identified as Primary.
+      The terms “Meets” and “vs.” must only appear in the track title.
+      Capitalization of Meets and vs. in a track title does not match.
+    `,
+    'category': 'iTunes',
+    'type': 'error',
+    'basis': 'row',
+    'explanations': {
+      'default': `
+        Use of “Meets” or “vs.” For artists using “Meets” or “vs.,” all artists involved must be listed at the track
+        level and identified as Primary. The terms “Meets” and “vs.” must only appear in the album or track title.
+      `
+    }
   }
 }
