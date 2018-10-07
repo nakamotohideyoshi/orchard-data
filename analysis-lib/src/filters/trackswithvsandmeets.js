@@ -4,8 +4,8 @@ const filterName = require('path').parse(__filename).name
 const filterMeta = require('./filters-meta')[filterName]
 
 /** @type {string[]} */
-const errorType = filterMeta['type']
-const [error, warning] = errorType
+const error = filterMeta['type']
+const warning = 'warning'
 const defaultExplanationId = 'default'
 const capitalizationExplanationId = 'capitalization'
 
@@ -42,10 +42,10 @@ const filter = (row, idx) => {
     // if other failure conditions are met.
 
     const containsACaseInsensitiveMatch =
-      trackTitle.search(/\b(vs\.|Meets)\b/gi) !== -1
+      trackTitle.search(/\b(vs\.|Meets\b)/gi) !== -1
 
     const containsACaseSensitiveMatch =
-      trackTitle.search(/\b(vs\.|Meets)\b/g) !== -1
+      trackTitle.search(/\b(vs\.|Meets\b)/g) !== -1
 
     if (containsACaseInsensitiveMatch && !containsACaseSensitiveMatch) {
       occurrence.field.push('track_name')
@@ -67,7 +67,7 @@ const filter = (row, idx) => {
     if (!row[trackLevelArtistField]) return
 
     const containExpression =
-      row[trackLevelArtistField].search(/\b(vs\.|Meets)\b/gi) !== -1
+      row[trackLevelArtistField].search(/\b(vs\.|Meets\b)/gi) !== -1
 
     if (containExpression) {
       occurrence.field.push(trackLevelArtistField)
@@ -87,12 +87,12 @@ const filter = (row, idx) => {
 
     if (parenthesizedExpressionsOnTrackTitle) {
       parenthesizedExpressionsOnTrackTitle.forEach(expression => {
-        const trackTitleContainsExpression = expression.search(/\b(vs\.|Meets)\b/gi) !== -1
+        const trackTitleContainsExpression = expression.search(/\b(vs\.|Meets\b)/gi) !== -1
 
         if (trackTitleContainsExpression) {
           const expressionWithoutParenthesis = expression.replace('(', '').replace(')', '')
 
-          const expressionSplit = expressionWithoutParenthesis.split(/\b(vs\.|Meets)\b/gi).map(arrayElement => arrayElement.trim())
+          const expressionSplit = expressionWithoutParenthesis.split(/\b(vs\.|Meets\b)/gi).map(arrayElement => arrayElement.trim())
 
           if (expressionSplit.length === 3) {
             const [firstArtist, /* VsOrMeetExpression */, secondArtist] = expressionSplit
