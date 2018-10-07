@@ -17,19 +17,19 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   report.init()
   report.addFilter(filterId)
 
-  it('should pass: validTrack1', () => {
+  it('should pass: everything ok', () => {
     let mock = mocks.validTrack1
     let occurrence = filter(mock, 0)
     assert.equal(occurrence, false)
   })
 
-  it('should pass: validTrack2', () => {
+  it('should pass: everything is fine', () => {
     let mock = mocks.validTrack2
     let occurrence = filter(mock, 0)
     assert.equal(occurrence, false)
   })
 
-  it('should fail: invalidTrack1', () => {
+  it('should fail: track artist is "first" when should be "first|second"', () => {
     let mock = mocks.invalidTrack1
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_artist'])
@@ -38,7 +38,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     assert.deepEqual(occurrence.error_type, [defaultErrorType])
   })
 
-  it('should fail: invalidTrack2', () => {
+  it('should fail: track artist is "first" when should be "first|second"', () => {
     let mock = mocks.invalidTrack2
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_artist'])
@@ -47,7 +47,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     assert.deepEqual(occurrence.error_type, [defaultErrorType])
   })
 
-  it('should fail: invalidTrack3', () => {
+  it('should fail: track artist contains "meets" term', () => {
     let mock = mocks.invalidTrack3
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_artist'])
@@ -56,7 +56,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     assert.deepEqual(occurrence.error_type, [defaultErrorType])
   })
 
-  it('should fail: invalidTrack4', () => {
+  it('should fail: track artist contains "vs." term', () => {
     let mock = mocks.invalidTrack4
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_artist'])
@@ -65,7 +65,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     assert.deepEqual(occurrence.error_type, [defaultErrorType])
   })
 
-  it('should fail: invalidTrack5', () => {
+  it('should fail: track artist featuring contains "vs." term', () => {
     let mock = mocks.invalidTrack5
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_artist_featuring'])
@@ -74,7 +74,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     assert.deepEqual(occurrence.error_type, [defaultErrorType])
   })
 
-  it('should fail: invalidTrack6', () => {
+  it('should fail: track artist remixer contains "meets" term', () => {
     let mock = mocks.invalidTrack6
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_artist_remixer'])
@@ -83,7 +83,7 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     assert.deepEqual(occurrence.error_type, [defaultErrorType])
   })
 
-  it('should fail: invalidTrack7', () => {
+  it('should fail: track name contains "meets" term with wrong capitalization', () => {
     let mock = mocks.invalidTrack7
     let occurrence = filter(mock, 0)
     assert.deepEqual(occurrence.field, ['track_name'])
