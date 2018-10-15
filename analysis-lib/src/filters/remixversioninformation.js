@@ -135,9 +135,9 @@ module.exports = function (dataset) {
     }
 
     // Rule: Remix album
-    // - If every track on an album is either the original song or a remix of the original song, the album is a remix album.
+    // - If an album has more than one track and every track is either the original song or a remix of the original song, the album is a remix album.
 
-    let isARemixAlbum = true
+    let isARemixAlbum = (albumRows.length > 1)
     let originalSongHasBeenFoundInThisAlbum = false
 
     const markOriginalSongFoundInThisAlbum = () => {
