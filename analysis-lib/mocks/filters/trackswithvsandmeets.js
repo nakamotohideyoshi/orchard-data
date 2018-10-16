@@ -1,9 +1,9 @@
 module.exports = {
   validTrack1: {
-    track_name: 'Lorem Ipsum',
-    track_artist: 'first',
-    track_artist_featuring: 'second',
-    track_artist_remixer: 'third'
+    track_name: 'Brute - Ferry Corsten VS. Armin van Buuren',
+    track_artist: 'Ferry Corsten',
+    track_artist_featuring: 'Armin van Buuren',
+    track_artist_remixer: 'Armin van Buuren'
   },
 
   validTrack2: {
@@ -28,28 +28,28 @@ module.exports = {
   },
 
   invalidTrack3: {
-    track_name: 'Lorem Ipsum',
+    track_name: 'Lorem (parenthesized expression) Ipsum',
     track_artist: 'first meets second',
     track_artist_featuring: 'second',
     track_artist_remixer: 'third'
   },
 
   invalidTrack4: {
-    track_name: 'Lorem Ipsum',
+    track_name: 'Lorem (parenthesized expression) Ipsum',
     track_artist: 'first vs. second',
     track_artist_featuring: 'second',
     track_artist_remixer: 'third'
   },
 
   invalidTrack5: {
-    track_name: 'Lorem Ipsum',
+    track_name: 'Lorem (parenthesized expression) Ipsum',
     track_artist: 'first',
     track_artist_featuring: 'first vs. second',
     track_artist_remixer: 'third'
   },
 
   invalidTrack6: {
-    track_name: 'Lorem Ipsum',
+    track_name: 'Lorem (parenthesized expression) Ipsum',
     track_artist: 'first',
     track_artist_featuring: 'second',
     track_artist_remixer: 'third meets second'
