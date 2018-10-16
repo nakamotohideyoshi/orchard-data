@@ -167,7 +167,7 @@ module.exports = {
     'release_meta_language': 'English',
     'orchard_artist': 'Camper Van Beethoven',
     'artist_country': 'United Kingdom',
-    'release_artists_primary_artist': 'Camper Van Beethoven',
+    'release_artists_primary_artist': 'Terry Gay Woods',
     'release_date': '1/1/1985',
     'sale_start_date': '11/15/2016',
     'release_itunes_pricing': 'Mid/Front',
