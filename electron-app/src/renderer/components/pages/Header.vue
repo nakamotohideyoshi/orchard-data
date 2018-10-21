@@ -10,6 +10,7 @@ include _mixins
                         i.icon.icon-logo
                     router-link(v-else :to="`/report/${lastOpendRowId}`")
                         i.icon.icon-logo
+                    span(v-if="isSalesDemoMode") *
                 ul.header__menu
                     li
                         router-link(:to="'/submissions'").is-active
@@ -52,11 +53,14 @@ include _mixins
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { LAST_OPENED_ROW_ID, SUBMISSIONS } from '@/constants/types'
+import { mapGetters, mapState } from 'vuex'
+import { LAST_OPENED_ROW_ID, SUBMISSIONS, SALES_DEMO_MODE } from '@/constants/types'
 
 export default {
   computed: {
+    ...mapState({
+      isSalesDemoMode: state => state[SALES_DEMO_MODE]
+    }),
     ...mapGetters({
       lastOpendRowId: LAST_OPENED_ROW_ID,
       submissions: SUBMISSIONS
