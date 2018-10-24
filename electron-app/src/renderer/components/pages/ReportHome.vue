@@ -3,7 +3,7 @@ include _mixins
 // tabs
 .report-home
     .report__tabs.report__tabs--left(js-scrollbar)
-        button.overall-tab(v-on:click='showOverallRisk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab {{categoryOverallText}}
+        button.overall-tab(v-if="!isSalesDemoMode" v-on:click='showOverallRisk()' v-bind:class="{ 'is-active': overallRiskFlag, 'is-disabled':status === 3 }" :disabled="status === 3").report__tab {{categoryOverallText}}
         button.apple-tab(v-on:click='showAppleTab()' v-bind:class="{ 'is-active': appleTabFlag, 'is-disabled': status === 3 }" :disabled="status === 3").report__tab {{categoryItunesText}}
         button.custom-tab(v-on:click='showCustom()' v-bind:class="{ 'is-active': customFlag }").report__tab {{categoryCustomText}}
 
@@ -52,7 +52,8 @@ import {
   SUBMISSIONS_FAILURE,
   SET_ACTIVE_CATEGORY,
   REPORT_SUMMARY,
-  ACTIVE_REPORT_CATEGORY
+  ACTIVE_REPORT_CATEGORY,
+  SALES_DEMO_MODE
 } from '@/constants/types'
 
 import {
@@ -137,6 +138,7 @@ export default {
       return ''
     },
     ...mapState({
+      isSalesDemoMode: state => state[SALES_DEMO_MODE],
       summaryData: state => state.Reports[REPORT_SUMMARY]
     }),
     ...mapGetters({

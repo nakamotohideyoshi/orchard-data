@@ -12,12 +12,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import FieldModal from '@/components/sections/FieldModal'
 import {
   FILTERS_META,
   SUBMISSIONS_LOADED,
-  CONFIG_FAILURE
+  CONFIG_FAILURE,
+  SET_SALES_DEMO_MODE
 } from '@/constants/types'
 
 export default {
@@ -45,8 +46,17 @@ export default {
         this.retry()
       }
     }, 200)
+    window.addEventListener('keyup', this.activeDemoMode)
   },
   methods: {
+    ...mapMutations([SET_SALES_DEMO_MODE]),
+    activeDemoMode(event) {
+      if (event.ctrlKey && event.keyCode == 190) {
+        this.SET_SALES_DEMO_MODE()
+        console.log('demo mode, enabled')
+      }
+    },
+
     async retry () {
       await this.$store.dispatch('getConfig')
       await this.$store.dispatch('fetchSubmissions')
