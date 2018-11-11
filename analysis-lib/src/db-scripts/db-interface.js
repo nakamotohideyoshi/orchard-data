@@ -32,7 +32,7 @@ module.exports = function () {
     const warnings = []
 
     const tsvFile = await readTsv(inputPath)
-    const db = await sqlite.open(this.dbPath, {Promise})
+    const db = await sqlite.open(this.dbPath, { Promise })
 
     // Raw Fields
     const tsvFields = Object.keys(tsvFile[0])
@@ -110,7 +110,7 @@ module.exports = function () {
       }
     }
 
-    return {'status': 'OK', 'warnings': warnings}
+    return { 'status': 'OK', 'warnings': warnings }
   }
 
   this.logErrorIntoDB = function (datasetId, error) {
@@ -119,7 +119,7 @@ module.exports = function () {
 
     // Opens a new connection or uses an existing one
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
         let fields = ['dataset_id', 'row_id', 'message']
         let values = [datasetId, error['row_id'], error['message'].toString()]
@@ -136,7 +136,7 @@ module.exports = function () {
           }
           )
       })
-      .then(() => Promise.resolve({'status': 'OK'}))
+      .then(() => Promise.resolve({ 'status': 'OK' }))
 
     return dbPromise
   }
@@ -146,7 +146,7 @@ module.exports = function () {
     let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT COUNT(*) FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`))
       .then(result => Promise.resolve(result[0]['COUNT(*)']))
 
@@ -160,7 +160,7 @@ module.exports = function () {
     let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
         return db.run(`
           UPDATE ${datasetMetaTable.name}
@@ -168,7 +168,7 @@ module.exports = function () {
           WHERE rowId = ${datasetId}
         `)
           .then(() => {
-            return Promise.resolve({'status': 'OK', 'datasetStatus': status})
+            return Promise.resolve({ 'status': 'OK', 'datasetStatus': status })
           },
           (err) => {
             return new Promise(function (resolve, reject) {
@@ -189,7 +189,7 @@ module.exports = function () {
 
     try {
       let dbPromise = readTsv(metadata.source)
-        .then(() => sqlite.open(this.dbPath, {Promise}))
+        .then(() => sqlite.open(this.dbPath, { Promise }))
         .then(db => {
           let values = []
 
@@ -201,7 +201,7 @@ module.exports = function () {
           let stmt = `INSERT INTO ${datasetMetaTable.name} (${fields}) VALUES (${placeholders})`
 
           return db.run(stmt, values)
-            .then(result => ({'datasetId': result.lastID}), (err) => err)
+            .then(result => ({ 'datasetId': result.lastID }), (err) => err)
         })
 
       return dbPromise
@@ -214,7 +214,7 @@ module.exports = function () {
     let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT rowId, * FROM ${datasetMetaTable.name}`))
 
     return dbPromise
@@ -228,7 +228,7 @@ module.exports = function () {
     let logsTable = dbInfo[DATABASE]['tables']['tsv_logs_table']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then((db) => {
         // delete dataset meta and all related data across other tables
         return Promise.all([
@@ -249,7 +249,7 @@ module.exports = function () {
     let datasetMetaTable = dbInfo[DATABASE]['tables']['dataset_meta']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT rowId, * FROM ${datasetMetaTable.name} WHERE rowId = ${rowId}`))
 
     return dbPromise
@@ -258,7 +258,7 @@ module.exports = function () {
   // Clears a table - DEV only
   this.clearTable = function (tableName) {
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.run(`DELETE FROM ${tableName}`))
 
     return dbPromise
@@ -269,7 +269,7 @@ module.exports = function () {
     let orchardTable = dbInfo[DATABASE]['tables']['orchard_dataset_contents']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}'`))
 
     return dbPromise
@@ -281,7 +281,7 @@ module.exports = function () {
     let dbRef
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
         dbRef = db
         return dbRef.all(`SELECT rowId, * FROM ${orchardTable.name} WHERE dataset_id = '${datasetId}' AND rowId < '${rowId}' LIMIT '${padding}'`)
@@ -315,7 +315,7 @@ module.exports = function () {
     var reportTable = dbInfo[DATABASE]['tables']['field_by_field_reports']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
         return Promise.map(report, (row) => {
           let columns = Object.keys(row)
@@ -342,7 +342,7 @@ module.exports = function () {
     var reportTable = dbInfo[DATABASE]['tables']['batch_results_reports']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => {
         let columns = Object.keys(report)
         let placeholders = columns.map(() => '(?)').join(',')
@@ -365,7 +365,7 @@ module.exports = function () {
     let FBFReportTable = dbInfo[DATABASE]['tables']['field_by_field_reports']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
 
     // Returns all rows
     if (!category) {
@@ -395,7 +395,7 @@ module.exports = function () {
     let FBFReportTable = dbInfo[DATABASE]['tables']['field_by_field_reports']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT rowId, * FROM ${FBFReportTable.name}`))
 
     return dbPromise
@@ -405,7 +405,7 @@ module.exports = function () {
     let reportTable = dbInfo[DATABASE]['tables']['batch_results_reports']
 
     let dbPromise = Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`
         SELECT rowId, *
         FROM ${reportTable.name}
@@ -419,7 +419,7 @@ module.exports = function () {
     let reportTable = dbInfo[DATABASE]['tables']['batch_results_reports']
 
     return Promise.resolve()
-      .then(() => sqlite.open(this.dbPath, {Promise}))
+      .then(() => sqlite.open(this.dbPath, { Promise }))
       .then(db => db.all(`SELECT rowId, * FROM ${reportTable.name}`))
   }
 }

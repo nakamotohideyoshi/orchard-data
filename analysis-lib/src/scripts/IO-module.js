@@ -21,7 +21,7 @@ module.exports = function () {
           let workbook = XLSX.readFile(inputFile)
           let firstSheetName = workbook.SheetNames[0]
           let worksheet = workbook.Sheets[firstSheetName]
-          let xlsConvertedToTsv = XLSX.utils.sheet_to_csv(worksheet, {FS: '\t'})
+          let xlsConvertedToTsv = XLSX.utils.sheet_to_csv(worksheet, { FS: '\t' })
           csvParser(xlsConvertedToTsv, {
             delimiter: '\t',
             columns: true,
