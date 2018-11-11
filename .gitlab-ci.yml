@@ -21,8 +21,6 @@ cache:
   paths:
     - analysis-lib/node_modules/
     - electron-app/node_modules/
-    - .nvm/
-    - .npm/
 
 build:windows:
   image: electronuserland/builder:wine
