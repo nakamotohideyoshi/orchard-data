@@ -1,6 +1,6 @@
-import {ITUNES_CATEGORY, OVERALL_CATEGORY} from '@/constants/report-category'
-import {findAPortInUse} from 'portscanner'
-import {URL} from 'url'
+import { ITUNES_CATEGORY, OVERALL_CATEGORY } from '@/constants/report-category'
+import { findAPortInUse } from 'portscanner'
+import { URL } from 'url'
 import axios from 'axios'
 
 class ApiUrl {

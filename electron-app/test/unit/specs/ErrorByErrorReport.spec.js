@@ -37,7 +37,7 @@ describe('ErrorByErrorReport.vue', () => {
 
     state = {
       Reports: {
-        [ERROR_BY_ERROR_REPORT]: [{criteriaId: 'filter2', count: 10}, {criteriaId: 'filter1', count: 0}, {criteriaId: 'filter3', count: 15}]
+        [ERROR_BY_ERROR_REPORT]: [{ criteriaId: 'filter2', count: 10 }, { criteriaId: 'filter1', count: 0 }, { criteriaId: 'filter3', count: 15 }]
       }
     }
 

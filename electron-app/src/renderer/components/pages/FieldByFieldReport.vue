@@ -50,7 +50,7 @@ export default {
     const id = this.$route.params.id
 
     if (id) {
-      this.fetchFieldByFieldReport({batchId: id})
+      this.fetchFieldByFieldReport({ batchId: id })
     } else {
       // GOTCHA: mocha seems to have problems when checking if an object
       // is instance of a native type (e.g. Array, Error), let's find a better

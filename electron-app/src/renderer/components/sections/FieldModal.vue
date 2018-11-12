@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
+    ...mapMutations({ setReportCategory: SET_ACTIVE_CATEGORY }),
     openTsv,
     beforeOpen (event) {
       this.item = Object.assign({}, this.item, { ...event.params })
