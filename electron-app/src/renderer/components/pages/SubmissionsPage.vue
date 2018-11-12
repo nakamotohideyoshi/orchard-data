@@ -62,7 +62,7 @@ export default {
   methods: {
     ...mapActions(['deleteSubmission']),
     goToSummary (submissionRowId) {
-      this.$router.push({path: `/report/${submissionRowId}`})
+      this.$router.push({ path: `/report/${submissionRowId}` })
     }
   },
   computed: {
@@ -84,7 +84,7 @@ export default {
       const updatedSubmissionRowId = difference(oldList, newList)
       if (updatedSubmissionRowId.length) {
         if (this.$store.getters['SUBMISSIONS'][updatedSubmissionRowId[0] - 1].status === 2) {
-          this.$router.push({path: `/report-error`})
+          this.$router.push({ path: `/report-error` })
         } else {
           this.goToSummary(updatedSubmissionRowId[0])
         }
