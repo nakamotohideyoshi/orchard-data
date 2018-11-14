@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchSummary']),
-    ...mapMutations({setReportCategory: SET_ACTIVE_CATEGORY}),
+    ...mapMutations({ setReportCategory: SET_ACTIVE_CATEGORY }),
 
     setInitialCategory () {
       if (this.category === OVERALL_CATEGORY) {
@@ -184,7 +184,7 @@ export default {
     }
   },
   created () {
-    this.fetchSummary({batchId: this.batchId})
+    this.fetchSummary({ batchId: this.batchId })
     if (this.item.status === 3) {
       this.showCustom()
     } else {

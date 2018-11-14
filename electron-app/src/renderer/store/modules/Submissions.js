@@ -168,7 +168,7 @@ const actions = {
           return
         }
 
-        const item = {...data, status: 2, rowid: e.response.data.datasetId}
+        const item = { ...data, status: 2, rowid: e.response.data.datasetId }
         commit(SUBMISSIONS_REQUEST, false)
         commit(SUBMISSIONS_FAILURE, e)
         commit(SUBMISSION, item)
@@ -179,7 +179,7 @@ const actions = {
         dispatch('pollSubmissions', state[LAST_OPENED_ROW_ID])
       })
   },
-  pollSubmissions ({commit}, datasetId) {
+  pollSubmissions ({ commit }, datasetId) {
     const RECHECK_INTERVAL = 3 * 1000 // three seconds
 
     const intervalTimerId = window.setInterval(async () => {

@@ -1,4 +1,4 @@
-import {shallow} from 'avoriaz'
+import { shallow } from 'avoriaz'
 import DownloadTsv from '@/components/DownloadTsv'
 
 describe('DownloadTsv.vue', () => {

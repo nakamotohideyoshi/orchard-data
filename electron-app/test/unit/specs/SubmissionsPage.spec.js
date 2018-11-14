@@ -10,7 +10,7 @@ describe('SubmissionsPage.vue', () => {
 
   beforeEach(() => {
     getters = {
-      [SUBMISSIONS]: () => [{rowId: 1, status: 1, time: new Date()}, {rowId: 2, status: 2, time: new Date()}, {rowId: 3, status: 3, time: new Date()}],
+      [SUBMISSIONS]: () => [{ rowId: 1, status: 1, time: new Date() }, { rowId: 2, status: 2, time: new Date() }, { rowId: 3, status: 3, time: new Date() }],
       [SUBMISSIONS_FAILURE]: () => [],
       [SUBMISSIONS_REQUEST]: () => []
     }
