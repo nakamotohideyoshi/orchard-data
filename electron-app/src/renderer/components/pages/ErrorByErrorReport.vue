@@ -92,7 +92,7 @@ export default {
     const id = this.$route.params.id
 
     if (id) {
-      this.fetchErrorByErrorReport({batchId: id})
+      this.fetchErrorByErrorReport({ batchId: id })
     } else {
       this.$store.commit(ERROR_BY_ERROR_REPORT_FAILURE, new Error('No dataset ID defined'))
     }

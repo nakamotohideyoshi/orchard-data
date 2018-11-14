@@ -58,7 +58,7 @@ module.exports = async function (datasetId) {
               idx = parseInt(idx)
               const row = dataset[idx]
               const occurrence = await filters[filter](row, idx + 1, metadata)
-              if (occurrence) { report.addOccurrence(filter, Object.assign(occurrence, {'dataset_row_id': row.rowid})) }
+              if (occurrence) { report.addOccurrence(filter, Object.assign(occurrence, { 'dataset_row_id': row.rowid })) }
             }
           }
         }

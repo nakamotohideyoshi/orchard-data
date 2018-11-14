@@ -71,9 +71,9 @@ export default {
         this.search.closeSearchWindow()
       }
     },
-    activeDemoMode(event) {
+    activeDemoMode (event) {
       // ctrl + period (.)
-      if (event.ctrlKey && event.keyCode == 190) {
+      if (event.ctrlKey && event.keyCode === 190) {
         this.SET_SALES_DEMO_MODE()
         console.log('demo mode, enabled')
       }
@@ -96,7 +96,6 @@ export default {
 .electron-in-page-search-window.search-active {
   visibility: visible;
   background: white;
-  // border: 1px solid #656AEB;
   position: fixed;
   top: -1px;
   right: -1px;
@@ -104,7 +103,7 @@ export default {
   z-index: 999;
   height: 40px;
   border-bottom-left-radius: 10px;
-  box-shadow: -1px 1px 17px 0px #656AEB;
+  box-shadow: -1px 1px 17px 0px #656aeb;
 }
 </style>
 <style lang="sass">
