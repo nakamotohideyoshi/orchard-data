@@ -102,7 +102,6 @@ module.exports = {
     // Row by Row Report
     const EBEReport = {}
     const filtersMeta = require('../filters/filters-meta')
-    const explanationCriteria = 'userExplanation'
 
     let allFilters = Object.keys(filtersMeta)
 
@@ -110,17 +109,24 @@ module.exports = {
     if (category) { allFilters = allFilters.filter(filterId => filtersMeta[filterId]['category'].toLowerCase() === category) }
 
     allFilters.forEach(filterId => {
-      EBEReport[filterId] = {
-        'count': 0,
-        'criteriaId': filterId,
-        'description': filtersMeta[filterId][explanationCriteria].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
-      }
+      const explanationsKeys = Object.keys(filtersMeta[filterId].explanations)
+      explanationsKeys.forEach((explanation) => {
+        EBEReport[`${filterId}${explanation}`] = {
+          'count': 0,
+          'criteriaId': filterId,
+          'description': filtersMeta[filterId].explanations[explanation].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
+        }
+      })
     })
 
     report.forEach(occurrence => {
       const filterId = occurrence['criteria_id']
-      // If occurrence is of the chosen category
-      if (allFilters.indexOf(filterId) !== -1) { EBEReport[filterId]['count'] += 1 }
+      const testDataFieldExplanationsIds = JSON.parse(occurrence['test_data_field_explanations_ids'])
+      testDataFieldExplanationsIds.forEach((explanation) => {
+        if (allFilters.indexOf(filterId) !== -1) {
+          EBEReport[`${filterId}${explanation}`]['count'] += 1
+        }
+      })
     })
 
     let reportArray = Object.keys(EBEReport).map(key => EBEReport[key])
@@ -156,6 +162,7 @@ module.exports = {
     report.forEach(row => {
       const fields = JSON.parse(row['test_data_field_ids'])
       const values = JSON.parse(row['test_data_field_values'])
+      const explanationsIds = JSON.parse(row['test_data_field_explanations_ids'])
       const errors = JSON.parse(row['test_data_field_error_types'])
 
       const occurrence = {
@@ -164,6 +171,7 @@ module.exports = {
         'tsvRowId': row['dataset_row_id'],
         'id': row['test_data_row_id'],
         'fields': fields.map((name, i) => ({ 'name': name, 'value': values[i] })),
+        'explanationsIds': explanationsIds,
         'errors': errors
       }
 
@@ -184,6 +192,7 @@ module.exports = {
     report.forEach(row => {
       const fields = JSON.parse(row['test_data_field_ids'])
       const values = JSON.parse(row['test_data_field_values'])
+      const explanationsIds = JSON.parse(row['test_data_field_explanations_ids'])
       const errors = JSON.parse(row['test_data_field_error_types'])
 
       // replaces line breaks and multiple whitespaces
@@ -198,6 +207,7 @@ module.exports = {
         row['criteria_id'],
         description,
         JSON.stringify(fields.map((name, i) => ({ 'name': name, 'value': values[i] }))).replace('\n', ' ').trim(),
+        JSON.stringify(explanationsIds),
         JSON.stringify(errors)
       ]
 
@@ -207,5 +217,4 @@ module.exports = {
 
     return tsv
   }
-
 }
