@@ -10,55 +10,108 @@ const filter = require(`../../../src/filters/${filterId}`)
 const filterMeta = require('../../../src/filters/filters-meta')[filterId]
 
 const defaultErrorType = filterMeta.type
-const defaultExplanationId = 'default'
+const [
+  meetsMustBeCapitalized,
+  vsMustBeCapitalized,
+  vsMustBeWrittenExactlyLikeThat,
+  artistsMustBeIdentifiedAsPrimary
+] = Object.keys(filterMeta.explanations)
 
 describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   let report = new ReportModule()
   report.init()
   report.addFilter(filterId)
 
-  it('should pass: everything is fine', () => {
-    let mock = mocks.shouldPass1
+  it('should fail - case of "meets"', () => {
+    let mock = mocks.shouldFailCaseOfMeets
     let occurrences = filter(mock.dataset)
-    assert.equal(occurrences.length, 0)
-  })
-
-  it('should pass: no errors in the dataset', () => {
-    let mock = mocks.shouldPass2
-    let occurrences = filter(mock.dataset)
-    assert.equal(occurrences.length, 0)
-  })
-
-  it('should fail: original artists (whose songs are being remixed) identified at album level as Remixer', () => {
-    let mock = mocks.shouldFail3
-    let occurrences = filter(mock.dataset)
-    occurrences.forEach((occurrence) => {
-      assert.deepEqual(occurrence.field, ['release_artists_remixer'])
-      assert.deepEqual(occurrence.value, ['Tortoise'])
-      assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+    occurrences.forEach(occurrence => {
+      assert.deepEqual(occurrence.field, ['release_name'])
+      assert.deepEqual(occurrence.value, ['A meets B'])
+      assert.deepEqual(occurrence.explanation_id, [meetsMustBeCapitalized])
       assert.deepEqual(occurrence.error_type, [defaultErrorType])
     })
   })
 
-  it('should fail: original artists (whose songs are being remixed) NOT listed at the track level', () => {
-    let mock = mocks.shouldFail4
+  it('should fail - case of "VS."', () => {
+    let mock = mocks.shouldFailCaseOfVs
     let occurrences = filter(mock.dataset)
-    occurrences.forEach((occurrence) => {
-      assert.deepEqual(occurrence.field, ['track_artist', 'release_artists_primary_artist'])
-      assert.deepEqual(occurrence.value, ['Derrick Carter', 'Derrick Carter'])
-      assert.deepEqual(occurrence.explanation_id, [defaultExplanationId, defaultExplanationId])
-      assert.deepEqual(occurrence.error_type, [defaultErrorType, defaultErrorType])
+    occurrences.forEach(occurrence => {
+      assert.deepEqual(occurrence.field, ['release_name'])
+      assert.deepEqual(occurrence.value, ['C VS. D'])
+      assert.deepEqual(occurrence.explanation_id, [vsMustBeCapitalized])
+      assert.deepEqual(occurrence.error_type, [defaultErrorType])
     })
   })
 
-  it('should fail: mixing DJ not listed at the album level identified as primary artist', () => {
-    let mock = mocks.shouldFail5
+  it('should fail - dot after vs', () => {
+    let mock = mocks.shouldFailDotAfterVs
     let occurrences = filter(mock.dataset)
-    occurrences.forEach((occurrence) => {
+    occurrences.forEach(occurrence => {
+      assert.deepEqual(occurrence.field, ['release_name'])
+      assert.deepEqual(occurrence.value, ['E vs F'])
+      assert.deepEqual(occurrence.explanation_id, [
+        vsMustBeWrittenExactlyLikeThat
+      ])
+      assert.deepEqual(occurrence.error_type, [defaultErrorType])
+    })
+  })
+
+  it('should fail - primary artist not part A or part B, or their concatenation, delimiter is vs.', () => {
+    let mock =
+      mocks.shouldFailPrimaryArtistNotPartAOrPartBOrTheirConcatenationDelimiterIsVs
+    let occurrences = filter(mock.dataset)
+    occurrences.forEach(occurrence => {
       assert.deepEqual(occurrence.field, ['release_artists_primary_artist'])
-      assert.deepEqual(occurrence.value, ['Tortoise'])
-      assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
+      assert.deepEqual(occurrence.value, ['Does Not Match'])
+      assert.deepEqual(occurrence.explanation_id, [
+        artistsMustBeIdentifiedAsPrimary
+      ])
       assert.deepEqual(occurrence.error_type, [defaultErrorType])
     })
+  })
+
+  it('should pass - primary artist is Part A', () => {
+    let mock = mocks.shouldPassPrimaryArtistIsPartA
+    let occurrences = filter(mock.dataset)
+    assert.equal(occurrences.length, 0)
+  })
+
+  it('should pass - primary artist is Part B', () => {
+    let mock = mocks.shouldPassPrimaryArtistIsPartB
+    let occurrences = filter(mock.dataset)
+    assert.equal(occurrences.length, 0)
+  })
+
+  it('should fail - primary artist not part A or part B, or their concatenation, delimiter is Meets"', () => {
+    let mock =
+      mocks.shouldFailPrimaryArtistNotPartAOrPartBOrTheirConcatenationDelimiterIsMeets
+    let occurrences = filter(mock.dataset)
+    occurrences.forEach(occurrence => {
+      assert.deepEqual(occurrence.field, ['release_artists_primary_artist'])
+      assert.deepEqual(occurrence.value, ['Does Not Match'])
+      assert.deepEqual(occurrence.explanation_id, [
+        artistsMustBeIdentifiedAsPrimary
+      ])
+      assert.deepEqual(occurrence.error_type, [defaultErrorType])
+    })
+  })
+
+  it('should pass - primary artist is Part A|Part B (no spaces around pipe)', () => {
+    let mock = mocks.shouldPassPrimaryArtistIsPartAPartBNoSpacesAroundPipe
+    let occurrences = filter(mock.dataset)
+    assert.equal(occurrences.length, 0)
+  })
+
+  it('should pass - primary artist is Part A|Part B (whitespace around pipe)', () => {
+    let mock = mocks.shouldPassPrimaryArtistIsPartAPartBWhitespaceAroundPipe
+    let occurrences = filter(mock.dataset)
+    assert.equal(occurrences.length, 0)
+  })
+
+  it('should pass - primary artist is Part B|Part A', () => {
+    let mock = mocks.shouldPassPrimaryArtistIsPartBPartA
+    let occurrences = filter(mock.dataset)
+    assert.equal(occurrences.length, 0)
   })
 })
