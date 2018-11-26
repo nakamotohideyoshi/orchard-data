@@ -1,10 +1,13 @@
-'use strict'
-
 const filterId = require('path').parse(__filename).name
 const filterMeta = require('./filters-meta')[filterId]
 
 const defaultErrorType = filterMeta['type']
-const defaultExplanationId = 'default'
+const [
+  meetsMustBeCapitalized,
+  vsMustBeCapitalized,
+  vsMustBeWrittenExactlyLikeThat,
+  artistsMustBeIdentifiedAsPrimary
+] = Object.keys(filterMeta['explanations'])
 
 /**
  * @param {Object} row
@@ -12,78 +15,120 @@ const defaultExplanationId = 'default'
  * @param {Array} dataset
  * @returns {{row_id: number, field: array, value: array, explanation_id: array, error_type: array}|boolean}
  */
-module.exports = function (dataset) {
+module.exports = dataset => {
   const occurrences = []
 
   dataset.forEach((row, index) => {
     const occurrence = {
-      'row_id': index + 1,
-      'dataset_row_id': row.rowid,
-      'field': [],
-      'value': [],
-      'explanation_id': [],
-      'error_type': []
+      row_id: index + 1,
+      dataset_row_id: row.rowid,
+      field: [],
+      value: [],
+      explanation_id: [],
+      error_type: []
     }
 
-    // If release name is not set, returns false as there won't be errors anyway.
-    if (!row.hasOwnProperty('release_name')) {
-      return
-    }
+    /** @type {string} */
+    const albumTitle = row.release_name
 
-    // Rule: Does the release name contain “Meets” or “vs.”? If not, there is no error.
+    // If album title is not set, returns, as there won't be errors anyway.
 
-    let releaseNameContainsMeetsTerm = (row.release_name.toLowerCase().indexOf(' meets ') > -1)
-    let releaseNameContainsVsTerm = (row.release_name.toLowerCase().indexOf(' vs. ') > -1)
+    if (!albumTitle) return
 
-    if (!releaseNameContainsMeetsTerm && !releaseNameContainsVsTerm) {
-      return
-    }
+    // If the album title does not contain "meets" or "vs", case-insensitive, there is no error.
 
-    // Rule: Is it a collection of different songs remixed by a single DJ? If not, there is no error.
+    const albumTitleDoesNotContainMeetsOrVs =
+      albumTitle.search(/\b(meets|vs)\b/i) === -1
 
-    for (let i = 0, l = dataset.length; i < l; i++) {
-      // Don't compare row with itself.
-      if (i === index) continue
+    if (albumTitleDoesNotContainMeetsOrVs) return
 
-      // Skip comparison if there`s no remixer set.
-      if (!row.track_artist_remixer || !dataset[i].track_artist_remixer) continue
+    // If the album title does contain a case-insensitive whole-word match for "Meets" but not a case-sensitive
+    // match, there is an error. The message is "Meets" must be capitalized just like that.
 
-      let isRemixedByASingleDJ = (row.track_artist_remixer === dataset[i].track_artist_remixer)
+    const albumTitleContainsCaseInsensitiveMeets =
+      albumTitle.search(/\b(meets)\b/i) !== -1
 
-      if (!isRemixedByASingleDJ) return
-    }
+    const albumTitleContainsCaseSensitiveMeets =
+      albumTitle.search(/\b(Meets)\b/) !== -1
 
-    // Rule: Is the mixing DJ listed at the album level and identified as Primary with the Remixer role? If not, there is an error.
-
-    let mixingDjIsListedAtTheAlbumLevelAsRemixer = (row.release_artists_remixer === row.track_artist_remixer)
-
-    if (!mixingDjIsListedAtTheAlbumLevelAsRemixer) {
-      occurrence.field.push('release_artists_remixer')
-      occurrence.value.push(row.release_artists_remixer)
-      occurrence.explanation_id.push(defaultExplanationId)
+    if (
+      albumTitleContainsCaseInsensitiveMeets &&
+      !albumTitleContainsCaseSensitiveMeets
+    ) {
+      occurrence.field.push('release_name')
+      occurrence.value.push(row.release_name)
+      occurrence.explanation_id.push(meetsMustBeCapitalized)
       occurrence.error_type.push(defaultErrorType)
     }
 
-    // Rule: Are the original artists (whose songs are being remixed) listed at the track level identified as Primary? If not, there is an error.
+    // If the album title does contain a case-insensitive whole-word match (with word delimiters) for "vs." but
+    // not a case-sensitive match, there is an error. The message is "vs." must be capitalized just like that.
 
-    let originalArtistsAreListedAtTrackLevel = (row.track_artist !== row.track_artist_remixer)
+    const albumTitleContainsCaseInsensitiveVsWithDot =
+      albumTitle.search(/\b(vs)\./i) !== -1
 
-    if (!originalArtistsAreListedAtTrackLevel) {
-      occurrence.field.push('track_artist')
-      occurrence.value.push(row.track_artist)
-      occurrence.explanation_id.push(defaultExplanationId)
+    const albumTitleContainsCaseSensitiveVsWithDot =
+      albumTitle.search(/\b(vs)\./) !== -1
+
+    if (
+      albumTitleContainsCaseInsensitiveVsWithDot &&
+      !albumTitleContainsCaseSensitiveVsWithDot
+    ) {
+      occurrence.field.push('release_name')
+      occurrence.value.push(row.release_name)
+      occurrence.explanation_id.push(vsMustBeCapitalized)
       occurrence.error_type.push(defaultErrorType)
     }
 
-    // Rule: Are the original artists listed at the album level? If so, there is an error.
+    // If the album title does contain a case-insensitive whole-word match for "vs" (no dot) but not for
+    // "vs." (with a dot), there is an error. The message is "vs." must be written exactly like that.
 
-    let originalArtistsAreListedAtTheAlbumLevel = (row.release_artists_primary_artist === row.track_artist)
+    const albumTitleContainsCaseInsensitiveVsWithoutDot =
+      albumTitle.search(/\b(vs)\b/i) !== -1
 
-    if (originalArtistsAreListedAtTheAlbumLevel) {
-      occurrence.field.push('release_artists_primary_artist')
-      occurrence.value.push(row.release_artists_primary_artist)
-      occurrence.explanation_id.push(defaultExplanationId)
+    if (
+      albumTitleContainsCaseInsensitiveVsWithoutDot &&
+      !albumTitleContainsCaseInsensitiveVsWithDot
+    ) {
+      occurrence.field.push('release_name')
+      occurrence.value.push(row.release_name)
+      occurrence.explanation_id.push(vsMustBeWrittenExactlyLikeThat)
       occurrence.error_type.push(defaultErrorType)
+    }
+
+    // If the album title contains a case-sensitive whole-word match for Meets or vs., use that as a delimiter,
+    // split the string, and trim whitespace from the segments. If the primary album artist is not "Part A",
+    // "Part B", "Part A | Part B", or "Part B | Part A", there is an error. (Whitespace around the pipe delimiter
+    //  is optional). The message is "When “Meets” or “vs.” is used to describe an album, either or both artists
+    // must be identified as primary at the album level."
+
+    if (
+      albumTitleContainsCaseSensitiveMeets ||
+      albumTitleContainsCaseSensitiveVsWithDot
+    ) {
+      const albumTitleSplit = albumTitle
+        .split(/\b(Meets\b|vs\.)/)
+        .map(element => element.trim())
+
+      if (albumTitleSplit.length >= 3) {
+        const [firstArtist /* delimiter */, , secondArtist] = albumTitleSplit
+        const primaryAlbumArtist = row.release_artists_primary_artist
+        const expectedPrimaryAlbumArtistForms = [
+          firstArtist,
+          secondArtist,
+          `${firstArtist} | ${secondArtist}`,
+          `${firstArtist}|${secondArtist}`,
+          `${secondArtist} | ${firstArtist}`,
+          `${secondArtist}|${firstArtist}`
+        ]
+
+        if (!expectedPrimaryAlbumArtistForms.includes(primaryAlbumArtist)) {
+          occurrence.field.push('release_artists_primary_artist')
+          occurrence.value.push(row.release_artists_primary_artist)
+          occurrence.explanation_id.push(artistsMustBeIdentifiedAsPrimary)
+          occurrence.error_type.push(defaultErrorType)
+        }
+      }
     }
 
     if (occurrence.field.length > 0) occurrences.push(occurrence)
