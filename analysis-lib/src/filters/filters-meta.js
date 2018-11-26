@@ -610,7 +610,7 @@ module.exports = {
     type: 'error',
     basis: 'row',
     explanations: {
-      default: `"Various Artists" must be written exactly like that.``
+      default: `"Various Artists" must be written exactly like that.`
     }
   },
 
