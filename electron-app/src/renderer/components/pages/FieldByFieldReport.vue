@@ -9,7 +9,7 @@ div
         tbody
             tr(v-for="(data, index) in items" @click="show(data, index)")
                 td {{data.id}}
-                td {{getFilter(data.criteria)}}
+                td {{getFilter(data.criteria, data.explanationsIds)}}
 
     empty-state(
         v-if="!loading && !items.length && error"
@@ -70,14 +70,25 @@ export default {
     hide () {
       this.$modal.hide('field-modal')
     },
-    getFilter (id) {
-      if (
-        this.filters &&
-        this.filters[id] &&
-        this.filters[id].userExplanation
-      ) {
-        return this.filters[id].userExplanation
-      }
+    getFilter (id, explanationsIds) {
+      if (!explanationsIds) return 'N/A'
+
+      let explanationsToConcatenate = []
+
+      explanationsIds.forEach(explanationId => {
+        if (
+          this.filters &&
+          this.filters[id] &&
+          this.filters[id].explanations &&
+          this.filters[id].explanations[explanationId]
+        ) {
+          explanationsToConcatenate.push(this.filters[id].explanations[explanationId])
+        }
+      })
+
+      explanationsToConcatenate = [...new Set(explanationsToConcatenate)]
+
+      if (explanationsToConcatenate.length) return explanationsToConcatenate.join('. ')
 
       return 'N/A'
     },

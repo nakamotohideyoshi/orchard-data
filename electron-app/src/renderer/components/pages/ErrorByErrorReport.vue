@@ -8,10 +8,9 @@ include _mixins
                 td.explanation Explanation
                 td.count
                     a(@click.prevent="toggleSort('count')" href="#") Count
-
         tbody
             tr(js-modal data-mfp-src='#modal-1' v-for="(item, i) in items")
-                td {{ getFilter(item.criteriaId) }}
+                td {{ item.description }}
                 td {{ item.count }}
     empty-state(
         v-if="!loading && !items.length && error"
@@ -36,17 +35,6 @@ export default {
   name: 'error-by-error',
   methods: {
     ...mapActions(['fetchErrorByErrorReport']),
-    getFilter (id) {
-      if (
-        this.filters &&
-        this.filters[id] &&
-        this.filters[id].userExplanation
-      ) {
-        return this.filters[id].userExplanation
-      }
-
-      return 'N/A'
-    },
     // TODO: Create sort directive
     toggleSort (name) {
       const { sort } = this
