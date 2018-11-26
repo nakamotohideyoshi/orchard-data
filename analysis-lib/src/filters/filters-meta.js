@@ -351,8 +351,8 @@ module.exports = {
     basis: 'row',
     explanations: {
       default: `
-        Genres must not be egregiously misclassified (for example, Hip Hop/Rap in place of Children’s Music).
-        See iTunes Style Guide 12.1.
+        Genre is not in the set accepted by iTunes. See "iTunes Package Music Specification Addendum: Music, Music Video,and
+        Ringtone Genre Codes"
       `,
       blankGenre: 'The genre field must not be blank.'
     }
@@ -610,7 +610,7 @@ module.exports = {
     type: 'error',
     basis: 'row',
     explanations: {
-      default: `misspelled "various artists"`
+      default: `"Various Artists" must be written exactly like that.``
     }
   },
 
