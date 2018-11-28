@@ -207,6 +207,20 @@ module.exports = function (dataset) {
         }
       }
 
+      // TEST 3. If the track title has square brackets but doesn't have parenthesis, it's an error.
+      // Square brackets are only supposed to exist if parens have already been used.
+      // Square brackets are for a second expression.
+
+      const trackTitleHasParenthesis = row.track_name.indexOf('(') >= 0
+      const trackTitleHasSquareBrackets = row.track_name.indexOf('[') >= 0
+
+      if (trackTitleHasSquareBrackets && !trackTitleHasParenthesis) {
+        occurrence.field.push('track_name')
+        occurrence.value.push(row.track_name)
+        occurrence.explanation_id.push(defaultExplanationId)
+        occurrence.error_type.push(defaultErrorType)
+      }
+
       if (occurrence.field.length > 0) occurrences.push(occurrence)
 
       rowIndex++
