@@ -70,7 +70,7 @@ module.exports = {
         'test_data_row_id': 1,
         'test_data_field_ids': JSON.stringify(['release_name']),
         'test_data_field_values': JSON.stringify(['A value']),
-        'test_data_field_explanations_ids': JSON.stringify([-1]),
+        'test_data_field_explanations_ids': JSON.stringify(['default']),
         'test_data_field_error_types': JSON.stringify(['error'])
       },
       {
@@ -79,7 +79,7 @@ module.exports = {
         'test_data_row_id': 2,
         'test_data_field_ids': JSON.stringify(['track_name']),
         'test_data_field_values': JSON.stringify(['Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1]),
+        'test_data_field_explanations_ids': JSON.stringify(['abbreviation']),
         'test_data_field_error_types': JSON.stringify(['warning'])
       },
       {
@@ -88,7 +88,7 @@ module.exports = {
         'test_data_row_id': 3,
         'test_data_field_ids': JSON.stringify(['release_name', 'track_name']),
         'test_data_field_values': JSON.stringify(['A value', 'Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1, -1]),
+        'test_data_field_explanations_ids': JSON.stringify(['default', 'default']),
         'test_data_field_error_types': JSON.stringify(['warning', 'error'])
       },
       {
@@ -97,7 +97,7 @@ module.exports = {
         'test_data_row_id': 1,
         'test_data_field_ids': JSON.stringify(['release_name']),
         'test_data_field_values': JSON.stringify(['A value']),
-        'test_data_field_explanations_ids': JSON.stringify([-1]),
+        'test_data_field_explanations_ids': JSON.stringify(['default']),
         'test_data_field_error_types': JSON.stringify(['error'])
       },
       {
@@ -106,7 +106,7 @@ module.exports = {
         'test_data_row_id': 2,
         'test_data_field_ids': JSON.stringify(['track_name']),
         'test_data_field_values': JSON.stringify(['Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1]),
+        'test_data_field_explanations_ids': JSON.stringify(['default']),
         'test_data_field_error_types': JSON.stringify(['error'])
       },
       {
@@ -115,7 +115,7 @@ module.exports = {
         'test_data_row_id': 3,
         'test_data_field_ids': JSON.stringify(['release_name', 'track_name']),
         'test_data_field_values': JSON.stringify(['A value', 'Another value']),
-        'test_data_field_explanations_ids': JSON.stringify([1, -1]),
+        'test_data_field_explanations_ids': JSON.stringify(['default', 'default']),
         'test_data_field_error_types': JSON.stringify(['warning', 'error'])
       }
     ]

@@ -38,13 +38,18 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
   it('should fail - tail begins with square brackets', () => {
     let mock = mocks.failTailBeginsWithSquareBrackets
     let occurrences = filter(mock)
+
     assert.equal(occurrences.length, 2)
-    occurrences.forEach((occurrence) => {
-      assert.deepEqual(occurrence.field, ['release_name'])
-      assert.deepEqual(occurrence.value, ['Consectetur 3'])
-      assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
-      assert.deepEqual(occurrence.error_type, [defaultErrorType])
-    })
+
+    assert.deepEqual(occurrences[0].field, ['release_name', 'track_name'])
+    assert.deepEqual(occurrences[0].value, ['Consectetur 3', 'Lorem Ipsum [remix 1]'])
+    assert.deepEqual(occurrences[0].explanation_id, [defaultExplanationId, defaultExplanationId])
+    assert.deepEqual(occurrences[0].error_type, [defaultErrorType, defaultErrorType])
+
+    assert.deepEqual(occurrences[1].field, ['release_name', 'track_name'])
+    assert.deepEqual(occurrences[1].value, ['Consectetur 3', 'Lorem Ipsum [remix 2]'])
+    assert.deepEqual(occurrences[1].explanation_id, [defaultExplanationId, defaultExplanationId])
+    assert.deepEqual(occurrences[1].error_type, [defaultErrorType, defaultErrorType])
   })
 
   it('should fail - tail begins with paren', () => {
