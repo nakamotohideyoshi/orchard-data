@@ -87,16 +87,24 @@ describe('should test report tool', () => {
     const EBEReportMock = []
 
     Object.keys(filtersMeta).forEach(filterId => {
-      const obj = {
-        'count': 0,
-        'criteriaId': filterId,
-        'description': filtersMeta[filterId]['userExplanation'].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
+      const explanationsKeys = Object.keys(filtersMeta[filterId].explanations)
+      explanationsKeys.forEach((explanation) => {
+        const obj = {
+          'count': 0,
+          'criteriaId': filterId,
+          'description': filtersMeta[filterId].explanations[explanation].replace(/\n/g, ' ').replace(/  +/g, ' ').trim()
+        }
 
-      }
+        if (filterId === 'filter1' && explanation === 'default') {
+          obj['count'] = 3
+        } else if (filterId === 'filter1' && explanation === 'abbreviation') {
+          obj['count'] = 1
+        } else if (filterId === 'filter2') {
+          obj['count'] = 4
+        }
 
-      if (filterId === 'filter1' || filterId === 'filter2') { obj['count'] = 3 }
-
-      EBEReportMock.push(obj)
+        EBEReportMock.push(obj)
+      })
     })
 
     EBEReportMock.sort((a, b) => b['count'] - a['count'])
