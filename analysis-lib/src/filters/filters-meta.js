@@ -714,5 +714,46 @@ module.exports = {
         level and identified as Primary. The terms “Meets” and “vs.” must only appear in the album or track title.
       `
     }
+  },
+
+  languagefieldsmustnotbeblank: {
+    orchardDescription: `This is not a requirement from the Orchard`,
+    programmerDescription: `
+      If either of the Release Meta Language or Meta Language fields are missing, null, or contain an empty string, it is an error.
+      The error message is "Release Meta Language and Meta Language must not be blank."
+
+      If the track genre is in the designated set and Meta Language does not contain "zxx", it is an error with message Non-linguistic
+      content must have Meta Language "zxx".
+
+      The designated set is (any of the following):
+
+      | Guitar | GUITAR-00 |
+      | Chinese Flute | CHINESE-FLUTE-00  |
+      | Chinese Strings | CHINESE-STRINGS-00  |
+      | Brass & Woodwinds | BRASS-WOODWINDS-00  |
+      | Guitar | GUITAR-00  |
+      | Percussion | PERCUSSION-00  |
+      | Piano | PIANO-00  |
+      | Solo Instrumental | SOLO-INSTRUMENTAL-00  |
+      | Violin | VIOLIN-00 |
+      | Ambient | AMBIENT-00  |
+      | Bass | BASS-00  |
+      | Instrumental | INSTRUMENTAL-00  |
+      | Marching Bands | MARCHING-BANDS-00  |
+      | Nature | NATURE-00  |
+      | Surf | SURF-00  |
+      | Sound Effects | SOUND-EFFECT-00  |
+    `,
+    userExplanation: `
+      Release Meta Language and Meta Language must not be blank.
+      Non-linguistic content must have Meta Language "zxx".
+    `,
+    category: 'iTunes',
+    type: 'error',
+    basis: 'row',
+    explanations: {
+      default: 'Release Meta Language and Meta Language must not be blank',
+      nonLinguisticContent: 'Non-linguistic content must have Meta Language "zxx"'
+    }
   }
 }
