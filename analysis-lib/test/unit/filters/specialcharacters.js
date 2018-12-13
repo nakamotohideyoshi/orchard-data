@@ -217,16 +217,6 @@ describe(`should test ${filterId}: ${filterMeta['orchardDescription']}`, () => {
     })
   })
 
-  it('should fail: emoji in Track Lyrics', () => {
-    mocks.failDueToEmojiInTrackLyrics.forEach((item, index) => {
-      let occurrence = filter(item, index)
-      assert.deepEqual(occurrence.field, ['track_lyrics'])
-      assert.deepEqual(occurrence.value, ['What a great 😀 song\nIt is not too long'])
-      assert.deepEqual(occurrence.explanation_id, [defaultExplanationId])
-      assert.deepEqual(occurrence.error_type, [defaultErrorType])
-    })
-  })
-
   it('should fail: emoji ⛄ in Release Name', () => {
     mocks.failDueToEmojiInReleaseNameAgain.forEach((item, index) => {
       let occurrence = filter(item, index)

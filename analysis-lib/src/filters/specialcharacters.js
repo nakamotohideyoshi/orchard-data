@@ -29,8 +29,7 @@ const fieldsToCheck = [
   'track_artist_conductor', // Track Artist(s) - Remixer(s)
   'track_name', // Track Name
   'copyright_information', // [C] Information
-  'p_information', // [P] Information
-  'track_lyrics' // Track Lyrics
+  'p_information' // [P] Information
 ]
 
 /**
