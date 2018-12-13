@@ -765,14 +765,14 @@ module.exports = {
       against the entire input file.
     `,
     userExplanation: `
-      Special Characters: Do not use emojis or special characters in titles, artist names, lyrics, or other metadata.
+      Special Characters: Do not use emojis or special characters in titles, artist names, or other metadata.
       See iTunes Store Music Style Guide 1.9.
     `,
     category: 'iTunes',
     type: 'error',
     basis: 'row',
     explanations: {
-      default: `Special Characters: Do not use emojis or special characters in titles, artist names, lyrics, or other metadata.`
+      default: `Special Characters: Do not use emojis or special characters in titles, artist names, or other metadata.`
     }
   }
 }
