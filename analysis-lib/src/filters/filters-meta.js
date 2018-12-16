@@ -755,5 +755,24 @@ module.exports = {
       default: 'Release Meta Language and Meta Language must not be blank',
       nonLinguisticContent: 'Non-linguistic content must have Meta Language "zxx"'
     }
+  },
+
+  specialcharacters: {
+    orchardDescription: `Not an Orchard requirement`,
+    programmerDescription: `
+      Given the size of the search expression X the number of fields to check X the number of lines, this may create impossible
+      performance problems. If so we will have to find a more efficient but less standard algorithm, like running the regex
+      against the entire input file.
+    `,
+    userExplanation: `
+      Special Characters: Do not use emojis or special characters in titles, artist names, or other metadata.
+      See iTunes Store Music Style Guide 1.9.
+    `,
+    category: 'iTunes',
+    type: 'error',
+    basis: 'row',
+    explanations: {
+      default: `Special Characters: Do not use emojis or special characters in titles, artist names, or other metadata.`
+    }
   }
 }
