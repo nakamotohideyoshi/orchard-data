@@ -440,17 +440,12 @@ module.exports = {
       - Reichskriegsflagge
     `,
     userExplanation: `Nazi keywords are an error`,
-    category: 'Risk',
+    category: 'iTunes',
     type: 'error',
     basis: 'row',
     explanations: {
       default: `
-        From iTunes Style Guide 1.13: Nazi Propaganda. Content must not depict Nazi symbolism as restricted by the
-        Strafgesetzbuch section 86a if the content is cleared for sale in Germany (DE), Austria (AT), Switzerland (CH),
-        or any other country that restricts Nazi propaganda.
-
-        If content violating this rule is submitted three times, your entire catalogue will be suspended in DE, AT, CH,
-        and any other applicable country for up to six months. Content will be hidden using the reason: Refusal.
+        Nazi keywords are an error. See iTunes Style Guide 1.13: Nazi Propaganda.
       `
     }
   },
