@@ -34,7 +34,10 @@ module.exports = async function (datasetId, metadata) {
         // calculate Various Artists Count
         const info = await duplicatesThreshold(dataset, metadata)
         resolve(info)
-      } catch (err) { reject(err) }
+      } catch (err) {
+        console.log(err)
+        reject(err)
+      }
     })
   } catch (err) { throw err }
 
