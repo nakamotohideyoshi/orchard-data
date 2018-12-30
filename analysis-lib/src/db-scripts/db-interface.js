@@ -70,6 +70,7 @@ module.exports = function () {
       case 53: // original version with a comment
       case 70: // version 1.20
       case 76: // version in BlueDoor.xls
+      case 26: // our custom template
         break
       default:
         console.log('Field count error when trying to upload TSV', numberOfFields, '\n')
