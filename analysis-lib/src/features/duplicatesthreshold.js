@@ -21,7 +21,7 @@ module.exports = function (dataset, metadata) {
   let totalNumberOfTracks = dataset.length
 
   dataset.forEach((row) => {
-    if (row.hasOwnProperty('isrc') && row['isrc'].length > 0) {
+    if (row.hasOwnProperty('isrc') && row['isrc'] !== null && row['isrc'].length > 0) {
       if (alreadyRegisteredISRCList.indexOf(row['isrc']) > -1) {
         if (duplicatedISRC.indexOf(row['isrc']) === -1) {
           duplicatedISRC.push(row['isrc'])
