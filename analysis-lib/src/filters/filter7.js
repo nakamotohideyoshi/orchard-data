@@ -36,6 +36,8 @@ module.exports = function (row, idx) {
   const closeTokens = ')]}'
 
   fields.forEach(field => {
+    if (!row[field] || row[field] === null) { return }
+
     let value = row[field].trim()
 
     // field is not null
