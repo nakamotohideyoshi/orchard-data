@@ -28,7 +28,7 @@ module.exports = function (row, index, dataset) {
   let propertiesToCheck = ['release_name', 'track_name']
 
   propertiesToCheck.forEach(property => {
-    if (row.hasOwnProperty(property)) {
+    if (row.hasOwnProperty(property) && row[property] !== null) {
       let releaseNameContainsExplicitTerm = (row[property].toLowerCase().indexOf('(explicit)') > -1)
       let releaseNameContainsCleanTerm = (row[property].toLowerCase().indexOf('(clean)') > -1)
 
@@ -46,11 +46,11 @@ module.exports = function (row, index, dataset) {
   // If the value is "No" or blank, it is considered "clean-or-unknown."
 
   let isRowMarkedAsClean = function (row) {
-    return row.hasOwnProperty('explicit') ? (row.explicit.toLowerCase() === 'clean') : false
+    return row.hasOwnProperty('explicit') && row['explicit'] !== null ? (row.explicit.toLowerCase() === 'clean') : false
   }
 
   let isRowMarkedAsExplicit = function (row) {
-    return row.hasOwnProperty('explicit') ? (row.explicit.toLowerCase() === 'yes') : false
+    return row.hasOwnProperty('explicit') && row['explicit'] !== null ? (row.explicit.toLowerCase() === 'yes') : false
   }
 
   // If you need to check somewhere if the row is marked as "clean-or-unknown", uncomment the following function.
