@@ -28,6 +28,8 @@ const filter = (row, idx) => {
     error_type: []
   }
 
+  if( row["track_name"] === null )
+    return(false)
   /** @type {string} */
   const trackTitle = row.track_name
 
@@ -64,7 +66,7 @@ const filter = (row, idx) => {
   ]
 
   trackLevelArtistFields.forEach(trackLevelArtistField => {
-    if (!row[trackLevelArtistField]) return
+    if (!row[trackLevelArtistField] || row[trackLevelArtistField] === null) return
 
     const containExpression =
       row[trackLevelArtistField].search(/\b(vs\.|Meets\b)/gi) !== -1
