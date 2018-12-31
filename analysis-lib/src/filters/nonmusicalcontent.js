@@ -93,7 +93,7 @@ module.exports = function (row, index) {
   // - Spoken Word          SPOKEN-WORD-00
 
   fieldsToCheck.forEach((field) => {
-    if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
+    if (row.hasOwnProperty(field) && row[field] !== null && row[field].toString().length > 0) {
       nonMusicalContentList.forEach((nonMusicalContent) => {
         let fieldValueIsNonMusicalContent = (row[field].toLowerCase() === nonMusicalContent.toLowerCase())
 
