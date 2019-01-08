@@ -48,7 +48,35 @@ module.exports = function () {
       'subgenre name': 'Sub-genre',
       'Folder Name / Project Code': 'Folder Name / Label Catalog Number',
       'Track Audio Language': 'Meta Language',
-      'Track Pricing': 'Track iTunes Pricing'
+      'Track Pricing': 'Track iTunes Pricing',
+
+      // our customer data template, mapped to Orchard fields
+      'Album title': 'Release Name',
+      'Album meta language': 'Release Meta Language',
+      'Album artist(s)': 'Release Artist-Primary Artist',
+      'Album artist - featured': 'Release Artist-Featuring',
+      'Album artist - remixer': 'Release Artist-Remixer',
+      'Album artist - composer': 'Release Artist-Composer',
+      'Album artist - orchestra': 'Release Artist-Orchestra',
+      'Album artist - ensemble': 'Release Artist-Ensemble',
+      'Album artist - conductor': 'Release Artist-Conductor',
+      'Format': 'Format: Full Length / EP / Single',
+      'Genre': 'Genre',
+      'Subgenre': 'Sub-genre',
+      'Album version': 'Release Version',
+      'Album volume': 'Volume',
+      'Track number': 'Track No.',
+      'Track title': 'Track Name',
+      'Track audio language': 'Track Audio Language',
+      'Track version': 'Track Version',
+      'Track artist': 'Track Artist',
+      'Track artist - featured': 'Track Artist - Featuring',
+      'Track artist - remixer': 'Track Artist - Remixer',
+      'Track artist - composer': 'Track Artist - Composer',
+      'Track artist - orchestra': 'Track Artist - Orchestra',
+      'Track artist - ensemble': 'Track Artist - Ensemble',
+      'Track artist - conductor': 'Track Artist - Conductor',
+      'Explicit Lyrics': 'Explicit (No/Yes/Clean)'
     }
     const versionedKeys = Object.keys(versionMap)
 
@@ -70,6 +98,7 @@ module.exports = function () {
       case 53: // original version with a comment
       case 70: // version 1.20
       case 76: // version in BlueDoor.xls
+      case 26: // our custom template
         break
       default:
         console.log('Field count error when trying to upload TSV', numberOfFields, '\n')

@@ -57,6 +57,7 @@ const filter = (row, idx) => {
 
   let thereIsAnError = false
 
+  if (row['track_name'] === null) { return (false) }
   const trackTitleTail = extractTrackTitleTail(row.track_name)
 
   const tailContainsParentheses = ((trackTitleTail.indexOf('(') !== -1) && (trackTitleTail.indexOf(')') !== -1))

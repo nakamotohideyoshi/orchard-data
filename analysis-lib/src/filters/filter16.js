@@ -62,7 +62,7 @@ module.exports = function (dataset) {
 
   // here we assume the album has only one release language
   let language = dataset[0]['release_meta_language']
-  language = language ? language.trim().toLowerCase() : 'english'
+  language = language && language !== null ? language.trim().toLowerCase() : 'english'
 
   // language not supported
   if (!(language in stopWords)) { return occurrences }
@@ -89,6 +89,7 @@ module.exports = function (dataset) {
     fields.forEach(field => {
       // builds valid string
       let value = row[field]
+      if (!value || value === null) { value = '' }
 
       // rules for english language
       if (language === 'english') {
