@@ -28,8 +28,7 @@ const filter = (row, idx) => {
     error_type: []
   }
 
-  if( row["track_name"] === null )
-    return(false)
+  if (row['track_name'] === null) { return (false) }
   /** @type {string} */
   const trackTitle = row.track_name
 
