@@ -6,6 +6,13 @@ const filterMeta = require('./filters-meta')[filterId]
 const defaultErrorType = filterMeta['type']
 const defaultExplanationId = 'default'
 
+function exists (arr, field) {
+  if (!arr) { return (false) }
+  if (!arr.hasOwnProperty(field)) { return (false) }
+  if (arr[field] === null) { return (false) }
+  return (true)
+}
+
 // Definition: Tail
 // Let the head of a track title end at either:
 // - the first hyphen
@@ -86,6 +93,13 @@ module.exports = function (dataset) {
   const albumsOnThisDataset = []
 
   dataset.forEach((row) => {
+    if (!exists(row, 'release_name') ||
+        !exists(row, 'release_artists_primary_artist') ||
+        !exists(row, 'track_name')) {
+      console.log('Warning: skipping remixversioninformation on row with blank release_name, release_artists_primary_artist or track_name ', row)
+      return
+    }
+
     const groupName = `${row.release_name} by ${row.release_artists_primary_artist}`
     if (albumsOnThisDataset[groupName]) {
       albumsOnThisDataset[groupName].push(row)

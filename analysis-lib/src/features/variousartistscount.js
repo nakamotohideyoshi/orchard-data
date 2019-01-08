@@ -35,7 +35,9 @@ module.exports = function (dataset) {
     // if there is exist dataset, calcuate va-count.
 
     dataset.forEach((row) => {
-      const releaseLanguage = row['release_meta_language'] ? row['release_meta_language'].trim().toLowerCase() : 'english'
+      const releaseLanguage =
+        row['release_meta_language'] && row['release_meta_language'] !== null
+          ? row['release_meta_language'].trim().toLowerCase() : 'english'
 
       if (releaseLanguage in patterns) {
         // language support

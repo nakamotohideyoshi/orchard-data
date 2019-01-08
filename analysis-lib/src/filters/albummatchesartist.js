@@ -26,8 +26,8 @@ module.exports = function (row, index) {
   // - This test applies to every row in a matching release, so one with 10 tracks will have 10 errors
   // - This only compares the fields in the following Input Fields: Release Name, Release Artist(s)-Primary Artist(s)
 
-  let releaseNameIsSet = row.hasOwnProperty('release_name') && row.release_name.length > 0
-  let releaseArtistPrimaryArtistIsSet = row.hasOwnProperty('release_artists_primary_artist') && row.release_artists_primary_artist.length > 0
+  let releaseNameIsSet = row.hasOwnProperty('release_name') && row.release_name !== null && row.release_name.length > 0
+  let releaseArtistPrimaryArtistIsSet = row.hasOwnProperty('release_artists_primary_artist') && row.release_artists_primary_artist !== null && row.release_artists_primary_artist.length > 0
 
   if (releaseNameIsSet && releaseArtistPrimaryArtistIsSet) {
     let releaseNameFormatted = row.release_name.toLowerCase().trim()

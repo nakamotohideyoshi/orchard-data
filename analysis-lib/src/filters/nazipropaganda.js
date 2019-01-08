@@ -172,7 +172,7 @@ module.exports = function (row, index) {
   // - Track Artist(s) - Remixer(s)
 
   fieldsToCheck.forEach((field) => {
-    if (row.hasOwnProperty(field) && row[field].toString().length > 0) {
+    if (row.hasOwnProperty(field) && row[field] !== null && row[field].toString().length > 0) {
       naziKeywords.forEach((naziKeyword) => {
         const searchTerm = new RegExp(`\\b${naziKeyword}\\b`, 'gi')
         const fieldContainsNaziKeyword = (row[field].search(searchTerm) !== -1)
