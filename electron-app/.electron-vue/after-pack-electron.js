@@ -28,7 +28,7 @@ let afterPack = function (context) {
     case 'darwin':
       execSync('npm run build:mac', {cwd: analysisLibDirPath})
       execSync('npm run build:mac-sqlite3', {cwd: analysisLibDirPath})
-      destinationPath = path.join(context.appOutDir, 'Musical Turk.app', 'Contents');
+      destinationPath = path.join(context.appOutDir, 'Viva Data.app', 'Contents');
       console.log(`  • copying analysis-lib to ${destinationPath}`)
       copyDir.sync(path.join('..', 'analysis-lib', 'build', 'mac'), destinationPath)
       execSync('chmod +x analysis-lib', {cwd: destinationPath})
