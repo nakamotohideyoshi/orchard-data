@@ -1,8 +1,8 @@
 {
-  "name": "musical-turk",
-  "version": "1.0.1",
+  "name": "viva-data",
+  "version": "1.1.0",
   "author": "Viva Data <info@vivadata.co>",
-  "description": "Tooling for curated data sets.",
+  "description": "Metrics for Curated Data",
   "private": true,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -30,8 +30,8 @@
     }
   },
   "build": {
-    "productName": "Musical Turk",
-    "appId": "co.vivadata.musical-turk",
+    "productName": "Viva Data",
+    "appId": "co.vivadata.viva-data",
     "directories": {
       "output": "build"
     },

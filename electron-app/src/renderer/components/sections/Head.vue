@@ -1,10 +1,10 @@
 <template>
   <header class="header">
     <h1>
-      <span>Musical Turk</span>
+      <span>Viva Data</span>
     </h1>
     <div class="header__updated">
-      <em>Musical Turk</em>
+      <em>Viva Data</em>
     </div>
     <nav class="types">
       <button data-mode="mobile" data-width="375" v-bind:class="{'is-active': currentLayout == 'mobile'}" @click="layoutToggle('mobile')">
