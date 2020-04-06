@@ -55,7 +55,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "make-dir-cli": "^1.0.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "morgan": "^1.9.1",
     "musicbrainz": "^0.2.6",
     "node-pre-gyp": "^0.12.0",
