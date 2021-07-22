@@ -63,7 +63,7 @@
     "require-all": "^3.0.0",
     "sqlite": "^3.0.0",
     "stats-analysis": "^2.0.0",
-    "xlsx": "^0.14.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
